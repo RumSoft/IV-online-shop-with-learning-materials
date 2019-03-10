@@ -1,33 +1,45 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import logo from "./logo.svg";
-import "./App.css";
-import HomePage from "./pages/Home";
-import LoginPage from "./pages/Login";
+import { BrowserRouter, Switch, Route, NavLink } from "react-router-dom";
+import routes from "./router-config";
+import "./App.scss";
+import NotFoundPage from "./pages/NotFound";
 
 class App extends Component {
   render() {
     return (
-      <Router>
+      <BrowserRouter>
         <div>
           <ul>
             <li>
-              <Link to="/">Home</Link>
+              <NavLink to="/" activeClassName="active">
+                Home
+              </NavLink>
             </li>
             <li>
-              <Link to="/about">About</Link>
+              <NavLink to="/login" activeClassName="active">
+                login
+              </NavLink>
             </li>
             <li>
-              <Link to="/topics">Topics</Link>
+              <NavLink to="/something" activeClassName="active">
+                something
+              </NavLink>
             </li>
           </ul>
 
-          <hr />
-
-          <Route exact path="/" component={HomePage} />
-          <Route path="/about" component={LoginPage} />
+          <Switch>
+            {routes.map((route, index) => (
+              <Route
+                key={index}
+                path={route.path}
+                component={route.component}
+                exact={route.exact}
+              />
+            ))}
+            <Route component={NotFoundPage} />
+          </Switch>
         </div>
-      </Router>
+      </BrowserRouter>
     );
   }
 }
