@@ -1,3 +1,5 @@
+// GENERIC FILE, DO NOT TOUCH
+
 "use strict";
 
 const path = require("path");
