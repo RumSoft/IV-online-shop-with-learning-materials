@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.IO;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -29,12 +31,15 @@ namespace Projekcik.Api
 
             app.UseMvc();
 
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "../Projekcik.Client";
-                if(env.IsDevelopment())
-                    spa.UseReactDevelopmentServer("start");
-            });
+            if (env.IsDevelopment())
+               app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+               {
+                   HotModuleReplacement = true,
+                   ProjectPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "Projekcik.Client")
+               });
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
         }
     }
 
