@@ -29,12 +29,15 @@ namespace Projekcik.Api
 
             app.UseMvc();
 
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "../Projekcik.Client";
-                if(env.IsDevelopment())
+            if (env.IsDevelopment())
+                app.UseSpa(spa =>
+                {
+                    spa.Options.SourcePath = "../Projekcik.Client";
                     spa.UseReactDevelopmentServer("start");
-            });
+                });
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
         }
     }
 
