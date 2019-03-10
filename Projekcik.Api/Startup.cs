@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -27,6 +28,13 @@ namespace Projekcik.Api
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             app.UseMvc();
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "../Projekcik.Client";
+                if(env.IsDevelopment())
+                    spa.UseReactDevelopmentServer("start");
+            });
         }
     }
 
@@ -39,9 +47,11 @@ namespace Projekcik.Api
                 code = 500,
                 message = "A server error occurred.",
                 detailedMessage = context.Exception.Message
-            });
+            })
+            {
+                StatusCode = 500
+            };
 
-            result.StatusCode = 500;
             context.Result = result;
         }
     }
