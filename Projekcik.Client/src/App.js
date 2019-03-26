@@ -12,7 +12,7 @@ class App extends Component {
           <ul>
             <li>
               <NavLink to="/" activeClassName="active">
-                Home
+                Home witam pozdrawiam
               </NavLink>
             </li>
             <li>
