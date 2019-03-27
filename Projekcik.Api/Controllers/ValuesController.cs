@@ -8,7 +8,7 @@ namespace Projekcik.Api.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        public static List<string> Values { get; set; } = new List<string>() { "witam", "pozdrawiam" };
+        public static List<string> Values { get; set; } = new List<string>() { "witam", "czwartkowyporanek", "pozdrawiam" };
 
         // GET api/values
         [HttpGet]
