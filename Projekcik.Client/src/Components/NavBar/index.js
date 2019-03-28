@@ -52,8 +52,8 @@ export default class NavBar extends Component {
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/fetch-data">
-                    Fetch data
+                  <NavLink tag={Link} className="text-dark" to="/test">
+                    Values
                   </NavLink>
                 </NavItem>
               </ul>

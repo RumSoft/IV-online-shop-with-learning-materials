@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import routes from './router-config';
 import './App.scss';
 import NotFoundPage from './Pages/NotFound';
