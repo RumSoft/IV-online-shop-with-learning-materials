@@ -1,5 +1,5 @@
-const requestValuesType = 'REQUEST_WEATHER_FORECASTS';
-const receiveValuesType = 'RECEIVE_WEATHER_FORECASTS';
+const requestValuesType = 'REQUEST_VALUES';
+const receiveValuesType = 'RECEIVE_VALUES';
 const initialState = { values: [], isLoading: false };
 
 export const actionCreators = {
@@ -9,9 +9,7 @@ export const actionCreators = {
     const url = `https://projekcik-prz.azurewebsites.net/api/values`;
     const response = await fetch(url);
     const values = await response.json();
-    console.log(url);
-    console.log(response);
-    console.log(values);
+    console.log(Date(), values);
 
     dispatch({ type: receiveValuesType, startDateIndex, values });
   }
