@@ -1,0 +1,18 @@
+.valuesPage {
+  padding: 2rem;
+
+  .input {
+    margin-right: 10px;
+  }
+
+  .message {
+    border-bottom: 2px solid #3f51b5;
+
+    transition: all 0.1s ease;
+
+    &:hover {
+      background-color: rgba(#3f51b5, 0.1);
+      border-bottom-color: lighten(#3f51b5, 30);
+    }
+  }
+}

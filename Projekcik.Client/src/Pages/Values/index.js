@@ -3,6 +3,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../Store/Values';
 import axios from 'axios';
+import './index.scss';
+import Button from '@material-ui/core/Button';
+import { Card, Input, ListItem, ListItemText, List } from '@material-ui/core';
 
 //
 // .---------------#### WAZNE! #### ----------------------------------------.
@@ -34,7 +37,7 @@ class ValuesPage extends Component {
     axios
       .post(url, message)
       .then(r => {
-        console.log(r);
+        this.props.requestValues();
       })
       .catch(e => {
         console.log(e);
@@ -47,29 +50,41 @@ class ValuesPage extends Component {
 
   render() {
     return (
-      <div>
+      <Card className="valuesPage">
         <h1>text</h1>
         <p>test test test</p>
         {this.props.isLoading ? <span>loading</span> : renderValues(this.props)}
         <hr />
-        <input
+
+        <Input
+          className="input"
+          placeholder="Wpisz cos wlasnego "
           name="text"
           value={this.state.text}
           onChange={this.handleChange}
         />
-        <button onClick={() => this.sendMessage()}>send</button>
-      </div>
+
+        <Button
+          className="send"
+          variant="contained"
+          color="primary"
+          onClick={() => this.sendMessage()}>
+          Send
+        </Button>
+      </Card>
     );
   }
 }
 
 function renderValues(props) {
   return props.values.length > 0 ? (
-    <ul>
+    <List className="messageList">
       {props.values.map((text, i) => (
-        <li key={i}>{text}</li>
+        <ListItem className="message" key={i}>
+          {text}
+        </ListItem>
       ))}
-    </ul>
+    </List>
   ) : (
     <span>brak danych</span>
   );
