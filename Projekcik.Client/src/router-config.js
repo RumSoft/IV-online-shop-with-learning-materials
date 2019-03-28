@@ -1,15 +1,9 @@
-import HomePage from "./pages/Home";
-import LoginPage from "./pages/Login";
-
+import HomePage from './Pages/Home';
 export default [
   {
-    path: "/",
+    path: '/',
     component: HomePage,
     exact: true
-  },
-  {
-    path: "/login",
-    component: LoginPage
   }
   // {
   //   path: "/protected",
@@ -19,5 +13,5 @@ export default [
   //     ) : (
   //       <Redirect to={{ pathname: "/login", state: { from: "/protected" } }} />
   //     )
-  // }
+  // },
 ];
