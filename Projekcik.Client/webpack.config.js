@@ -268,6 +268,20 @@ module.exports = function(webpackEnv) {
             },
             {
               test: /\.scss$/,
+              use: [
+                {
+                  loader: 'style-loader' // creates style nodes from JS strings
+                },
+                {
+                  loader: 'css-loader' // translates CSS into CommonJS
+                },
+                {
+                  loader: 'sass-loader' // compiles Sass to CSS
+                }
+              ]
+            },
+            {
+              test: /\.scss$/,
               exclude: /\.module\.scss$/,
               use: ['style-loader', CSSLoader, postCSSLoader, 'sass-loader']
             },
@@ -293,6 +307,10 @@ module.exports = function(webpackEnv) {
         }
       ]
     },
+    babel: {
+      presets: ['react-app']
+    },
+
     plugins: [
       new HtmlWebpackPlugin(
         Object.assign(
