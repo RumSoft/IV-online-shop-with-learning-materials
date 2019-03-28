@@ -34,9 +34,9 @@ namespace Projekcik.Api.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Message message)
         {
-            Values.Add(new Message {Text = value});
+            Values.Add(message);
         }
 
         // PUT api/values/5
