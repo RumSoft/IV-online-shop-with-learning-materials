@@ -17,15 +17,11 @@ namespace Projekcik.Api
         }
 
         public IConfiguration Configuration { get; }
+        public const string cors_policy = "MyPolicy";
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
-            {
-                builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-            }));
+            services.AddCors();
 
             services.AddMvc(c => { c.Filters.Add(new JsonExceptionFilter()); })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -48,7 +44,9 @@ namespace Projekcik.Api
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Projekcik api");
             });
 
-            app.UseCors("MyPolicy");
+            app.UseCors(x => x.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
             app.UseMvc();
 
             if (env.IsDevelopment())
