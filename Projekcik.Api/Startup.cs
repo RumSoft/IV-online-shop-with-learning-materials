@@ -20,13 +20,6 @@ namespace Projekcik.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
-            {
-                builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-            }));
-
             services.AddMvc(c => { c.Filters.Add(new JsonExceptionFilter()); })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -48,7 +41,6 @@ namespace Projekcik.Api
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Projekcik api");
             });
 
-            app.UseCors();
             app.UseMvc();
 
             if (env.IsDevelopment())
