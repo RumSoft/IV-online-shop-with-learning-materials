@@ -48,7 +48,7 @@ namespace Projekcik.Api
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Projekcik api");
             });
 
-            app.UseCors();
+            app.UseCors("MyPolicy");
             app.UseMvc();
 
             if (env.IsDevelopment())
