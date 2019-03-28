@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { actionCreators } from '../../Store/Values';
 import axios from 'axios';
 import './index.scss';
 import Button from '@material-ui/core/Button';
-import { Card, Input, ListItem, ListItemText, List } from '@material-ui/core';
+import {
+  Card,
+  Input,
+  ListItem,
+  List,
+  CircularProgress,
+  Paper,
+  Grid
+} from '@material-ui/core';
 
 //
 // .---------------#### WAZNE! #### ----------------------------------------.
@@ -17,31 +24,58 @@ import { Card, Input, ListItem, ListItemText, List } from '@material-ui/core';
 // '------------------------------------------------------------------------'
 //
 
-class ValuesPage extends Component {
+export default class ValuesPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { text: '' };
+    this.state = {
+      text: '',
+      values: null,
+      loading: false
+    };
 
     this.handleChange = this.handleChange.bind(this);
+    this.sendMessage = this.sendMessage.bind(this);
+
+    this.loadData();
   }
 
-  componentDidMount() {
-    this.props.requestValues();
+  loadData() {
+    this.setState({
+      loading: true
+    });
+    let baseUrl = 'https://projekcik-prz.azurewebsites.net';
+    let url = `${baseUrl}/api/values`;
+    let message = { text: this.state.text };
+    console.log(url, message);
+    axios
+      .get(url, message)
+      .then(r => {
+        console.log(r.data);
+        this.setState({
+          values: [...r.data]
+        });
+      })
+      .catch(e => {
+        this.setState({
+          values: []
+        });
+      })
+      .finally(() => {
+        this.setState({
+          loading: false
+        });
+      });
   }
 
   sendMessage() {
     let baseUrl = 'https://projekcik-prz.azurewebsites.net';
     let url = `${baseUrl}/api/values`;
     let message = { text: this.state.text };
-    console.log(url, message);
-    axios
-      .post(url, message)
-      .then(r => {
-        this.props.requestValues();
-      })
-      .catch(e => {
-        console.log(e);
+    axios.post(url, message).then(r => {
+      this.setState({
+        values: [...this.state.values, message.text]
       });
+    });
   }
 
   handleChange(event) {
@@ -51,9 +85,14 @@ class ValuesPage extends Component {
   render() {
     return (
       <Card className="valuesPage">
+        {this.state.loading && <CircularProgress className="loadingIcon" />}
         <h1>text</h1>
         <p>test test test</p>
-        {this.props.isLoading ? <span>loading</span> : renderValues(this.props)}
+        {this.state.loading ? (
+          <span>loading</span>
+        ) : (
+          this.renderValues(this.state.values)
+        )}
         <hr />
 
         <Input
@@ -68,29 +107,31 @@ class ValuesPage extends Component {
           className="send"
           variant="contained"
           color="primary"
-          onClick={() => this.sendMessage()}>
+          onClick={this.sendMessage}>
           Send
         </Button>
       </Card>
     );
   }
-}
 
-function renderValues(props) {
-  return props.values.length > 0 ? (
-    <List className="messageList">
-      {props.values.map((text, i) => (
-        <ListItem className="message" key={i}>
-          {text}
-        </ListItem>
-      ))}
-    </List>
-  ) : (
-    <span>brak danych</span>
-  );
+  renderValues(data) {
+    return data && data.length > 0 ? (
+      <Grid
+        container
+        xs={12}
+        spacing={24}
+        justify="center"
+        className="messages">
+        {data.map((text, i) => (
+          <Grid item xs={3}>
+            <Paper className="message" key={i}>
+              {text}
+            </Paper>
+          </Grid>
+        ))}
+      </Grid>
+    ) : (
+      <Grid xs={3}>brak danych</Grid>
+    );
+  }
 }
-
-export default connect(
-  state => state.values,
-  dispatch => bindActionCreators(actionCreators, dispatch)
-)(ValuesPage);

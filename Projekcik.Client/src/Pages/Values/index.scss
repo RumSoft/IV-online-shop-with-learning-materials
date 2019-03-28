@@ -5,14 +5,19 @@
     margin-right: 10px;
   }
 
-  .message {
-    border-bottom: 2px solid #3f51b5;
+  .messages {
+    flex-grow: 1;
 
-    transition: all 0.1s ease;
+    .message {
+      border-bottom: 2px solid #3f51b5;
+      padding: 1rem;
+      transition: all 0.1s ease;
+      height: 100%;
 
-    &:hover {
-      background-color: rgba(#3f51b5, 0.1);
-      border-bottom-color: lighten(#3f51b5, 30);
+      &:hover {
+        background-color: rgba(#3f51b5, 0.1);
+        border-bottom-color: darken(#3f51b5, 20);
+      }
     }
   }
 }
