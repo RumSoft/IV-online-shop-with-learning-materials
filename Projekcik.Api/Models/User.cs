@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Projekcik.Api.Models
 {
-    public class User : Entity<int>
+    public class User : Entity<Guid>
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
