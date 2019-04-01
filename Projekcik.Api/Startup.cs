@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Projekcik.Api.Models;
+using Projekcik.Api.Services;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace Projekcik.Api
