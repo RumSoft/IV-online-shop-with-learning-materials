@@ -9,6 +9,12 @@
     }
   },
   "profiles": {
+    "Projekcik-konsola": {
+      "commandName": "Project",
+      "applicationUrl": "http://localhost:5000",
+      "environmentVariables": {
+      }
+    },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
@@ -17,17 +23,11 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Projekcik.Api": {
+    "Projekcik.Api+LocalReact": {
       "commandName": "Project",
       "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "Projekcik+React": {
-      "commandName": "Project",
-      "applicationUrl": "http://localhost:5000",
-      "environmentVariables": {
       }
     }
   }
