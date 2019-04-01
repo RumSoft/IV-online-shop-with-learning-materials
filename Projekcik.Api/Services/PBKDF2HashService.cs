@@ -3,11 +3,6 @@ using System.Text;
 
 namespace Projekcik.Api.Services
 {
-    public interface IHashService
-    {
-        string HashPassword(string input);
-    }
-
     public class PBKDF2HashService : IHashService
     {
         private const int SALT_SIZE = 64; // size in bytes
@@ -20,9 +15,16 @@ namespace Projekcik.Api.Services
             byte[] salt = new byte[SALT_SIZE];
             provider.GetBytes(salt);
 
+            //todo: this salt does not work
+
             // Generate the hash
             var pbkdf2 = new Rfc2898DeriveBytes(input, salt, ITERATIONS);
             return GetStringFromHash(pbkdf2.GetBytes(HASH_SIZE));
+        }
+
+        public bool VerifyPassword(string input, string hashedPassword)
+        {
+            return HashPassword(input) == hashedPassword;
         }
 
         private string GetStringFromHash(byte[] hash)
