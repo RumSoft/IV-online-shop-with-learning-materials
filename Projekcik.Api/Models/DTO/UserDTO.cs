@@ -18,15 +18,16 @@ namespace Projekcik.Api.Models.DTO
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
-
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForAllOtherMembers(opt => opt.Ignore());
 
             mapper.CreateMap<User, UserDto>()
                 .ForMember(dest => dest.EmailAddress, opt => opt.MapFrom(src => src.EmailAddress))
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForAllOtherMembers(opt => opt.Ignore());
         }
     }
 }
