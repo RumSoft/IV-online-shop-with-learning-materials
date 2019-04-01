@@ -18,7 +18,6 @@ class App extends Component {
               exact={route.exact}
             />
           ))}
-          <Route component={NotFoundPage} />
         </Switch>
       </Layout>
     );
