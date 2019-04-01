@@ -2,9 +2,9 @@
 
 namespace Projekcik.Api.Models
 {
-    public class ShopContext : DbContext
+    public class DataContext : DbContext
     {
-        public ShopContext(DbContextOptions<ShopContext> options) : base(options)
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
 

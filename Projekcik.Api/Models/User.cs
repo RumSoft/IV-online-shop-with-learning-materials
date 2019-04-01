@@ -8,7 +8,7 @@ namespace Projekcik.Api.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string DisplayName { get; set; }
+        public string UserName { get; set; }
         public string EmailAddress { get; set; }
         public string Password { get; set; }
         public DateTime ModifiedAt { get; set; }
@@ -22,14 +22,14 @@ namespace Projekcik.Api.Models
             entity.Property(x => x.LastName)
                 .HasMaxLength(50);
 
-            entity.Property(x => x.DisplayName)
+            entity.Property(x => x.UserName)
                 .HasMaxLength(50);
 
             entity.Property(x => x.EmailAddress)
                 .HasMaxLength(150);
 
             entity.Property(x => x.Password)
-                .HasMaxLength(1024);
+                .HasMaxLength(256);
 
             entity.Property(x => x.CreatedAt)
                 .HasDefaultValueSql("getdate()")
