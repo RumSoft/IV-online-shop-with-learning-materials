@@ -1,4 +1,8 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Text;
+using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +11,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Projekcik.Api.Models;
 using Projekcik.Api.Services;
 using Swashbuckle.AspNetCore.Swagger;
@@ -38,12 +43,48 @@ namespace Projekcik.Api
                 c.SwaggerDoc("v1", new Info { Title = "ProjekcikApi", Version = "v2137" });
             });
 
+            var secret = "TODO:SecretInAppSettings";
+            var key = Encoding.ASCII.GetBytes(secret);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(x =>
+                {
+                    x.Events = new JwtBearerEvents
+                    {
+                        OnTokenValidated = context =>
+                        {
+                            var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
+                            var userId = Guid.Parse(context.Principal.Identity.Name);
+                            var user = userService.GetById(userId);
+                            if (user == null)
+                            {
+                                // return unauthorized if user no longer exists
+                                context.Fail("Unauthorized");
+                            }
+                            return Task.CompletedTask;
+                        }
+                    };
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IHashService, PBKDF2HashService>();
+            services.AddScoped<IHashService, PlaintextHashService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseAuthentication();
+
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
@@ -59,6 +100,7 @@ namespace Projekcik.Api
                 .AllowAnyMethod()
                 .AllowAnyHeader());
             app.UseMvc();
+
 
             if (env.IsDevelopment())
                 app.UseSpa(spa =>
