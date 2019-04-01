@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -65,6 +66,8 @@ namespace Projekcik.Api
                     spa.Options.SourcePath = "../Projekcik.Client";
                     spa.UseReactDevelopmentServer("start");
                 });
+
+            Mapper.Initialize(x => x.AddProfile(new AutoMapperProfile()));
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
