@@ -35,6 +35,9 @@ namespace Projekcik.Api
             {
                 c.SwaggerDoc("v1", new Info { Title = "ProjekcikApi", Version = "v2137" });
             });
+
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IHashService, PBKDF2HashService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
