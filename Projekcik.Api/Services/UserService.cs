@@ -6,20 +6,10 @@ using Projekcik.Api.Models;
 
 namespace Projekcik.Api.Services
 {
-    public interface IUserService
-    {
-        User Authenticate(string username, string password);
-        IEnumerable<User> GetAll();
-        User GetById(int id);
-        User Create(User user, string password);
-        void Update(User user, string password = null);
-        void Delete(int id);
-    }
-
     public class UserService : IUserService
     {
         private readonly DataContext _context;
-        private IHashService _hashService;
+        private readonly IHashService _hashService;
 
         public UserService(DataContext context, IHashService hashService)
         {
@@ -29,7 +19,18 @@ namespace Projekcik.Api.Services
 
         public User Authenticate(string username, string password)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(username) 
+                || string.IsNullOrEmpty(password))
+                return null;
+
+            var user = _context.Users.SingleOrDefault(x => x.UserName == username);
+            if (user == null)
+                return null;
+
+            if (!_hashService.VerifyPassword(password, user.Password))
+                return null;
+
+            return user;
         }
 
         public IEnumerable<User> GetAll()
@@ -37,9 +38,9 @@ namespace Projekcik.Api.Services
             throw new NotImplementedException();
         }
 
-        public User GetById(int id)
+        public User GetById(Guid id)
         {
-            throw new NotImplementedException();
+            return _context.Users.Find(id);
         }
 
         public User Create(User user, string password)
@@ -48,7 +49,9 @@ namespace Projekcik.Api.Services
             if (string.IsNullOrWhiteSpace(password))
                 throw new Exception("Password is required");
 
-            if (_context.Users.Any(x => x.UserName == user.UserName))
+            if (_context.Users.Any(x => 
+                x.UserName == user.UserName 
+                || x.EmailAddress == user.EmailAddress))
                 throw new Exception("Username \"" + user.UserName + "\" is already taken");
 
             user.Password = HashPassword(password);
@@ -63,7 +66,7 @@ namespace Projekcik.Api.Services
             throw new NotImplementedException();
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             throw new NotImplementedException();
         }
