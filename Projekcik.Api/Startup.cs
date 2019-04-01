@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Projekcik.Api.Models;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace Projekcik.Api
@@ -22,6 +24,9 @@ namespace Projekcik.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
+
+            services.AddDbContext<ShopContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddMvc(c => { c.Filters.Add(new JsonExceptionFilter()); })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
