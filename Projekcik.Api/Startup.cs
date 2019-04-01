@@ -27,7 +27,7 @@ namespace Projekcik.Api
         {
             services.AddCors();
 
-            services.AddDbContext<ShopContext>(options =>
+            services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddMvc(c => { c.Filters.Add(new JsonExceptionFilter()); })
