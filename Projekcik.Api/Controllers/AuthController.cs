@@ -1,11 +1,9 @@
 ﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
+using Projekcik.Api.Helpers;
 using Projekcik.Api.Models;
 using Projekcik.Api.Models.DTO;
 using Projekcik.Api.Services;
@@ -18,45 +16,31 @@ namespace Projekcik.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ITokenIssuer _tokenIssuer;
+        private readonly IHttpContextAccessor _user;
 
-        public AuthController(IUserService userService)
+        public AuthController(IUserService userService,
+            ITokenIssuer tokenIssuer,
+            IHttpContextAccessor httpContextAccessor)
         {
             _userService = userService;
+            _tokenIssuer = tokenIssuer;
+            _user = httpContextAccessor;
         }
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody] UserDto userDto)
+        public IActionResult Authenticate([FromBody] AuthDTO userDto)
         {
             var user = _userService.Authenticate(userDto.UserName, userDto.Password);
-
             if (user == null)
                 return BadRequest(new {message = "Username or password is incorrect"});
-
-            var secret = "TODO:SecretInAppSettings";
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
-                    SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
-
-            // return basic user info (without password) and token to store client side
+            var token = _tokenIssuer.Issue(user);
+            
             return Ok(new
             {
                 user.Id,
-                Username = user.UserName,
-                user.FirstName,
-                user.LastName,
-                Token = tokenString
+                Token = token
             });
         }
 
@@ -64,8 +48,14 @@ namespace Projekcik.Api.Controllers
         [HttpPost("register")]
         public IActionResult Register([FromBody] UserDto userDto)
         {
-            var user = Mapper.Map<User>(userDto);
+            if (string.IsNullOrWhiteSpace(userDto.EmailAddress)
+                || string.IsNullOrWhiteSpace(userDto.FirstName)
+                || string.IsNullOrWhiteSpace(userDto.LastName)
+                || string.IsNullOrWhiteSpace(userDto.Password)
+                || string.IsNullOrWhiteSpace(userDto.UserName))
+                return BadRequest("please add all data (emailAddress, FirstName, LastName, Password, UserName)");
 
+            var user = Mapper.Map<User>(userDto);
             try
             {
                 _userService.Create(user, userDto.Password);
@@ -77,10 +67,11 @@ namespace Projekcik.Api.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetById(Guid id)
+        [HttpGet("me")]
+        public IActionResult GetById()
         {
-            var user = _userService.GetById(id);
+            var userId = _user.CurrentUser();
+            var user = _userService.GetById(userId);
             var userDto = Mapper.Map<UserDto>(user);
             return Ok(userDto);
         }
