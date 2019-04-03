@@ -19,11 +19,11 @@ namespace Projekcik.Api.Services
 
         public User Authenticate(string username, string password)
         {
-            if (string.IsNullOrEmpty(username) 
+            if (string.IsNullOrEmpty(username)
                 || string.IsNullOrEmpty(password))
                 return null;
 
-            var user = _context.Users.SingleOrDefault(x => x.UserName == username);
+            var user = _context.Users.SingleOrDefault(x => x.EmailAddress == username);
             if (user == null)
                 return null;
 
@@ -49,10 +49,11 @@ namespace Projekcik.Api.Services
             if (string.IsNullOrWhiteSpace(password))
                 throw new Exception("Password is required");
 
-            if (_context.Users.Any(x => 
-                x.UserName == user.UserName 
-                || x.EmailAddress == user.EmailAddress))
+            if (_context.Users.Any(x => x.UserName == user.UserName))
                 throw new Exception("Username \"" + user.UserName + "\" is already taken");
+
+            if (_context.Users.Any(x => x.EmailAddress == user.EmailAddress))
+                throw new Exception("EmailAddress \"" + user.EmailAddress + "\" is already taken");
 
             user.Password = HashPassword(password);
             _context.Users.Add(user);

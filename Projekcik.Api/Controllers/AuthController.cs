@@ -1,5 +1,6 @@
 ﻿using System;
 using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,9 +31,9 @@ namespace Projekcik.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody] AuthDTO userDto)
+        public IActionResult Authenticate([FromBody] AuthDto userDto)
         {
-            var user = _userService.Authenticate(userDto.UserName, userDto.Password);
+            var user = _userService.Authenticate(userDto.EmailAddress, userDto.Password);
             if (user == null)
                 return BadRequest(new {message = "Username or password is incorrect"});
             var token = _tokenIssuer.Issue(user);
@@ -48,12 +49,6 @@ namespace Projekcik.Api.Controllers
         [HttpPost("register")]
         public IActionResult Register([FromBody] UserDto userDto)
         {
-            if (string.IsNullOrWhiteSpace(userDto.EmailAddress)
-                || string.IsNullOrWhiteSpace(userDto.FirstName)
-                || string.IsNullOrWhiteSpace(userDto.LastName)
-                || string.IsNullOrWhiteSpace(userDto.Password)
-                || string.IsNullOrWhiteSpace(userDto.UserName))
-                return BadRequest("please add all data (emailAddress, FirstName, LastName, Password, UserName)");
 
             var user = Mapper.Map<User>(userDto);
             try

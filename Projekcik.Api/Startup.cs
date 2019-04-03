@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -11,11 +8,14 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 using Projekcik.Api.Helpers;
 using Projekcik.Api.Models;
 using Projekcik.Api.Services;
 using Swashbuckle.AspNetCore.Swagger;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using FluentValidation.Attributes;
+using Projekcik.Api.Models.DTO;
 
 namespace Projekcik.Api
 {
@@ -27,38 +27,17 @@ namespace Projekcik.Api
         }
 
         public IConfiguration Configuration { get; }
-        public const string cors_policy = "MyPolicy";
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-
-            services.AddAuthentication(x =>
-                {
-                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(x =>
-                {
-                    x.RequireHttpsMetadata = false;
-                    x.SaveToken = true;
-                    x.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Token:Key"])),
-                        ValidIssuer = Configuration["Token:Issuer"],
-                        ValidAudience = Configuration["Token:Audience"],
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                        ValidateLifetime = true,
-                        ClockSkew = TimeSpan.Zero
-                    };
-                });
+            services.AddJwtAuthentication(Configuration);
 
             services.AddMvc(c => { c.Filters.Add(new JsonExceptionFilter()); })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserDtoValidator>()); ;
 
             services.AddCors();
 
@@ -80,21 +59,12 @@ namespace Projekcik.Api
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IHashService, PlaintextHashService>();
-            services.AddSingleton<ITokenIssuer, TokenIssuer>(provider => new TokenIssuer
-            {
-                SecurityKey = Configuration["Token:Key"],
-                Audience = Configuration["Token:Audience"],
-                Issuer = Configuration["Token:Issuer"]
-            });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
-
-
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseAuthentication();
-
 
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
@@ -111,7 +81,7 @@ namespace Projekcik.Api
                 .AllowAnyMethod()
                 .AllowAnyHeader());
 
-            app.UseMvc();
+            app.UseMvc();    
 
             if (env.IsDevelopment())
                 app.UseSpa(spa =>
