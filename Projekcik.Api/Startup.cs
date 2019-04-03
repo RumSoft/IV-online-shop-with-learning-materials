@@ -68,7 +68,7 @@ namespace Projekcik.Api
                 c.AddSecurityDefinition("Bearer", new ApiKeyScheme
                 {
                     In = "header",
-                    Description = "Please insert JWT with Bearer into field",
+                    Description = "Wrzuć token w poniższe pole w formacie: 'Bearer {token}'",
                     Name = "Authorization",
                     Type = "apiKey"
                 });
