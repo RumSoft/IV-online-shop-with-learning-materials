@@ -4,7 +4,6 @@ import routes from './router-config';
 import './App.scss';
 import NotFoundPage from './Pages/NotFound';
 import Layout from './Pages/Layout';
-import HTTPTest from './Components/HTTPTest';
 
 class App extends Component {
   render() {
@@ -20,7 +19,6 @@ class App extends Component {
             />
           ))}
         </Switch>
-        <HTTPTest />
       </Layout>
     );
   }
