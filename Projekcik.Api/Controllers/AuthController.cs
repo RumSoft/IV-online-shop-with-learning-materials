@@ -63,7 +63,7 @@ namespace Projekcik.Api.Controllers
         [HttpGet("me")]
         public IActionResult GetById()
         {
-            var userId = _user.CurrentUser();
+            var userId = _user.GetCurrentUserId();
             var user = _userService.GetById(userId);
             var userDto = Mapper.Map<UserDto>(user);
             return Ok(userDto);

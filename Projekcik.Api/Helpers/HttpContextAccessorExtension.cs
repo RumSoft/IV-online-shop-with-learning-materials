@@ -2,12 +2,13 @@
 using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using Projekcik.Api.Models;
 
 namespace Projekcik.Api.Helpers
 {
     public static class HttpContextAccessorExtension
     {
-        public static Guid CurrentUser(this IHttpContextAccessor httpContextAccessor)
+        public static Guid GetCurrentUserId(this IHttpContextAccessor httpContextAccessor)
         {
             var stringId =
                 httpContextAccessor?.HttpContext?.User?.Claims.FirstOrDefault(
@@ -15,6 +16,5 @@ namespace Projekcik.Api.Helpers
             Guid.TryParse(stringId, out var userId);
             return userId;
         }
-
     }
 }
