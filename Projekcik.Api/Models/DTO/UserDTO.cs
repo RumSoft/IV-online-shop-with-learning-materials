@@ -1,12 +1,11 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using FluentValidation;
 using FluentValidation.Attributes;
 
 namespace Projekcik.Api.Models.DTO
 {
     [Validator(typeof(UserDtoValidator))]
-    public class UserDto : Entity<Guid>
+    public class UserDto
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -21,7 +20,6 @@ namespace Projekcik.Api.Models.DTO
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForAllOtherMembers(opt => opt.Ignore());
 
             mapper.CreateMap<User, UserDto>()
@@ -29,7 +27,6 @@ namespace Projekcik.Api.Models.DTO
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForAllOtherMembers(opt => opt.Ignore());
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,12 +11,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Projekcik.Api.Helpers;
 using Projekcik.Api.Models;
+using Projekcik.Api.Models.DTO;
 using Projekcik.Api.Services;
 using Swashbuckle.AspNetCore.Swagger;
-using FluentValidation;
-using FluentValidation.AspNetCore;
-using FluentValidation.Attributes;
-using Projekcik.Api.Models.DTO;
 
 namespace Projekcik.Api
 {
@@ -35,15 +33,21 @@ namespace Projekcik.Api
 
             services.AddJwtAuthentication(Configuration);
 
-            services.AddMvc(c => { c.Filters.Add(new JsonExceptionFilter()); })
+            services.AddMvc(c =>
+                {
+                    c.Filters.Add(new JsonExceptionFilter());
+                    c.Filters.Add(typeof(ValidateModelStateAttribute));
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserDtoValidator>()); ;
+                .AddFluentValidation(fv => { fv.RegisterValidatorsFromAssemblyContaining<UserDtoValidator>(); });
+
+            services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
 
             services.AddCors();
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "ProjekcikApi", Version = "v2137" });
+                c.SwaggerDoc("v1", new Info {Title = "ProjekcikApi", Version = "v2137"});
                 c.AddSecurityDefinition("Bearer", new ApiKeyScheme
                 {
                     In = "header",
@@ -53,7 +57,7 @@ namespace Projekcik.Api
                 });
                 c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
                 {
-                    { "Bearer", new string[] { } }
+                    {"Bearer", new string[] { }}
                 });
             });
 
@@ -69,10 +73,7 @@ namespace Projekcik.Api
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
-            app.UseSwagger(c =>
-            {
-
-            }).UseSwaggerUI(c =>
+            app.UseSwagger(c => { }).UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Projekcik api");
             });
@@ -81,7 +82,7 @@ namespace Projekcik.Api
                 .AllowAnyMethod()
                 .AllowAnyHeader());
 
-            app.UseMvc();    
+            app.UseMvc();
 
             if (env.IsDevelopment())
                 app.UseSpa(spa =>

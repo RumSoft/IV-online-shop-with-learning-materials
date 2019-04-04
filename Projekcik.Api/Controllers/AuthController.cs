@@ -1,6 +1,5 @@
 ﻿using System;
 using AutoMapper;
-using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,9 +15,9 @@ namespace Projekcik.Api.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly IUserService _userService;
         private readonly ITokenIssuer _tokenIssuer;
         private readonly IHttpContextAccessor _user;
+        private readonly IUserService _userService;
 
         public AuthController(IUserService userService,
             ITokenIssuer tokenIssuer,
@@ -35,9 +34,9 @@ namespace Projekcik.Api.Controllers
         {
             var user = _userService.Authenticate(userDto.EmailAddress, userDto.Password);
             if (user == null)
-                return BadRequest(new {message = "Username or password is incorrect"});
+                return BadRequest(new {message = "E-Mail address or password is incorrect"});
             var token = _tokenIssuer.Issue(user);
-            
+
             return Ok(new
             {
                 user.Id,
@@ -49,7 +48,6 @@ namespace Projekcik.Api.Controllers
         [HttpPost("register")]
         public IActionResult Register([FromBody] UserDto userDto)
         {
-
             var user = Mapper.Map<User>(userDto);
             try
             {
