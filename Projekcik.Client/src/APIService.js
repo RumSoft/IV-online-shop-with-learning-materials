@@ -6,9 +6,10 @@ export default class APIService {
 
     static get (address) {
 
+        let token = window.localStorage.getItem('token')
         const authHeader = {
             headers: { 
-                'Authorization': `Bearer ${window.localStorage.getItem('token')}`
+                'Authorization': `Bearer ${token}`
             }
         };
 
@@ -17,7 +18,15 @@ export default class APIService {
     }
 
     static post (address, data) {
-        return axios.post(`${API_URL}/${address}`, data)
+        
+        let token = window.localStorage.getItem('token');
+        const authHeader = {
+            headers: { 
+                'Authorization': `Bearer ${token}`
+            }
+        };
+
+        return axios.post(`${API_URL}/${address}`, data, authHeader)
         .then(response => response.data);
     }
 };
