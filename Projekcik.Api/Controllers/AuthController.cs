@@ -68,5 +68,18 @@ namespace Projekcik.Api.Controllers
             var userDto = Mapper.Map<UserDto>(user);
             return Ok(userDto);
         }
+        [AllowAnonymous]
+        [HttpPost("TestHash")]
+        public IActionResult TestHash()
+        {
+            string haslo = "dupa";
+
+            var hash1 = PBKDF2HashService.Hash(haslo);
+            var hash2 = PBKDF2HashService.Hash(haslo);
+
+            //return Ok(hash1 + " bla bla " + hash2);
+            //return Ok(PBKDF2HashService.Verify("dupa", hash1) + " <--- i cyk drugi hash ----> "+PBKDF2HashService.Verify("dupa", hash2) );
+            return Ok(hash1 + " <--- i cyk drugi hash ---> " + hash2);
+        }
     }
 }

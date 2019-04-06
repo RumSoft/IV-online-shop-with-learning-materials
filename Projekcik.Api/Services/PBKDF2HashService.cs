@@ -1,39 +1,70 @@
-﻿using System.Security.Cryptography;
-using System.Text;
+﻿using System;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace Projekcik.Api.Services
 {
-    public class PBKDF2HashService : IHashService
+    public class PBKDF2HashService
     {
-        private const int SALT_SIZE = 64; // size in bytes
-        private const int HASH_SIZE = 64; // size in bytes
-        private const int ITERATIONS = 100; // number of pbkdf2 iterations
+        private const int _SaltSize = 16;
+        private const int _HashSize = 20;
 
-        public string HashPassword(string input)
+        public static string Hash(string password, int iterations)
         {
-            var provider = new RNGCryptoServiceProvider();
-            byte[] salt = new byte[SALT_SIZE];
-            provider.GetBytes(salt);
+            byte[] salt;
+            new RNGCryptoServiceProvider().GetBytes(salt = new byte[_SaltSize]);
 
-            //todo: this salt does not work
+            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations);
+            var hash = pbkdf2.GetBytes(_HashSize);
 
-            // Generate the hash
-            var pbkdf2 = new Rfc2898DeriveBytes(input, salt, ITERATIONS);
-            return GetStringFromHash(pbkdf2.GetBytes(HASH_SIZE));
+            var hashBytes = new byte[_SaltSize + _HashSize];
+            Array.Copy(salt, 0, hashBytes, 0, _SaltSize);
+            Array.Copy(hash, 0, hashBytes, _SaltSize, _HashSize);
+
+            var base64Hash = Convert.ToBase64String(hashBytes);
+
+            //return string.Format()
+            //return string.Format("$MYHASH$V1${0}${1}", iterations, base64Hash);
         }
 
-        public bool VerifyPassword(string input, string hashedPassword)
+        public static string Hash(string password)
         {
-            return HashPassword(input) == hashedPassword;
+            return Hash(password, 10000);
         }
 
-        private string GetStringFromHash(byte[] hash)
+        public static bool IsHashSupported(string hashString)
         {
-            var result = new StringBuilder();
-            foreach (var t in hash)
-                result.Append(t.ToString("X2"));
-            return result.ToString();
+            return hashString.Contains("$MYHASH$V1$");
         }
 
+        public static string Verify(string password, string hashedPassword)
+        {
+            if (!IsHashSupported(hashedPassword))
+            {
+                throw new NotSupportedException("The hashtype is not supported");
+            }
+
+            var splittedHashString = hashedPassword.Replace("$MYHASH$V1$", "").Split('$');
+            var iterations = int.Parse(splittedHashString[0]);
+            var base64Hash = splittedHashString[1];
+
+            var hashBytes = Convert.FromBase64String(base64Hash);
+
+            var salt = new byte[_SaltSize];
+            Array.Copy(hashBytes, 0, salt, 0, _SaltSize);
+
+            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations);
+            byte[] hash = pbkdf2.GetBytes(_HashSize);
+
+            for (var i=0; i<_HashSize; i++)
+            {
+                if(hashBytes[i + _SaltSize] != hash[i])
+                {
+                    return "wrong";
+                }
+            }
+            return "true";
+        }
     }
 }
+
