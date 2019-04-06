@@ -34,13 +34,13 @@ namespace Projekcik.Api.Controllers
         {
             var user = _userService.Authenticate(userDto.EmailAddress, userDto.Password);
             if (user == null)
-                return BadRequest(new {message = "E-Mail address or password is incorrect"});
+                return BadRequest(new {message = "E-mail address or password is incorrect"});
             var token = _tokenIssuer.Issue(user);
 
             return Ok(new
             {
                 user.Id,
-                Token = token
+                token
             });
         }
 
