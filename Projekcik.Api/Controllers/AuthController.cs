@@ -46,12 +46,12 @@ namespace Projekcik.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public IActionResult Register([FromBody] UserDto userDto)
+        public IActionResult Register([FromBody] RegisterDto registerDto)
         {
-            var user = Mapper.Map<User>(userDto);
+            var user = Mapper.Map<User>(registerDto);
             try
             {
-                _userService.Create(user, userDto.Password);
+                _userService.Create(user, registerDto.Password);
                 return Ok();
             }
             catch (Exception ex)
