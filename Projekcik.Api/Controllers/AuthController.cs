@@ -34,24 +34,24 @@ namespace Projekcik.Api.Controllers
         {
             var user = _userService.Authenticate(userDto.EmailAddress, userDto.Password);
             if (user == null)
-                return BadRequest(new {message = "E-Mail address or password is incorrect"});
+                return BadRequest(new {message = "E-mail address or password is incorrect"});
             var token = _tokenIssuer.Issue(user);
 
             return Ok(new
             {
                 user.Id,
-                Token = token
+                token
             });
         }
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public IActionResult Register([FromBody] UserDto userDto)
+        public IActionResult Register([FromBody] RegisterDto registerDto)
         {
-            var user = Mapper.Map<User>(userDto);
+            var user = Mapper.Map<User>(registerDto);
             try
             {
-                _userService.Create(user, userDto.Password);
+                _userService.Create(user, registerDto.Password);
                 return Ok();
             }
             catch (Exception ex)
@@ -63,7 +63,7 @@ namespace Projekcik.Api.Controllers
         [HttpGet("me")]
         public IActionResult GetById()
         {
-            var userId = _user.CurrentUser();
+            var userId = _user.GetCurrentUserId();
             var user = _userService.GetById(userId);
             var userDto = Mapper.Map<UserDto>(user);
             return Ok(userDto);

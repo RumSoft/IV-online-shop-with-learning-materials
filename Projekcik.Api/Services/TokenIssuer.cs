@@ -13,16 +13,12 @@ namespace Projekcik.Api.Services
 {
     public class TokenIssuer : ITokenIssuer
     {
-
         private readonly JwtSecurityTokenHandler _tokenHandler;
-        public Func<DateTime?, DateTime?> ExpireDate { get; set; } = issuedAt => issuedAt?.AddDays(1);
-        protected SecurityKey SigningKey => new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecurityKey));
-
         public string Issuer { get; set; }
         public string Audience { get; set; }
         public string SecurityKey { get; set; }
 
-        private readonly IConfiguration _configuration;
+        protected SecurityKey SigningKey => new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecurityKey));
 
         public TokenIssuer()
         {
@@ -37,7 +33,7 @@ namespace Projekcik.Api.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddHours(1),
 
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecurityKey)),
@@ -49,8 +45,7 @@ namespace Projekcik.Api.Services
 
         public string Issue(User user)
         {
-            var claims = new[]
-                     {
+            var claims = new[] {
                 new Claim(ClaimTypes.Sid, user.Id.ToString()),
                 new Claim(ClaimTypes.Email, user.EmailAddress),
                 new Claim(ClaimTypes.Name, user.FirstName),

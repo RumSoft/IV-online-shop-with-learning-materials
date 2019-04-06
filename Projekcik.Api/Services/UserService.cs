@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Projekcik.Api.Models;
 
 namespace Projekcik.Api.Services
@@ -17,13 +18,12 @@ namespace Projekcik.Api.Services
             _hashService = hashService;
         }
 
-        public User Authenticate(string username, string password)
+        public User Authenticate(string emailAddress, string password)
         {
-            if (string.IsNullOrEmpty(username)
-                || string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(emailAddress) || string.IsNullOrEmpty(password))
                 return null;
 
-            var user = _context.Users.SingleOrDefault(x => x.EmailAddress == username);
+            var user = GetByEmailAddress(emailAddress);
             if (user == null)
                 return null;
 
@@ -33,14 +33,22 @@ namespace Projekcik.Api.Services
             return user;
         }
 
-        public IEnumerable<User> GetAll()
+        public IQueryable<User> GetAll()
         {
-            throw new NotImplementedException();
+            return _context.Users.AsQueryable();
         }
 
         public User GetById(Guid id)
         {
             return _context.Users.Find(id);
+        }
+
+        public User GetByEmailAddress(string emailAddress)
+        {
+            return _context.Users
+                .AsNoTracking()
+                .FirstOrDefault(x =>
+                    x.EmailAddress.Equals(emailAddress, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public User Create(User user, string password)
