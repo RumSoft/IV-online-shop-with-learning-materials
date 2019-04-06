@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+
+//existing models from internet facebook logins examples
 
 namespace Projekcik.Api.Models.DTO
 {

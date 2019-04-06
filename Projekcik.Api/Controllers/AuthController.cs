@@ -1,7 +1,6 @@
 ﻿using System;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Projekcik.Api.Helpers;
@@ -60,8 +59,6 @@ namespace Projekcik.Api.Controllers
                 return BadRequest(new {message = ex.Message});
             }
         }
-
-        //public class xd : TestFixture
 
         [HttpGet("me")]
         public IActionResult GetById()
