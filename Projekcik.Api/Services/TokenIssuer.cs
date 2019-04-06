@@ -20,7 +20,6 @@ namespace Projekcik.Api.Services
 
         protected SecurityKey SigningKey => new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecurityKey));
 
-
         public TokenIssuer()
         {
             IdentityModelEventSource.ShowPII = true;
@@ -34,7 +33,7 @@ namespace Projekcik.Api.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddHours(1),
 
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecurityKey)),
