@@ -31,7 +31,7 @@ namespace Projekcik.Api.Models.DTO
         }
     }
 
-    public class RegisterDtoValidator : AbstractValidator<UserDto>
+    public class RegisterDtoValidator : AbstractValidator<RegisterDto>
     {
         public RegisterDtoValidator()
         {
