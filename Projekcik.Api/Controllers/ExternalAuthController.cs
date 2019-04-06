@@ -64,7 +64,7 @@ namespace Projekcik.Api.Controllers
                     PictureUrl = userInfo.Picture.Data.Url
                 };
 
-                _userService.Create(newUser, null);
+                _userService.Create(newUser, Guid.NewGuid().ToString());
             }
 
             // generate the jwt for the local user...
