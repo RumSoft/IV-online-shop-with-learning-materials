@@ -78,6 +78,7 @@ export default class RegisterPage extends Component {
             - potwierdzenie hasla
             - wyswietlanie errorow w przypadku BadRequest
             - redirect do loginu
+            - jakis przycisk na auto-login z FB
             - handleChange troche inaczej zeby nie zczytywal z id
             - nasrac SCSSami/wlasciwosciami z MUI zeby ladniej wygladalo itd.
         */}
