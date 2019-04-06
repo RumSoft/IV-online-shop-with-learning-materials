@@ -18,17 +18,15 @@ namespace Projekcik.Api.Controllers
         private static readonly HttpClient Client = new HttpClient();
         private readonly IConfiguration _configuration;
         private readonly ITokenIssuer _tokenIssuer;
-        private readonly DataContext _context;
         private readonly IUserService _userService;
 
         private string AppId { get; }
         private string AppSecret { get; }
 
-        public ExternalAuthController(IConfiguration configuration, ITokenIssuer tokenIssuer, DataContext context, IUserService userService)
+        public ExternalAuthController(IConfiguration configuration, ITokenIssuer tokenIssuer, IUserService userService)
         {
             _configuration = configuration;
             _tokenIssuer = tokenIssuer;
-            _context = context;
             _userService = userService;
 
             AppId = _configuration["Facebook:AppId"];
