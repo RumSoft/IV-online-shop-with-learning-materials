@@ -1,5 +1,6 @@
 import HomePage from './Pages/Home';
 import ValuesPage from './Pages/Values';
+import RegisterPage from './Pages/Register';
 
 export default [
   {
@@ -19,5 +20,10 @@ export default [
   {
     path: '/test',
     component: ValuesPage
+  },
+
+  {
+    path: '/register',
+    component: RegisterPage
   }
 ];

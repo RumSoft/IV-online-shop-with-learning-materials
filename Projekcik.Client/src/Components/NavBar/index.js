@@ -56,6 +56,11 @@ export default class NavBar extends Component {
                     Values
                   </NavLink>
                 </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} className="text-dark" to="/register">
+                    Register
+                  </NavLink>
+                </NavItem>
               </ul>
             </Collapse>
           </Container>
