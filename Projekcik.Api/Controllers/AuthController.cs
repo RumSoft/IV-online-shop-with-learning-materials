@@ -1,6 +1,7 @@
 ﻿using System;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Projekcik.Api.Helpers;
@@ -34,13 +35,13 @@ namespace Projekcik.Api.Controllers
         {
             var user = _userService.Authenticate(userDto.EmailAddress, userDto.Password);
             if (user == null)
-                return BadRequest(new {message = "E-Mail address or password is incorrect"});
+                return BadRequest(new {message = "E-mail address or password is incorrect"});
             var token = _tokenIssuer.Issue(user);
 
             return Ok(new
             {
                 user.Id,
-                Token = token
+                token
             });
         }
 
@@ -59,6 +60,8 @@ namespace Projekcik.Api.Controllers
                 return BadRequest(new {message = ex.Message});
             }
         }
+
+        //public class xd : TestFixture
 
         [HttpGet("me")]
         public IActionResult GetById()

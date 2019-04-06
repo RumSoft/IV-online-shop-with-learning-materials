@@ -11,6 +11,8 @@ namespace Projekcik.Api.Models
         public string UserName { get; set; }
         public string EmailAddress { get; set; }
         public string Password { get; set; }
+        public string PictureUrl { get; set; }
+        public long? FacebookId { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
