@@ -8,6 +8,7 @@ namespace Projekcik.Api.Models
         public AutoMapperProfile()
         {
             UserDto.ConfigureMapper(this);
+            RegisterDto.ConfigureMapper(this);
         }
     }
 }
