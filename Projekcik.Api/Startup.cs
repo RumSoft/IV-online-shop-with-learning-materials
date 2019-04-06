@@ -14,6 +14,7 @@ using Projekcik.Api.Models;
 using Projekcik.Api.Models.DTO;
 using Projekcik.Api.Services;
 using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Projekcik.Api
 {
@@ -39,7 +40,7 @@ namespace Projekcik.Api
                     c.Filters.Add(typeof(ValidateModelStateAttribute));
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddFluentValidation(fv => { fv.RegisterValidatorsFromAssemblyContaining<UserDtoValidator>(); });
+                .AddFluentValidation(fv => { fv.RegisterValidatorsFromAssemblyContaining<AuthDtoValidator>(); });
 
             services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
 
@@ -48,10 +49,10 @@ namespace Projekcik.Api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info {Title = "ProjekcikApi", Version = "v2137"});
-                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                c.AddSecurityDefinition("Jwt Token", new ApiKeyScheme
                 {
                     In = "header",
-                    Description = "Wrzuć token w poniższe pole w formacie: 'Bearer {token}'",
+                    Description = "Wrzuć token w poniższe pole w formacie: 'Bearer TOKEN'",
                     Name = "Authorization",
                     Type = "apiKey"
                 });
@@ -59,7 +60,9 @@ namespace Projekcik.Api
                 {
                     {"Bearer", new string[] { }}
                 });
+
             });
+
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IHashService, PlaintextHashService>();
