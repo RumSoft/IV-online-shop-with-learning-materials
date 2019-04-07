@@ -77,8 +77,6 @@ namespace Projekcik.Api.Controllers
             var hash1 = PBKDF2HashService.Hash(haslo);
             var hash2 = PBKDF2HashService.Hash(haslo);
 
-            //return Ok(hash1 + " bla bla " + hash2);
-            //return Ok(PBKDF2HashService.Verify("dupa", hash1) + " <--- i cyk drugi hash ----> "+PBKDF2HashService.Verify("dupa", hash2) );
             return Ok(hash1 + " <--- i cyk drugi hash ---> " + hash2);
         }
     }

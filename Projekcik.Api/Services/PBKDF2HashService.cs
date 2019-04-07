@@ -22,9 +22,7 @@ namespace Projekcik.Api.Services
             Array.Copy(hash, 0, hashBytes, _SaltSize, _HashSize);
 
             var base64Hash = Convert.ToBase64String(hashBytes);
-
-            //return string.Format()
-            //return string.Format("$MYHASH$V1${0}${1}", iterations, base64Hash);
+            return string.Format(base64Hash);
         }
 
         public static string Hash(string password)
@@ -32,39 +30,5 @@ namespace Projekcik.Api.Services
             return Hash(password, 10000);
         }
 
-        public static bool IsHashSupported(string hashString)
-        {
-            return hashString.Contains("$MYHASH$V1$");
-        }
-
-        public static string Verify(string password, string hashedPassword)
-        {
-            if (!IsHashSupported(hashedPassword))
-            {
-                throw new NotSupportedException("The hashtype is not supported");
-            }
-
-            var splittedHashString = hashedPassword.Replace("$MYHASH$V1$", "").Split('$');
-            var iterations = int.Parse(splittedHashString[0]);
-            var base64Hash = splittedHashString[1];
-
-            var hashBytes = Convert.FromBase64String(base64Hash);
-
-            var salt = new byte[_SaltSize];
-            Array.Copy(hashBytes, 0, salt, 0, _SaltSize);
-
-            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations);
-            byte[] hash = pbkdf2.GetBytes(_HashSize);
-
-            for (var i=0; i<_HashSize; i++)
-            {
-                if(hashBytes[i + _SaltSize] != hash[i])
-                {
-                    return "wrong";
-                }
-            }
-            return "true";
-        }
     }
 }
-
