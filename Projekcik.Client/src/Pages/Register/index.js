@@ -91,6 +91,7 @@ export default class RegisterPage extends Component {
           />
         </div>
         <Button
+          type="submit"
           className="submit"
           variant="contained"
           color="primary"

@@ -24,9 +24,12 @@ export default class LoginPage extends Component {
   };
 
   handleSubmit = event => {
+    let getUrl = window.location;
+    let baseUrl = getUrl.protocol + "//" + getUrl.host;
     event.preventDefault();
     AuthService.login(this.state)
-        .then(data => window.localStorage.setItem('token', `${data.token}`));
+        .then(data => window.localStorage.setItem('token', `${data.token}`))
+        .then(() => window.location.href = `${baseUrl}`);
   };
 
   render() {
@@ -57,6 +60,7 @@ export default class LoginPage extends Component {
           />
         </div>
         <Button
+          type="submit"
           className="submit"
           variant="contained"
           color="primary"
