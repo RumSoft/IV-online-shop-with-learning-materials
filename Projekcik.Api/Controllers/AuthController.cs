@@ -22,13 +22,11 @@ namespace Projekcik.Api.Controllers
 
         public AuthController(IUserService userService,
             ITokenIssuer tokenIssuer,
-            IHttpContextAccessor httpContextAccessor,
-            IHashService hashService)
+            IHttpContextAccessor httpContextAccessor)
         {
             _userService = userService;
             _tokenIssuer = tokenIssuer;
             _user = httpContextAccessor;
-            _hashService = hashService;
         }
 
         [AllowAnonymous]
@@ -70,18 +68,6 @@ namespace Projekcik.Api.Controllers
             var user = _userService.GetById(userId);
             var userDto = Mapper.Map<UserDto>(user);
             return Ok(userDto);
-        }
-        [AllowAnonymous]
-        [HttpPost("TestHash")]
-        public IActionResult TestHash()
-        {
-            string haslo = "dupa";
-            var zahashowane = _hashService.HashPassword(haslo);
-            var ver = _hashService.VerifyPassword(haslo, zahashowane);
-
-            if (ver)
-                return Ok();
-            return BadRequest();
         }
     }
 }
