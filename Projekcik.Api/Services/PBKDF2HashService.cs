@@ -5,8 +5,8 @@ namespace Projekcik.Api.Services
 {
     public class PBKDF2HashSerivce : IHashService
     {
-        private const int saltSize = 64;
-        private const int hashSize = 128;
+        private const int saltSize = 32;
+        private const int hashSize = 64;
         private const int iterations = 10;
 
         // IHashService::HashPassword(string input)
