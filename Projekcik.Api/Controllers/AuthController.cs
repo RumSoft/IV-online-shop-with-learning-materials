@@ -76,13 +76,12 @@ namespace Projekcik.Api.Controllers
         public IActionResult TestHash()
         {
             string haslo = "dupa";
-            var hash1 = _hashService.HashPassword(haslo);
-            var salted = hash1.Split(':')[0];
-            var hash2 = _hashService.HashPassword(haslo, salted);
-            //var hash2 = _hashService.HashPassword(haslo);
-            //var ver = _hashService.VerifyPassword(haslo, hash1);
+            var zahashowane = _hashService.HashPassword(haslo);
+            var ver = _hashService.VerifyPassword(haslo, zahashowane);
 
-            return Ok(hash1 + " <--- i cyk drugi hash ---> " + hash2);
+            if (ver)
+                return Ok();
+            return BadRequest();
         }
     }
 }

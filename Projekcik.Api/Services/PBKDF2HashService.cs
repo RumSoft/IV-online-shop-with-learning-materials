@@ -14,12 +14,7 @@ namespace Projekcik.Api.Services
             byte[] salt;
             new RNGCryptoServiceProvider().GetBytes(salt = new byte[_SaltSize]);
 
-            var pbkdf2 = new Rfc2898DeriveBytes(input, salt, _Iterations);
-            var hash = pbkdf2.GetBytes(_HashSize);
-
-            var hashBytes = Convert.ToBase64String(salt) + ":" + Convert.ToBase64String(hash);
-
-            return hashBytes;
+            return HashPassword(input, Convert.ToBase64String(salt));
         }
 
         public string HashPassword(string input, string salt)
