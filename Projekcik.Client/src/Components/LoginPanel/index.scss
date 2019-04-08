@@ -1,0 +1,30 @@
+.login-panel {
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+
+  .field {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .button {
+    margin-right: 1rem;
+
+    .fa,
+    .fab {
+      margin-right: 0.3rem;
+    }
+
+    &.login-reset-password {
+      position: relative;
+      right: 0;
+    }
+
+    &.login-facebook {
+      width: 100%;
+    }
+  }
+
+
+}
