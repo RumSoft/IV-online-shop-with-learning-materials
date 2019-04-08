@@ -18,14 +18,17 @@ namespace Projekcik.Api.Controllers
         private readonly ITokenIssuer _tokenIssuer;
         private readonly IHttpContextAccessor _user;
         private readonly IUserService _userService;
+        private readonly IHashService _hashService;
 
         public AuthController(IUserService userService,
             ITokenIssuer tokenIssuer,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+            IHashService hashService)
         {
             _userService = userService;
             _tokenIssuer = tokenIssuer;
             _user = httpContextAccessor;
+            _hashService = hashService;
         }
 
         [AllowAnonymous]
@@ -73,9 +76,11 @@ namespace Projekcik.Api.Controllers
         public IActionResult TestHash()
         {
             string haslo = "dupa";
-
-            var hash1 = PBKDF2HashService.HashPassword(haslo);
-            var hash2 = PBKDF2HashService.HashPassword(haslo);
+            var hash1 = _hashService.HashPassword(haslo);
+            var salted = hash1.Split(':')[0];
+            var hash2 = _hashService.HashPassword(haslo, salted);
+            //var hash2 = _hashService.HashPassword(haslo);
+            //var ver = _hashService.VerifyPassword(haslo, hash1);
 
             return Ok(hash1 + " <--- i cyk drugi hash ---> " + hash2);
         }
