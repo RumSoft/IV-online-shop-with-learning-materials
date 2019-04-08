@@ -27,6 +27,13 @@ export default class APIService {
         };
 
         return axios.post(`${API_URL}/${address}`, data, authHeader)
-        .then(response => response.data);
+        .then(response => {
+            window.localStorage.setItem('token', `${response.data.token}`);
+            return response.data;
+        });
+    }
+
+    static isAuthenticated () {
+        return window.localStorage.getItem('token') ? true : false;
     }
 };

@@ -66,6 +66,11 @@ export default class NavBar extends Component {
                     Login
                   </NavLink>
                 </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} className="text-dark" to="/protected">
+                    User Panel
+                  </NavLink>
+                </NavItem>
               </ul>
             </Collapse>
           </Container>
