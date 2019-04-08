@@ -1,10 +1,34 @@
 ﻿using System;
 using System.Security.Cryptography;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace Projekcik.Api.Services
 {
-    public class PBKDF2HashService
+    public class PBKDF2HashSerivce : IHashService
+    {
+        private const int _SaltSize = 16;
+        private const int _HashSize = 20;
+        private const int _Iterations = 1000;
+
+        public string HashPassword(string input)
+        {
+            byte[] salt;
+            new RNGCryptoServiceProvider().GetBytes(salt = new byte[_SaltSize]);
+
+            var pbkdf2 = new Rfc2898DeriveBytes(input, salt, _Iterations);
+            var hash = pbkdf2.GetBytes(_HashSize);
+
+            var hashBytes = Convert.ToBase64String(salt) + ":" + Convert.ToBase64String(hash);
+
+            return hashBytes;
+        }
+
+        public bool VerifyPassword(string input, string hashedPassword)
+        {
+            return HashPassword(input) == hashedPassword;
+        }
+    }
+}
+    /*public class PBKDF2HashService
     {
         private const int _SaltSize = 16;
         private const int _HashSize = 20;
@@ -30,5 +54,4 @@ namespace Projekcik.Api.Services
             return Hash(password, 10000);
         }
 
-    }
-}
+    }*/
