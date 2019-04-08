@@ -29,4 +29,10 @@ export default class APIService {
         return axios.post(`${API_URL}/${address}`, data, authHeader)
         .then(response => response.data);
     }
+
+    static facebookLogin(accessToken) {
+        return APIService.post('/api/externalauth/facebook-login', {
+          accessToken: accessToken
+        });
+      }
 };

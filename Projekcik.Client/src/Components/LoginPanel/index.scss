@@ -1,5 +1,5 @@
 .login-panel {
-  flex-direction: row;
+  flex-direction: column;
   display: flex;
   align-items: center;
 
@@ -26,5 +26,11 @@
     }
   }
 
+  .errors {
+    background-color: red;
+    color: white;
+    width: 100%;
+    padding: 1rem
+  }
 
 }
