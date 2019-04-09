@@ -1,39 +1,37 @@
-﻿using System.Security.Cryptography;
-using System.Text;
+﻿using System;
+using System.Security.Cryptography;
 
 namespace Projekcik.Api.Services
 {
-    public class PBKDF2HashService : IHashService
+    public class PBKDF2HashSerivce : IHashService
     {
-        private const int SALT_SIZE = 64; // size in bytes
-        private const int HASH_SIZE = 64; // size in bytes
-        private const int ITERATIONS = 100; // number of pbkdf2 iterations
+        private const int saltSize = 32;
+        private const int hashSize = 64;
+        private const int iterations = 10;
 
+        // IHashService::HashPassword(string input)
         public string HashPassword(string input)
         {
-            var provider = new RNGCryptoServiceProvider();
-            byte[] salt = new byte[SALT_SIZE];
-            provider.GetBytes(salt);
-
-            //todo: this salt does not work
-
-            // Generate the hash
-            var pbkdf2 = new Rfc2898DeriveBytes(input, salt, ITERATIONS);
-            return GetStringFromHash(pbkdf2.GetBytes(HASH_SIZE));
+            byte[] salt;
+            new RNGCryptoServiceProvider().GetBytes(salt = new byte[saltSize]);
+            return HashPassword(input, salt);
         }
 
+        // IHashService::VerifyPassword(string input, string hashedPassword)
         public bool VerifyPassword(string input, string hashedPassword)
         {
-            return HashPassword(input) == hashedPassword;
+            var salt = hashedPassword.Split(':')[0];
+            var saltBytes = Convert.FromBase64String(salt);
+            return HashPassword(input, saltBytes) == hashedPassword;
         }
 
-        private string GetStringFromHash(byte[] hash)
+        private string HashPassword(string input, byte[] salt)
         {
-            var result = new StringBuilder();
-            foreach (var t in hash)
-                result.Append(t.ToString("X2"));
-            return result.ToString();
+            using (var pbkdf2 = new Rfc2898DeriveBytes(input, salt, iterations))
+            {
+                var hash = pbkdf2.GetBytes(hashSize);
+                return $"{Convert.ToBase64String(salt)}:{Convert.ToBase64String(hash)}";
+            }
         }
-
     }
 }

@@ -36,4 +36,10 @@ export default class APIService {
     static isAuthenticated () {
         return window.localStorage.getItem('token') ? true : false;
     }
+
+    static facebookLogin(accessToken) {
+        return APIService.post('/api/externalauth/facebook-login', {
+          accessToken: accessToken
+        });
+      }
 };

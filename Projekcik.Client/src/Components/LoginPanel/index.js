@@ -9,7 +9,8 @@ import HrLabel from '../HrLabel';
 export default class LoginPanel extends Component {
   state = {
     emailAddress: '',
-    password: ''
+    password: '',
+    errorMessage: null
   };
 
   handleChange = event => {
@@ -22,14 +23,28 @@ export default class LoginPanel extends Component {
     let getUrl = window.location;
     let baseUrl = getUrl.protocol + '//' + getUrl.host;
     event.preventDefault();
-    AuthService.login(this.state)
-      .then(data => window.localStorage.setItem('token', `${data.token}`))
-      .then(() => (window.location.href = `${baseUrl}`));
+
+    AuthService.login({
+      emailAddress: this.state.emailAddress,
+      password: this.state.password
+    })
+      .then(data => {
+        window.localStorage.setItem('token', `${data.token}`);
+      })
+      .then(() => (window.location.href = `${baseUrl}`))
+      .catch(error => {
+        this.setState({
+          errorMessage: error.response.data.message
+        });
+      });
   };
 
   render() {
     return (
       <Card className="login-panel">
+        {this.state.errorMessage && (
+          <div className="errors">{this.state.errorMessage}</div>
+        )}
         <CardContent>
           <h3>Zaloguj się</h3>
           <hr />

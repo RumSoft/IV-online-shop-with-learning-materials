@@ -18,6 +18,7 @@ namespace Projekcik.Api.Controllers
         private readonly ITokenIssuer _tokenIssuer;
         private readonly IHttpContextAccessor _user;
         private readonly IUserService _userService;
+        private readonly IHashService _hashService;
 
         public AuthController(IUserService userService,
             ITokenIssuer tokenIssuer,

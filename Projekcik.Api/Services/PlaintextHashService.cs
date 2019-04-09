@@ -16,5 +16,10 @@ namespace Projekcik.Api.Services
         {
             return HashPassword(input) == hashedPassword;
         }
+
+        public string HashPassword(string input, string salt)
+        {
+            return input+':'+salt;
+        }
     }
 }
