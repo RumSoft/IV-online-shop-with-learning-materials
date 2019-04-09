@@ -1,9 +1,10 @@
-form {
-    .header {
-        margin-bottom: 2em;
-    }
+.register-page {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: center;
 
-    .register-field {
-        margin-bottom: 2em;
+    .register-panel {
+        min-width: 450px;
     }
 }
