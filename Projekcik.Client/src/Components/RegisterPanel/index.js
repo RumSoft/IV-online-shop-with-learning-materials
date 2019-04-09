@@ -24,10 +24,10 @@ export default class RegisterPage extends Component {
     let getUrl = window.location;
     let baseUrl = getUrl.protocol + '//' + getUrl.host;
     event.preventDefault();
-    
+
     if (this.state.password !== this.state.confirmPassword) {
       this.setState({
-        errorMessage: "Niezgodne hasła!"
+        errorMessage: 'Niezgodne hasła!'
       });
       return;
     }
@@ -39,26 +39,29 @@ export default class RegisterPage extends Component {
       emailAddress: this.state.emailAddress,
       password: this.state.password
     })
-    .catch(error => {
-      this.setState({
-        errorMessage: error.response.data.message
+      .then(() => (window.location.href = `${baseUrl}/login`))
+      .catch(error => {
+        this.setState({
+          errorMessage: error.response.data.message
+        });
       });
-    })
-    .then(() => (window.location.href = `${baseUrl}/login`));
   };
 
   render() {
+    const { showTitle, title } = this.props;
     return (
       <Card className="register-panel">
-      {this.state.errorMessage && (
+        {this.state.errorMessage && (
           <div className="errors">{this.state.errorMessage}</div>
         )}
         <CardContent>
           <form className="register-form" onSubmit={this.handleSubmit}>
-            <div className="header">
-              <h3>Zarejestruj się</h3>
-            </div>
-            <hr />
+            {showTitle && (
+              <div className="header">
+                <h3>{title}</h3>
+                <hr />
+              </div>
+            )}
             <TextField
               id="firstName"
               className="field"
@@ -118,10 +121,9 @@ export default class RegisterPage extends Component {
               Zarejestruj
             </Button>
           </form>
-          <p>Masz już konto? <a href="../login">
-             Zaloguj się
-             </a>
-          </p>          
+          <p>
+            Masz już konto? <a href="../login">Zaloguj się</a>
+          </p>
         </CardContent>
       </Card>
     );

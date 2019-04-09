@@ -28,15 +28,15 @@ export default class LoginPanel extends Component {
       emailAddress: this.state.emailAddress,
       password: this.state.password
     })
+      .then(data => {
+        window.localStorage.setItem('token', `${data.token}`);
+      })
+      .then(() => (window.location.href = `${baseUrl}`))
       .catch(error => {
         this.setState({
           errorMessage: error.response.data.message
         });
-      })
-      .then(data => {
-        window.localStorage.setItem('token', `${data.token}`);
-      })
-      .then(() => (window.location.href = `${baseUrl}`));
+      });
   };
 
   render() {
