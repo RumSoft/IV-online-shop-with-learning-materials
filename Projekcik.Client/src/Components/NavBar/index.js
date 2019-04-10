@@ -10,6 +10,8 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './index.scss';
+import APIService from '../../Services/APIService';
+import AuthService from '../../Services/AuthService';
 
 export default class NavBar extends Component {
   constructor(props) {
@@ -25,7 +27,13 @@ export default class NavBar extends Component {
       isOpen: !this.state.isOpen
     });
   }
+  handleClick() {
+    AuthService.logout();
+  }
+
   render() {
+    let isLoggedIn = APIService.isAuthenticated() ? 'invisible' : 'visible';
+    let isLoggedOut = !APIService.isAuthenticated() ? 'invisible' : 'visible';
     return (
       <header>
         <Navbar
@@ -56,19 +64,28 @@ export default class NavBar extends Component {
                     Values
                   </NavLink>
                 </NavItem>
-                <NavItem>
+                <NavItem className={isLoggedIn}>
                   <NavLink tag={Link} className="text-dark" to="/register">
                     Register
                   </NavLink>
                 </NavItem>
-                <NavItem>
+                <NavItem className={isLoggedIn}>
                   <NavLink tag={Link} className="text-dark" to="/login">
                     Login
                   </NavLink>
                 </NavItem>
-                <NavItem>
+                <NavItem className={isLoggedOut}>
                   <NavLink tag={Link} className="text-dark" to="/protected">
                     User Panel
+                  </NavLink>
+                </NavItem>
+                <NavItem className={isLoggedOut}>
+                  <NavLink
+                    tag={Link}
+                    className="text-dark"
+                    to="/"
+                    onClick={this.handleClick}>
+                    Log Out
                   </NavLink>
                 </NavItem>
               </ul>
