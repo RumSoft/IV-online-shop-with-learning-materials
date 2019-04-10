@@ -31,7 +31,11 @@ export default class LoginPanel extends Component {
       .then(data => {
         window.localStorage.setItem('token', `${data.token}`);
       })
-      .then(() => (window.location.href = `${baseUrl}`))
+      .then(() =>
+        window.localStorage.getItem('accessedUrl')
+          ? (window.location.href = window.localStorage.getItem('accessedUrl'))
+          : (window.location.href = `${baseUrl}`)
+      )
       .catch(error => {
         this.setState({
           errorMessage: error.response.data.message

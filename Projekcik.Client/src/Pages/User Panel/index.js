@@ -1,21 +1,9 @@
 import React, { Component } from 'react';
-import APIService from '../../Services/APIService';
 
-export class Protected extends Component {
-
-    handleClick = event => {
-        const bool = APIService.isAuthenticated();
-        console.log(bool);
-    }
-
-    render() {
-        return (
-            <div>
-                <h1>Protected Page</h1>
-                <button onClick={this.handleClick}>Click me!</button>
-            </div>
-        )
-    }
+export class UserPanel extends Component {
+  render() {
+    return <h1>Tu kiedyś będą dane użytkownika</h1>;
+  }
 }
 
-export default Protected
+export default UserPanel;

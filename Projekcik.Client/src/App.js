@@ -4,6 +4,8 @@ import routes from './router-config';
 import './App.scss';
 import NotFoundPage from './Pages/NotFound';
 import Layout from './Pages/Layout';
+import { ProtectedRoute } from './Components/ProtectedRoute';
+import UserPanel from './Pages/User Panel';
 
 class App extends Component {
   render() {
@@ -18,6 +20,7 @@ class App extends Component {
               exact={route.exact}
             />
           ))}
+          <ProtectedRoute path="/protected" component={UserPanel} exact />
         </Switch>
       </Layout>
     );
