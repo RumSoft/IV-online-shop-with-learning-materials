@@ -5,7 +5,7 @@ import './App.scss';
 import NotFoundPage from './Pages/NotFound';
 import Layout from './Pages/Layout';
 import { ProtectedRoute } from './Components/ProtectedRoute';
-import UserPanel from './Pages/User Panel';
+import UserPanel from './Pages/User Page';
 
 class App extends Component {
   render() {
