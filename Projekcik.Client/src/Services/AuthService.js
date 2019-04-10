@@ -10,7 +10,7 @@ export default class AuthService {
   }
 
   static logout() {
-    if (!APIService.isAuthenticated()) {
+    if (APIService.isAuthenticated()) {
       window.localStorage.clear();
     }
   }

@@ -9,6 +9,7 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
       {...rest}
       render={props => {
         if (APIService.isAuthenticated()) {
+          window.localStorage.removeItem('accessedUrl');
           return <Component {...props} />;
         } else {
           return (
