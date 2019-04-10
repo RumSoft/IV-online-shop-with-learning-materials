@@ -5,6 +5,7 @@ import Icon from '@material-ui/core/Icon';
 import './index.scss';
 import AuthService from '../../Services/AuthService';
 import HrLabel from '../HrLabel';
+import FBApp from '../FBlogin/FBApp';
 
 export default class LoginPanel extends Component {
   state = {
@@ -93,6 +94,7 @@ export default class LoginPanel extends Component {
             <Icon className="fab fa-facebook" />
             Zaloguj przez facebooka
           </Button>
+          <FBApp/>
         </CardContent>
       </Card>
     );
