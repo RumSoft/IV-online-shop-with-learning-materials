@@ -13,6 +13,7 @@ namespace Projekcik.Api.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             User.OnModelCreating(modelBuilder.Entity<User>());
+            Subject.OnModelCreating(modelBuilder.Entity<Subject>());
         }
     }
 }
