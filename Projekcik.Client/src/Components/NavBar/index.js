@@ -40,7 +40,10 @@ export default class NavBar extends Component {
           light>
           <Container>
             <NavbarBrand tag={Link} to="/">
-              WebApplication1
+              Projekcik{' '}
+              <small>
+                <sub>witam pozdrawiam</sub>
+              </small>
             </NavbarBrand>
             <NavbarToggler onClick={this.toggle} className="mr-2" />
             <Collapse
@@ -56,11 +59,6 @@ export default class NavBar extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/counter">
                     Counter
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/test">
-                    Values
                   </NavLink>
                 </NavItem>
                 <NavItem hidden={isLogged}>
@@ -79,11 +77,7 @@ export default class NavBar extends Component {
                   </NavLink>
                 </NavItem>
                 <NavItem hidden={!isLogged}>
-                  <NavLink
-                    tag={Link}
-                    className="text-dark"
-                    to="/logout"
-                    onClick={this.handleClick}>
+                  <NavLink tag={Link} className="text-dark" to="/logout">
                     Log Out
                   </NavLink>
                 </NavItem>
