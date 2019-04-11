@@ -1,23 +1,28 @@
 .register-panel {
-    flex-direction: column;
-    display: flex;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 500px;
+  flex-direction: column;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 500px;
 
-    .field {
-        width: 100%;
-        margin-bottom: 1rem;
-      }
-    
-    .button-submit {
-        margin-bottom: 1rem;
-    }
+  .progress {
+    height: 5px;
+    width: 100%;
+  }
 
-    .errors {
-        background-color: red;
-        color: white;
-        width: 100%;
-        padding: 1rem
-      }
+  .field {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .button-submit {
+    margin-bottom: 1rem;
+  }
+
+  .errors {
+    background-color: red;
+    color: white;
+    width: 100%;
+    padding: 1rem
+  }
 }

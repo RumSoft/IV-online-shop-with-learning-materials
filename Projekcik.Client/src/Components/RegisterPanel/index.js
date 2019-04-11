@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { TextField, Button, Card, CardContent } from '@material-ui/core';
+import {
+  TextField,
+  Button,
+  Card,
+  CardContent,
+  LinearProgress
+} from '@material-ui/core';
 import AuthService from '../../Services/AuthService';
 import './index.scss';
 
@@ -11,7 +17,8 @@ export default class RegisterPage extends Component {
     emailAddress: '',
     password: '',
     confirmPassword: '',
-    errorMessage: null
+    errorMessage: null,
+    loading: false
   };
 
   handleChange = event => {
@@ -21,13 +28,17 @@ export default class RegisterPage extends Component {
   };
 
   handleSubmit = event => {
+    this.setState({
+      loading: true
+    });
     let getUrl = window.location;
     let baseUrl = getUrl.protocol + '//' + getUrl.host;
     event.preventDefault();
 
     if (this.state.password !== this.state.confirmPassword) {
       this.setState({
-        errorMessage: 'Niezgodne hasła!'
+        errorMessage: 'Niezgodne hasła!',
+        loading: false
       });
       return;
     }
@@ -42,7 +53,8 @@ export default class RegisterPage extends Component {
       .then(() => (window.location.href = `${baseUrl}/login`))
       .catch(error => {
         this.setState({
-          errorMessage: error.response.data.message
+          errorMessage: error.response.data.message,
+          loading: false
         });
       });
   };
@@ -51,6 +63,7 @@ export default class RegisterPage extends Component {
     const { showTitle, title } = this.props;
     return (
       <Card className="register-panel">
+        {this.state.loading && <LinearProgress className="progress" />}
         {this.state.errorMessage && (
           <div className="errors">{this.state.errorMessage}</div>
         )}

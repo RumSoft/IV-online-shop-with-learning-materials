@@ -8,7 +8,7 @@ export class NotFoundPage extends Component {
 
     setTimeout(() => {
       window.location.href = redirectUrl;
-    }, 200000);
+    }, 2000);
 
     return (
       <div className="not-found-page">
