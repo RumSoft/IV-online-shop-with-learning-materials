@@ -3,6 +3,7 @@ import { RegisterPage } from './Pages/Register';
 import LogoutPage from './Pages/Logout';
 import { UserPage } from './Pages/UserPage';
 import LoginPage from './Pages/Login';
+import RodoPage from './Pages/Rodo';
 
 const routes = [
   {
@@ -17,6 +18,10 @@ const routes = [
   {
     path: '/login',
     component: LoginPage
+  },
+  {
+    path: '/rodo',
+    component: RodoPage
   }
 ];
 
