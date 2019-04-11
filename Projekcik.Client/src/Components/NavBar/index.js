@@ -32,8 +32,7 @@ export default class NavBar extends Component {
   }
 
   render() {
-    let isLoggedIn = APIService.isAuthenticated() ? 'invisible' : 'visible';
-    let isLoggedOut = !APIService.isAuthenticated() ? 'invisible' : 'visible';
+    let isLogged = APIService.isAuthenticated() ? true : false;
     return (
       <header>
         <Navbar
@@ -64,22 +63,22 @@ export default class NavBar extends Component {
                     Values
                   </NavLink>
                 </NavItem>
-                <NavItem className={isLoggedIn}>
+                <NavItem hidden={isLogged}>
                   <NavLink tag={Link} className="text-dark" to="/register">
                     Register
                   </NavLink>
                 </NavItem>
-                <NavItem className={isLoggedIn}>
+                <NavItem hidden={isLogged}>
                   <NavLink tag={Link} className="text-dark" to="/login">
                     Login
                   </NavLink>
                 </NavItem>
-                <NavItem className={isLoggedOut}>
+                <NavItem hidden={!isLogged}>
                   <NavLink tag={Link} className="text-dark" to="/protected">
                     User Panel
                   </NavLink>
                 </NavItem>
-                <NavItem className={isLoggedOut}>
+                <NavItem hidden={!isLogged}>
                   <NavLink
                     tag={Link}
                     className="text-dark"
