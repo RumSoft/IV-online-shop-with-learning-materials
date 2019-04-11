@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
-export default class FacebookLogin extends Component {
-
+export default class FacebookLoginButton extends Component {
   componentDidMount() {
     document.addEventListener('FBObjectReady', this.initializeFacebookLogin);
   }
@@ -16,15 +15,14 @@ export default class FacebookLogin extends Component {
   initializeFacebookLogin = () => {
     this.FB = window.FB;
     this.checkLoginStatus();
-  }
+  };
 
   /**
    * Check login status
    */
   checkLoginStatus = () => {
     this.FB.getLoginStatus(this.facebookLoginHandler);
-    
-  }
+  };
 
   /**
    * Check login status and call login api is user is not logged in
@@ -36,10 +34,10 @@ export default class FacebookLogin extends Component {
       if (response.status === 'connected') {
         this.facebookLoginHandler(response);
       } else {
-        this.FB.login(this.facebookLoginHandler, {scope: 'public_profile'});
+        this.FB.login(this.facebookLoginHandler, { scope: 'public_profile' });
       }
-    }, );
-  }
+    });
+  };
 
   /**
    * Handle login response
@@ -56,14 +54,10 @@ export default class FacebookLogin extends Component {
     } else {
       this.props.onLogin(false);
     }
-  }
+  };
 
   render() {
-    let {children} = this.props;
-    return (
-      <div onClick={this.facebookLogin}>
-        {children}
-      </div>
-    );
+    let { children } = this.props;
+    return <div onClick={this.facebookLogin}>{children}</div>;
   }
 }

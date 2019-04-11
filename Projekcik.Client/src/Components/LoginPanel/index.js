@@ -5,13 +5,14 @@ import Icon from '@material-ui/core/Icon';
 import './index.scss';
 import AuthService from '../../Services/AuthService';
 import HrLabel from '../HrLabel';
-import FBApp from '../FBlogin/FBApp';
+import FacebookLoginButton from '../FBlogin/FacebookLoginButton';
 
 export default class LoginPanel extends Component {
   state = {
     emailAddress: '',
     password: '',
-    errorMessage: null
+    errorMessage: null,
+    username: null
   };
 
   handleChange = event => {
@@ -40,7 +41,18 @@ export default class LoginPanel extends Component {
       });
   };
 
+  onFacebookLogin = (loginStatus, resultObject) => {
+    if (loginStatus === true) {
+      this.setState({
+        username: resultObject.user.name
+      });
+    } else {
+      alert('Facebook login error');
+    }
+  };
+
   render() {
+    const { username } = this.state;
     return (
       <Card className="login-panel">
         {this.state.errorMessage && (
@@ -86,15 +98,23 @@ export default class LoginPanel extends Component {
             Resetuj hasło
           </Button>
           <HrLabel text="LUB" />
-          <Button
-            variant="contained"
-            color="primary"
-            disabled
-            className="button login-facebook">
-            <Icon className="fab fa-facebook" />
-            Zaloguj przez facebooka
-          </Button>
-          <FBApp/>
+
+          <div className="AppFB">
+            {!username && (
+              <div>
+                <FacebookLoginButton onLogin={this.onFacebookLogin}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className="button login-facebook">
+                    <Icon className="fab fa-facebook" />
+                    Zaloguj przez facebooka
+                  </Button>
+                </FacebookLoginButton>
+              </div>
+            )}
+            {username && <p>Welcome back, {username}</p>}
+          </div>
         </CardContent>
       </Card>
     );
