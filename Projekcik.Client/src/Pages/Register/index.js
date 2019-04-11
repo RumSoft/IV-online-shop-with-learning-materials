@@ -1,21 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
 import RegisterPanel from '../../Components/RegisterPanel';
+import APIService from '../../Services/APIService';
+import { Redirect } from 'react-router-dom';
 
-/* TODO:
-            - przycisk na login z FB
-            - SCSS/wlasciwosci MUI zeby ladniej wygladalo
-  */
-
-export default class RegisterPage extends Component {
-  render() {
-    const data = {
-      showTitle: true,
-      title: 'Zarejestruj się'
-    };
-    return (
-      <div className="register-page">
-        <RegisterPanel {...data} />
-      </div>
-    );
-  }
-}
+export const RegisterPage = () => {
+  const data = {
+    showTitle: true,
+    title: 'Zarejestruj się'
+  };
+  return APIService.isAuthenticated() ? (
+    <Redirect to="/protected" />
+  ) : (
+    <div className="login-page">
+      <RegisterPanel {...data} />
+    </div>
+  );
+};

@@ -10,6 +10,7 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './index.scss';
+import APIService from '../../Services/APIService';
 
 export default class NavBar extends Component {
   constructor(props) {
@@ -25,7 +26,9 @@ export default class NavBar extends Component {
       isOpen: !this.state.isOpen
     });
   }
+
   render() {
+    let isLogged = APIService.isAuthenticated() ? true : false;
     return (
       <header>
         <Navbar
@@ -33,7 +36,10 @@ export default class NavBar extends Component {
           light>
           <Container>
             <NavbarBrand tag={Link} to="/">
-              WebApplication1
+              Projekcik{' '}
+              <small>
+                <sub>witam pozdrawiam</sub>
+              </small>
             </NavbarBrand>
             <NavbarToggler onClick={this.toggle} className="mr-2" />
             <Collapse
@@ -51,19 +57,24 @@ export default class NavBar extends Component {
                     Counter
                   </NavLink>
                 </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/test">
-                    Values
-                  </NavLink>
-                </NavItem>
-                <NavItem>
+                <NavItem hidden={isLogged}>
                   <NavLink tag={Link} className="text-dark" to="/register">
                     Register
                   </NavLink>
                 </NavItem>
-                <NavItem>
+                <NavItem hidden={isLogged}>
                   <NavLink tag={Link} className="text-dark" to="/login">
                     Login
+                  </NavLink>
+                </NavItem>
+                <NavItem hidden={!isLogged}>
+                  <NavLink tag={Link} className="text-dark" to="/protected">
+                    User Panel
+                  </NavLink>
+                </NavItem>
+                <NavItem hidden={!isLogged}>
+                  <NavLink tag={Link} className="text-dark" to="/logout">
+                    Log Out
                   </NavLink>
                 </NavItem>
               </ul>
