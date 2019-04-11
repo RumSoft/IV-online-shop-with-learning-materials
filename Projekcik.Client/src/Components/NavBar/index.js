@@ -82,7 +82,7 @@ export default class NavBar extends Component {
                   <NavLink
                     tag={Link}
                     className="text-dark"
-                    to="/"
+                    to="/logout"
                     onClick={this.handleClick}>
                     Log Out
                   </NavLink>

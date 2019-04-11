@@ -2,6 +2,7 @@ import HomePage from './Pages/Home';
 import ValuesPage from './Pages/Values';
 import RegisterPage from './Pages/Register';
 import LoginPage from './Pages/Login';
+import Logout from './Pages/Logout';
 
 export default [
   {
@@ -23,5 +24,10 @@ export default [
   {
     path: '/login',
     component: LoginPage
+  },
+
+  {
+    path: '/logout',
+    component: Logout
   }
 ];
