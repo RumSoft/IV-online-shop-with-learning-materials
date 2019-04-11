@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { Card, CardContent, TextField, Button } from '@material-ui/core';
+import {
+  Card,
+  CardContent,
+  TextField,
+  Button,
+  LinearProgress
+} from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
 
 import './index.scss';
@@ -10,7 +16,8 @@ export default class LoginPanel extends Component {
   state = {
     emailAddress: '',
     password: '',
-    errorMessage: null
+    errorMessage: null,
+    loading: false
   };
 
   handleChange = event => {
@@ -20,6 +27,8 @@ export default class LoginPanel extends Component {
   };
 
   handleSubmit = event => {
+    this.setState({ errorMessage: null, loading: true });
+
     let getUrl = window.location;
     let baseUrl = getUrl.protocol + '//' + getUrl.host;
     event.preventDefault();
@@ -29,6 +38,9 @@ export default class LoginPanel extends Component {
       password: this.state.password
     })
       .then(data => {
+        this.setState({
+          loading: false
+        });
         window.localStorage.setItem('token', `${data.token}`);
       })
       .then(() =>
@@ -38,7 +50,8 @@ export default class LoginPanel extends Component {
       )
       .catch(error => {
         this.setState({
-          errorMessage: error.response.data.message
+          errorMessage: error.response.data.message,
+          loading: false
         });
       });
   };
@@ -46,6 +59,7 @@ export default class LoginPanel extends Component {
   render() {
     return (
       <Card className="login-panel">
+        {this.state.loading && <LinearProgress className="progress" />}
         {this.state.errorMessage && (
           <div className="errors">{this.state.errorMessage}</div>
         )}

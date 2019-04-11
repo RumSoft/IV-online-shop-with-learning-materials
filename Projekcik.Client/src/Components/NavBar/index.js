@@ -11,7 +11,6 @@ import {
 import { Link } from 'react-router-dom';
 import './index.scss';
 import APIService from '../../Services/APIService';
-import AuthService from '../../Services/AuthService';
 
 export default class NavBar extends Component {
   constructor(props) {
@@ -26,9 +25,6 @@ export default class NavBar extends Component {
     this.setState({
       isOpen: !this.state.isOpen
     });
-  }
-  handleClick() {
-    AuthService.logout();
   }
 
   render() {
