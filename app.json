@@ -1,0 +1,20 @@
+{
+  "name": "projekcik",
+  "description": "",
+  "scripts": {
+
+  },
+  "env": {
+    "PROJECT_PATH": "Projekcik.Client"
+  },
+  "formation": {},
+  "addons": [],
+  "buildpacks": [{
+      "url": "https://github.com/timanovsky/subdir-heroku-buildpack"
+    },
+    {
+      "url": "https://github.com/mars/create-react-app-buildpack.git"
+    }
+  ],
+  "stack": "heroku-18"
+}
