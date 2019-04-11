@@ -26,34 +26,26 @@ export default class LoginPanel extends Component {
     });
   };
 
-  handleSubmit = event => {
+  handleLogin = event => {
     this.setState({ errorMessage: null, loading: true });
-
-    let getUrl = window.location;
-    let baseUrl = getUrl.protocol + '//' + getUrl.host;
-    event.preventDefault();
-
     AuthService.login({
       emailAddress: this.state.emailAddress,
       password: this.state.password
     })
-      .then(data => {
-        this.setState({
-          loading: false
-        });
-        window.localStorage.setItem('token', `${data.token}`);
-      })
-      .then(() =>
-        window.localStorage.getItem('accessedUrl')
-          ? (window.location.href = window.localStorage.getItem('accessedUrl'))
-          : (window.location.href = `${baseUrl}`)
-      )
+      .then(data => AuthService.handleLogin(data))
       .catch(error => {
         this.setState({
           errorMessage: error.response.data.message,
           loading: false
         });
       });
+  };
+
+  handleFacebookLogin = event => {
+    let redirect_uri = 'https://projekcik-prz.azurewebsites.net/login';
+    let client_id = '416091485634628';
+    let url = `https://www.facebook.com/v2.11/dialog/oauth?&response_type=token&display=popup&scope=email&client_id=${client_id}&display=popup&redirect_uri=${redirect_uri}`;
+    window.location.href = url;
   };
 
   render() {
@@ -66,7 +58,7 @@ export default class LoginPanel extends Component {
         <CardContent>
           <h3>Zaloguj się</h3>
           <hr />
-          <form className="login-form" onSubmit={this.handleSubmit}>
+          <form className="login-form" onSubmit={this.handleLogin}>
             <TextField
               className="field"
               id="emailAddress"
@@ -90,7 +82,7 @@ export default class LoginPanel extends Component {
             className="button login-submit"
             variant="contained"
             color="primary"
-            onClick={this.handleSubmit}>
+            onClick={this.handleLogin}>
             Zaloguj
           </Button>
           <Button
@@ -99,14 +91,14 @@ export default class LoginPanel extends Component {
             variant="contained"
             color="primary"
             disabled
-            onClick={this.handleSubmit}>
+            onClick={this.handleLogin}>
             Resetuj hasło
           </Button>
           <HrLabel text="LUB" />
           <Button
             variant="contained"
             color="primary"
-            disabled
+            onClick={this.handleFacebookLogin}
             className="button login-facebook">
             <Icon className="fab fa-facebook" />
             Zaloguj przez facebooka

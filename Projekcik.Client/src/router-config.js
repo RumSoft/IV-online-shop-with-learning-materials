@@ -1,8 +1,8 @@
 import HomePage from './Pages/Home';
 import { RegisterPage } from './Pages/Register';
-import { LoginPage } from './Pages/Login';
 import LogoutPage from './Pages/Logout';
 import { UserPage } from './Pages/UserPage';
+import LoginPage from './Pages/Login';
 
 const routes = [
   {

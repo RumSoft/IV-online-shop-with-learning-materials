@@ -9,9 +9,26 @@ export default class AuthService {
     return APIService.post('api/Auth/authenticate', userData);
   }
 
+  static facebookLogin(accessToken) {
+    return APIService.post('api/externalauth/facebook-login', {
+      accessToken: accessToken
+    });
+  }
+
+  static handleLogin(data) {
+    let getUrl = window.location;
+    let baseUrl = getUrl.protocol + '//' + getUrl.host;
+
+    window.localStorage.setItem('token', `${data.token}`);
+    window.localStorage.getItem('accessedUrl')
+      ? (window.location.href = window.localStorage.getItem('accessedUrl'))
+      : (window.location.href = `${baseUrl}`);
+  }
+
   static logout() {
     if (APIService.isAuthenticated()) {
-      window.localStorage.clear();
+      window.localStorage.removeItem('token');
+      window.localStorage.removeItem('accessedUrl');
     }
   }
 }
