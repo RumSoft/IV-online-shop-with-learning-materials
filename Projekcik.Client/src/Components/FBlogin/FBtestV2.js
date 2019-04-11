@@ -1,10 +1,8 @@
-// @flow
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from '../styles/facebook.scss';
 import FacebookLogin from './facebook';
 
-// https://www.w3.org/TR/html5/disabled-elements.html#disabled-elements
 const _shouldAddDisabledProp = tag =>
   [
     'button',

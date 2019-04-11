@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import logo from '../NavBar/logo.png';
 import {
   Collapse,
   Container,
@@ -10,6 +11,7 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './index.scss';
+import SearchAppbar from '../appBar/appbar';
 
 export default class NavBar extends Component {
   constructor(props) {
@@ -32,10 +34,12 @@ export default class NavBar extends Component {
           className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3"
           light>
           <Container>
-            <NavbarBrand tag={Link} to="/">
-              WebApplication1
-            </NavbarBrand>
+            <img src={logo} alt="Logo" />
+
             <NavbarToggler onClick={this.toggle} className="mr-2" />
+
+            <SearchAppbar />
+
             <Collapse
               className="d-sm-inline-flex flex-sm-row-reverse"
               isOpen={this.state.isOpen}
