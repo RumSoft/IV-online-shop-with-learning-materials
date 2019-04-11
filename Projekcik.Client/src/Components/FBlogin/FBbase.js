@@ -17,8 +17,8 @@ import { OAuth2Strategy, InternalOAuthError } from 'passport-oauth';
  * @param {Function} verify
  * @example
  * passport.use(new FacebookTokenStrategy({
- *   clientID: '123456789',                 //TODo
- *   clientSecret: 'shhh-its-a-secret'      //TODO
+ *   clientID: '985370004986883',                 //TODo
+ *   clientSecret: '745830679605ab21cae1125c92cdbf71'      //TODO
  * }), (accessToken, refreshToken, profile, done) => {
  *   User.findOrCreate({facebookId: profile.id}, done);
  * });
