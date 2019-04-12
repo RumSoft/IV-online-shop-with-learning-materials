@@ -17,6 +17,7 @@ namespace Projekcik.Api.Models
         public Guid SubjectId { get; set; }
         public User Author { get; set; }
         public Guid AuthorId { get; set; }
+        public IList<UserNote> Buyers { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }

@@ -17,6 +17,7 @@ namespace Projekcik.Api.Models
             User.OnModelCreating(modelBuilder.Entity<User>());
             Subject.OnModelCreating(modelBuilder.Entity<Subject>());
             Note.OnModelCreating(modelBuilder.Entity<Note>());
+            UserNote.OnModelCreating(modelBuilder.Entity<UserNote>());
         }
     }
 }
