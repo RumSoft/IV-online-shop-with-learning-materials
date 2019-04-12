@@ -7,7 +7,7 @@ namespace Projekcik.Api.Models
     public class Note : Entity<Guid>, ITimeStampedEntity
     {
         public string Name { get; set; }
-        public string Author { get; set; }
+        public User Author { get; set; }
         public Subject SubjectName { get; set; }
         public float Price { get; set; }
         public string Description { get; set; }
