@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -7,13 +10,16 @@ namespace Projekcik.Api.Models
     public class Note : Entity<Guid>, ITimeStampedEntity
     {
         public string Name { get; set; }
-        public User Author { get; set; }
-        public Subject SubjectName { get; set; }
-        public float Price { get; set; }
+        public decimal Price { get; set; }
         public string Description { get; set; }
+
+        public Subject Subject { get; set; }
+        public Guid SubjectId { get; set; }
+        public User Author { get; set; }
+        public Guid AuthorId { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
-
 
         public static void OnModelCreating(EntityTypeBuilder<Note> entity)
         {
@@ -21,19 +27,23 @@ namespace Projekcik.Api.Models
                 .IsRequired()
                 .HasMaxLength(100);
 
-            entity.Property(x => x.Author)
-                .IsRequired()
-                .HasMaxLength(50);
+            entity.HasOne(x => x.Author)
+                .WithMany(x => x.CreatedNotes)
+                .HasForeignKey(x => x.AuthorId)
+                .IsRequired();
 
-            entity.Property(x => x.SubjectName)
+            entity.HasOne(x => x.Subject)
+                .WithMany(x => x.Notes)
+                .HasForeignKey(x => x.SubjectId)
                 .IsRequired();
 
             entity.Property(x => x.Price)
+                .HasColumnType("decimal(5,2)")
                 .IsRequired();
 
             entity.Property(x => x.Description)
                 .IsRequired()
-                .HasMaxLength(150);
+                .HasMaxLength(1000);
 
             entity.Property(x => x.CreatedAt)
                 .HasDefaultValueSql("getdate()")
