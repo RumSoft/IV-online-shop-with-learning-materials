@@ -18,8 +18,7 @@ namespace Projekcik.Api.Controllers
         private readonly ITokenIssuer _tokenIssuer;
         private readonly IHttpContextAccessor _user;
         private readonly IUserService _userService;
-        private readonly IHashService _hashService;
-        private readonly INoteService _noteService;
+
 
         public AuthController(IUserService userService,
             ITokenIssuer tokenIssuer,
@@ -29,7 +28,6 @@ namespace Projekcik.Api.Controllers
             _userService = userService;
             _tokenIssuer = tokenIssuer;
             _user = httpContextAccessor;
-            _noteService = noteService;
         }
 
         [AllowAnonymous]
