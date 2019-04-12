@@ -66,6 +66,7 @@ namespace Projekcik.Api
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IHashService, PBKDF2HashSerivce>();
+            services.AddScoped<iNoteService, NoteService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
