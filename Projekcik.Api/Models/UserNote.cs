@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Projekcik.Api.Models
@@ -18,11 +19,16 @@ namespace Projekcik.Api.Models
             entity
                 .HasOne(x => x.Note)
                 .WithMany(x => x.Buyers)
-                .HasForeignKey(x => x.NoteId);
+                .HasForeignKey(x => x.NoteId)
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired();
+
             entity
                 .HasOne(x => x.User)
                 .WithMany(x => x.BoughtNotes)
-                .HasForeignKey(x => x.UserId);
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired();
         }
     }
 }

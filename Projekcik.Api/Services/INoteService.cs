@@ -9,5 +9,6 @@ namespace Projekcik.Api.Services
         Note GetNoteById(Guid id);
         IQueryable<Note> GetNotesByAuthorId(Guid authorId);
         Note Create(Note note);
+        void Buy(User user, Note note);
     }
 }

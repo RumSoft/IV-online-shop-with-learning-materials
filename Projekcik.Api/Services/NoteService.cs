@@ -31,5 +31,19 @@ namespace Projekcik.Api.Services
 
             return note;
         }
+
+        public void Buy(User user, Note note)
+        { 
+            var link = new UserNote
+            {
+                User = user,
+                UserId = user.Id,
+                Note = note,
+                NoteId = note.Id
+            };
+
+            _context.Add(link);
+            _context.SaveChanges();
+        }
     }
 }
