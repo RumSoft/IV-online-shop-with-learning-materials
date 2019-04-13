@@ -49,16 +49,16 @@ namespace Projekcik.Api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info {Title = "ProjekcikApi", Version = "v2137"});
-                c.AddSecurityDefinition("Jwt Token", new ApiKeyScheme
+                c.AddSecurityDefinition("Bearer", new ApiKeyScheme()
                 {
-                    In = "header",
                     Description = "Wrzuć token w poniższe pole w formacie: 'Bearer TOKEN'",
                     Name = "Authorization",
+                    In = "header",
                     Type = "apiKey"
                 });
                 c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
                 {
-                    {"Bearer", new string[] { }}
+                    { "Bearer", new string[] { } }
                 });
 
             });
@@ -84,7 +84,7 @@ namespace Projekcik.Api
             app.UseCors(x => x.AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());
-
+           
             app.UseMvc();
 
             if (env.IsDevelopment())
