@@ -62,7 +62,7 @@ namespace Projekcik.Api.Controllers
             if (file.Length <= 0)
                 return BadRequest("File error");
 
-            var allowedExtensions = new[] { "pdf" };
+            var allowedExtensions = new[] {"pdf"};
             var extension = file.FileName.Split('.', StringSplitOptions.RemoveEmptyEntries).Last();
             if (!allowedExtensions.Contains(extension.ToLower()))
                 return BadRequest("Unsupported file type");
@@ -73,7 +73,7 @@ namespace Projekcik.Api.Controllers
                 return BadRequest("Invalid user");
 
             var path = Path.Combine(
-                Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName,
+                Directory.GetParent(Directory.GetCurrentDirectory()).FullName,
                 "uploads",
                 userId.ToString());
             Directory.CreateDirectory(path);
@@ -108,7 +108,7 @@ namespace Projekcik.Api.Controllers
         {
             var userId = _user.GetCurrentUserId();
             var user = _userService.GetById(userId);
-            if(user == null)
+            if (user == null)
                 return BadRequest();
 
             //if(!user has bought note)
@@ -119,7 +119,7 @@ namespace Projekcik.Api.Controllers
                 return NotFound();
 
             var filepath = Path.Combine(
-                Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName,
+                Directory.GetParent(Directory.GetCurrentDirectory()).FullName,
                 "uploads",
                 note.Author.Id.ToString(),
                 note.Id.ToString());
