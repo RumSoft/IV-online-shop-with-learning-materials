@@ -19,6 +19,44 @@ namespace Projekcik.Api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Projekcik.Api.Models.Course", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("FacultyId");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FacultyId");
+
+                    b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("Projekcik.Api.Models.Faculty", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250);
+
+                    b.Property<int>("UniversityId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UniversityId");
+
+                    b.ToTable("Faculties");
+                });
+
             modelBuilder.Entity("Projekcik.Api.Models.Note", b =>
                 {
                     b.Property<Guid>("Id")
@@ -45,7 +83,7 @@ namespace Projekcik.Api.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(5,2)");
 
-                    b.Property<Guid>("SubjectId");
+                    b.Property<int>("SubjectId");
 
                     b.HasKey("Id");
 
@@ -58,29 +96,38 @@ namespace Projekcik.Api.Migrations
 
             modelBuilder.Entity("Projekcik.Api.Models.Subject", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Course")
-                        .IsRequired()
-                        .HasMaxLength(150);
-
-                    b.Property<string>("Lecturer")
-                        .HasMaxLength(150);
+                    b.Property<int>("CourseId");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(150);
+                        .HasMaxLength(250);
 
                     b.Property<int>("Semester");
 
-                    b.Property<string>("University")
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("Subjects");
+                });
+
+            modelBuilder.Entity("Projekcik.Api.Models.University", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(150);
+                        .HasMaxLength(250);
 
                     b.HasKey("Id");
 
-                    b.ToTable("Subjects");
+                    b.ToTable("Universities");
                 });
 
             modelBuilder.Entity("Projekcik.Api.Models.User", b =>
@@ -137,6 +184,22 @@ namespace Projekcik.Api.Migrations
                     b.ToTable("UserNote");
                 });
 
+            modelBuilder.Entity("Projekcik.Api.Models.Course", b =>
+                {
+                    b.HasOne("Projekcik.Api.Models.Faculty", "Faculty")
+                        .WithMany("Courses")
+                        .HasForeignKey("FacultyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Projekcik.Api.Models.Faculty", b =>
+                {
+                    b.HasOne("Projekcik.Api.Models.University", "University")
+                        .WithMany("Faculties")
+                        .HasForeignKey("UniversityId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
             modelBuilder.Entity("Projekcik.Api.Models.Note", b =>
                 {
                     b.HasOne("Projekcik.Api.Models.User", "Author")
@@ -147,7 +210,15 @@ namespace Projekcik.Api.Migrations
                     b.HasOne("Projekcik.Api.Models.Subject", "Subject")
                         .WithMany("Notes")
                         .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Projekcik.Api.Models.Subject", b =>
+                {
+                    b.HasOne("Projekcik.Api.Models.Course", "Course")
+                        .WithMany("Subjects")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Projekcik.Api.Models.UserNote", b =>
