@@ -46,9 +46,7 @@ namespace Projekcik.Api.Services
         public User GetByEmailAddress(string emailAddress)
         {
             return _context.Users
-                .AsNoTracking()
-                .FirstOrDefault(x =>
-                    x.EmailAddress.Equals(emailAddress, StringComparison.InvariantCultureIgnoreCase));
+                .FirstOrDefault(x => x.EmailAddress == emailAddress);
         }
 
         public User Create(User user, string password)
