@@ -78,13 +78,6 @@ namespace Projekcik.Api.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_EmailAddress",
-                table: "Users",
-                column: "EmailAddress",
-                unique: true,
-                filter: "[EmailAddress] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Notes_AuthorId",
                 table: "Notes",
                 column: "AuthorId");
@@ -110,10 +103,6 @@ namespace Projekcik.Api.Migrations
 
             migrationBuilder.DropTable(
                 name: "Subjects");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Users_EmailAddress",
-                table: "Users");
         }
     }
 }
