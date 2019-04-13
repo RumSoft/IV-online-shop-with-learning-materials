@@ -62,7 +62,7 @@ namespace Projekcik.Api.Controllers
                     LastName = userInfo.LastName,
                     FacebookId = userInfo.Id,
                     EmailAddress = userInfo.Email,
-                    UserName = userInfo.Email,
+                    UserName = $"{userInfo.FirstName} {userInfo.LastName}",
                     PictureUrl = userInfo.Picture.Data.Url
                 };
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -13,6 +14,10 @@ namespace Projekcik.Api.Models
         public string Password { get; set; }
         public string PictureUrl { get; set; }
         public long? FacebookId { get; set; }
+
+        public IList<Note> CreatedNotes { get; set; }
+        public IList<UserNote> BoughtNotes { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
@@ -40,6 +45,9 @@ namespace Projekcik.Api.Models
             entity.Property(x => x.ModifiedAt)
                 .HasDefaultValueSql("getdate()")
                 .ValueGeneratedOnAddOrUpdate();
+
+            entity.HasIndex(x => x.EmailAddress)
+                .IsUnique();
         }
     }
 }

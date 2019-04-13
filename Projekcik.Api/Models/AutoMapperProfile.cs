@@ -9,6 +9,7 @@ namespace Projekcik.Api.Models
         {
             UserDto.ConfigureMapper(this);
             RegisterDto.ConfigureMapper(this);
+            NoteDto.ConfigureMapper(this);
         }
     }
 }

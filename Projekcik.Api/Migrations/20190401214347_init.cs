@@ -24,6 +24,13 @@ namespace Projekcik.Api.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_EmailAddress",
+                table: "Users",
+                column: "EmailAddress",
+                unique: true,
+                filter: "[EmailAddress] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

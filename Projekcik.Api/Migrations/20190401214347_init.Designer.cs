@@ -51,6 +51,10 @@ namespace Projekcik.Api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EmailAddress")
+                        .IsUnique()
+                        .HasFilter("[EmailAddress] IS NOT NULL");
+
                     b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
