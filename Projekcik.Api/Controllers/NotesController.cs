@@ -51,7 +51,7 @@ namespace Projekcik.Api.Controllers
             [FromForm] string name,
             [FromForm] string description,
             [FromForm] decimal price,
-            [FromForm] Guid subject
+            [FromForm] int subject
         )
         {
             if (string.IsNullOrWhiteSpace(name)

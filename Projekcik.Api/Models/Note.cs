@@ -12,7 +12,7 @@ namespace Projekcik.Api.Models
         public string Description { get; set; }
 
         public Subject Subject { get; set; }
-        public Guid SubjectId { get; set; }
+        public int SubjectId { get; set; }
         public User Author { get; set; }
         public Guid AuthorId { get; set; }
         public IList<UserNote> Buyers { get; set; }
