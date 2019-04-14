@@ -1,41 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import StepContent from '@material-ui/core/StepContent';
-import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import classNames from 'classnames';
 import { styles } from './styles';
-import ComplexCard from '../ComplexCard';
-import RadioList from '../RadioList';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { Grid, TextField } from '@material-ui/core';
+import {
+  Grid,
+  TextField,
+  Zoom,
+  Grow,
+  Stepper,
+  Step,
+  StepLabel,
+  Paper,
+  Typography
+} from '@material-ui/core';
 
 import './index.scss';
-
-function getSteps() {
-  return ['Wybierz województwo', 'Wybierz uczelnię', 'Wybierz kierunek'];
-}
-
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return (
-        <div style={{ display: 'flex' }}>
-          <ComplexCard />
-        </div>
-      );
-    case 1:
-      return <RadioList />;
-    case 2:
-      return `Coming soon...`;
-    default:
-      return 'Unknown step';
-  }
-}
 
 class CourseSelector extends Component {
   state = {
@@ -82,7 +62,8 @@ class CourseSelector extends Component {
   };
 
   render() {
-    const steps = getSteps();
+    const transitionDelay = 100; // w ms;
+    const transitionDuration = 300; //w ms
     const { activeStep } = this.state;
 
     //mock data
@@ -121,17 +102,17 @@ class CourseSelector extends Component {
     ];
 
     const courses = [
-      { id: 1, name: 'matematyka dyskretna' },
-      { id: 1, name: 'programowanie w c++' },
-      { id: 2, name: 'algorytmy i str. danych' },
-      { id: 3, name: 'systemy operacjny' },
-      { id: 4, name: 'mikronapędy' },
-      { id: 5, name: 'bazy danych' },
-      { id: 6, name: 'inzynieria oprogramowania' },
-      { id: 7, name: 'sztuczna yntelygencya' },
-      { id: 8, name: 'fizyka' },
-      { id: 9, name: 'etyka' },
-      { id: 10, name: 'sygaly i systemy' },
+      { id: 1, name: 'informatyka' },
+      { id: 1, name: 'zarządzanie' },
+      { id: 2, name: 'budowa maszyn' },
+      { id: 3, name: 'chemia' },
+      { id: 4, name: 'biotechnologia' },
+      { id: 5, name: 'matematyka' },
+      { id: 6, name: 'agrokultura' },
+      { id: 7, name: 'rysowanie w paincie' },
+      { id: 8, name: 'harmonogramologia' },
+      { id: 9, name: 'witam pozdrawiam' },
+      { id: 10, name: 'i tak nie zdasz' },
       { id: 11, name: 'programowanie w javie (fuj)' }
     ];
 
@@ -140,6 +121,7 @@ class CourseSelector extends Component {
         <Stepper activeStep={activeStep}>
           <Step>
             <StepLabel
+              className="step-label step-label-1 enabled"
               onClick={() => {
                 this.setState({
                   activeStep: 0,
@@ -151,9 +133,7 @@ class CourseSelector extends Component {
               }}
               optional={
                 <Typography variant="caption">
-                  {this.state.voivodeship
-                    ? voivodeships[this.state.voivodeship].name
-                    : '-'}
+                  {this.state.voivodeship ? this.state.voivodeship.name : '-'}
                 </Typography>
               }>
               Województwo
@@ -161,6 +141,9 @@ class CourseSelector extends Component {
           </Step>
           <Step>
             <StepLabel
+              className={classNames('step-label step-label-2', {
+                enabled: activeStep >= 1
+              })}
               onClick={() => {
                 if (activeStep >= 1)
                   this.setState({
@@ -172,9 +155,7 @@ class CourseSelector extends Component {
               }}
               optional={
                 <Typography variant="caption">
-                  {this.state.university
-                    ? universities[this.state.university].name
-                    : '-'}
+                  {this.state.university ? this.state.university.name : '-'}
                 </Typography>
               }>
               Uczelnia
@@ -182,6 +163,9 @@ class CourseSelector extends Component {
           </Step>
           <Step>
             <StepLabel
+              className={classNames('step-label step-label-3', {
+                enabled: activeStep >= 2
+              })}
               onClick={() => {
                 if (activeStep >= 2)
                   this.setState({
@@ -192,7 +176,7 @@ class CourseSelector extends Component {
               }}
               optional={
                 <Typography variant="caption">
-                  {this.state.course ? courses[this.state.course].name : '-'}
+                  {this.state.course ? this.state.course.name : '-'}
                 </Typography>
               }>
               Kierunek
@@ -212,24 +196,31 @@ class CourseSelector extends Component {
           <div>
             <Grid container spacing={8}>
               {this.filterList(voivodeships)
-                .filter(x => true)
                 .filter((x, i) => i < 8)
-                .map(x => (
-                  <Grid
-                    item
-                    xs={3}
-                    key={x.id}
-                    className="grid-item"
-                    onClick={() => {
-                      this.setState({
-                        activeStep: 1,
-                        voivodeship: x.id
-                      });
+                .map((x, i) => (
+                  <Zoom
+                    in={activeStep === 0}
+                    timeout={transitionDuration}
+                    style={{
+                      transitionDelay: `${(transitionDelay * i) / 1000}s`
                     }}>
-                    <Paper className="paper p-md-3" square elevation={3}>
-                      {x.name}
-                    </Paper>
-                  </Grid>
+                    <Grid
+                      item
+                      xs={3}
+                      key={x.id}
+                      className="grid-item"
+                      onClick={() => {
+                        this.setState({
+                          activeStep: 1,
+                          voivodeship: x,
+                          filterText: ''
+                        });
+                      }}>
+                      <Paper className="paper p-md-3" elevation={4}>
+                        {x.name}
+                      </Paper>
+                    </Grid>
+                  </Zoom>
                 ))}
             </Grid>
           </div>
@@ -240,22 +231,30 @@ class CourseSelector extends Component {
               {this.filterList(universities)
                 .filter(x => true)
                 .filter((x, i) => i < 8)
-                .map(x => (
-                  <Grid
-                    item
-                    xs={3}
-                    key={x.id}
-                    className="grid-item"
-                    onClick={() => {
-                      this.setState({
-                        activeStep: 2,
-                        university: x.id
-                      });
+                .map((x, i) => (
+                  <Zoom
+                    in={activeStep === 1}
+                    timeout={transitionDuration}
+                    style={{
+                      transitionDelay: `${(transitionDelay * i) / 1000}s`
                     }}>
-                    <Paper className="paper p-md-3" square elevation={3}>
-                      {x.name}
-                    </Paper>
-                  </Grid>
+                    <Grid
+                      item
+                      xs={3}
+                      key={x.id}
+                      className="grid-item"
+                      onClick={() => {
+                        this.setState({
+                          activeStep: 2,
+                          university: x,
+                          filterText: ''
+                        });
+                      }}>
+                      <Paper className="paper p-md-3" elevation={3}>
+                        {x.name}
+                      </Paper>
+                    </Grid>
+                  </Zoom>
                 ))}
             </Grid>
           </div>
@@ -266,70 +265,36 @@ class CourseSelector extends Component {
               {this.filterList(courses)
                 .filter(x => true)
                 .filter((x, i) => i < 8)
-                .map(x => (
-                  <Grid
-                    item
-                    xs={3}
-                    key={x.id}
-                    className="grid-item"
-                    onClick={() => {
-                      this.setState({
-                        activeStep: 3,
-                        course: x.id
-                      });
+                .map((x, i) => (
+                  <Grow
+                    in={activeStep === 2}
+                    timeout={transitionDuration}
+                    style={{
+                      transitionDelay: `${(transitionDelay * i) / 1000}s`
                     }}>
-                    <Paper className="paper p-md-3" square elevation={3}>
-                      {x.name}
-                    </Paper>
-                  </Grid>
+                    <Grid
+                      item
+                      xs={3}
+                      key={x.id}
+                      className="grid-item"
+                      onClick={() => {
+                        this.setState({
+                          activeStep: 3,
+                          course: x,
+                          filterText: ''
+                        });
+                      }}>
+                      <Paper className="paper p-md-3" elevation={3}>
+                        {x.name}
+                      </Paper>
+                    </Grid>
+                  </Grow>
                 ))}
             </Grid>
           </div>
         )}
-
-        {activeStep === 3 && <p>wybrano</p>}
       </div>
     );
-
-    // <div className={classes.root}>
-    //   <Stepper activeStep={activeStep} orientation="horizontal">
-    //     {steps.map((label, index) => (
-    //       <Step key={label}>
-    //         <StepLabel>{label}</StepLabel>
-    //         <StepContent>
-    //           <Typography>{getStepContent(index)}</Typography>
-    //           <div className={classes.actionsContainer}>
-    //             <div>
-    //               <Button
-    //                 disabled={activeStep === 0}
-    //                 onClick={this.handleBack}
-    //                 className={classes.button}>
-    //                 Wstecz
-    //               </Button>
-    //               <Button
-    //                 variant="contained"
-    //                 color="primary"
-    //                 onClick={this.handleNext}
-    //                 className={classes.button}>
-    //                 {activeStep === steps.length - 1 ? 'Szukaj' : 'Dalej'}
-    //               </Button>
-    //             </div>
-    //           </div>
-    //         </StepContent>
-    //       </Step>
-    //     ))}
-    //   </Stepper>
-    //   {activeStep === steps.length && (
-    //     <Paper square elevation={0} className={classes.resetContainer}>
-    //       <Typography>Wyszukiwanie notatek...</Typography>
-    //       <CircularProgress color="primary" />
-    //       <Button onClick={this.handleReset} className={classes.button}>
-    //         Reset
-    //       </Button>
-    //     </Paper>
-    //   )}
-    // </div>
-    // );
   }
 }
 

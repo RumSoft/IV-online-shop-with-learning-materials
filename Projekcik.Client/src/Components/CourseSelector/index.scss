@@ -1,12 +1,22 @@
 @import '../../variables.scss';
 
-.grid-item {
-  .paper {}
+.course-selector {
+  .step-label {
 
-  &:hover {
-    .paper {
+
+    &.enabled:hover {
       background-color: rgba($primary, 0.1);
-      transition: 0.1s all ease;
+    }
+  }
+
+  .grid-item {
+    .paper {}
+
+    &:hover {
+      .paper {
+        background-color: rgba($primary, 0.1);
+        transition: 0.1s all ease;
+      }
     }
   }
 }

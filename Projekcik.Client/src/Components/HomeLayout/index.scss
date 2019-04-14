@@ -1,10 +1,16 @@
-.main {
+.home-layout {
+  .main {
 
-  // padding: 2rem 5rem;
-  // margin: rem 0;
-  h1 {}
+    // padding: 2rem 5rem;
+    // margin: rem 0;
+    h1 {}
 
-  p {
-    max-width: 600px;
+    p {
+      max-width: 600px;
+    }
+  }
+
+  .course-selector-card {
+    padding: 1rem;
   }
 }
