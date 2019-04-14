@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
-import { styles } from './styles';
 import {
   Grid,
   TextField,
@@ -17,7 +15,7 @@ import {
 
 import './index.scss';
 
-class CourseSelector extends Component {
+export default class CourseSelector extends Component {
   state = {
     activeStep: 0,
 
@@ -28,27 +26,9 @@ class CourseSelector extends Component {
     filterText: ''
   };
 
-  handleNext = () => {
-    this.setState(state => ({
-      activeStep: state.activeStep + 1
-    }));
-  };
-
-  handleBack = () => {
-    this.setState(state => ({
-      activeStep: state.activeStep - 1
-    }));
-  };
-
   handleChange = event => {
     this.setState({
       [event.target.id]: event.target.value
-    });
-  };
-
-  handleReset = () => {
-    this.setState({
-      activeStep: 0
     });
   };
 
@@ -297,9 +277,3 @@ class CourseSelector extends Component {
     );
   }
 }
-
-CourseSelector.propTypes = {
-  classes: PropTypes.object
-};
-
-export default withStyles(styles)(CourseSelector);
