@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import './index.scss';
-import img from './concept.JPG';
+import HomeLayout from '../../Components/HomeLayout';
 
 export default class HomePage extends Component {
   render() {
     return (
       <div className="homepage">
-        <h2>HomePage</h2>
-        <img src={img} className="concent" />
+        <HomeLayout />
       </div>
     );
   }

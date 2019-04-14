@@ -1,0 +1,27 @@
+@import '../../variables.scss';
+
+.course-selector {
+  .step-label {
+
+
+    &.enabled:hover {
+      background-color: rgba($primary, 0.1);
+    }
+  }
+
+  .undo-button {
+    width: 100%;
+    ;
+  }
+
+  .grid-item {
+    .paper {}
+
+    &:hover {
+      .paper {
+        background-color: rgba($primary, 0.1);
+        transition: 0.1s all ease;
+      }
+    }
+  }
+}

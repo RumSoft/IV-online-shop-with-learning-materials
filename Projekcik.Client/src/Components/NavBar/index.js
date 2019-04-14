@@ -11,6 +11,7 @@ import {
 import { Link } from 'react-router-dom';
 import './index.scss';
 import APIService from '../../Services/APIService';
+import SearchBar from '../SearchBar';
 
 export default class NavBar extends Component {
   constructor(props) {
@@ -31,9 +32,7 @@ export default class NavBar extends Component {
     let isLogged = APIService.isAuthenticated() ? true : false;
     return (
       <header>
-        <Navbar
-          className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3"
-          light>
+        <Navbar className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3">
           <Container>
             <NavbarBrand tag={Link} to="/">
               Projekcik{' '}
@@ -41,6 +40,7 @@ export default class NavBar extends Component {
                 <sub>witam pozdrawiam</sub>
               </small>
             </NavbarBrand>
+            <SearchBar />
             <NavbarToggler onClick={this.toggle} className="mr-2" />
             <Collapse
               className="d-sm-inline-flex flex-sm-row-reverse"
@@ -48,22 +48,17 @@ export default class NavBar extends Component {
               navbar>
               <ul className="navbar-nav flex-grow">
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/">
+                  <NavLink tag={Link} to="/">
                     Home
                   </NavLink>
                 </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/counter">
-                    Counter
-                  </NavLink>
-                </NavItem>
                 <NavItem hidden={isLogged}>
-                  <NavLink tag={Link} className="text-dark" to="/register">
+                  <NavLink tag={Link} to="/register">
                     Register
                   </NavLink>
                 </NavItem>
                 <NavItem hidden={isLogged}>
-                  <NavLink tag={Link} className="text-dark" to="/login">
+                  <NavLink tag={Link} to="/login">
                     Login
                   </NavLink>
                 </NavItem>
