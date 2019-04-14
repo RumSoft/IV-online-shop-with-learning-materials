@@ -52,11 +52,6 @@ export default class NavBar extends Component {
                     Home
                   </NavLink>
                 </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} to="/counter">
-                    Counter
-                  </NavLink>
-                </NavItem>
                 <NavItem hidden={isLogged}>
                   <NavLink tag={Link} to="/register">
                     Register
