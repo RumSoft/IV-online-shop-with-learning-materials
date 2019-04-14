@@ -10,7 +10,9 @@ import {
   Step,
   StepLabel,
   Paper,
-  Typography
+  Typography,
+  Button,
+  Icon
 } from '@material-ui/core';
 
 import './index.scss';
@@ -163,6 +165,18 @@ export default class CourseSelector extends Component {
             </StepLabel>
           </Step>
         </Stepper>
+        {/* <Grid container spacing={8}>
+          <Grid item xs={4} sm={3} md={2} xl={1}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.handleFacebookLogin}
+              className="undo-button">
+              <Icon className="fas fa-undo-alt " />
+              {'  '}Cofnij
+            </Button>
+          </Grid>
+          <Grid xs={8} sm={9} md={10} xl={11}> */}
         <TextField
           id="filterText"
           className="field mb-3"
@@ -172,6 +186,8 @@ export default class CourseSelector extends Component {
           value={this.state.filterText}
           onChange={this.handleChange}
         />
+        {/* </Grid>
+        </Grid> */}
         {activeStep === 0 && (
           <div>
             <Grid container spacing={8}>
