@@ -11,7 +11,7 @@ namespace Projekcik.Api.Models
         public decimal Price { get; set; }
         public string Description { get; set; }
 
-        public Subject Subject { get; set; }
+        public Course Course { get; set; }
         public int SubjectId { get; set; }
         public User Author { get; set; }
         public Guid AuthorId { get; set; }
@@ -31,7 +31,7 @@ namespace Projekcik.Api.Models
                 .HasForeignKey(x => x.AuthorId)
                 .IsRequired();
 
-            entity.HasOne(x => x.Subject)
+            entity.HasOne(x => x.Course)
                 .WithMany(x => x.Notes)
                 .HasForeignKey(x => x.SubjectId)
                 .IsRequired();
