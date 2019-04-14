@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Projekcik.Api.Helpers;
 using Projekcik.Api.Models;
 using Projekcik.Api.Models.DTO;
@@ -23,12 +24,14 @@ namespace Projekcik.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, ILogger<Startup> logger)
         {
             Configuration = configuration;
+            _logger = logger;
         }
 
         public IConfiguration Configuration { get; }
+        private readonly ILogger _logger;
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -49,10 +52,16 @@ namespace Projekcik.Api
 
             services.AddCors();
 
+            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            _logger.LogInformation($"trying to open xml documentation file: {xmlPath}");
+            if(!File.Exists(xmlFile))
+                _logger.LogInformation("file does not exist");
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info {Title = "ProjekcikApi", Version = "v2137"});
-                c.AddSecurityDefinition("Bearer", new ApiKeyScheme()
+                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
                 {
                     Description = "Wrzuć token w poniższe pole w formacie: 'Bearer TOKEN'",
                     Name = "Authorization",
@@ -63,11 +72,10 @@ namespace Projekcik.Api
                 {
                     { "Bearer", new string[] { } }
                 });
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
 
+            
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IHashService, PBKDF2HashSerivce>();

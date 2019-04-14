@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Projekcik.Api</name>
+    </assembly>
+    <members>
+        <member name="M:Projekcik.Api.Controllers.UniController.GetAllUniversities">
+            <summary>
+            Returns all universities
+            </summary>
+        </member>
+        <member name="M:Projekcik.Api.Controllers.UniController.GetAllFaculties(System.Int32)">
+            <summary>
+            Returns all faculties for selected university
+            </summary>
+        </member>
+        <member name="M:Projekcik.Api.Controllers.UniController.GetAllCourses(System.Int32)">
+            <summary>
+            Returns all courses for selected faculty
+            </summary>
+        </member>
+        <member name="M:Projekcik.Api.Controllers.UniController.GetAllSubjects(System.Int32)">
+            <summary>
+            Returns all subjects for selected course
+            </summary>
+        </member>
+        <member name="M:Projekcik.Api.Controllers.UniController.GetAll">
+            <summary>
+            Returns whole tree of universities / faculties / courses / subjects
+            </summary>
+            <returns>IActionResult containing anonymous type</returns>
+        </member>
+    </members>
+</doc>
