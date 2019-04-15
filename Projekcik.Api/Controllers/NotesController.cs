@@ -31,6 +31,8 @@ namespace Projekcik.Api.Controllers
             _userService = userService;
         }
 
+
+
         [HttpGet("")]
         public IEnumerable<NoteDto> GetMyNotes()
         {
@@ -45,13 +47,23 @@ namespace Projekcik.Api.Controllers
             return notes.Select(Mapper.Map<NoteDto>);
         }
 
+        /// <summary>
+        /// Send file to server, currently only pdf supported.
+        /// Please send this as form-data
+        /// </summary>
+        /// <param name="file">The note</param>
+        /// <param name="name">Name of note</param>
+        /// <param name="description">Description of note</param>
+        /// <param name="price">Price of note</param>
+        /// <param name="course">Course Id - please </param>
+        /// <returns></returns>
         [HttpPost("create")]
         public IActionResult CreateNote(
             [FromForm] IFormFile file,
             [FromForm] string name,
             [FromForm] string description,
             [FromForm] decimal price,
-            [FromForm] int subject
+            [FromForm] int course
         )
         {
             if (string.IsNullOrWhiteSpace(name)
@@ -103,6 +115,13 @@ namespace Projekcik.Api.Controllers
             });
         }
 
+        /// <summary>
+        /// Try to download the file, if user has bought note then the response is file itself (blob file result).
+        /// Every browser should be able to open this blob file and it stays in memory while user session is on.
+        /// If user hasn't bought the file, then the response is bad request OR (in future) auto-redirect to homepage.
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
         [HttpGet("download-request/{noteId}")]
         public IActionResult DownloadRequest(Guid noteId)
         {

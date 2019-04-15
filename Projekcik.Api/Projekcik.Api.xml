@@ -4,29 +4,24 @@
         <name>Projekcik.Api</name>
     </assembly>
     <members>
-        <member name="M:Projekcik.Api.Controllers.UniController.GetAllUniversities">
+        <member name="M:Projekcik.Api.Controllers.UniController.GetAllVoivodeships">
             <summary>
-            Returns all universities
+            Returns all voivodeships
             </summary>
         </member>
-        <member name="M:Projekcik.Api.Controllers.UniController.GetAllFaculties(System.Int32)">
+        <member name="M:Projekcik.Api.Controllers.UniController.GetAllUniversities(System.Int32)">
             <summary>
-            Returns all faculties for selected university
+            Returns all universities for given voivodeship
             </summary>
         </member>
         <member name="M:Projekcik.Api.Controllers.UniController.GetAllCourses(System.Int32)">
             <summary>
-            Returns all courses for selected faculty
-            </summary>
-        </member>
-        <member name="M:Projekcik.Api.Controllers.UniController.GetAllSubjects(System.Int32)">
-            <summary>
-            Returns all subjects for selected course
+            Returns all courses for given university
             </summary>
         </member>
         <member name="M:Projekcik.Api.Controllers.UniController.GetAll">
             <summary>
-            Returns whole tree of universities / faculties / courses / subjects
+            Returns whole tree of voivodeships / universities / courses  
             </summary>
             <returns>IActionResult containing anonymous type</returns>
         </member>

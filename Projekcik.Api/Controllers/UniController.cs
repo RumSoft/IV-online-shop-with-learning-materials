@@ -15,27 +15,45 @@ namespace Projekcik.Api.Controllers
         private DataContext _context { get; }
 
         /// <summary>
-        /// Returns all universities
+        /// Returns all voivodeships
         /// </summary>
         [HttpGet("")]
-        public IActionResult GetAllUniversities()
+        public IActionResult GetAllVoivodeships()
         {
-            var data = _context.Universities
+            var data = _context.Voivodeships
                 .Select(x => new
                 {
                     x.Id,
-                    x.Name
+                    x.Name,
+                    x.ImageUrl
                 });
             return Ok(data);
         }
 
         /// <summary>
-        /// Returns all faculties for selected university
+        /// Returns all universities for given voivodeship
         /// </summary>
-        [HttpGet("{universityId}")]
-        public IActionResult GetAllFaculties(int universityId)
+        [HttpGet("{voivodeshipId}")]
+        public IActionResult GetAllUniversities(int voivodeshipId)
         {
-            var data = _context.Faculties
+            var data = _context.Universities
+                .Where(x => x.VoivodeshipId == voivodeshipId)
+                .Select(x => new
+                {
+                    x.Id,
+                    x.Name,
+                    x.ImageUrl
+                });
+            return Ok(data);
+        }
+
+        /// <summary>
+        /// Returns all courses for given university
+        /// </summary>
+        [HttpGet("university/{universityId}")]
+        public IActionResult GetAllCourses(int universityId)
+        {
+            var data = _context.Courses
                 .Where(x => x.UniversityId == universityId)
                 .Select(x => new
                 {
@@ -46,72 +64,37 @@ namespace Projekcik.Api.Controllers
         }
 
         /// <summary>
-        /// Returns all courses for selected faculty
-        /// </summary>
-        [HttpGet("faculty/{facultyId}")]
-        public IActionResult GetAllCourses(int facultyId)
-        {
-            var data = _context.Courses
-                .Where(x => x.FacultyId == facultyId)
-                .Select(x => new
-                {
-                    x.Id,
-                    x.Name
-                });
-            return Ok(data);
-        }
-
-        /// <summary>
-        /// Returns all subjects for selected course
-        /// </summary>
-        [HttpGet("course/{courseId}")]
-        public IActionResult GetAllSubjects(int courseId)
-        {
-            var data = _context.Subjects
-                .Where(x => x.CourseId == courseId)
-                .Select(x => new
-                {
-                    x.Id,
-                    x.Name,
-                    x.Semester
-                });
-            return Ok(data);
-        }
-
-        /// <summary>
-        /// Returns whole tree of universities / faculties / courses / subjects
+        /// Returns whole tree of voivodeships / universities / courses  
         /// </summary>
         /// <returns>IActionResult containing anonymous type</returns>
         [HttpGet("all")]
         public IActionResult GetAll()
         {
-            var data = _context.Universities
-                .Select(x => new
-                {
-                    x.Id,
-                    x.Name,
-                    //x.ImageUrl,
-                    Faculties = x.Faculties.Select(y => new
+            var voivodeships = _context.Voivodeships.ToList();
+            var universities = _context.Universities.ToList();
+            var courses = _context.Courses.ToList();
+
+            var data = voivodeships.Select(x => new
+            {
+                x.Id,
+                x.Name,
+                x.ImageUrl,
+                Universities = universities
+                    .Where(y => y.VoivodeshipId == y.Id)
+                    .Select(y => new
                     {
                         y.Id,
                         y.Name,
-                        //y.ImageUrl,
-                        Courses = y.Courses.Select(z => new
-                        {
-                            z.Id,
-                            z.Name,
-                            //z.ImageUrl,
-                            Subjects = z.Subjects.Select(w => new
+                        y.ImageUrl,
+                        Courses = courses
+                            .Where(z => z.UniversityId == y.Id)
+                            .Select(z => new
                             {
-                                w.Id,
-                                w.Name,
-                                w.Semester
-                                //w.ImageUrl,
+                                z.Id,
+                                z.Name
                             })
-                        })
                     })
-                });
-
+            });
             return Ok(data);
         }
     }
