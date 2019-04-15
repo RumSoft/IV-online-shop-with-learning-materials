@@ -104,7 +104,7 @@ namespace Projekcik.Api.Controllers
                 Name = name,
                 Price = price,
                 Description = description,
-                SubjectId = subject
+                CourseId = course
             };
             _noteService.Create(note);
 

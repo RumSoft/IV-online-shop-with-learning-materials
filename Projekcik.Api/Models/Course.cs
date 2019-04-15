@@ -83,7 +83,7 @@ namespace Projekcik.Api.Models
 
             entity.HasMany(x => x.Notes)
                 .WithOne(x => x.Course)
-                .HasForeignKey(x => x.SubjectId)
+                .HasForeignKey(x => x.CourseId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
         }

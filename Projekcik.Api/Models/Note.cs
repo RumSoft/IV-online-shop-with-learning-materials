@@ -12,7 +12,7 @@ namespace Projekcik.Api.Models
         public string Description { get; set; }
 
         public Course Course { get; set; }
-        public int SubjectId { get; set; }
+        public int CourseId { get; set; }
         public User Author { get; set; }
         public Guid AuthorId { get; set; }
         public IList<UserNote> Buyers { get; set; }
@@ -33,7 +33,7 @@ namespace Projekcik.Api.Models
 
             entity.HasOne(x => x.Course)
                 .WithMany(x => x.Notes)
-                .HasForeignKey(x => x.SubjectId)
+                .HasForeignKey(x => x.CourseId)
                 .IsRequired();
 
             entity.Property(x => x.Price)

@@ -4,6 +4,27 @@
         <name>Projekcik.Api</name>
     </assembly>
     <members>
+        <member name="M:Projekcik.Api.Controllers.NotesController.CreateNote(Microsoft.AspNetCore.Http.IFormFile,System.String,System.String,System.Decimal,System.Int32)">
+            <summary>
+            Send file to server, currently only pdf supported.
+            Please send this as form-data
+            </summary>
+            <param name="file">The note</param>
+            <param name="name">Name of note</param>
+            <param name="description">Description of note</param>
+            <param name="price">Price of note</param>
+            <param name="course">Course Id - please </param>
+            <returns></returns>
+        </member>
+        <member name="M:Projekcik.Api.Controllers.NotesController.DownloadRequest(System.Guid)">
+            <summary>
+            Try to download the file, if user has bought note then the response is file itself (blob file result).
+            Every browser should be able to open this blob file and it stays in memory while user session is on.
+            If user hasn't bought the file, then the response is bad request OR (in future) auto-redirect to homepage.
+            </summary>
+            <param name="noteId"></param>
+            <returns></returns>
+        </member>
         <member name="M:Projekcik.Api.Controllers.UniController.GetAllVoivodeships">
             <summary>
             Returns all voivodeships
