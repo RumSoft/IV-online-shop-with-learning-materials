@@ -246,11 +246,21 @@ export default class CourseSelector extends Component {
                       key={x.id}
                       className="grid-item"
                       onClick={() => {
-                        this.setState({
-                          activeStep: 3,
-                          course: x,
-                          filterText: ''
-                        });
+                        this.setState(
+                          {
+                            activeStep: 3,
+                            course: x,
+                            filterText: ''
+                          },
+                          () => {
+                            const passedData = {
+                              voivodeship: this.state.voivodeship,
+                              university: this.state.university,
+                              course: this.state.course
+                            };
+                            this.props.searchData(passedData);
+                          }
+                        );
                       }}>
                       <Paper className="paper p-md-3" elevation={3}>
                         {x.name}
