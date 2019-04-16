@@ -23,7 +23,7 @@ function HomeLayout(props) {
             align="center"
             color="textPrimary"
             gutterBottom>
-            Witaj w sklepie "Witam Pozdrawiam"!
+            Witaj w sklepie LeniwyStudent.pl !
           </Typography>
           <Typography
             className="subtitle mx-auto"
@@ -32,7 +32,7 @@ function HomeLayout(props) {
             paragraph>
             Wyszukaj najlepsze notatki studenckie dla Ciebie według poniższych
             kryteriów lub użyj wyszukiwarki. Zachęcamy również do założenia
-            własnego konta, aby móc sprzedawać własne notatki. Zajmię Ci to
+            własnego konta, aby móc sprzedawać własne notatki. Zajmie Ci to
             dosłownie 3.14159265359 sekund!
           </Typography>
         </Card>
@@ -47,10 +47,15 @@ function HomeLayout(props) {
         <footer className={classes.footer}>
           <h6 className={classes.footerItem}>Stopka</h6>
           <p className={classes.footerItem}>
-            Skontaktuj się z nami (zwykły tag p > Typography)
+            <Typography
+              className="subtitle mx-auto"
+              align="center"
+              color="textSecondary"
+              paragraph>
+              Skontaktuj się z nami!
+            </Typography>
           </p>
         </footer>
-        {/* End Stopka */}
       </React.Fragment>
     </div>
   );
