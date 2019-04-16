@@ -4,10 +4,12 @@
         <name>Projekcik.Api</name>
     </assembly>
     <members>
-        <member name="M:Projekcik.Api.Controllers.NotesController.CreateNote(Microsoft.AspNetCore.Http.IFormFile,System.String,System.String,System.Decimal,System.Int32)">
+        <member name="M:Projekcik.Api.Controllers.NotesController.CreateNote(Microsoft.AspNetCore.Http.IFormFile,System.String,System.String,System.Decimal,System.Int32,System.Int32)">
             <summary>
             Send file to server, currently only pdf supported.
-            Please send this as form-data
+            Please send this as form-data.
+            Real parameters are: file, name, description, price, course.
+            Please do not get fooled by swagger that spreads file on more properties.
             </summary>
             <param name="file">The note</param>
             <param name="name">Name of note</param>
@@ -39,12 +41,6 @@
             <summary>
             Returns all courses for given university
             </summary>
-        </member>
-        <member name="M:Projekcik.Api.Controllers.UniController.GetAll">
-            <summary>
-            Returns whole tree of voivodeships / universities / courses  
-            </summary>
-            <returns>IActionResult containing anonymous type</returns>
         </member>
     </members>
 </doc>

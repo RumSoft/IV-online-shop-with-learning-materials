@@ -10,6 +10,7 @@ namespace Projekcik.Api.Models
         public string Name { get; set; }
         public decimal Price { get; set; }
         public string Description { get; set; }
+        public int? Semester { get; set; }
 
         public Course Course { get; set; }
         public int CourseId { get; set; }
@@ -19,6 +20,7 @@ namespace Projekcik.Api.Models
 
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
+        public Extension FileExtension { get; set; }
 
         public static void OnModelCreating(EntityTypeBuilder<Note> entity)
         {
@@ -40,6 +42,7 @@ namespace Projekcik.Api.Models
                 .HasColumnType("decimal(5,2)")
                 .IsRequired();
 
+
             entity.Property(x => x.Description)
                 .IsRequired()
                 .HasMaxLength(1000);
@@ -51,6 +54,9 @@ namespace Projekcik.Api.Models
             entity.Property(x => x.ModifiedAt)
                 .HasDefaultValueSql("getdate()")
                 .ValueGeneratedOnAddOrUpdate();
+
+            entity.Property(x => x.FileExtension)
+                .IsRequired();
         }
     }
 }
