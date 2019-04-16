@@ -17,13 +17,13 @@ import UniService from '../../Services/UniService';
 
 export default class CourseSelector extends Component {
   state = {
+    voivodeship: null,
+    university: null,
+    course: null,
     activeStep: 0,
     voivodeships: [],
     universities: [],
     courses: [],
-    voivodeship: null,
-    university: null,
-    course: null,
 
     filterText: ''
   };
@@ -43,9 +43,27 @@ export default class CourseSelector extends Component {
     ));
   };
 
+  notifyParent() {
+    const passedData = {
+      voivodeship: this.state.voivodeship,
+      university: this.state.university,
+      course: this.state.course
+    };
+    this.props.searchData(passedData);
+  }
+
+  handleBack(step) {
+    let reset = { _2: null, activeStep: step, filterText: '' };
+    if (step <= 1) reset = { _1: null, ...reset };
+    if (step <= 0) reset = { _0: null, ...reset };
+
+    this.setState(reset);
+    this.notifyParent();
+  }
+
   render() {
-    const transitionDelay = 100; // w ms;
-    const transitionDuration = 300; //w ms
+    // const transitionDelay = 100; // w ms;
+    // const transitionDuration = 300; //w ms
     const { activeStep } = this.state;
 
     UniService.getVoivodeships().then(data =>
@@ -58,15 +76,7 @@ export default class CourseSelector extends Component {
           <Step>
             <StepLabel
               className="step-label step-label-1 enabled"
-              onClick={() => {
-                this.setState({
-                  activeStep: 0,
-                  university: null,
-                  voivodeship: null,
-                  course: null,
-                  filterText: ''
-                });
-              }}
+              onClick={() => this.handleBack(0)}
               optional={
                 <Typography variant="caption">
                   {this.state.voivodeship ? this.state.voivodeship.name : '-'}
@@ -80,15 +90,7 @@ export default class CourseSelector extends Component {
               className={classNames('step-label step-label-2', {
                 enabled: activeStep >= 1
               })}
-              onClick={() => {
-                if (activeStep >= 1)
-                  this.setState({
-                    activeStep: 1,
-                    university: null,
-                    course: null,
-                    filterText: ''
-                  });
-              }}
+              onClick={() => this.handleBack(1)}
               optional={
                 <Typography variant="caption">
                   {this.state.university ? this.state.university.name : '-'}
@@ -103,12 +105,7 @@ export default class CourseSelector extends Component {
                 enabled: activeStep >= 2
               })}
               onClick={() => {
-                if (activeStep >= 2)
-                  this.setState({
-                    activeStep: 2,
-                    course: null,
-                    filterText: ''
-                  });
+                this.handleBack(2);
               }}
               optional={
                 <Typography variant="caption">
@@ -144,127 +141,117 @@ export default class CourseSelector extends Component {
         </Grid> */}
         {activeStep === 0 && (
           <div>
-            <Grid container spacing={8}>
-              {this.filterList(this.state.voivodeships)
-                .filter((x, i) => i < 8)
-                .map((x, i) => (
-                  <Zoom
+            {/* <Zoom
                     in={activeStep === 0}
                     timeout={transitionDuration}
                     style={{
                       transitionDelay: `${(transitionDelay * i) / 1000}s`
+                    }}></Zoom> */}
+            <Grid container spacing={8}>
+              {this.filterList(this.state.voivodeships)
+                .filter((x, i) => i < 8)
+                .map((x, i) => (
+                  <Grid
+                    item
+                    xs={3}
+                    key={x.id}
+                    className="grid-item"
+                    onClick={() => {
+                      this.setState(
+                        {
+                          activeStep: 1,
+                          voivodeship: x,
+                          filterText: ''
+                        },
+                        () =>
+                          UniService.getUniversities(
+                            this.state.voivodeship.id
+                          ).then(r => {
+                            this.setState({ universities: r });
+                          })
+                      );
                     }}>
-                    <Grid
-                      item
-                      xs={3}
-                      key={x.id}
-                      className="grid-item"
-                      onClick={() => {
-                        this.setState(
-                          {
-                            activeStep: 1,
-                            voivodeship: x,
-                            filterText: ''
-                          },
-                          () =>
-                            UniService.getUniversities(
-                              this.state.voivodeship.id
-                            ).then(r => {
-                              this.setState({ universities: r });
-                            })
-                        );
-                      }}>
-                      <Paper className="paper p-md-3" elevation={4}>
-                        {x.name}
-                      </Paper>
-                    </Grid>
-                  </Zoom>
+                    <Paper className="paper p-md-3" elevation={4}>
+                      {x.name}
+                    </Paper>
+                  </Grid>
                 ))}
             </Grid>
           </div>
         )}
         {activeStep === 1 && (
           <div>
+            {/* <Zoom
+                    in={activeStep === 1}
+                    timeout={transitionDuration}
+                    style={{
+                      transitionDelay: `${(transitionDelay * i) / 1000}s`
+                    }}></Zoom> */}
             <Grid container spacing={8}>
               {this.filterList(this.state.universities)
                 .filter(x => true)
                 .filter((x, i) => i < 8)
                 .map((x, i) => (
-                  <Zoom
-                    in={activeStep === 1}
-                    timeout={transitionDuration}
-                    style={{
-                      transitionDelay: `${(transitionDelay * i) / 1000}s`
-                    }}>
-                    <Grid
-                      item
-                      xs={3}
-                      key={x.id}
-                      className="grid-item"
-                      onClick={() => {
-                        this.setState(
-                          {
-                            activeStep: 2,
-                            university: x,
-                            filterText: ''
-                          },
-                          () =>
-                            UniService.getCourses(
-                              this.state.university.id
-                            ).then(r => {
+                  <Grid
+                    item
+                    xs={3}
+                    key={x.id}
+                    className="grid-item"
+                    onClick={() => {
+                      this.setState(
+                        {
+                          activeStep: 2,
+                          university: x,
+                          filterText: ''
+                        },
+                        () =>
+                          UniService.getCourses(this.state.university.id).then(
+                            r => {
                               this.setState({ courses: r });
-                            })
-                        );
-                      }}>
-                      <Paper className="paper p-md-3" elevation={3}>
-                        {x.name}
-                      </Paper>
-                    </Grid>
-                  </Zoom>
+                            }
+                          )
+                      );
+                    }}>
+                    <Paper className="paper p-md-3" elevation={3}>
+                      {x.name}
+                    </Paper>
+                  </Grid>
                 ))}
             </Grid>
           </div>
         )}
         {activeStep === 2 && (
           <div>
+            {/* <Grow
+                    in={activeStep === 2}
+                    timeout={transitionDuration}
+                    style={{
+                      transitionDelay: `${(transitionDelay * i) / 1000}s`
+                    }}></Grow> */}
             <Grid container spacing={8}>
               {this.filterList(this.state.courses)
                 .filter(x => true)
                 .filter((x, i) => i < 8)
                 .map((x, i) => (
-                  <Grow
-                    in={activeStep === 2}
-                    timeout={transitionDuration}
-                    style={{
-                      transitionDelay: `${(transitionDelay * i) / 1000}s`
+                  <Grid
+                    item
+                    xs={3}
+                    key={x.id}
+                    className="grid-item"
+                    onClick={() => {
+                      this.setState(
+                        {
+                          activeStep: 3,
+                          course: x,
+                          filterText: ''
+                        },
+                        this.notifyParent()
+                      );
                     }}>
-                    <Grid
-                      item
-                      xs={3}
-                      key={x.id}
-                      className="grid-item"
-                      onClick={() => {
-                        this.setState(
-                          {
-                            activeStep: 3,
-                            course: x,
-                            filterText: ''
-                          },
-                          () => {
-                            const passedData = {
-                              voivodeship: this.state.voivodeship,
-                              university: this.state.university,
-                              course: this.state.course
-                            };
-                            this.props.searchData(passedData);
-                          }
-                        );
-                      }}>
-                      <Paper className="paper p-md-3" elevation={3}>
-                        {x.name}
-                      </Paper>
-                    </Grid>
-                  </Grow>
+                    <Paper className="paper p-md-3" elevation={3}>
+                      {x.name}
+                    </Paper>
+                  </Grid>
                 ))}
             </Grid>
           </div>

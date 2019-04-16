@@ -11,9 +11,9 @@ export default class HomeLayout extends Component {
     super(props);
 
     this.state = {
-      chosenVoivodeship: '',
-      chosenUniversity: '',
-      chosenCourse: ''
+      voivodeshipId: null,
+      universityId: null,
+      courseId: null
     };
 
     this.csHandler = this.csHandler.bind(this);
@@ -21,9 +21,9 @@ export default class HomeLayout extends Component {
 
   csHandler(data) {
     this.setState({
-      chosenVoivodeship: data.voivodeship,
-      chosenUniversity: data.university,
-      chosenCourse: data.course
+      voivodeshipId: data.voivodeship,
+      universityId: data.university,
+      courseId: data.course
     });
   }
 
