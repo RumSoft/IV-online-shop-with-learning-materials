@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {
   Grid,
@@ -10,17 +9,18 @@ import {
   Step,
   StepLabel,
   Paper,
-  Typography,
-  Button,
-  Icon
+  Typography
 } from '@material-ui/core';
 
 import './index.scss';
+import APIService from '../../Services/APIService';
 
 export default class CourseSelector extends Component {
   state = {
     activeStep: 0,
-
+    voivodeships: [],
+    universities: [],
+    courses: [],
     voivodeship: null,
     university: null,
     course: null,
@@ -48,55 +48,9 @@ export default class CourseSelector extends Component {
     const transitionDuration = 300; //w ms
     const { activeStep } = this.state;
 
-    //mock data
-    const voivodeships = [
-      { id: 1, name: 'podkarpackie' },
-      { id: 2, name: 'zachodnio-pomorskie' },
-      { id: 3, name: 'swietokrzyskie' },
-      { id: 4, name: 'witam pozdrawiam' },
-      { id: 5, name: 'polska' },
-      { id: 6, name: 'ameryka' },
-      { id: 7, name: 'kujawsko-pomorskie' },
-      { id: 8, name: 'malopolskie' },
-      { id: 9, name: 'podkarpackie9' },
-      { id: 10, name: 'podkarpackie11' },
-      { id: 11, name: 'podkarpackie12' },
-      { id: 12, name: 'podkarpackie13' },
-      { id: 13, name: 'podkarpackie14' },
-      { id: 14, name: 'podkarpackie15' },
-      { id: 15, name: 'podkarpackie16' },
-      { id: 16, name: 'podkarpackie10' }
-    ];
-
-    const universities = [
-      { id: 1, name: 'politechnika' },
-      { id: 1, name: 'politechnika2' },
-      { id: 2, name: 'politechnika3' },
-      { id: 3, name: 'politechnika4' },
-      { id: 4, name: 'politechnika5' },
-      { id: 5, name: 'politechnika6' },
-      { id: 6, name: 'politechnika7' },
-      { id: 7, name: 'politechnika8' },
-      { id: 8, name: 'politechnika9' },
-      { id: 9, name: 'politechnika9' },
-      { id: 10, name: 'politechnika10' },
-      { id: 11, name: 'politechnika11' }
-    ];
-
-    const courses = [
-      { id: 1, name: 'informatyka' },
-      { id: 1, name: 'zarządzanie' },
-      { id: 2, name: 'budowa maszyn' },
-      { id: 3, name: 'chemia' },
-      { id: 4, name: 'biotechnologia' },
-      { id: 5, name: 'matematyka' },
-      { id: 6, name: 'agrokultura' },
-      { id: 7, name: 'rysowanie w paincie' },
-      { id: 8, name: 'harmonogramologia' },
-      { id: 9, name: 'witam pozdrawiam' },
-      { id: 10, name: 'i tak nie zdasz' },
-      { id: 11, name: 'programowanie w javie (fuj)' }
-    ];
+    APIService.getVoivodeships().then(data =>
+      this.setState({ voivodeships: data })
+    );
 
     return (
       <div className="course-selector">
@@ -191,7 +145,7 @@ export default class CourseSelector extends Component {
         {activeStep === 0 && (
           <div>
             <Grid container spacing={8}>
-              {this.filterList(voivodeships)
+              {this.filterList(this.state.voivodeships)
                 .filter((x, i) => i < 8)
                 .map((x, i) => (
                   <Zoom
@@ -206,11 +160,20 @@ export default class CourseSelector extends Component {
                       key={x.id}
                       className="grid-item"
                       onClick={() => {
-                        this.setState({
-                          activeStep: 1,
-                          voivodeship: x,
-                          filterText: ''
-                        });
+                        this.setState(
+                          {
+                            activeStep: 1,
+                            voivodeship: x,
+                            filterText: ''
+                          },
+                          () =>
+                            APIService.getUniversities(
+                              this.state.voivodeship.id
+                            ).then(r => {
+                              this.setState({ universities: r });
+                              console.log(r);
+                            })
+                        );
                       }}>
                       <Paper className="paper p-md-3" elevation={4}>
                         {x.name}
@@ -224,7 +187,7 @@ export default class CourseSelector extends Component {
         {activeStep === 1 && (
           <div>
             <Grid container spacing={8}>
-              {this.filterList(universities)
+              {this.filterList(this.state.universities)
                 .filter(x => true)
                 .filter((x, i) => i < 8)
                 .map((x, i) => (
@@ -240,11 +203,20 @@ export default class CourseSelector extends Component {
                       key={x.id}
                       className="grid-item"
                       onClick={() => {
-                        this.setState({
-                          activeStep: 2,
-                          university: x,
-                          filterText: ''
-                        });
+                        this.setState(
+                          {
+                            activeStep: 2,
+                            university: x,
+                            filterText: ''
+                          },
+                          () =>
+                            APIService.getCourses(
+                              this.state.university.id
+                            ).then(r => {
+                              this.setState({ courses: r });
+                              console.log(this.state.courses);
+                            })
+                        );
                       }}>
                       <Paper className="paper p-md-3" elevation={3}>
                         {x.name}
@@ -258,7 +230,7 @@ export default class CourseSelector extends Component {
         {activeStep === 2 && (
           <div>
             <Grid container spacing={8}>
-              {this.filterList(courses)
+              {this.filterList(this.state.courses)
                 .filter(x => true)
                 .filter((x, i) => i < 8)
                 .map((x, i) => (
