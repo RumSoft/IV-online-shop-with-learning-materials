@@ -62,40 +62,5 @@ namespace Projekcik.Api.Controllers
                 });
             return Ok(data);
         }
-
-        /// <summary>
-        /// Returns whole tree of voivodeships / universities / courses  
-        /// </summary>
-        /// <returns>IActionResult containing anonymous type</returns>
-        [HttpGet("all")]
-        public IActionResult GetAll()
-        {
-            var voivodeships = _context.Voivodeships.ToList();
-            var universities = _context.Universities.ToList();
-            var courses = _context.Courses.ToList();
-
-            var data = voivodeships.Select(x => new
-            {
-                x.Id,
-                x.Name,
-                x.ImageUrl,
-                Universities = universities
-                    .Where(y => y.VoivodeshipId == y.Id)
-                    .Select(y => new
-                    {
-                        y.Id,
-                        y.Name,
-                        y.ImageUrl,
-                        Courses = courses
-                            .Where(z => z.UniversityId == y.Id)
-                            .Select(z => new
-                            {
-                                z.Id,
-                                z.Name
-                            })
-                    })
-            });
-            return Ok(data);
-        }
     }
 }
