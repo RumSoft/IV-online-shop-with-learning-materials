@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 
 import './index.scss';
-import APIService from '../../Services/APIService';
+import UniService from '../../Services/UniService';
 
 export default class CourseSelector extends Component {
   state = {
@@ -48,7 +48,7 @@ export default class CourseSelector extends Component {
     const transitionDuration = 300; //w ms
     const { activeStep } = this.state;
 
-    APIService.getVoivodeships().then(data =>
+    UniService.getVoivodeships().then(data =>
       this.setState({ voivodeships: data })
     );
 
@@ -167,7 +167,7 @@ export default class CourseSelector extends Component {
                             filterText: ''
                           },
                           () =>
-                            APIService.getUniversities(
+                            UniService.getUniversities(
                               this.state.voivodeship.id
                             ).then(r => {
                               this.setState({ universities: r });
@@ -209,7 +209,7 @@ export default class CourseSelector extends Component {
                             filterText: ''
                           },
                           () =>
-                            APIService.getCourses(
+                            UniService.getCourses(
                               this.state.university.id
                             ).then(r => {
                               this.setState({ courses: r });
