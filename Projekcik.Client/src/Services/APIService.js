@@ -48,4 +48,18 @@ export default class APIService {
       accessToken: accessToken
     });
   }
+
+  static getVoivodeships() {
+    return axios.get(`${API_URL}/api/Uni`).then(r => r.data);
+  }
+
+  static getUniversities(voivodeshipId) {
+    return axios.get(`${API_URL}/api/Uni/${voivodeshipId}`).then(r => r.data);
+  }
+
+  static getCourses(universityId) {
+    return axios
+      .get(`${API_URL}/api/Uni/university/${universityId}`)
+      .then(r => r.data);
+  }
 }
