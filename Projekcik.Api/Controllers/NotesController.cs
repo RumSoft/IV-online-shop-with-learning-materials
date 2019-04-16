@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Reflection;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +12,7 @@ using Projekcik.Api.Helpers;
 using Projekcik.Api.Models;
 using Projekcik.Api.Models.DTO;
 using Projekcik.Api.Services;
+using static Projekcik.Api.Models.Extension;
 
 namespace Projekcik.Api.Controllers
 {
@@ -49,7 +52,9 @@ namespace Projekcik.Api.Controllers
 
         /// <summary>
         /// Send file to server, currently only pdf supported.
-        /// Please send this as form-data
+        /// Please send this as form-data.
+        /// Real parameters are: file, name, description, price, course.
+        /// Please do not get fooled by swagger that spreads file on more properties.
         /// </summary>
         /// <param name="file">The note</param>
         /// <param name="name">Name of note</param>
@@ -63,6 +68,7 @@ namespace Projekcik.Api.Controllers
             [FromForm] string name,
             [FromForm] string description,
             [FromForm] decimal price,
+            [FromForm] int semester,
             [FromForm] int course
         )
         {
@@ -74,10 +80,10 @@ namespace Projekcik.Api.Controllers
             if (file.Length <= 0)
                 return BadRequest("File error");
 
-            var allowedExtensions = new[] {"pdf"};
-            var extension = file.FileName.Split('.', StringSplitOptions.RemoveEmptyEntries).Last();
-            if (!allowedExtensions.Contains(extension.ToLower()))
-                return BadRequest("Unsupported file type");
+            var ext = file.FileName.Split('.', StringSplitOptions.RemoveEmptyEntries).Last();
+            var extension = Enum.Parse(typeof(Extension), ext, true) as Extension?;
+            if (extension == null)
+                throw new UnsupportedMediaTypeException("unsupported", null);
 
             var userId = _user.GetCurrentUserId();
             var user = _userService.GetById(userId);
@@ -104,7 +110,8 @@ namespace Projekcik.Api.Controllers
                 Name = name,
                 Price = price,
                 Description = description,
-                CourseId = course
+                CourseId = course,
+                FileExtension = extension.Value
             };
             _noteService.Create(note);
 
@@ -130,7 +137,7 @@ namespace Projekcik.Api.Controllers
             if (user == null)
                 return BadRequest();
 
-            //if(!user has bought note)
+            //if(!user has bought note or is owner)
             //  return 400
 
             var note = _noteService.GetNoteById(noteId);
@@ -144,12 +151,32 @@ namespace Projekcik.Api.Controllers
                 note.Id.ToString());
 
             var result =
-                new FileContentResult(System.IO.File.ReadAllBytes(filepath), "application/pdf")
+                new FileContentResult(System.IO.File.ReadAllBytes(filepath), FileType.ToContentType(note.FileExtension))
                 {
-                    FileDownloadName = $"{note.Name}.pdf"
+                    FileDownloadName = $"{note.Name}.{note.FileExtension.ToString()}"
                 };
 
             return result;
+        }
+
+        [AllowAnonymous]
+        [HttpGet("search")]
+        public IActionResult Search(
+            [FromQuery] SearchParams searchParams,
+            [FromQuery] PagerParams pagerParams
+            )
+        {
+            var result = _noteService.Search(searchParams, pagerParams);
+            //todo mapper
+            return Ok(result.Select(x => new
+            {
+                x.Name,
+                x.Description,
+                x.Price,
+                x.Semester,
+                CourseName = x.Course.Name,
+                UniversityName = x.Course.University.Name,
+            }));
         }
     }
 }
