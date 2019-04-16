@@ -171,7 +171,6 @@ export default class CourseSelector extends Component {
                               this.state.voivodeship.id
                             ).then(r => {
                               this.setState({ universities: r });
-                              console.log(r);
                             })
                         );
                       }}>
@@ -214,7 +213,6 @@ export default class CourseSelector extends Component {
                               this.state.university.id
                             ).then(r => {
                               this.setState({ courses: r });
-                              console.log(this.state.courses);
                             })
                         );
                       }}>

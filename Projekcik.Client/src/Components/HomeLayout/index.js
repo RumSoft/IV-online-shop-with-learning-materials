@@ -20,14 +20,11 @@ export default class HomeLayout extends Component {
   }
 
   csHandler(data) {
-    this.setState(
-      {
-        chosenVoivodeship: data.voivodeship,
-        chosenUniversity: data.university,
-        chosenCourse: data.course
-      },
-      () => console.log(this.state)
-    );
+    this.setState({
+      chosenVoivodeship: data.voivodeship,
+      chosenUniversity: data.university,
+      chosenCourse: data.course
+    });
   }
 
   render() {
