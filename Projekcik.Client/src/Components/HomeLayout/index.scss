@@ -1,9 +1,9 @@
 .home-layout {
   .main {
-
     // padding: 2rem 5rem;
     // margin: rem 0;
-    h1 {}
+    h1 {
+    }
 
     p {
       max-width: 600px;
@@ -14,4 +14,12 @@
     padding: 1rem;
   }
 
+  .footer {
+    background-color: #3f51b5;
+    padding: 2rem;
+  }
+  .footer-item {
+    text-align: center;
+    color: white;
+  }
 }
