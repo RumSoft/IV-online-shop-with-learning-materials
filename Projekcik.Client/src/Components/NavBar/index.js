@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import './index.scss';
 import APIService from '../../Services/APIService';
 import SearchBar from '../SearchBar';
+import logo from './logoWhite.png';
 
 export default class NavBar extends Component {
   constructor(props) {
@@ -35,10 +36,7 @@ export default class NavBar extends Component {
         <Navbar className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3">
           <Container>
             <NavbarBrand tag={Link} to="/">
-              Projekcik{' '}
-              <small>
-                <sub>witam pozdrawiam</sub>
-              </small>
+              <img src={logo} alt="ShopLogo" width="200" height="60" />
             </NavbarBrand>
             <SearchBar />
             <NavbarToggler onClick={this.toggle} className="mr-2" />
