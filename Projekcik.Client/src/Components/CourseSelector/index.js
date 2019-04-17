@@ -168,18 +168,15 @@ export default class CourseSelector extends Component {
           </Step>
         </Stepper>
         {activeStep < 3 && (
-          <div>
-            <TextField
-              id="filterText"
-              className="field mb-3"
-              label="Wyszukaj"
-              variant="outlined"
-              fullWidth
-              value={this.state.filterText}
-              onChange={this.handleChange}
-            />
-            <p>wyników</p>
-          </div>
+          <TextField
+            id="filterText"
+            className="field mb-3"
+            label="Wyszukaj"
+            variant="outlined"
+            fullWidth
+            value={this.state.filterText}
+            onChange={this.handleChange}
+          />
         )}
 
         {activeStep === 0 && (
