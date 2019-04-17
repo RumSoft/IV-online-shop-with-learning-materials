@@ -1,64 +1,83 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Card from '@material-ui/core/Card';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
-import { styles } from './styles';
 import CourseSelector from '../CourseSelector';
 
 import './index.scss';
 
-function HomeLayout(props) {
-  const { classes } = props;
+export default class HomeLayout extends Component {
+  constructor(props) {
+    super(props);
 
-  return (
-    <div className="home-layout">
-      <React.Fragment>
-        <CssBaseline />
-        <Card className="main mb-3 mx-auto">
-          <Typography
-            component="h1"
-            className="title mx-auto"
-            variant="h4"
-            align="center"
-            color="textPrimary"
-            gutterBottom>
-            Witaj w sklepie LeniwyStudent.pl !
-          </Typography>
-          <Typography
-            className="subtitle mx-auto"
-            align="center"
-            color="textSecondary"
-            paragraph>
-            Wyszukaj najlepsze notatki studenckie dla Ciebie według poniższych
-            kryteriów lub użyj wyszukiwarki. Zachęcamy również do założenia
-            własnego konta, aby móc sprzedawać własne notatki. Zajmie Ci to
-            dosłownie 3.14159265359 sekund!
-          </Typography>
-        </Card>
+    this.state = {
+      selection: {
+        voivodeshipId: null,
+        universityId: null,
+        courseId: null
+      }
+    };
 
-        <Card className="course-selector-card mb-3">
-          <CourseSelector />
-          <hr />
-          <div>szybkie okienko pierwszych wników</div>
-          <a href="#"> pokaż więcej </a>
-        </Card>
+    this.courseSelectorHandler = this.courseSelectorHandler.bind(this);
+  }
 
-        <footer className={classes.footer}>
-          <h6 className={classes.footerItem}>Stopka</h6>
-          <p className={classes.footerItem}>
+  courseSelectorHandler(data) {
+    this.setState({ selection: data });
+  }
+
+  render() {
+    return (
+      <div className="home-layout">
+        <React.Fragment>
+          <CssBaseline />
+          <Card className="main mb-3 mx-auto">
+            <Typography
+              component="h1"
+              className="title mx-auto"
+              variant="h4"
+              align="center"
+              color="textPrimary"
+              gutterBottom>
+              Witaj w sklepie "Witam Pozdrawiam"!
+            </Typography>
             <Typography
               className="subtitle mx-auto"
               align="center"
               color="textSecondary"
               paragraph>
-              Skontaktuj się z nami!
+              Wyszukaj najlepsze notatki studenckie dla Ciebie według poniższych
+              kryteriów lub użyj wyszukiwarki. Zachęcamy również do założenia
+              własnego konta, aby móc sprzedawać własne notatki. Zajmię Ci to
+              dosłownie 3.14159265359 sekund!
             </Typography>
-          </p>
-        </footer>
-      </React.Fragment>
-    </div>
-  );
-}
+          </Card>
 
-export default withStyles(styles)(HomeLayout);
+          <Card className="course-selector-card mb-3">
+            <CourseSelector searchData={this.courseSelectorHandler} />
+            <hr />
+            <div>szybkie okienko pierwszych wników</div>
+            {/* use those values to search for notes */}
+            <p>
+              {[
+                this.state.selection.voivodeshipId,
+                this.state.selection.universityId,
+                this.state.selection.courseId
+              ]
+                .filter(x => x)
+                .join(', ')}
+            </p>
+            <a href="#"> pokaż więcej </a>
+          </Card>
+
+          <footer className="footer">
+            <h6 className="footer-item">Stopka</h6>
+            <p className="footer-item">
+              Skontaktuj się z nami (zwykły tag p > Typography)
+            </p>
+          </footer>
+          {/* End Stopka */}
+        </React.Fragment>
+      </div>
+    );
+  }
+}

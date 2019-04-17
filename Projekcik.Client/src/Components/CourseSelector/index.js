@@ -1,30 +1,38 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {
   Grid,
   TextField,
-  Zoom,
-  Grow,
   Stepper,
   Step,
   StepLabel,
   Paper,
-  Typography,
-  Button,
-  Icon
+  Typography
 } from '@material-ui/core';
 
 import './index.scss';
+import UniService from '../../Services/UniService';
 
 export default class CourseSelector extends Component {
+  constructor(props) {
+    super(props);
+    UniService.getVoivodeships().then(r => {
+      this.setState({ data: { ...this.state.data, voivodeships: r } });
+    });
+  }
+
   state = {
+    selection: {
+      voivodeship: null,
+      university: null,
+      course: null
+    },
+    data: {
+      voivodeships: [],
+      universities: [],
+      courses: []
+    },
     activeStep: 0,
-
-    voivodeship: null,
-    university: null,
-    course: null,
-
     filterText: ''
   };
 
@@ -43,82 +51,91 @@ export default class CourseSelector extends Component {
     ));
   };
 
+  notifyParent() {
+    this.props.searchData({
+      voivodeshipId: this.state.selection.voivodeship
+        ? this.state.selection.voivodeship.id
+        : null,
+      universityId: this.state.selection.university
+        ? this.state.selection.university.id
+        : null,
+      courseId: this.state.selection.course
+        ? this.state.selection.course.id
+        : null
+    });
+  }
+
+  handleBackTo(step) {
+    if (step > this.state.activeStep) return;
+    let reset = { course: null };
+    if (step <= 1) reset = { university: null, ...reset };
+    if (step <= 0) reset = { voivodeship: null, ...reset };
+
+    this.setState(
+      {
+        activeStep: step,
+        filterText: '',
+        selection: { ...this.state.selection, ...reset }
+      },
+      () => this.notifyParent()
+    );
+  }
+
+  handleForward(item) {
+    if (this.state.activeStep === 0) {
+      UniService.getUniversities(item.id).then(r => {
+        this.setState(
+          {
+            activeStep: 1,
+            filterText: '',
+            selection: { ...this.state.selection, voivodeship: item },
+            data: { ...this.state.data, universities: r }
+          },
+          () => this.notifyParent()
+        );
+      });
+    } else if (this.state.activeStep === 1) {
+      UniService.getCourses(item.id).then(r => {
+        this.setState(
+          {
+            activeStep: 2,
+            filterText: '',
+            selection: { ...this.state.selection, university: item },
+            data: { ...this.state.data, courses: r }
+          },
+          () => this.notifyParent()
+        );
+      });
+    } else if (this.state.activeStep === 2) {
+      this.setState(
+        {
+          activeStep: 3,
+          filterText: '',
+          selection: {
+            ...this.state.selection,
+            course: item
+          }
+        },
+        () => this.notifyParent()
+      );
+    }
+  }
+
   render() {
-    const transitionDelay = 100; // w ms;
-    const transitionDuration = 300; //w ms
-    const { activeStep } = this.state;
-
-    //mock data
-    const voivodeships = [
-      { id: 1, name: 'podkarpackie' },
-      { id: 2, name: 'zachodnio-pomorskie' },
-      { id: 3, name: 'swietokrzyskie' },
-      { id: 4, name: 'witam pozdrawiam' },
-      { id: 5, name: 'polska' },
-      { id: 6, name: 'ameryka' },
-      { id: 7, name: 'kujawsko-pomorskie' },
-      { id: 8, name: 'malopolskie' },
-      { id: 9, name: 'podkarpackie9' },
-      { id: 10, name: 'podkarpackie11' },
-      { id: 11, name: 'podkarpackie12' },
-      { id: 12, name: 'podkarpackie13' },
-      { id: 13, name: 'podkarpackie14' },
-      { id: 14, name: 'podkarpackie15' },
-      { id: 15, name: 'podkarpackie16' },
-      { id: 16, name: 'podkarpackie10' }
-    ];
-
-    const universities = [
-      { id: 1, name: 'politechnika' },
-      { id: 1, name: 'politechnika2' },
-      { id: 2, name: 'politechnika3' },
-      { id: 3, name: 'politechnika4' },
-      { id: 4, name: 'politechnika5' },
-      { id: 5, name: 'politechnika6' },
-      { id: 6, name: 'politechnika7' },
-      { id: 7, name: 'politechnika8' },
-      { id: 8, name: 'politechnika9' },
-      { id: 9, name: 'politechnika9' },
-      { id: 10, name: 'politechnika10' },
-      { id: 11, name: 'politechnika11' }
-    ];
-
-    const courses = [
-      { id: 1, name: 'informatyka' },
-      { id: 1, name: 'zarządzanie' },
-      { id: 2, name: 'budowa maszyn' },
-      { id: 3, name: 'chemia' },
-      { id: 4, name: 'biotechnologia' },
-      { id: 5, name: 'matematyka' },
-      { id: 6, name: 'agrokultura' },
-      { id: 7, name: 'rysowanie w paincie' },
-      { id: 8, name: 'harmonogramologia' },
-      { id: 9, name: 'witam pozdrawiam' },
-      { id: 10, name: 'i tak nie zdasz' },
-      { id: 11, name: 'programowanie w javie (fuj)' }
-    ];
-
+    const { activeStep, selection, data } = this.state;
     return (
       <div className="course-selector">
-        <Stepper activeStep={activeStep}>
+        <Stepper activeStep={activeStep} className="course-selector-stepper">
           <Step>
             <StepLabel
               className="step-label step-label-1 enabled"
-              onClick={() => {
-                this.setState({
-                  activeStep: 0,
-                  university: null,
-                  voivodeship: null,
-                  course: null,
-                  filterText: ''
-                });
-              }}
+              onClick={() => this.handleBackTo(0)}
               optional={
-                <Typography variant="caption">
-                  {this.state.voivodeship ? this.state.voivodeship.name : '-'}
+                <Typography variant="caption" className="step-label-caption">
+                  {selection.voivodeship ? selection.voivodeship.name : '-'}
                 </Typography>
               }>
-              Województwo
+              <Typography className="step-label-title">Województwo</Typography>
             </StepLabel>
           </Step>
           <Step>
@@ -126,21 +143,13 @@ export default class CourseSelector extends Component {
               className={classNames('step-label step-label-2', {
                 enabled: activeStep >= 1
               })}
-              onClick={() => {
-                if (activeStep >= 1)
-                  this.setState({
-                    activeStep: 1,
-                    university: null,
-                    course: null,
-                    filterText: ''
-                  });
-              }}
+              onClick={() => this.handleBackTo(1)}
               optional={
-                <Typography variant="caption">
-                  {this.state.university ? this.state.university.name : '-'}
+                <Typography variant="caption" className="step-label-caption">
+                  {selection.university ? selection.university.name : '-'}
                 </Typography>
               }>
-              Uczelnia
+              <Typography className="step-label-title">Uczelnia</Typography>
             </StepLabel>
           </Step>
           <Step>
@@ -149,145 +158,89 @@ export default class CourseSelector extends Component {
                 enabled: activeStep >= 2
               })}
               onClick={() => {
-                if (activeStep >= 2)
-                  this.setState({
-                    activeStep: 2,
-                    course: null,
-                    filterText: ''
-                  });
+                this.handleBackTo(2);
               }}
               optional={
-                <Typography variant="caption">
-                  {this.state.course ? this.state.course.name : '-'}
+                <Typography variant="caption" className="step-label-caption">
+                  {selection.course ? selection.course.name : '-'}
                 </Typography>
               }>
-              Kierunek
+              <Typography className="step-label-title">Kierunek</Typography>
             </StepLabel>
           </Step>
         </Stepper>
-        {/* <Grid container spacing={8}>
-          <Grid item xs={4} sm={3} md={2} xl={1}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={this.handleFacebookLogin}
-              className="undo-button">
-              <Icon className="fas fa-undo-alt " />
-              {'  '}Cofnij
-            </Button>
-          </Grid>
-          <Grid xs={8} sm={9} md={10} xl={11}> */}
-        <TextField
-          id="filterText"
-          className="field mb-3"
-          label="Wyszukaj"
-          variant="outlined"
-          fullWidth
-          value={this.state.filterText}
-          onChange={this.handleChange}
-        />
-        {/* </Grid>
-        </Grid> */}
+        {activeStep < 3 && (
+          <TextField
+            id="filterText"
+            className="field mb-3"
+            label="Wyszukaj"
+            variant="outlined"
+            fullWidth
+            value={this.state.filterText}
+            onChange={this.handleChange}
+          />
+        )}
+
         {activeStep === 0 && (
-          <div>
-            <Grid container spacing={8}>
-              {this.filterList(voivodeships)
-                .filter((x, i) => i < 8)
-                .map((x, i) => (
-                  <Zoom
-                    in={activeStep === 0}
-                    timeout={transitionDuration}
-                    style={{
-                      transitionDelay: `${(transitionDelay * i) / 1000}s`
-                    }}>
-                    <Grid
-                      item
-                      xs={3}
-                      key={x.id}
-                      className="grid-item"
-                      onClick={() => {
-                        this.setState({
-                          activeStep: 1,
-                          voivodeship: x,
-                          filterText: ''
-                        });
-                      }}>
-                      <Paper className="paper p-md-3" elevation={4}>
-                        {x.name}
-                      </Paper>
-                    </Grid>
-                  </Zoom>
-                ))}
-            </Grid>
-          </div>
+          <Grid
+            container
+            spacing={8}
+            direction="row"
+            justify="center"
+            alignItems="stretch">
+            {this.filterList(data.voivodeships)
+              .filter((x, i) => i < 8)
+              .map((x, i) => (
+                <Grid
+                  item
+                  xs={3}
+                  key={x.id}
+                  className="grid-item"
+                  onClick={() => this.handleForward(x)}>
+                  <Paper className="paper p-md-2 p-1" elevation={4}>
+                    <span>{x.name}</span>
+                  </Paper>
+                </Grid>
+              ))}
+          </Grid>
         )}
         {activeStep === 1 && (
-          <div>
-            <Grid container spacing={8}>
-              {this.filterList(universities)
-                .filter(x => true)
-                .filter((x, i) => i < 8)
-                .map((x, i) => (
-                  <Zoom
-                    in={activeStep === 1}
-                    timeout={transitionDuration}
-                    style={{
-                      transitionDelay: `${(transitionDelay * i) / 1000}s`
-                    }}>
-                    <Grid
-                      item
-                      xs={3}
-                      key={x.id}
-                      className="grid-item"
-                      onClick={() => {
-                        this.setState({
-                          activeStep: 2,
-                          university: x,
-                          filterText: ''
-                        });
-                      }}>
-                      <Paper className="paper p-md-3" elevation={3}>
-                        {x.name}
-                      </Paper>
-                    </Grid>
-                  </Zoom>
-                ))}
-            </Grid>
-          </div>
+          <Grid container spacing={8}>
+            {this.filterList(data.universities)
+              .filter(x => true)
+              .filter((x, i) => i < 8)
+              .map((x, i) => (
+                <Grid
+                  item
+                  xs={3}
+                  key={x.id}
+                  className="grid-item"
+                  onClick={() => this.handleForward(x)}>
+                  <Paper className="paper p-md-2 p-1" elevation={3}>
+                    <span>{x.name}</span>
+                  </Paper>
+                </Grid>
+              ))}
+          </Grid>
         )}
         {activeStep === 2 && (
-          <div>
-            <Grid container spacing={8}>
-              {this.filterList(courses)
-                .filter(x => true)
-                .filter((x, i) => i < 8)
-                .map((x, i) => (
-                  <Grow
-                    in={activeStep === 2}
-                    timeout={transitionDuration}
-                    style={{
-                      transitionDelay: `${(transitionDelay * i) / 1000}s`
-                    }}>
-                    <Grid
-                      item
-                      xs={3}
-                      key={x.id}
-                      className="grid-item"
-                      onClick={() => {
-                        this.setState({
-                          activeStep: 3,
-                          course: x,
-                          filterText: ''
-                        });
-                      }}>
-                      <Paper className="paper p-md-3" elevation={3}>
-                        {x.name}
-                      </Paper>
-                    </Grid>
-                  </Grow>
-                ))}
-            </Grid>
-          </div>
+          <Grid container spacing={8}>
+            {this.filterList(data.courses)
+              .filter(x => true)
+              .filter((x, i) => i < 8)
+              .map((x, i) => (
+                <Grid
+                  item
+                  xs={3}
+                  key={x.id}
+                  className="grid-item"
+                  onClick={() => this.handleForward(x)}>
+                  <Paper className="paper p-md-3 p-1" elevation={3}>
+                    <span>{x.name}</span>
+                  </Paper>
+                </Grid>
+              ))}
+          </Grid>
         )}
       </div>
     );
