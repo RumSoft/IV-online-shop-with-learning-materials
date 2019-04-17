@@ -8,6 +8,12 @@ import {
   NavItem,
   NavLink
 } from 'reactstrap';
+import LoginIcon from '@material-ui/icons/Person';
+import RegisterIcon from '@material-ui/icons/GroupAdd';
+import MailIcon from '@material-ui/icons/Mail';
+import AddIcon from '@material-ui/icons/AddShoppingCart';
+import HomeIcon from '@material-ui/icons/Home';
+import NotificationsIcon from '@material-ui/icons/Notifications';
 import { Link } from 'react-router-dom';
 import './index.scss';
 import APIService from '../../Services/APIService';
@@ -45,19 +51,46 @@ export default class NavBar extends Component {
               isOpen={this.state.isOpen}
               navbar>
               <ul className="navbar-nav flex-grow">
+                <NavItem hidden={isLogged}>
+                  <NavLink tag={Link} to="/">
+                    <button className="btn btn-light my-2 my-sm-0">
+                      <AddIcon />
+                    </button>
+                  </NavLink>
+                </NavItem>
+                <NavItem hidden={!isLogged}>
+                  <NavLink tag={Link} to="/">
+                    <button className="btn btn-light my-2 my-sm-0">
+                      <MailIcon />
+                    </button>
+                  </NavLink>
+                </NavItem>
+                <NavItem hidden={!isLogged}>
+                  <NavLink tag={Link} to="/">
+                    <button className="btn btn-light my-2 my-sm-0">
+                      <NotificationsIcon />
+                    </button>
+                  </NavLink>
+                </NavItem>
                 <NavItem>
                   <NavLink tag={Link} to="/">
-                    Home
+                    <button className="btn btn-light my-2 my-sm-0">
+                      <HomeIcon />
+                    </button>
                   </NavLink>
                 </NavItem>
                 <NavItem hidden={isLogged}>
                   <NavLink tag={Link} to="/register">
-                    Register
+                    <button className="btn btn-light my-2 my-sm-0">
+                      <RegisterIcon />
+                    </button>
                   </NavLink>
                 </NavItem>
                 <NavItem hidden={isLogged}>
                   <NavLink tag={Link} to="/login">
-                    Login
+                    <button className="btn btn-light my-2 my-sm-0">
+                      <LoginIcon />
+                    </button>
                   </NavLink>
                 </NavItem>
                 <NavItem hidden={!isLogged}>
