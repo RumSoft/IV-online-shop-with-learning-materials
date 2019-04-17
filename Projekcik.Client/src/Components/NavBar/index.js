@@ -8,6 +8,8 @@ import {
   NavItem,
   NavLink
 } from 'reactstrap';
+import AccountIcon from '@material-ui/icons/AccountBox';
+import LogOutIcon from '@material-ui/icons/TransferWithinAStation';
 import LoginIcon from '@material-ui/icons/Person';
 import RegisterIcon from '@material-ui/icons/GroupAdd';
 import MailIcon from '@material-ui/icons/Mail';
@@ -95,12 +97,16 @@ export default class NavBar extends Component {
                 </NavItem>
                 <NavItem hidden={!isLogged}>
                   <NavLink tag={Link} className="text-dark" to="/protected">
-                    User Panel
+                    <button className="btn btn-light my-2 my-sm-0">
+                      <AccountIcon />
+                    </button>
                   </NavLink>
                 </NavItem>
                 <NavItem hidden={!isLogged}>
                   <NavLink tag={Link} className="text-dark" to="/logout">
-                    Log Out
+                    <button className="btn btn-light my-2 my-sm-0">
+                      <LogOutIcon />
+                    </button>
                   </NavLink>
                 </NavItem>
               </ul>
