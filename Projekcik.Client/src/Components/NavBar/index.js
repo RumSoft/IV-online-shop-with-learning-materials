@@ -12,9 +12,7 @@ import AccountIcon from '@material-ui/icons/AccountBox';
 import LogOutIcon from '@material-ui/icons/TransferWithinAStation';
 import LoginIcon from '@material-ui/icons/Person';
 import RegisterIcon from '@material-ui/icons/GroupAdd';
-import MailIcon from '@material-ui/icons/Mail';
 import AddIcon from '@material-ui/icons/AddShoppingCart';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import { Link } from 'react-router-dom';
 import './index.scss';
 import APIService from '../../Services/APIService';
@@ -43,33 +41,19 @@ export default class NavBar extends Component {
         <Navbar className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3">
           <Container>
             <NavbarBrand tag={Link} to="/">
-              <img src={logo} alt="ShopLogo" width="200" height="60" />
+              <img src={logo} alt="ShopLogo" class="imgMobile imgDesktop" />
             </NavbarBrand>
             <SearchBar />
             <NavbarToggler onClick={this.toggle} className="mr-2" />
             <Collapse
-              className="d-sm-inline-flex flex-sm-row-reverse"
+              className="d-sm-inline-flex flex-sm-row-reverse form-inline container"
               isOpen={this.state.isOpen}
               navbar>
-              <ul className="navbar-nav flex-grow">
+              <ul className="navbar-nav flex-grow mobile">
                 <NavItem hidden={isLogged}>
                   <NavLink tag={Link} to="/">
                     <button className="btn btn-light my-2 my-sm-0">
                       <AddIcon />
-                    </button>
-                  </NavLink>
-                </NavItem>
-                <NavItem hidden={!isLogged}>
-                  <NavLink tag={Link} to="/">
-                    <button className="btn btn-light my-2 my-sm-0">
-                      <MailIcon />
-                    </button>
-                  </NavLink>
-                </NavItem>
-                <NavItem hidden={!isLogged}>
-                  <NavLink tag={Link} to="/">
-                    <button className="btn btn-light my-2 my-sm-0">
-                      <NotificationsIcon />
                     </button>
                   </NavLink>
                 </NavItem>

@@ -68,8 +68,21 @@ $colHighlight: #ecdbff;
   }
 }
 
+.imgDesktop {
+  width: 200px;
+  height: 60px;
+}
 @media (min-width: 768px) {
   html {
     font-size: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .imgMobile {
+    display: none;
+  }
+  .mobile {
+    float: left;
   }
 }
