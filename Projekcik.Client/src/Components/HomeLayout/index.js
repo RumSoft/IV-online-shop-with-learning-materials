@@ -11,20 +11,18 @@ export default class HomeLayout extends Component {
     super(props);
 
     this.state = {
-      voivodeshipId: null,
-      universityId: null,
-      courseId: null
+      selection: {
+        voivodeshipId: null,
+        universityId: null,
+        courseId: null
+      }
     };
 
-    this.csHandler = this.csHandler.bind(this);
+    this.courseSelectorHandler = this.courseSelectorHandler.bind(this);
   }
 
-  csHandler(data) {
-    this.setState({
-      voivodeshipId: data.voivodeship,
-      universityId: data.university,
-      courseId: data.course
-    });
+  courseSelectorHandler(data) {
+    this.setState({ selection: data });
   }
 
   render() {
@@ -55,9 +53,19 @@ export default class HomeLayout extends Component {
           </Card>
 
           <Card className="course-selector-card mb-3">
-            <CourseSelector searchData={this.csHandler} />
+            <CourseSelector searchData={this.courseSelectorHandler} />
             <hr />
             <div>szybkie okienko pierwszych wników</div>
+            {/* use those values to search for notes */}
+            <p>
+              {[
+                this.state.selection.voivodeshipId,
+                this.state.selection.universityId,
+                this.state.selection.courseId
+              ]
+                .filter(x => x)
+                .join(', ')}
+            </p>
             <a href="#"> pokaż więcej </a>
           </Card>
 

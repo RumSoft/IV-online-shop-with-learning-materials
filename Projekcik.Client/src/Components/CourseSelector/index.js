@@ -3,8 +3,6 @@ import classNames from 'classnames';
 import {
   Grid,
   TextField,
-  Zoom,
-  Grow,
   Stepper,
   Step,
   StepLabel,
@@ -16,15 +14,25 @@ import './index.scss';
 import UniService from '../../Services/UniService';
 
 export default class CourseSelector extends Component {
-  state = {
-    voivodeship: null,
-    university: null,
-    course: null,
-    activeStep: 0,
-    voivodeships: [],
-    universities: [],
-    courses: [],
+  constructor(props) {
+    super(props);
+    UniService.getVoivodeships().then(r => {
+      this.setState({ data: { ...this.state.data, voivodeships: r } });
+    });
+  }
 
+  state = {
+    selection: {
+      voivodeship: null,
+      university: null,
+      course: null
+    },
+    data: {
+      voivodeships: [],
+      universities: [],
+      courses: []
+    },
+    activeStep: 0,
     filterText: ''
   };
 
@@ -44,42 +52,85 @@ export default class CourseSelector extends Component {
   };
 
   notifyParent() {
-    const passedData = {
-      voivodeship: this.state.voivodeship,
-      university: this.state.university,
-      course: this.state.course
-    };
-    this.props.searchData(passedData);
+    this.props.searchData({
+      voivodeshipId: this.state.selection.voivodeship
+        ? this.state.selection.voivodeship.id
+        : null,
+      universityId: this.state.selection.university
+        ? this.state.selection.university.id
+        : null,
+      courseId: this.state.selection.course
+        ? this.state.selection.course.id
+        : null
+    });
   }
 
-  handleBack(step) {
-    let reset = { _2: null, activeStep: step, filterText: '' };
-    if (step <= 1) reset = { _1: null, ...reset };
-    if (step <= 0) reset = { _0: null, ...reset };
+  handleBackTo(step) {
+    if (step > this.state.activeStep) return;
 
-    this.setState(reset);
+    let reset = { course: null, activeStep: step, filterText: '' };
+    if (step <= 1) reset = { university: null, ...reset };
+    if (step <= 0) reset = { voivodeship: null, ...reset };
+
+    this.setState({
+      activeStep: step,
+      selection: { ...this.state.selection, ...reset }
+    });
     this.notifyParent();
   }
 
+  handleForward(item) {
+    if (this.state.activeStep === 0) {
+      UniService.getUniversities(item.id).then(r => {
+        this.setState(
+          {
+            activeStep: 1,
+            filterText: '',
+            selection: { ...this.state.selection, voivodeship: item },
+            data: { ...this.state.data, universities: r }
+          },
+          () => this.notifyParent()
+        );
+      });
+    } else if (this.state.activeStep === 1) {
+      UniService.getCourses(item.id).then(r => {
+        this.setState(
+          {
+            activeStep: 2,
+            filterText: '',
+            selection: { ...this.state.selection, university: item },
+            data: { ...this.state.data, courses: r }
+          },
+          () => this.notifyParent()
+        );
+      });
+    } else if (this.state.activeStep === 2) {
+      this.setState(
+        {
+          activeStep: 3,
+          filterText: '',
+          selection: {
+            ...this.state.selection,
+            course: item
+          }
+        },
+        () => this.notifyParent()
+      );
+    }
+  }
+
   render() {
-    // const transitionDelay = 100; // w ms;
-    // const transitionDuration = 300; //w ms
-    const { activeStep } = this.state;
-
-    UniService.getVoivodeships().then(data =>
-      this.setState({ voivodeships: data })
-    );
-
+    const { activeStep, selection, data } = this.state;
     return (
       <div className="course-selector">
         <Stepper activeStep={activeStep}>
           <Step>
             <StepLabel
               className="step-label step-label-1 enabled"
-              onClick={() => this.handleBack(0)}
+              onClick={() => this.handleBackTo(0)}
               optional={
                 <Typography variant="caption">
-                  {this.state.voivodeship ? this.state.voivodeship.name : '-'}
+                  {selection.voivodeship ? selection.voivodeship.name : '-'}
                 </Typography>
               }>
               Województwo
@@ -90,10 +141,10 @@ export default class CourseSelector extends Component {
               className={classNames('step-label step-label-2', {
                 enabled: activeStep >= 1
               })}
-              onClick={() => this.handleBack(1)}
+              onClick={() => this.handleBackTo(1)}
               optional={
                 <Typography variant="caption">
-                  {this.state.university ? this.state.university.name : '-'}
+                  {selection.university ? selection.university.name : '-'}
                 </Typography>
               }>
               Uczelnia
@@ -105,156 +156,87 @@ export default class CourseSelector extends Component {
                 enabled: activeStep >= 2
               })}
               onClick={() => {
-                this.handleBack(2);
+                this.handleBackTo(2);
               }}
               optional={
                 <Typography variant="caption">
-                  {this.state.course ? this.state.course.name : '-'}
+                  {selection.course ? selection.course.name : '-'}
                 </Typography>
               }>
               Kierunek
             </StepLabel>
           </Step>
         </Stepper>
-        {/* <Grid container spacing={8}>
-          <Grid item xs={4} sm={3} md={2} xl={1}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={this.handleFacebookLogin}
-              className="undo-button">
-              <Icon className="fas fa-undo-alt " />
-              {'  '}Cofnij
-            </Button>
-          </Grid>
-          <Grid xs={8} sm={9} md={10} xl={11}> */}
-        <TextField
-          id="filterText"
-          className="field mb-3"
-          label="Wyszukaj"
-          variant="outlined"
-          fullWidth
-          value={this.state.filterText}
-          onChange={this.handleChange}
-        />
-        {/* </Grid>
-        </Grid> */}
-        {activeStep === 0 && (
+        {activeStep < 3 && (
           <div>
-            {/* <Zoom
-                    in={activeStep === 0}
-                    timeout={transitionDuration}
-                    style={{
-                      transitionDelay: `${(transitionDelay * i) / 1000}s`
-                    }}></Zoom> */}
-            <Grid container spacing={8}>
-              {this.filterList(this.state.voivodeships)
-                .filter((x, i) => i < 8)
-                .map((x, i) => (
-                  <Grid
-                    item
-                    xs={3}
-                    key={x.id}
-                    className="grid-item"
-                    onClick={() => {
-                      this.setState(
-                        {
-                          activeStep: 1,
-                          voivodeship: x,
-                          filterText: ''
-                        },
-                        () =>
-                          UniService.getUniversities(
-                            this.state.voivodeship.id
-                          ).then(r => {
-                            this.setState({ universities: r });
-                          })
-                      );
-                    }}>
-                    <Paper className="paper p-md-3" elevation={4}>
-                      {x.name}
-                    </Paper>
-                  </Grid>
-                ))}
-            </Grid>
+            <TextField
+              id="filterText"
+              className="field mb-3"
+              label="Wyszukaj"
+              variant="outlined"
+              fullWidth
+              value={this.state.filterText}
+              onChange={this.handleChange}
+            />
+            <p>wyników</p>
           </div>
+        )}
+
+        {activeStep === 0 && (
+          <Grid container spacing={8}>
+            {this.filterList(data.voivodeships)
+              .filter((x, i) => i < 8)
+              .map((x, i) => (
+                <Grid
+                  item
+                  xs={3}
+                  key={x.id}
+                  className="grid-item"
+                  onClick={() => this.handleForward(x)}>
+                  <Paper className="paper p-md-3" elevation={4}>
+                    {x.name}
+                  </Paper>
+                </Grid>
+              ))}
+          </Grid>
         )}
         {activeStep === 1 && (
-          <div>
-            {/* <Zoom
-                    in={activeStep === 1}
-                    timeout={transitionDuration}
-                    style={{
-                      transitionDelay: `${(transitionDelay * i) / 1000}s`
-                    }}></Zoom> */}
-            <Grid container spacing={8}>
-              {this.filterList(this.state.universities)
-                .filter(x => true)
-                .filter((x, i) => i < 8)
-                .map((x, i) => (
-                  <Grid
-                    item
-                    xs={3}
-                    key={x.id}
-                    className="grid-item"
-                    onClick={() => {
-                      this.setState(
-                        {
-                          activeStep: 2,
-                          university: x,
-                          filterText: ''
-                        },
-                        () =>
-                          UniService.getCourses(this.state.university.id).then(
-                            r => {
-                              this.setState({ courses: r });
-                            }
-                          )
-                      );
-                    }}>
-                    <Paper className="paper p-md-3" elevation={3}>
-                      {x.name}
-                    </Paper>
-                  </Grid>
-                ))}
-            </Grid>
-          </div>
+          <Grid container spacing={8}>
+            {this.filterList(data.universities)
+              .filter(x => true)
+              .filter((x, i) => i < 8)
+              .map((x, i) => (
+                <Grid
+                  item
+                  xs={3}
+                  key={x.id}
+                  className="grid-item"
+                  onClick={() => this.handleForward(x)}>
+                  <Paper className="paper p-md-3" elevation={3}>
+                    {x.name}
+                  </Paper>
+                </Grid>
+              ))}
+          </Grid>
         )}
         {activeStep === 2 && (
-          <div>
-            {/* <Grow
-                    in={activeStep === 2}
-                    timeout={transitionDuration}
-                    style={{
-                      transitionDelay: `${(transitionDelay * i) / 1000}s`
-                    }}></Grow> */}
-            <Grid container spacing={8}>
-              {this.filterList(this.state.courses)
-                .filter(x => true)
-                .filter((x, i) => i < 8)
-                .map((x, i) => (
-                  <Grid
-                    item
-                    xs={3}
-                    key={x.id}
-                    className="grid-item"
-                    onClick={() => {
-                      this.setState(
-                        {
-                          activeStep: 3,
-                          course: x,
-                          filterText: ''
-                        },
-                        this.notifyParent()
-                      );
-                    }}>
-                    <Paper className="paper p-md-3" elevation={3}>
-                      {x.name}
-                    </Paper>
-                  </Grid>
-                ))}
-            </Grid>
-          </div>
+          <Grid container spacing={8}>
+            {this.filterList(data.courses)
+              .filter(x => true)
+              .filter((x, i) => i < 8)
+              .map((x, i) => (
+                <Grid
+                  item
+                  xs={3}
+                  key={x.id}
+                  className="grid-item"
+                  onClick={() => this.handleForward(x)}>
+                  <Paper className="paper p-md-3" elevation={3}>
+                    {x.name}
+                  </Paper>
+                </Grid>
+              ))}
+          </Grid>
         )}
       </div>
     );
