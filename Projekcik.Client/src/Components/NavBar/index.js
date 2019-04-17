@@ -14,7 +14,6 @@ import LoginIcon from '@material-ui/icons/Person';
 import RegisterIcon from '@material-ui/icons/GroupAdd';
 import MailIcon from '@material-ui/icons/Mail';
 import AddIcon from '@material-ui/icons/AddShoppingCart';
-import HomeIcon from '@material-ui/icons/Home';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { Link } from 'react-router-dom';
 import './index.scss';
@@ -71,13 +70,6 @@ export default class NavBar extends Component {
                   <NavLink tag={Link} to="/">
                     <button className="btn btn-light my-2 my-sm-0">
                       <NotificationsIcon />
-                    </button>
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} to="/">
-                    <button className="btn btn-light my-2 my-sm-0">
-                      <HomeIcon />
                     </button>
                   </NavLink>
                 </NavItem>

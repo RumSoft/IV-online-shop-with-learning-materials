@@ -66,7 +66,7 @@ export default class HomeLayout extends Component {
                 .filter(x => x)
                 .join(', ')}
             </p>
-            <a href="#"> pokaż więcej </a>
+            <a href="#link"> pokaż więcej </a>
           </Card>
 
           <footer className="footer">

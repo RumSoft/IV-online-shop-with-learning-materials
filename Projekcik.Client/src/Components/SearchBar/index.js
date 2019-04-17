@@ -1,16 +1,9 @@
 import React, { Component } from 'react';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
+
 import './index.scss';
 
 export class SearchBar extends Component {
   render() {
-    const renderMenu = (
-      <Menu>
-        <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
-      </Menu>
-    );
     return (
       <form class="form-inline container">
         <input
