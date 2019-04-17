@@ -67,16 +67,18 @@ export default class CourseSelector extends Component {
 
   handleBackTo(step) {
     if (step > this.state.activeStep) return;
-
-    let reset = { course: null, activeStep: step, filterText: '' };
+    let reset = { course: null };
     if (step <= 1) reset = { university: null, ...reset };
     if (step <= 0) reset = { voivodeship: null, ...reset };
 
-    this.setState({
-      activeStep: step,
-      selection: { ...this.state.selection, ...reset }
-    });
-    this.notifyParent();
+    this.setState(
+      {
+        activeStep: step,
+        filterText: '',
+        selection: { ...this.state.selection, ...reset }
+      },
+      () => this.notifyParent()
+    );
   }
 
   handleForward(item) {
@@ -123,17 +125,17 @@ export default class CourseSelector extends Component {
     const { activeStep, selection, data } = this.state;
     return (
       <div className="course-selector">
-        <Stepper activeStep={activeStep}>
+        <Stepper activeStep={activeStep} className="course-selector-stepper">
           <Step>
             <StepLabel
               className="step-label step-label-1 enabled"
               onClick={() => this.handleBackTo(0)}
               optional={
-                <Typography variant="caption">
+                <Typography variant="caption" className="step-label-caption">
                   {selection.voivodeship ? selection.voivodeship.name : '-'}
                 </Typography>
               }>
-              Województwo
+              <Typography className="step-label-title">Województwo</Typography>
             </StepLabel>
           </Step>
           <Step>
@@ -143,11 +145,11 @@ export default class CourseSelector extends Component {
               })}
               onClick={() => this.handleBackTo(1)}
               optional={
-                <Typography variant="caption">
+                <Typography variant="caption" className="step-label-caption">
                   {selection.university ? selection.university.name : '-'}
                 </Typography>
               }>
-              Uczelnia
+              <Typography className="step-label-title">Uczelnia</Typography>
             </StepLabel>
           </Step>
           <Step>
@@ -159,11 +161,11 @@ export default class CourseSelector extends Component {
                 this.handleBackTo(2);
               }}
               optional={
-                <Typography variant="caption">
+                <Typography variant="caption" className="step-label-caption">
                   {selection.course ? selection.course.name : '-'}
                 </Typography>
               }>
-              Kierunek
+              <Typography className="step-label-title">Kierunek</Typography>
             </StepLabel>
           </Step>
         </Stepper>
@@ -180,7 +182,12 @@ export default class CourseSelector extends Component {
         )}
 
         {activeStep === 0 && (
-          <Grid container spacing={8}>
+          <Grid
+            container
+            spacing={8}
+            direction="row"
+            justify="center"
+            alignItems="stretch">
             {this.filterList(data.voivodeships)
               .filter((x, i) => i < 8)
               .map((x, i) => (
@@ -190,8 +197,8 @@ export default class CourseSelector extends Component {
                   key={x.id}
                   className="grid-item"
                   onClick={() => this.handleForward(x)}>
-                  <Paper className="paper p-md-3" elevation={4}>
-                    {x.name}
+                  <Paper className="paper p-md-2 p-1" elevation={4}>
+                    <span>{x.name}</span>
                   </Paper>
                 </Grid>
               ))}
@@ -209,8 +216,8 @@ export default class CourseSelector extends Component {
                   key={x.id}
                   className="grid-item"
                   onClick={() => this.handleForward(x)}>
-                  <Paper className="paper p-md-3" elevation={3}>
-                    {x.name}
+                  <Paper className="paper p-md-2 p-1" elevation={3}>
+                    <span>{x.name}</span>
                   </Paper>
                 </Grid>
               ))}
@@ -228,8 +235,8 @@ export default class CourseSelector extends Component {
                   key={x.id}
                   className="grid-item"
                   onClick={() => this.handleForward(x)}>
-                  <Paper className="paper p-md-3" elevation={3}>
-                    {x.name}
+                  <Paper className="paper p-md-3 p-1" elevation={3}>
+                    <span>{x.name}</span>
                   </Paper>
                 </Grid>
               ))}
