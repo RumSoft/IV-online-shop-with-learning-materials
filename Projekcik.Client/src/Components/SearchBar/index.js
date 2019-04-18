@@ -11,7 +11,7 @@ export class SearchBar extends Component {
           type="search"
           placeholder="Wyszukaj notatki..."
         />
-        <button className="btn btn-light my-2 my-sm-0" type="submit">
+        <button className="btn btn-light " type="submit">
           Szukaj
         </button>
       </form>

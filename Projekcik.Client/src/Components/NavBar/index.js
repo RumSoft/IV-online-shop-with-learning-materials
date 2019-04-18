@@ -44,47 +44,49 @@ export default class NavBar extends Component {
               <img src={logo} alt="ShopLogo" class="imgMobile imgDesktop" />
             </NavbarBrand>
             <SearchBar />
-            <NavbarToggler onClick={this.toggle} className="mr-2" />
+            <NavbarToggler onClick={this.toggle} className="menuWraper" />
             <Collapse
               className="d-sm-inline-flex flex-sm-row-reverse form-inline container"
-              isOpen={this.state.isOpen}
+              isOpen={!this.state.isOpen}
               navbar>
-              <ul className="navbar-nav flex-grow mobile">
+              <ul className="navbar-nav flex-grow ">
+              <div class="btn-group">
                 <NavItem hidden={isLogged}>
                   <NavLink tag={Link} to="/">
-                    <button className="btn btn-light my-2 my-sm-0">
+                    <button className="btn btn-default btn-light ">
                       <AddIcon />
                     </button>
                   </NavLink>
                 </NavItem>
                 <NavItem hidden={isLogged}>
                   <NavLink tag={Link} to="/register">
-                    <button className="btn btn-light my-2 my-sm-0">
+                    <button className="btn btn-light ">
                       <RegisterIcon />
                     </button>
                   </NavLink>
                 </NavItem>
                 <NavItem hidden={isLogged}>
                   <NavLink tag={Link} to="/login">
-                    <button className="btn btn-light my-2 my-sm-0">
+                    <button className="btn btn-light">
                       <LoginIcon />
                     </button>
                   </NavLink>
                 </NavItem>
                 <NavItem hidden={!isLogged}>
                   <NavLink tag={Link} className="text-dark" to="/protected">
-                    <button className="btn btn-light my-2 my-sm-0">
+                    <button className="btn btn-light ">
                       <AccountIcon />
                     </button>
                   </NavLink>
                 </NavItem>
                 <NavItem hidden={!isLogged}>
                   <NavLink tag={Link} className="text-dark" to="/logout">
-                    <button className="btn btn-light my-2 my-sm-0">
+                    <button className="btn btn-light ">
                       <LogOutIcon />
                     </button>
                   </NavLink>
                 </NavItem>
+                </div>
               </ul>
             </Collapse>
           </Container>
