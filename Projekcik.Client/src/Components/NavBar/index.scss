@@ -1,8 +1,23 @@
+@import '../../variables.scss';
+
 $bgDefault: #3f51b5;
 $bgHighlight: #16288d;
 $colDefault: #ecf0f1;
 $colHighlight: #ecdbff;
+
+// ale ma pan tu nasrane w tym css'ie
+//
+// trzeba to robic mobile-first bo wychodzi szit
+//
+// todo:
+// okienko wyszukiwania ma sie skalować (rozmiar: sm)
+//
+
 .navbar {
+  .navbar-logo {
+    max-height: 3rem;
+  }
+
   background-color: $bgDefault;
   box-shadow: 0px 2px 3px rgba(black, 0.5);
   .navbar-brand {
@@ -24,9 +39,6 @@ $colHighlight: #ecdbff;
   }
   .navbar-nav {
     .nav-link {
-      color: $colDefault;
-      border-radius: 0.25rem;
-      margin: 0 0.25em;
       &:not(.disabled) {
         &:hover,
         &:focus {
@@ -47,25 +59,41 @@ $colHighlight: #ecdbff;
   }
 }
 
-.imgDesktop {
-  width: 200px;
-  height: 60px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
+@media (min-width: 576px) {
+  .navbar {
+    .nav-search {
+      height: 100%;
+    }
+    .nav-link {
+      .button {
+        padding: 0.3rem 0.4rem;
+        border-radius: 4px;
+        color: #222;
+        background: $colDefault;
+        height: 100%;
+        &:hover {
+          // ale chujowy kolor
+          background: $colHighlight;
+        }
+      }
+    }
   }
 }
 
-@media (max-width: 600px) {
-  .imgMobile {
-    display: none;
-  }
-  .padd{
-    padding: 0px;
-  .menuWraper{
-    background: #ecdbff;
-    color: #ecdbff; //chuj nie dziala
+@media (max-width: 575px) {
+  .navbar {
+    .navbar-container {
+      display: flex;
+    }
+
+    .nav-link {
+      .link {
+        color: white;
+      }
     }
   }
+}
+
+.hidden-toggler {
+  opacity: 0;
 }
