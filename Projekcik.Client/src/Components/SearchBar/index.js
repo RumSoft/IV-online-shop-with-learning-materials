@@ -14,9 +14,9 @@ export class SearchBar extends Component {
       </Menu>
     );
     return (
-      <form class="form-inline container">
+      <form className="form-inline container">
         <input
-          class="form-control mr-sm-2 item"
+          className="form-control mr-sm-2 item"
           type="search"
           placeholder="Wyszukaj notatki..."
         />
