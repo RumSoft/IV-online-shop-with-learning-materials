@@ -9,6 +9,7 @@ import {
   NavLink
 } from 'reactstrap';
 import AccountIcon from '@material-ui/icons/AccountBox';
+import LogOutIcon from '@material-ui/icons/TransferWithinAStation';
 import LoginIcon from '@material-ui/icons/Person';
 import RegisterIcon from '@material-ui/icons/GroupAdd';
 import AddIcon from '@material-ui/icons/AddShoppingCart';
@@ -38,31 +39,31 @@ export default class NavBar extends Component {
     let isLogged = APIService.isAuthenticated() ? true : false;
     const menu = [
       {
-        name: ' Strona główna',
+        name: 'Strona główna',
         to: '/',
         icon: <AddIcon />,
         hidden: false
       },
       {
-        name: ' Załóż konto',
+        name: 'Załóż konto',
         to: '/register',
         icon: <RegisterIcon />,
         hidden: isLogged
       },
       {
-        name: ' Zaloguj się',
+        name: 'Zaloguj się',
         to: '/login',
         icon: <LoginIcon />,
         hidden: isLogged
       },
       {
-        name: ' Panel użytkownika',
+        name: 'Panel użytkownika',
         to: '/protected',
         icon: <AccountIcon />,
         hidden: !isLogged
       },
       {
-        name: ' Wyloguj się',
+        name: 'Wyloguj się',
         to: '/logout',
         icon: <LoginIcon />,
         hidden: !isLogged
@@ -97,7 +98,6 @@ export default class NavBar extends Component {
                       <div className="d-none d-sm-block button btn btn-default">
                         {/* large */}
                         <Tooltip title={x.name}>{x.icon}</Tooltip>
-                        <span className="navbar-btn-font">{x.name}</span>
                       </div>
                     </NavLink>
                   </NavItem>

@@ -15,7 +15,7 @@ $colHighlight: #ecdbff;
 
 .navbar {
   .navbar-logo {
-    max-height: 5rem;
+    max-height: 3rem;
   }
 
   background-color: $bgDefault;
@@ -36,9 +36,6 @@ $colHighlight: #ecdbff;
         color: $colHighlight;
       }
     }
-  }
-  .navbar-btn-font {
-    font-size: 14px;
   }
   .navbar-nav {
     .nav-link {
