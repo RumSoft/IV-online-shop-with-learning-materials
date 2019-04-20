@@ -8,11 +8,16 @@ import {
   NavItem,
   NavLink
 } from 'reactstrap';
+
+import Badge from '@material-ui/core/Badge';
+
 import AccountIcon from '@material-ui/icons/AccountBox';
 import LogOutIcon from '@material-ui/icons/TransferWithinAStation';
+import HomePageIcon from '@material-ui/icons/Home';
 import LoginIcon from '@material-ui/icons/Person';
 import RegisterIcon from '@material-ui/icons/GroupAdd';
-import AddIcon from '@material-ui/icons/AddShoppingCart';
+import ShopIcon from '@material-ui/icons/AddShoppingCart';
+import AddIcon from '@material-ui/icons/Add';
 import { Link } from 'react-router-dom';
 import './index.scss';
 import APIService from '../../Services/APIService';
@@ -41,6 +46,12 @@ export default class NavBar extends Component {
       {
         name: 'Strona główna',
         to: '/',
+        icon: <HomePageIcon />,
+        hidden: false
+      },
+      {
+        name: 'Dodaj notatkę',
+        to: '#',
         icon: <AddIcon />,
         hidden: false
       },
@@ -57,15 +68,15 @@ export default class NavBar extends Component {
         hidden: isLogged
       },
       {
-        name: 'Panel użytkownika',
-        to: '/protected',
-        icon: <AccountIcon />,
+        name: 'Wyloguj się',
+        to: '/logout',
+        icon: <LogOutIcon />,
         hidden: !isLogged
       },
       {
-        name: 'Wyloguj się',
-        to: '/logout',
-        icon: <LoginIcon />,
+        name: 'Panel użytkownika',
+        to: '/protected',
+        icon: <AccountIcon />,
         hidden: !isLogged
       }
     ];
@@ -87,6 +98,16 @@ export default class NavBar extends Component {
               navbar>
               <ul className="navbar-nav flex-grow ">
                 <SearchBar className="nav-search" />
+                <NavItem>
+                  <NavLink>
+                    <div className="d-none d-sm-block button btn btn-default">
+                      <Badge badgeContent={5} showZero={0} color="secondary">
+                        <ShopIcon />
+                        Koszyk
+                      </Badge>
+                    </div>
+                  </NavLink>
+                </NavItem>
                 {menu.map((x, i) => (
                   <NavItem key={i} hidden={x.hidden}>
                     <NavLink tag={Link} className="text-dark" to={x.to}>
