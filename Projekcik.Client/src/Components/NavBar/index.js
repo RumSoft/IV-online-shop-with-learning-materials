@@ -89,7 +89,7 @@ export default class NavBar extends Component {
             {/* first element only for equal flex spacing */}
             <NavbarToggler onClick={this.toggle} className="hidden-toggler" />
             <NavbarBrand tag={Link} to="/">
-              <img src={logo} alt="ShopLogo" class="navbar-logo" />
+              <img src={logo} alt="ShopLogo" className="navbar-logo" />
             </NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
             <Collapse
