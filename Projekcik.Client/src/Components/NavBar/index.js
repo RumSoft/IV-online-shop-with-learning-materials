@@ -16,7 +16,7 @@ import LogOutIcon from '@material-ui/icons/TransferWithinAStation';
 import HomePageIcon from '@material-ui/icons/Home';
 import LoginIcon from '@material-ui/icons/Person';
 import RegisterIcon from '@material-ui/icons/GroupAdd';
-import ShopIcon from '@material-ui/icons/AddShoppingCart';
+import ShopIcon from '@material-ui/icons/ShoppingCart';
 import AddIcon from '@material-ui/icons/Add';
 import { Link } from 'react-router-dom';
 import './index.scss';
@@ -103,8 +103,17 @@ export default class NavBar extends Component {
                     <div className="d-none d-sm-block button btn btn-default">
                       <Badge badgeContent={5} showZero={0} color="secondary">
                         <ShopIcon />
-                        Koszyk
                       </Badge>
+                    </div>
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink>
+                    <div className="d-sm-none link">
+                      <Badge badgeContent={5} showZero={0} color="secondary">
+                        <ShopIcon />
+                      </Badge>
+                      Plecak pełen keszu
                     </div>
                   </NavLink>
                 </NavItem>
