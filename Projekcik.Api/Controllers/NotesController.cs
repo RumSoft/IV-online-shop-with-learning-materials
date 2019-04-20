@@ -147,7 +147,7 @@ namespace Projekcik.Api.Controllers
             var filepath = Path.Combine(
                 Directory.GetParent(Directory.GetCurrentDirectory()).FullName,
                 "uploads",
-                note.Author.Id.ToString(),
+                note.AuthorId.ToString(),
                 note.Id.ToString());
 
             var result =
