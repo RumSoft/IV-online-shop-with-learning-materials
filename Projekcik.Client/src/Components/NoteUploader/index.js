@@ -21,7 +21,6 @@ import {
   DialogTitle,
   DialogActions,
   Select,
-  option,
   CircularProgress,
   FormControl,
   OutlinedInput,
@@ -166,9 +165,6 @@ export default class NoteUploader extends Component {
     note.append('semester', this.state.semester);
     note.append('course', this.state.courseId);
 
-    for (var pair of note.entries()) {
-      console.log(pair[0] + ', ' + pair[1]);
-    }
     NoteService.sendNote(note).then(r => console.log(r));
   };
 
@@ -234,7 +230,8 @@ export default class NoteUploader extends Component {
             Wybierz uczelnię i kierunek
           </Button>
 
-          {/* ////////////////////////// */}
+          {/* ////////////BEGIN DIALOG/////////////////////////////////// */}
+
           <Dialog
             open={this.state.open}
             onClose={this.handleDialogClose}
@@ -337,7 +334,7 @@ export default class NoteUploader extends Component {
             </DialogActions>
           </Dialog>
 
-          {/* ///////////////////// */}
+          {/* //////////END DIALOG////////////////////////////////////// */}
 
           <TextField
             id="description"
