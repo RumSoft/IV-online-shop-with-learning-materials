@@ -3,8 +3,17 @@ import axios from 'axios';
 const API_URL = 'https://projekcik-prz.azurewebsites.net';
 
 export default class NoteService {
-  static sendNote() {
-    return axios.post(`${API_URL}/api/Notes/create`).then(r => r.data);
+  static sendNote(note) {
+    let token = window.localStorage.getItem('token');
+    const authHeader = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': `multipart/form-data; boundary=${note._boundary}`
+      }
+    };
+    return axios
+      .post(`${API_URL}/api/Notes/create`, note, authHeader)
+      .then(r => r.data);
   }
 
   static getUserNotes(userId) {
