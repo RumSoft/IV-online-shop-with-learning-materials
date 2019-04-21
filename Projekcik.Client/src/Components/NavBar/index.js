@@ -8,11 +8,22 @@ import {
   NavItem,
   NavLink
 } from 'reactstrap';
+
+import Badge from '@material-ui/core/Badge';
+
+import AccountIcon from '@material-ui/icons/AccountBox';
+import LogOutIcon from '@material-ui/icons/TransferWithinAStation';
+import HomePageIcon from '@material-ui/icons/Home';
+import LoginIcon from '@material-ui/icons/Person';
+import RegisterIcon from '@material-ui/icons/GroupAdd';
+import ShopIcon from '@material-ui/icons/ShoppingCart';
+import AddIcon from '@material-ui/icons/Add';
 import { Link } from 'react-router-dom';
 import './index.scss';
 import APIService from '../../Services/APIService';
 import SearchBar from '../SearchBar';
 import logo from './logoWhite.png';
+import { Tooltip } from '@material-ui/core';
 
 export default class NavBar extends Component {
   constructor(props) {
@@ -31,50 +42,96 @@ export default class NavBar extends Component {
 
   render() {
     let isLogged = APIService.isAuthenticated() ? true : false;
+    const menu = [
+      {
+        name: 'Strona główna',
+        to: '/',
+        icon: <HomePageIcon />,
+        hidden: false
+      },
+      {
+        name: 'Dodaj notatkę',
+        to: '#',
+        icon: <AddIcon />,
+        hidden: false
+      },
+      {
+        name: 'Załóż konto',
+        to: '/register',
+        icon: <RegisterIcon />,
+        hidden: isLogged
+      },
+      {
+        name: 'Zaloguj się',
+        to: '/login',
+        icon: <LoginIcon />,
+        hidden: isLogged
+      },
+      {
+        name: 'Wyloguj się',
+        to: '/logout',
+        icon: <LogOutIcon />,
+        hidden: !isLogged
+      },
+      {
+        name: 'Panel użytkownika',
+        to: '/protected',
+        icon: <AccountIcon />,
+        hidden: !isLogged
+      }
+    ];
     return (
       <header>
-        <Navbar className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3">
-          <Container>
+        <Navbar
+          className="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3"
+          dark>
+          <Container className="navbar-container">
+            {/* first element only for equal flex spacing */}
+            <NavbarToggler onClick={this.toggle} className="hidden-toggler" />
             <NavbarBrand tag={Link} to="/">
-              <img src={logo} alt="ShopLogo" width="200" height="60" />
+              <img src={logo} alt="ShopLogo" className="navbar-logo" />
             </NavbarBrand>
-            <SearchBar />
-            <NavbarToggler onClick={this.toggle} className="mr-2" />
+            <NavbarToggler onClick={this.toggle} />
             <Collapse
-              className="d-sm-inline-flex flex-sm-row-reverse"
+              className="d-sm-inline-flex flex-sm-row-reverse form-inline container"
               isOpen={this.state.isOpen}
               navbar>
-              <ul className="navbar-nav flex-grow">
+              <ul className="navbar-nav flex-grow ">
+                <SearchBar className="nav-search" />
                 <NavItem>
-                  <NavLink tag={Link} to="/">
-                    Home
-                  </NavLink>
-                </NavItem>
-                <NavItem hidden={isLogged}>
-                  <NavLink tag={Link} to="/register">
-                    Register
-                  </NavLink>
-                </NavItem>
-                <NavItem hidden={isLogged}>
-                  <NavLink tag={Link} to="/login">
-                    Login
+                  <NavLink>
+                    <div className="d-none d-sm-block button btn btn-default">
+                      <Badge badgeContent={5} showZero={0} color="secondary">
+                        <ShopIcon />
+                      </Badge>
+                    </div>
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} to="/upload">
-                    Upload Notes
+                  <NavLink>
+                    <div className="d-sm-none link">
+                      <Badge badgeContent={5} showZero={0} color="secondary">
+                        <ShopIcon />
+                      </Badge>
+                      Plecak pełen keszu
+                    </div>
                   </NavLink>
                 </NavItem>
-                <NavItem hidden={!isLogged}>
-                  <NavLink tag={Link} className="text-dark" to="/protected">
-                    User Panel
-                  </NavLink>
-                </NavItem>
-                <NavItem hidden={!isLogged}>
-                  <NavLink tag={Link} className="text-dark" to="/logout">
-                    Log Out
-                  </NavLink>
-                </NavItem>
+                {menu.map((x, i) => (
+                  <NavItem key={i} hidden={x.hidden}>
+                    <NavLink tag={Link} className="text-dark" to={x.to}>
+                      <div className="d-sm-none link">
+                        {/* mobile */}
+                        {x.icon}
+                        <span>{x.name}</span>
+                      </div>
+                      <div className="d-none d-sm-block button btn btn-default">
+                        {/* large */}
+                        <Tooltip title={x.name}>{x.icon}</Tooltip>
+                      </div>
+                    </NavLink>
+                  </NavItem>
+                ))}
               </ul>
             </Collapse>
           </Container>

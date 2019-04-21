@@ -43,8 +43,8 @@ namespace Projekcik.Api.Services
             if (!string.IsNullOrWhiteSpace(searchParams.NoteName))
                 query = query.Where(x => x.Name.Contains(searchParams.NoteName));
 
-            //if (searchParams.Semester.HasValue)
-            //    query = query.Where(x => x.Semester == searchParams.Semester);
+            if (searchParams.Semester.HasValue)
+                query = query.Where(x => x.Semester == searchParams.Semester);
 
             return query.Skip(pagerParams.Page * pageSize)
                 .Take(pageSize);

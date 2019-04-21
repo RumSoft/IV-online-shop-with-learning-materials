@@ -14,11 +14,12 @@ export class UserPanel extends Component {
 
   render() {
     return (
-      <h3>
-        {Object.values(this.state.data).map((element, idx) => {
-          return <div key={idx}>{element}</div>;
-        })}
-      </h3>
+      <div>
+        <pre>{JSON.stringify(this.state.data, null, 2)}</pre>
+        {this.state.data && this.state.data.pictureUrl && (
+          <img src={this.state.data.pictureUrl} alt={this.state.username} />
+        )}
+      </div>
     );
   }
 }
