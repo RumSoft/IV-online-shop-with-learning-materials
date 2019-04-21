@@ -4,6 +4,7 @@ import LogoutPage from './Pages/Logout';
 import { UserPage } from './Pages/UserPage';
 import LoginPage from './Pages/Login';
 import RodoPage from './Pages/Rodo';
+import UploadPage from './Pages/Upload';
 
 const routes = [
   {
@@ -34,6 +35,10 @@ const protectedRoutes = [
     path: '/protected',
     component: UserPage,
     exact: true
+  },
+  {
+    path: '/upload',
+    component: UploadPage
   }
 ];
 

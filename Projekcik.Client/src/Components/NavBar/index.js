@@ -60,6 +60,11 @@ export default class NavBar extends Component {
                     Login
                   </NavLink>
                 </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} to="/upload">
+                    Upload Notes
+                  </NavLink>
+                </NavItem>
                 <NavItem hidden={!isLogged}>
                   <NavLink tag={Link} className="text-dark" to="/protected">
                     User Panel
