@@ -17,16 +17,18 @@ export default class NoteUploader extends Component {
     super(props);
 
     this.state = {
-      file: null,
       name: '',
       price: '',
       description: '',
+      file: null,
       semester: 0,
       courseId: null,
 
       voivodeship: '',
       university: '',
-      course: ''
+      course: '',
+
+      error: ''
     };
 
     this.listCourseSelectorHandler = this.listCourseSelectorHandler.bind(this);
@@ -48,12 +50,38 @@ export default class NoteUploader extends Component {
   };
 
   fileHandler = event => {
-    this.setState({ file: event.target.files[0] }, () =>
-      console.log(this.state.file)
-    );
+    this.setState({ file: event.target.files[0] });
   };
 
-  handleSubmit = () => {
+  errorHandler = () => {
+    const data = {
+      n: this.state.name,
+      p: this.state.price,
+      d: this.state.description,
+      v: this.state.voivodeship,
+      u: this.state.university,
+      c: this.state.course
+    };
+
+    if (this.state.file === null) {
+      this.setState({ error: 'Dodaj plik notatki!' });
+      return true;
+    }
+    const strings = Object.values(data);
+    for (var string of strings) {
+      if (
+        string === '' ||
+        this.state.courseId === null ||
+        this.state.semester === 0
+      ) {
+        this.setState({ error: 'Wypełnij wszystkie pola!' });
+        return true;
+      }
+    }
+    return false;
+  };
+
+  handleSubmit = event => {
     let note = new FormData();
     note.append('file', this.state.file);
     note.append('name', this.state.name);
@@ -62,21 +90,33 @@ export default class NoteUploader extends Component {
     note.append('semester', this.state.semester);
     note.append('course', this.state.courseId);
 
-    NoteService.sendNote(note).then(r => console.log(r));
+    let errors = this.errorHandler();
+    if (!errors) {
+      NoteService.sendNote(note)
+        .then(r => console.log(r))
+        .catch(e =>
+          this.setState({ error: e.response.data.message }, () =>
+            this.errorHandler()
+          )
+        );
+    }
   };
 
   render() {
     return (
       <Card className="upload-page-card mb-2">
+        {this.state.error && <div className="errors">{this.state.error}</div>}
         <div className="note-upload-header">
           <h3>Dodaj nową notatkę</h3>
           <hr />
         </div>
-        <form className="note-form">
+        <form className="note-form" onSubmit={this.handleSubmit}>
           <TextField
             id="name"
             className="field"
             label="Nazwa notatki"
+            helperText="Max. 100 znaków..."
+            inputProps={{ maxLength: 100 }}
             variant="outlined"
             value={this.state.name}
             onChange={this.handleChange}
@@ -122,7 +162,8 @@ export default class NoteUploader extends Component {
             label="Opis notatki"
             multiline
             rows="3"
-            helperText="Max. 200 znaków..."
+            helperText="Max. 1000 znaków..."
+            inputProps={{ maxLength: 1000 }}
             className="field description"
             variant="outlined"
             value={this.state.description}
