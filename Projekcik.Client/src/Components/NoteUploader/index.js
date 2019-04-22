@@ -54,20 +54,21 @@ export default class NoteUploader extends Component {
   };
 
   errorHandler = () => {
-    const data = {
-      n: this.state.name,
-      p: this.state.price,
-      d: this.state.description,
-      v: this.state.voivodeship,
-      u: this.state.university,
-      c: this.state.course
-    };
+    const strings = [
+      this.state.name,
+      this.state.price,
+      this.state.description,
+      this.state.voivodeship,
+      this.state.university,
+      this.state.course
+    ];
 
     if (this.state.file === null) {
       this.setState({ error: 'Dodaj plik notatki!' });
+      window.scrollTo(0, 0);
       return true;
     }
-    const strings = Object.values(data);
+
     for (var string of strings) {
       if (
         string === '' ||
@@ -75,6 +76,7 @@ export default class NoteUploader extends Component {
         this.state.semester === 0
       ) {
         this.setState({ error: 'Wypełnij wszystkie pola!' });
+        window.scrollTo(0, 0);
         return true;
       }
     }
