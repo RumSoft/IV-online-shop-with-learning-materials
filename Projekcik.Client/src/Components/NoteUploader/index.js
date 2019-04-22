@@ -1,32 +1,16 @@
 import React, { Component } from 'react';
 import NoteService from '../../Services/NoteService';
 import {
-  ListGroup,
-  ListGroupItem,
-  Nav,
-  NavItem,
-  NavLink,
-  TabPane,
-  TabContent
-} from 'reactstrap';
-import UniService from '../../Services/UniService';
-import classnames from 'classnames';
-import {
   Card,
   TextField,
   Button,
-  Dialog,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  DialogActions,
   Select,
-  CircularProgress,
   FormControl,
   OutlinedInput,
   InputLabel
 } from '@material-ui/core';
 import './index.scss';
+import ListCourseSelector from '../ListCourseSelector';
 
 export default class NoteUploader extends Component {
   constructor(props) {
@@ -40,21 +24,21 @@ export default class NoteUploader extends Component {
       semester: 0,
       courseId: null,
 
-      voivodeships: [],
-      universities: [],
-      courses: [],
-      voivodeshipId: '',
-      universityId: '',
       voivodeship: '',
       university: '',
-      course: '',
-
-      open: false,
-      loading: false,
-      activeTab: 1,
-      disabledTabs: 2,
-      filterText: ''
+      course: ''
     };
+
+    this.listCourseSelectorHandler = this.listCourseSelectorHandler.bind(this);
+  }
+
+  listCourseSelectorHandler(data) {
+    this.setState({
+      voivodeship: data.voivodeship,
+      university: data.university,
+      course: data.course,
+      courseId: data.courseId
+    });
   }
 
   handleChange = event => {
@@ -69,93 +53,6 @@ export default class NoteUploader extends Component {
     );
   };
 
-  handleDialogOpen = () => {
-    this.setState({ open: true, loading: true }, () =>
-      UniService.getVoivodeships().then(data =>
-        this.setState({ voivodeships: data, loading: false })
-      )
-    );
-  };
-
-  handleDialogClose = arg => {
-    let stateUpdate = {
-      open: false,
-      loading: false,
-      disabledTabs: 2,
-      activeTab: 1
-    };
-    if (arg !== 'send') {
-      stateUpdate = {
-        ...stateUpdate,
-        voivodeship: '',
-        university: '',
-        course: ''
-      };
-    }
-    this.setState(stateUpdate);
-  };
-
-  toggle(tab) {
-    if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab
-      });
-    }
-  }
-
-  filterList = list => {
-    return (list = list.filter(
-      item =>
-        item.name.toLowerCase().indexOf(this.state.filterText.toLowerCase()) >=
-        0
-    )).map(item => {
-      return (
-        <ListGroupItem
-          className="mb-1 md text-center"
-          key={item.id}
-          tag="button"
-          action
-          onClick={() =>
-            this.handleTabChange(this.state.activeTab, item.id, item.name)
-          }>
-          {item.name}
-        </ListGroupItem>
-      );
-    });
-  };
-
-  handleTabChange(currentTab, itemId, itemName) {
-    if (currentTab === 1) {
-      this.setState(
-        {
-          disabledTabs: 1,
-          voivodeshipId: itemId,
-          voivodeship: itemName
-        },
-        () => {
-          UniService.getUniversities(this.state.voivodeshipId).then(data =>
-            this.setState({ universities: data })
-          );
-        }
-      );
-    } else if (currentTab === 2) {
-      this.setState(
-        {
-          disabledTabs: 0,
-          universityId: itemId,
-          university: itemName
-        },
-        () => {
-          UniService.getCourses(this.state.universityId).then(data =>
-            this.setState({ courses: data })
-          );
-        }
-      );
-    } else if (currentTab === 3) {
-      this.setState({ courseId: itemId, course: itemName });
-    }
-  }
-
   handleSubmit = () => {
     let note = new FormData();
     note.append('file', this.state.file);
@@ -169,11 +66,6 @@ export default class NoteUploader extends Component {
   };
 
   render() {
-    const { voivodeships, universities, courses, disabledTabs } = this.state;
-    const voiData = this.filterList(voivodeships);
-    const uniData = this.filterList(universities);
-    const courseData = this.filterList(courses);
-
     return (
       <Card className="upload-page-card mb-2">
         <div className="note-upload-header">
@@ -222,119 +114,8 @@ export default class NoteUploader extends Component {
             variant="outlined"
             value={this.state.course}
           />
-          <Button
-            className="button"
-            variant="outlined"
-            color="primary"
-            onClick={this.handleDialogOpen}>
-            Wybierz uczelnię i kierunek
-          </Button>
 
-          {/* ////////////BEGIN DIALOG/////////////////////////////////// */}
-
-          <Dialog
-            open={this.state.open}
-            onClose={this.handleDialogClose}
-            aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">
-              Wybór uczelni i kierunku
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText className="mb-2">
-                Wybierz województwo, wyszukaj swoją uczelnię, a następnie
-                wybierz kierunek odpowiadający Twojej notatce...
-              </DialogContentText>
-
-              <Nav tabs>
-                <NavItem>
-                  <NavLink
-                    className={classnames({
-                      active: this.state.activeTab === 1
-                    })}
-                    onClick={() => {
-                      this.toggle(1);
-                    }}>
-                    Województwo
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink
-                    className={classnames({
-                      active: this.state.activeTab === 2
-                    })}
-                    disabled={disabledTabs > 1}
-                    onClick={() => {
-                      this.toggle(2);
-                    }}>
-                    Uczelnia
-                  </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink
-                    className={classnames({
-                      active: this.state.activeTab === 3
-                    })}
-                    disabled={disabledTabs > 0}
-                    onClick={() => {
-                      this.toggle(3);
-                    }}>
-                    Kierunek
-                  </NavLink>
-                </NavItem>
-              </Nav>
-              <TabContent activeTab={this.state.activeTab}>
-                <TextField
-                  id="filterText"
-                  className="field mb-3 mt-3"
-                  label="Wyszukaj..."
-                  fullWidth
-                  value={this.state.filterText}
-                  onChange={this.handleChange}
-                />
-                <TabPane tabId={1} className="mb-2">
-                  {this.state.loading && (
-                    <div className="text-center mb-3">
-                      <CircularProgress />
-                    </div>
-                  )}
-
-                  <ListGroup>{voiData}</ListGroup>
-                </TabPane>
-
-                <TabPane tabId={2}>
-                  {this.state.loading && (
-                    <div className="text-center mb-3">
-                      <CircularProgress />
-                    </div>
-                  )}
-                  <ListGroup>{uniData}</ListGroup>
-                </TabPane>
-
-                <TabPane tabId={3}>
-                  {this.state.loading && (
-                    <div className="text-center mb-3">
-                      <CircularProgress />
-                    </div>
-                  )}
-                  <ListGroup>{courseData}</ListGroup>
-                </TabPane>
-              </TabContent>
-            </DialogContent>
-
-            <DialogActions>
-              <Button onClick={this.handleDialogClose} color="primary">
-                Powrót
-              </Button>
-              <Button
-                onClick={() => this.handleDialogClose('send')}
-                disabled={this.state.course === ''}
-                color="primary">
-                Wyślij
-              </Button>
-            </DialogActions>
-          </Dialog>
-
-          {/* //////////END DIALOG////////////////////////////////////// */}
+          <ListCourseSelector searchData={this.listCourseSelectorHandler} />
 
           <TextField
             id="description"
