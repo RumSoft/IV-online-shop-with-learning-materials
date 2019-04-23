@@ -4,6 +4,19 @@
         <name>Projekcik.Api</name>
     </assembly>
     <members>
+        <member name="M:Projekcik.Api.Controllers.NotesController.GetMyNotes">
+            <summary>
+            Get my notes
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Projekcik.Api.Controllers.NotesController.GetUserNotes(System.Guid)">
+            <summary>
+            Get user's notes
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
         <member name="M:Projekcik.Api.Controllers.NotesController.CreateNote(Microsoft.AspNetCore.Http.IFormFile,System.String,System.String,System.Decimal,System.Int32,System.Int32)">
             <summary>
             Send file to server, currently only pdf supported.
@@ -29,18 +42,31 @@
         </member>
         <member name="M:Projekcik.Api.Controllers.UniController.GetAllVoivodeships">
             <summary>
-            Returns all voivodeships
+                Returns all voivodeships
             </summary>
         </member>
         <member name="M:Projekcik.Api.Controllers.UniController.GetAllUniversities(System.Int32)">
             <summary>
-            Returns all universities for given voivodeship
+                Returns all universities for given voivodeship
             </summary>
         </member>
         <member name="M:Projekcik.Api.Controllers.UniController.GetAllCourses(System.Int32)">
             <summary>
-            Returns all courses for given university
+                Returns all courses for given university
             </summary>
+        </member>
+        <member name="M:Projekcik.Api.Controllers.UserController.GetUserInfo(System.Guid)">
+            <summary>
+            returns limited data (that should be visible for everyone)
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Projekcik.Api.Controllers.UserController.GetMyFullInfo">
+            <summary>
+            returns full user data
+            </summary>
+            <returns></returns>
         </member>
     </members>
 </doc>
