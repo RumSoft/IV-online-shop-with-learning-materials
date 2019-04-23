@@ -28,7 +28,8 @@ export default class NoteUploader extends Component {
       university: '',
       course: '',
 
-      error: ''
+      error: '',
+      success: ''
     };
 
     this.listCourseSelectorHandler = this.listCourseSelectorHandler.bind(this);
@@ -46,6 +47,14 @@ export default class NoteUploader extends Component {
   handleChange = event => {
     this.setState({
       [event.target.id]: event.target.value
+    });
+  };
+  handleChangePrice = event => {
+    let value = event.target.value.replace(',', '.');
+    value = value.replace('..', '.');
+    value = value.replace(/[^0-9^.]/, '');
+    this.setState({
+      [event.target.id]: `${value}`
     });
   };
 
@@ -95,7 +104,11 @@ export default class NoteUploader extends Component {
     let errors = this.errorHandler();
     if (!errors) {
       NoteService.sendNote(note)
-        .then(r => console.log(r))
+        .then(r => {
+          window.scrollTo(0, 0);
+          this.setState({ success: 'Dodano notatkę! Możesz ją wyświetlić ' });
+          console.log(r);
+        })
         .catch(e =>
           this.setState({ error: e.response.data.message }, () =>
             this.errorHandler()
@@ -107,7 +120,18 @@ export default class NoteUploader extends Component {
   render() {
     return (
       <Card className="upload-page-card mb-2">
-        {this.state.error && <div className="errors">{this.state.error}</div>}
+        {this.state.success && (
+          <div className="eval success">
+            {this.state.success}{' '}
+            <a href="../protected" style={{ color: 'lightblue' }}>
+              tutaj!
+            </a>
+          </div>
+        )}
+
+        {this.state.error && (
+          <div className="eval error">{this.state.error}</div>
+        )}
         <div className="note-upload-header">
           <h3>Dodaj nową notatkę</h3>
           <hr />
@@ -130,7 +154,7 @@ export default class NoteUploader extends Component {
             variant="outlined"
             helperText="Format po kropce np. '13.37'..."
             value={this.state.price}
-            onChange={this.handleChange}
+            onChange={this.handleChangePrice}
           />
           <TextField
             id="voivodeship"

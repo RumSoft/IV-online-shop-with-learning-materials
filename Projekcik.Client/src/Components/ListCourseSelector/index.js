@@ -92,7 +92,9 @@ export default class ListCourseSelector extends Component {
       this.setState(
         {
           disabledTabs: 1,
-          voivodeship: itemName
+          voivodeship: itemName,
+          university: '',
+          course: ''
         },
         () => {
           UniService.getUniversities(itemId).then(data =>
@@ -104,7 +106,8 @@ export default class ListCourseSelector extends Component {
       this.setState(
         {
           disabledTabs: 0,
-          university: itemName
+          university: itemName,
+          course: ''
         },
         () => {
           UniService.getCourses(itemId).then(data =>
