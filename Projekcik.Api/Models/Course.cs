@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -31,12 +32,12 @@ namespace Projekcik.Api.Models
         }
 
     }
+
     public class University
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string ImageUrl { get; set; }
-
 
         public int VoivodeshipId { get; set; }
         public Voivodeship Voivodeship { get; set; }
@@ -65,7 +66,7 @@ namespace Projekcik.Api.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        
+
         public int UniversityId { get; set; }
         public University University { get; set; }
         public IEnumerable<Note> Notes { get; set; }
@@ -84,5 +85,35 @@ namespace Projekcik.Api.Models
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
         }
+    }
+
+    // for note count queries
+    public interface INoteCount
+    {
+         int NoteCount { get; set; }
+    }
+
+    public class VoivodeshipNoteCount : INoteCount {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string ImageUrl { get; set; }
+        public int NoteCount { get; set; }
+    }
+
+    public class UniversityNoteCount : INoteCount
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string ImageUrl { get; set; }
+        public int VoivodeshipId { get; set; }
+        public int NoteCount { get; set; }
+    }
+
+    public class CourseNoteCount : INoteCount
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int UniversityId { get; set; }
+        public int NoteCount { get; set; }
     }
 }
