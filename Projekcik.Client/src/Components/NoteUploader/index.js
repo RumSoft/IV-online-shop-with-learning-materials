@@ -50,22 +50,6 @@ export default class NoteUploader extends Component {
       [event.target.id]: event.target.value
     });
   };
-  handleChangePrice = event => {
-    let value = event.target.value.replace(',', '.');
-    value = value.replace('..', '.');
-    value = value.replace(/[^0-9^.]/, '');
-    this.setState({
-      [event.target.id]: `${value}`
-    });
-  };
-
-  handleChangePrice = event => {
-    let value = event.target.value.replace(',', '.');
-    value = value.replace(/[^0-9^.]/, '');
-    this.setState({
-      [event.target.id]: `${value}`
-    });
-  };
 
   handleChangePrice = event => {
     let value = event.target.value.replace(',', '.');
@@ -120,10 +104,21 @@ export default class NoteUploader extends Component {
 
     let errors = this.errorHandler();
     if (!errors) {
+      this.setState({
+        name: '',
+        price: '',
+        description: '',
+        file: null,
+        semester: 0,
+        courseId: null,
+        voivodeship: '',
+        university: '',
+        course: ''
+      });
       NoteService.sendNote(note)
         .then(r => {
-          window.scrollTo(0, 0);
           this.setState({ success: 'Dodano notatkę! Możesz ją wyświetlić ' });
+          window.scrollTo(0, 0);
           console.log(r);
         })
         .catch(e =>
@@ -147,7 +142,7 @@ export default class NoteUploader extends Component {
         )}
 
         {this.state.error && (
-          <div className="eval error">{this.state.error}</div>
+          <div className="eval errors">{this.state.error}</div>
         )}
         <div className="note-upload-header">
           <h3>Dodaj nową notatkę</h3>
@@ -166,10 +161,6 @@ export default class NoteUploader extends Component {
               {
                 func: val => val,
                 message: 'Nazwa notatki jest wymagana'
-              },
-              {
-                func: val => val.length <= 100,
-                message: 'nazwa jest za długa'
               }
             ]}
           />
@@ -186,12 +177,8 @@ export default class NoteUploader extends Component {
                 message: 'Cena jest wymagana'
               },
               {
-                func: val => /^(\d*\.?\d*)$/.test(val),
-                message: 'nieprawidłowy format'
-              },
-              {
-                func: val => val < 1000,
-                message: 'Cena jest za duża'
+                func: val => /^(\d*\.?\d{1,2})$/.test(val),
+                message: 'Nieprawidłowy format'
               }
             ]}
           />
