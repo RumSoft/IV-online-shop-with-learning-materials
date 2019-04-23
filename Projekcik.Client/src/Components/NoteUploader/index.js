@@ -67,6 +67,14 @@ export default class NoteUploader extends Component {
     });
   };
 
+  handleChangePrice = event => {
+    let value = event.target.value.replace(',', '.');
+    value = value.replace(/[^0-9^.]/, '');
+    this.setState({
+      [event.target.id]: `${value}`
+    });
+  };
+
   fileHandler = event => {
     this.setState({ file: event.target.files[0] });
   };
@@ -160,7 +168,7 @@ export default class NoteUploader extends Component {
                 message: 'Nazwa notatki jest wymagana'
               },
               {
-                func: val => val.length < 100,
+                func: val => val.length <= 100,
                 message: 'nazwa jest za długa'
               }
             ]}

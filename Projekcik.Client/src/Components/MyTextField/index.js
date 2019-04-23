@@ -24,8 +24,8 @@ export default class MyTextField extends Component {
     return (
       <div className={this.props.className}>
         <TextField className="input-field" {...props} fullWidth />
-        <p className="input-field-error">
-          {(messages && messages.length && messages[0]) || ''}
+        <p className="input-field-error p-0 m-0">
+          <small>{(messages && messages.length && messages[0]) || ''}</small>
         </p>
       </div>
     );

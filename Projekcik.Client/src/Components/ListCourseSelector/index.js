@@ -171,7 +171,6 @@ export default class ListCourseSelector extends Component {
           Wybierz uczelnię i kierunek
         </Button>
 
-        <h1>{this.state.activeTab}</h1>
         <Dialog
           open={this.state.open}
           onClose={this.handleDialogClose}
