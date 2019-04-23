@@ -11,7 +11,7 @@ export const RegisterPage = () => {
   return APIService.isAuthenticated() ? (
     <Redirect to="/protected" />
   ) : (
-    <div className="login-page">
+    <div className="register-page">
       <RegisterPanel {...data} />
     </div>
   );

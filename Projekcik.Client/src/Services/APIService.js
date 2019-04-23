@@ -36,6 +36,7 @@ export default class APIService {
   static isAuthenticated() {
     let jwtToken = window.localStorage.getItem('token');
     if (!jwtToken) {
+      window.localStorage.removeItem('token');
       return false;
     } else {
       let payload = decode(jwtToken);

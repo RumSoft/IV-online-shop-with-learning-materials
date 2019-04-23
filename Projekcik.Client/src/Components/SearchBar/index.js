@@ -5,9 +5,9 @@ import './index.scss';
 export class SearchBar extends Component {
   render() {
     return (
-      <form class="form-inline container mobile">
+      <form className="form-inline container mobile">
         <input
-          class="form-control mr-sm-2 item mobile"
+          className="form-control mr-sm-2 item mobile"
           type="search"
           placeholder="Wyszukaj notatki..."
         />

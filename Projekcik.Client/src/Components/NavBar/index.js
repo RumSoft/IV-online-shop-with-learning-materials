@@ -51,7 +51,7 @@ export default class NavBar extends Component {
       },
       {
         name: 'Dodaj notatkę',
-        to: '#',
+        to: '/upload',
         icon: <AddIcon />,
         hidden: false
       },
