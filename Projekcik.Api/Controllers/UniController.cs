@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Projekcik.Api.Models;
 
@@ -15,52 +16,32 @@ namespace Projekcik.Api.Controllers
         private DataContext _context { get; }
 
         /// <summary>
-        /// Returns all voivodeships
+        ///     Returns all voivodeships
         /// </summary>
         [HttpGet("")]
-        public IActionResult GetAllVoivodeships()
+        public IEnumerable<VoivodeshipNoteCount> GetAllVoivodeships()
         {
-            var data = _context.Voivodeships
-                .Select(x => new
-                {
-                    x.Id,
-                    x.Name,
-                    x.ImageUrl
-                });
-            return Ok(data);
+            return _context.VoivodeshipNoteCounts;
         }
 
         /// <summary>
-        /// Returns all universities for given voivodeship
+        ///     Returns all universities for given voivodeship
         /// </summary>
         [HttpGet("{voivodeshipId}")]
-        public IActionResult GetAllUniversities(int voivodeshipId)
+        public IEnumerable<UniversityNoteCount> GetAllUniversities(int voivodeshipId)
         {
-            var data = _context.Universities
-                .Where(x => x.VoivodeshipId == voivodeshipId)
-                .Select(x => new
-                {
-                    x.Id,
-                    x.Name,
-                    x.ImageUrl
-                });
-            return Ok(data);
+            return _context.UniversityNoteCounts
+                .Where(x => x.VoivodeshipId == voivodeshipId);
         }
 
         /// <summary>
-        /// Returns all courses for given university
+        ///     Returns all courses for given university
         /// </summary>
         [HttpGet("university/{universityId}")]
-        public IActionResult GetAllCourses(int universityId)
+        public IEnumerable<CourseNoteCount> GetAllCourses(int universityId)
         {
-            var data = _context.Courses
-                .Where(x => x.UniversityId == universityId)
-                .Select(x => new
-                {
-                    x.Id,
-                    x.Name
-                });
-            return Ok(data);
+            return _context.CourseNoteCounts
+                .Where(x => x.UniversityId == universityId);
         }
     }
 }
