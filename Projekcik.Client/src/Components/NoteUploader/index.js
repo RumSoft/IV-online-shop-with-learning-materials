@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import './index.scss';
 import ListCourseSelector from '../ListCourseSelector';
+import MyTextField from '../MyTextField';
 
 export default class NoteUploader extends Component {
   constructor(props) {
@@ -52,6 +53,14 @@ export default class NoteUploader extends Component {
   handleChangePrice = event => {
     let value = event.target.value.replace(',', '.');
     value = value.replace('..', '.');
+    value = value.replace(/[^0-9^.]/, '');
+    this.setState({
+      [event.target.id]: `${value}`
+    });
+  };
+
+  handleChangePrice = event => {
+    let value = event.target.value.replace(',', '.');
     value = value.replace(/[^0-9^.]/, '');
     this.setState({
       [event.target.id]: `${value}`
@@ -137,24 +146,46 @@ export default class NoteUploader extends Component {
           <hr />
         </div>
         <form className="note-form" onSubmit={this.handleSubmit}>
-          <TextField
+          <MyTextField
             id="name"
             className="field"
             label="Nazwa notatki"
-            helperText="Max. 100 znaków..."
             inputProps={{ maxLength: 100 }}
             variant="outlined"
             value={this.state.name}
             onChange={this.handleChange}
+            validationRules={[
+              {
+                func: val => val,
+                message: 'Nazwa notatki jest wymagana'
+              },
+              {
+                func: val => val.length < 100,
+                message: 'nazwa jest za długa'
+              }
+            ]}
           />
-          <TextField
+          <MyTextField
             id="price"
             className="field"
             label="Cena"
             variant="outlined"
-            helperText="Format po kropce np. '13.37'..."
             value={this.state.price}
             onChange={this.handleChangePrice}
+            validationRules={[
+              {
+                func: val => val,
+                message: 'Cena jest wymagana'
+              },
+              {
+                func: val => /^(\d*\.?\d*)$/.test(val),
+                message: 'nieprawidłowy format'
+              },
+              {
+                func: val => val < 1000,
+                message: 'Cena jest za duża'
+              }
+            ]}
           />
           <TextField
             id="voivodeship"
