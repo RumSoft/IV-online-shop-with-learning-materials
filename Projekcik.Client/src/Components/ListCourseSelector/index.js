@@ -68,7 +68,7 @@ export default class ListCourseSelector extends Component {
       disabledTabs: 2,
       activeTab: 1
     };
-    if (arg !== 'send') {
+    if (this.state.courseId == null) {
       stateUpdate = {
         ...stateUpdate,
         voivodeship: '',
@@ -92,7 +92,10 @@ export default class ListCourseSelector extends Component {
       this.setState(
         {
           disabledTabs: 1,
-          voivodeship: itemName
+          voivodeship: itemName,
+          university: '',
+          course: '',
+          activeTab: 2
         },
         () => {
           UniService.getUniversities(itemId).then(data =>
@@ -104,7 +107,9 @@ export default class ListCourseSelector extends Component {
       this.setState(
         {
           disabledTabs: 0,
-          university: itemName
+          university: itemName,
+          course: '',
+          activeTab: 3
         },
         () => {
           UniService.getCourses(itemId).then(data =>
@@ -113,9 +118,10 @@ export default class ListCourseSelector extends Component {
         }
       );
     } else if (currentTab === 3) {
-      this.setState({ courseId: itemId, course: itemName }, () =>
-        this.notifyParent()
-      );
+      this.setState({ courseId: itemId, course: itemName }, () => {
+        this.notifyParent();
+        // this.handleDialogClose(); // maybe auto close?
+      });
     }
   }
 
@@ -164,8 +170,6 @@ export default class ListCourseSelector extends Component {
           onClick={this.handleDialogOpen}>
           Wybierz uczelnię i kierunek
         </Button>
-
-        {/* ////////////BEGIN DIALOG/////////////////////////////////// */}
 
         <Dialog
           open={this.state.open}
@@ -257,14 +261,12 @@ export default class ListCourseSelector extends Component {
           </DialogContent>
 
           <DialogActions>
-            <Button onClick={this.handleDialogClose} color="primary">
-              Powrót
-            </Button>
             <Button
               onClick={() => this.handleDialogClose('send')}
-              disabled={this.state.course === ''}
-              color="primary">
-              Wyślij
+              disabled={this.state.course == ''}
+              color="primary"
+              variant="contained">
+              Zapisz
             </Button>
           </DialogActions>
         </Dialog>
