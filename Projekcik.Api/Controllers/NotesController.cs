@@ -36,13 +36,23 @@ namespace Projekcik.Api.Controllers
 
 
 
-        [HttpGet("")]
+        /// <summary>
+        /// Get my notes
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("me")]
         public IEnumerable<NoteDto> GetMyNotes()
         {
             var userId = _user.GetCurrentUserId();
             return GetUserNotes(userId);
         }
 
+        /// <summary>
+        /// Get user's notes
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
         [HttpGet("{userId}")]
         public IEnumerable<NoteDto> GetUserNotes(Guid userId)
         {
