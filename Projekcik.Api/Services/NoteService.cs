@@ -40,47 +40,33 @@ namespace Projekcik.Api.Services
             else if (searchParams.VoivodeshipId.HasValue)
                 query = query.Where(x => x.Course.University.VoivodeshipId == searchParams.VoivodeshipId);
 
+            var sortColumn = new Func<Note, object>(x=>x.Name);
             if (!string.IsNullOrWhiteSpace(sortParams.SortBy))
             {
                 switch (sortParams.SortBy)
                 {
                     case "price":
-                        if (sortParams.SortOrder.ToUpper() == "DESC")
-                            query = query.OrderByDescending(x => x.Price);
-                        else
-                            query = query.OrderBy(x => x.Price);
+                        sortColumn = x => x.Price;
                         break;
                     case "name":
-                        if (sortParams.SortOrder.ToUpper() == "DESC")
-                            query = query.OrderByDescending(x => x.Name);
-                        else
-                            query = query.OrderBy(x => x.Name);
+                        sortColumn = x => x.Name;
                         break;
                     case "ordercount":
-                        if (sortParams.SortOrder.ToUpper() == "DESC")
-                            query = query.OrderByDescending(x => x.Buyers.Count);
-                        else
-                            query = query.OrderBy(x => x.Buyers.Count);
-                            break;
+                        sortColumn = x => x.Buyers?.Count;
+                        break;
                     case "created":
-                        if (sortParams.SortOrder.ToUpper() == "DESC")
-                            query = query.OrderByDescending(x => x.CreatedAt);
-                        else
-                            query = query.OrderBy(x => x.CreatedAt);
+                        sortColumn = x => x.CreatedAt;
                         break;
                     case "updated":
-                        if (sortParams.SortOrder.ToUpper() == "DESC")
-                            query = query.OrderByDescending(x => x.ModifiedAt);
-                        else
-                            query = query.OrderBy(x => x.ModifiedAt);
+                        sortColumn = x => x.ModifiedAt;
                         break;
                 }
 
             }
-            else if (string.IsNullOrWhiteSpace(sortParams.SortBy))
-            {
-                query = query.OrderBy(x => x.Name);
-            }
+
+            query = query.OrderBy(x => sortColumn(x));
+            if (!string.IsNullOrEmpty(sortParams.SortOrder) && sortParams.SortOrder.ToUpper() == "DESC")
+                query = query.OrderByDescending(x => sortColumn(x));            
 
             if (!string.IsNullOrWhiteSpace(searchParams.NoteName))
                 query = query.Where(x => x.Name.Contains(searchParams.NoteName));
