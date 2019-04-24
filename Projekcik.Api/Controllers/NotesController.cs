@@ -181,6 +181,7 @@ namespace Projekcik.Api.Controllers
             //todo mapper
             return Ok(result.Select(x => new
             {
+                x.Id,
                 x.Name,
                 x.Description,
                 x.Price,
