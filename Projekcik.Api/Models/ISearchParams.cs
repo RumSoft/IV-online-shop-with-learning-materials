@@ -7,8 +7,6 @@
         int? CourseId { get; set; }
         string NoteName { get; set; }
         int? Semester { get; set; }
-        string SortBy { get; set; }
-        string SortOrder { get; set; }
     }
 
     public class SearchParams : ISearchParams
@@ -18,7 +16,5 @@
         public int? CourseId { get; set; }
         public string NoteName { get; set; }
         public int? Semester { get; set; }
-        public string SortBy { get; set; }
-        public string SortOrder { get; set; }
     }
 }

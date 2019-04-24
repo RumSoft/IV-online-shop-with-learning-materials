@@ -28,7 +28,7 @@ namespace Projekcik.Api.Services
             return _context.Notes;
         }
 
-        public IQueryable<Note> Search(ISearchParams searchParams, IPagerParams pagerParams)
+        public IQueryable<Note> Search(ISearchParams searchParams, IPagerParams pagerParams, ISortParams sortParams)
         {
             const int pageSize = 10;
             var query = _context.Notes.AsQueryable();
@@ -40,44 +40,44 @@ namespace Projekcik.Api.Services
             else if (searchParams.VoivodeshipId.HasValue)
                 query = query.Where(x => x.Course.University.VoivodeshipId == searchParams.VoivodeshipId);
 
-            if (!string.IsNullOrWhiteSpace(searchParams.SortBy))
+            if (!string.IsNullOrWhiteSpace(sortParams.SortBy))
             {
-                switch (searchParams.SortBy)
+                switch (sortParams.SortBy)
                 {
                     case "price":
-                        if (searchParams.SortOrder == "Asc")
-                            query = query.OrderBy(x => x.Price);
-                        else
+                        if (sortParams.SortOrder.ToUpper() == "DESC")
                             query = query.OrderByDescending(x => x.Price);
+                        else
+                            query = query.OrderBy(x => x.Price);
                         break;
                     case "name":
-                        if (searchParams.SortOrder == "Asc")
-                            query = query.OrderBy(x => x.Name);
-                        else
+                        if (sortParams.SortOrder.ToUpper() == "DESC")
                             query = query.OrderByDescending(x => x.Name);
+                        else
+                            query = query.OrderBy(x => x.Name);
                         break;
                     case "ordercount":
-                        if (searchParams.SortOrder == "Asc")
-                            query = query.OrderBy(x => x.Buyers);
+                        if (sortParams.SortOrder.ToUpper() == "DESC")
+                            query = query.OrderByDescending(x => x.Buyers.Count);
                         else
-                            query = query.OrderByDescending(x => x.Buyers);
-                        break;
+                            query = query.OrderBy(x => x.Buyers.Count);
+                            break;
                     case "created":
-                        if (searchParams.SortOrder == "Asc")
-                            query = query.OrderBy(x => x.CreatedAt);
-                        else
+                        if (sortParams.SortOrder.ToUpper() == "DESC")
                             query = query.OrderByDescending(x => x.CreatedAt);
+                        else
+                            query = query.OrderBy(x => x.CreatedAt);
                         break;
                     case "updated":
-                        if (searchParams.SortOrder == "Asc")
-                            query = query.OrderBy(x => x.ModifiedAt);
-                        else
+                        if (sortParams.SortOrder.ToUpper() == "DESC")
                             query = query.OrderByDescending(x => x.ModifiedAt);
+                        else
+                            query = query.OrderBy(x => x.ModifiedAt);
                         break;
                 }
 
             }
-            else if (string.IsNullOrWhiteSpace(searchParams.SortBy))
+            else if (string.IsNullOrWhiteSpace(sortParams.SortBy))
             {
                 query = query.OrderBy(x => x.Name);
             }

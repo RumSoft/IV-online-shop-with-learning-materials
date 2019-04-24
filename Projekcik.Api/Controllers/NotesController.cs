@@ -173,10 +173,11 @@ namespace Projekcik.Api.Controllers
         [HttpGet("search")]
         public IActionResult Search(
             [FromQuery] SearchParams searchParams,
-            [FromQuery] PagerParams pagerParams
+            [FromQuery] PagerParams pagerParams,
+            [FromQuery] SortParams sortParams
             )
         {
-            var result = _noteService.Search(searchParams, pagerParams);
+            var result = _noteService.Search(searchParams, pagerParams, sortParams);
             //todo mapper
             return Ok(result.Select(x => new
             {
