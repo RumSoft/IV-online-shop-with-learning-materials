@@ -40,6 +40,48 @@ namespace Projekcik.Api.Services
             else if (searchParams.VoivodeshipId.HasValue)
                 query = query.Where(x => x.Course.University.VoivodeshipId == searchParams.VoivodeshipId);
 
+            if (!string.IsNullOrWhiteSpace(searchParams.SortBy))
+            {
+                switch (searchParams.SortBy)
+                {
+                    case "price":
+                        if (searchParams.SortOrder == "Asc")
+                            query = query.OrderBy(x => x.Price);
+                        else
+                            query = query.OrderByDescending(x => x.Price);
+                        break;
+                    case "name":
+                        if (searchParams.SortOrder == "Asc")
+                            query = query.OrderBy(x => x.Name);
+                        else
+                            query = query.OrderByDescending(x => x.Name);
+                        break;
+                    case "ordercount":
+                        if (searchParams.SortOrder == "Asc")
+                            query = query.OrderBy(x => x.Buyers);
+                        else
+                            query = query.OrderByDescending(x => x.Buyers);
+                        break;
+                    case "created":
+                        if (searchParams.SortOrder == "Asc")
+                            query = query.OrderBy(x => x.CreatedAt);
+                        else
+                            query = query.OrderByDescending(x => x.CreatedAt);
+                        break;
+                    case "updated":
+                        if (searchParams.SortOrder == "Asc")
+                            query = query.OrderBy(x => x.ModifiedAt);
+                        else
+                            query = query.OrderByDescending(x => x.ModifiedAt);
+                        break;
+                }
+
+            }
+            else if (string.IsNullOrWhiteSpace(searchParams.SortBy))
+            {
+                query = query.OrderBy(x => x.Name);
+            }
+
             if (!string.IsNullOrWhiteSpace(searchParams.NoteName))
                 query = query.Where(x => x.Name.Contains(searchParams.NoteName));
 
