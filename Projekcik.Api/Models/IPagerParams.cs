@@ -18,8 +18,8 @@
 
     public class PagerParams : IPagerParams
     {
-        public int Size { get; } = 10;
-        public int Page { get; } = 1;
+        public int Size { get; set; } = 10;
+        public int Page { get; set; } = 1;
     }
 
     class PagerResult : IPagerResult, IPagerParams
