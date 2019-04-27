@@ -16,12 +16,13 @@ namespace Projekcik.Api.Services
 
         public Note GetNoteById(Guid id)
         {
-            return _context.Notes.Include(x=>x.Course)
-                .Include(x=>x.Course.University)
-                .Include(x=>x.Course.University.Voivodeship)
-                .Include(x=>x.Buyers)
-                .First(x=>x.Id == id);
-                             
+            return _context.Notes
+                .Include(x => x.Author)
+                .Include(x => x.Buyers)
+                .Include(x => x.Course)
+                .ThenInclude(x => x.University)
+                .ThenInclude(x => x.Voivodeship)
+                .First(x => x.Id == id);
         }
 
         public IQueryable<Note> GetNotesByAuthorId(Guid authorId)

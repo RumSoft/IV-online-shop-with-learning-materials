@@ -108,9 +108,7 @@ namespace Projekcik.Api.Controllers
 
             var noteId = Guid.NewGuid();
             using (var fileStream = new FileStream(Path.Combine(path, noteId.ToString()), FileMode.Create))
-            {
                 file.CopyTo(fileStream);
-            }
 
             var note = new Note
             {
@@ -121,14 +119,14 @@ namespace Projekcik.Api.Controllers
                 Price = price,
                 Description = description,
                 CourseId = course,
-                FileExtension = extension.Value
+                FileExtension = extension.Value,
+                Semester = semester
             };
             _noteService.Create(note);
 
             return Ok(new
             {
-                note.Id,
-                path
+                note.Id
             });
         }
 
@@ -199,23 +197,34 @@ namespace Projekcik.Api.Controllers
 
             return Ok(new
             {
-                result.Name,
                 result.Id,
+                result.Name,
                 result.Price,
-                result.Author,
-                result.AuthorId,
                 result.Description,
                 result.Semester,
-                CourseName = result.Course.Name,
-                result.CourseId,
-                UniversityName = result.Course.University.Name,
-                result.Course.UniversityId,
-                VoivodeshipName = result.Course.University.Voivodeship.Name,
-                result.Course.University.VoivodeshipId,
-                BuyCount= result.Buyers.Count,
                 result.CreatedAt,
-                result.ModifiedAt,
-                FileExt= result.FileExtension.ToString()
+                OrderCount = result.Buyers.Count,
+                Type = result.FileExtension.ToString().ToUpper(),
+                Author = new
+                {
+                    Id = result.AuthorId,
+                    Name = result.Author.UserName,
+                },
+                Course = new
+                {
+                    Id = result.CourseId,
+                    Name = result.Course.Name,
+                },
+                University = new
+                {
+                    Id = result.Course.UniversityId,
+                    Name = result.Course.University.Name,
+                },
+                Voivodeship = new
+                {
+                    Id = result.Course.University.VoivodeshipId,
+                    Name = result.Course.University.Voivodeship.Name,
+                }
             });
         }
     }
