@@ -194,7 +194,6 @@ namespace Projekcik.Api.Controllers
         public IActionResult GetNotesDetails(Guid noteId)
         {
             var result = _noteService.GetNoteById(noteId);
-
             if (result == null)
                 return BadRequest();
 
@@ -217,7 +216,6 @@ namespace Projekcik.Api.Controllers
                 result.CreatedAt,
                 result.ModifiedAt,
                 FileExt= result.FileExtension.ToString()
-
             });
         }
     }
