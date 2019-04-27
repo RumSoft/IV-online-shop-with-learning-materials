@@ -124,7 +124,6 @@ namespace Projekcik.Api.Controllers
         ///     Every browser should be able to open this blob file and it stays in memory while user session is on.
         ///     If user hasn't bought the file, then the response is bad request OR (in future) auto-redirect to homepage.
         /// </summary>
-        /// <param name="noteId"></param>
         [Authorize]
         [HttpGet("download-request/{noteId}")]
         public IActionResult DownloadRequest(Guid noteId)
@@ -172,12 +171,26 @@ namespace Projekcik.Api.Controllers
                 x.Description,
                 x.Price,
                 x.Semester,
-                x.CourseId,
-                CourseName = x.Course.Name,
-                x.Course.UniversityId,
-                UniversityName = x.Course.University.Name,
-                x.Course.University.VoivodeshipId,
-                VoivodeshipName = x.Course.University.Voivodeship.Name
+                Author = new
+                {
+                    Id = x.AuthorId,
+                    Name = x.Author.UserName,
+                },
+                Course = new
+                {
+                    Id = x.CourseId,
+                    Name = x.Course.Name,
+                },
+                University = new
+                {
+                    Id = x.Course.UniversityId,
+                    Name = x.Course.University.Name,
+                },
+                Voivodeship = new
+                {
+                    Id = x.Course.University.VoivodeshipId,
+                    Name = x.Course.University.Voivodeship.Name,
+                }
             });
 
             return Ok(new
