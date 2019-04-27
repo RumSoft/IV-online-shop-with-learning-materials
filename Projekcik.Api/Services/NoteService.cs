@@ -28,9 +28,8 @@ namespace Projekcik.Api.Services
             return _context.Notes;
         }
 
-        public IQueryable<Note> Search(ISearchParams searchParams, IPagerParams pagerParams, ISortParams sortParams)
+        public IQueryable<Note> Search(ISearchParams searchParams, ISortParams sortParams)
         {
-            const int pageSize = 10;
             var query = _context.Notes.AsQueryable();
 
             if (searchParams.CourseId.HasValue)
@@ -40,9 +39,14 @@ namespace Projekcik.Api.Services
             else if (searchParams.VoivodeshipId.HasValue)
                 query = query.Where(x => x.Course.University.VoivodeshipId == searchParams.VoivodeshipId);
 
-            var sortColumn = new Func<Note, object>(x=>x.Name);
+            if (!string.IsNullOrWhiteSpace(searchParams.NoteName))
+                query = query.Where(x => x.Name.Contains(searchParams.NoteName));
+
+            if (searchParams.Semester.HasValue)
+                query = query.Where(x => x.Semester == searchParams.Semester);
+
+            var sortColumn = new Func<Note, object>(x => x.Name);
             if (!string.IsNullOrWhiteSpace(sortParams.SortBy))
-            {
                 switch (sortParams.SortBy)
                 {
                     case "price":
@@ -50,9 +54,6 @@ namespace Projekcik.Api.Services
                         break;
                     case "name":
                         sortColumn = x => x.Name;
-                        break;
-                    case "ordercount":
-                        sortColumn = x => x.Buyers?.Count;
                         break;
                     case "created":
                         sortColumn = x => x.CreatedAt;
@@ -62,20 +63,12 @@ namespace Projekcik.Api.Services
                         break;
                 }
 
-            }
-
-            query = query.OrderBy(x => sortColumn(x));
             if (!string.IsNullOrEmpty(sortParams.SortOrder) && sortParams.SortOrder.ToUpper() == "DESC")
-                query = query.OrderByDescending(x => sortColumn(x));            
+                query = query.OrderByDescending(x => sortColumn(x));
+            else
+                query = query.OrderBy(x => sortColumn(x));
 
-            if (!string.IsNullOrWhiteSpace(searchParams.NoteName))
-                query = query.Where(x => x.Name.Contains(searchParams.NoteName));
-
-            if (searchParams.Semester.HasValue)
-                query = query.Where(x => x.Semester == searchParams.Semester);
-
-            return query.Skip(pagerParams.Page * pageSize)
-                .Take(pageSize);
+            return query;
         }
 
         public Note Create(Note note)
