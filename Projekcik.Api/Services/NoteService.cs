@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Projekcik.Api.Models;
 
 namespace Projekcik.Api.Services
@@ -15,7 +16,8 @@ namespace Projekcik.Api.Services
 
         public Note GetNoteById(Guid id)
         {
-            return _context.Notes.Find(id);
+            return _context.Notes.Include(x=>x.Course).Include(x=>x.Course.University).Include(x=>x.Course.Voivodeship).First(x=>x.Id == id);
+                             
         }
 
         public IQueryable<Note> GetNotesByAuthorId(Guid authorId)

@@ -188,5 +188,42 @@ namespace Projekcik.Api.Controllers
                 UniversityName = x.Course.University.Name,
             }));
         }
+
+        [AllowAnonymous]
+        [HttpGet("{noteId}")]
+        public IActionResult GetNotesDetails(Guid noteId)
+        {
+            var x = _noteService.GetNoteById(noteId);
+            return Ok(new
+            {
+                x.Name,
+                x.Id,
+                x.Price,
+                x.Author,
+                x.AuthorId,
+                x.Description,
+                x.Semester,
+                CourseName = x.Course.Name,
+                x.CourseId,
+                UniversityName = x.Course.University.Name,
+                x.Course.UniversityId,
+                VoivodeshipName = x.Course.University.Voivodeship.Name,
+                x.Course.University.VoivodeshipId,
+
+
+            });
+            /*return Ok(x.select(x=>new
+            {
+                x.Name,
+                x.Id,
+                x.Author,
+                x.AuthorId,
+                x.Description,
+                x.Semester,
+                x.CourseId,
+                CName=x.Course.Name
+                
+            });*/
+        }
     }
 }
