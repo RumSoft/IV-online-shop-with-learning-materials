@@ -9,12 +9,24 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import EnhancedTableHead from './TableHead';
 import EnhancedTableToolbar from './TableToolbar';
+import NoteService from '../../Services/NoteService';
 
-let counter = 0;
-function createData(name, calories, fat, carbs, protein) {
-  counter += 1;
-  return { id: counter, name, calories, fat, carbs, protein };
-}
+// let counter = 0;
+// function createData(name, price, uni, course) {
+//   counter += 1;
+//   NoteService.getAllNotes().then(r => {
+//     for (var note of r) {
+//       name = note.name;
+//       price = note.price;
+//       uni = note.university;
+//       course = note.course;
+//     }
+//   });
+
+//   return { id: counter, name, price, uni, course };
+// }
+
+//////////////////////////SORTING METHODS////////////////////////////////////
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -42,6 +54,8 @@ function getSorting(order, orderBy) {
     : (a, b) => -desc(a, b, orderBy);
 }
 
+//////////////////////////SORTING METHODS////////////////////////////////////
+
 const styles = theme => ({
   root: {
     width: '100%',
@@ -56,25 +70,33 @@ const styles = theme => ({
 });
 
 class NoteTable extends Component {
+  constructor(props) {
+    super(props);
+    let id = 0;
+    NoteService.getAllNotes().then(r => {
+      for (var note of r) {
+        id += 1;
+        this.setState({
+          data: [
+            ...this.state.data,
+            {
+              id: id,
+              name: note.name,
+              price: note.price,
+              uni: note.universityName,
+              course: note.courseName
+            }
+          ]
+        });
+      }
+    });
+  }
   state = {
     order: 'asc',
-    orderBy: 'calories',
+    orderBy: 'price',
     selected: [],
-    data: [
-      createData('Cupcake', 305, 3.7, 67, 4.3),
-      createData('Donut', 452, 25.0, 51, 4.9),
-      createData('Eclair', 262, 16.0, 24, 6.0),
-      createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-      createData('Gingerbread', 356, 16.0, 49, 3.9),
-      createData('Honeycomb', 408, 3.2, 87, 6.5),
-      createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-      createData('Jelly Bean', 375, 0.0, 94, 0.0),
-      createData('KitKat', 518, 26.0, 65, 7.0),
-      createData('Lollipop', 392, 0.2, 98, 0.0),
-      createData('Marshmallow', 318, 0, 81, 2.0),
-      createData('Nougat', 360, 19.0, 9, 37.0),
-      createData('Oreo', 437, 18.0, 63, 4.0)
-    ],
+    data: [],
+    courses: [],
     page: 0,
     rowsPerPage: 5
   };
@@ -148,6 +170,7 @@ class NoteTable extends Component {
               onRequestSort={this.handleRequestSort}
               rowCount={data.length}
             />
+
             <TableBody>
               {stableSort(data, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -168,10 +191,10 @@ class NoteTable extends Component {
                       <TableCell component="th" scope="row" padding="none">
                         {n.name}
                       </TableCell>
-                      <TableCell align="right">{n.calories}</TableCell>
-                      <TableCell align="right">{n.fat}</TableCell>
-                      <TableCell align="right">{n.carbs}</TableCell>
-                      <TableCell align="right">{n.protein}</TableCell>
+                      <TableCell align="right">{n.price}</TableCell>
+                      <TableCell align="right">{n.uni}</TableCell>
+                      <TableCell align="right">{n.course}</TableCell>
+                      <TableCell align="right">{n.semester}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -188,12 +211,13 @@ class NoteTable extends Component {
           component="div"
           count={data.length}
           rowsPerPage={rowsPerPage}
+          labelRowsPerPage="Ilość wyników na stronę:"
           page={page}
           backIconButtonProps={{
-            'aria-label': 'Previous Page'
+            'aria-label': 'Poprzednia Strona'
           }}
           nextIconButtonProps={{
-            'aria-label': 'Next Page'
+            'aria-label': 'Następna Strona'
           }}
           onChangePage={this.handleChangePage}
           onChangeRowsPerPage={this.handleChangeRowsPerPage}

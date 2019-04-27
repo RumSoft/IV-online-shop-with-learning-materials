@@ -13,10 +13,10 @@ const rows = [
     disablePadding: true,
     label: 'Nazwa notatki'
   },
-  { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
-  { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-  { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
-  { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' }
+  { id: 'price', numeric: true, disablePadding: false, label: 'Cena' },
+  { id: 'uni', numeric: true, disablePadding: false, label: 'Uczelnia' },
+  { id: 'course', numeric: true, disablePadding: false, label: 'Kierunek' },
+  { id: 'semester', numeric: true, disablePadding: false, label: 'Semestr' }
 ];
 
 export default class EnhancedTableHead extends Component {
