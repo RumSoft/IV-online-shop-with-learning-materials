@@ -28,9 +28,8 @@ namespace Projekcik.Api.Services
             return _context.Notes;
         }
 
-        public IQueryable<Note> Search(ISearchParams searchParams, IPagerParams pagerParams)
+        public IQueryable<Note> Search(ISearchParams searchParams, ISortParams sortParams)
         {
-            const int pageSize = 10;
             var query = _context.Notes.AsQueryable();
 
             if (searchParams.CourseId.HasValue)
@@ -46,8 +45,30 @@ namespace Projekcik.Api.Services
             if (searchParams.Semester.HasValue)
                 query = query.Where(x => x.Semester == searchParams.Semester);
 
-            return query.Skip(pagerParams.Page * pageSize)
-                .Take(pageSize);
+            var sortColumn = new Func<Note, object>(x => x.Name);
+            if (!string.IsNullOrWhiteSpace(sortParams.SortBy))
+                switch (sortParams.SortBy)
+                {
+                    case "price":
+                        sortColumn = x => x.Price;
+                        break;
+                    case "name":
+                        sortColumn = x => x.Name;
+                        break;
+                    case "created":
+                        sortColumn = x => x.CreatedAt;
+                        break;
+                    case "updated":
+                        sortColumn = x => x.ModifiedAt;
+                        break;
+                }
+
+            if (!string.IsNullOrEmpty(sortParams.SortOrder) && sortParams.SortOrder.ToUpper() == "DESC")
+                query = query.OrderByDescending(x => sortColumn(x));
+            else
+                query = query.OrderBy(x => sortColumn(x));
+
+            return query;
         }
 
         public Note Create(Note note)
