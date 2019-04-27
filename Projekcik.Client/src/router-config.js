@@ -5,6 +5,7 @@ import { UserPage } from './Pages/UserPage';
 import LoginPage from './Pages/Login';
 import RodoPage from './Pages/Rodo';
 import UploadPage from './Pages/Upload';
+import SearchPage from './Pages/Search';
 
 const routes = [
   {
@@ -23,6 +24,10 @@ const routes = [
   {
     path: '/rodo',
     component: RodoPage
+  },
+  {
+    path: '/results',
+    component: SearchPage
   }
 ];
 
