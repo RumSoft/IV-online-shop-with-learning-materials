@@ -97,9 +97,7 @@ namespace Projekcik.Api.Controllers
 
             var noteId = Guid.NewGuid();
             using (var fileStream = new FileStream(Path.Combine(path, noteId.ToString()), FileMode.Create))
-            {
                 file.CopyTo(fileStream);
-            }
 
             var note = new Note
             {
@@ -110,14 +108,14 @@ namespace Projekcik.Api.Controllers
                 Price = price,
                 Description = description,
                 CourseId = course,
-                FileExtension = extension.Value
+                FileExtension = extension.Value,
+                Semester = semester
             };
             _noteService.Create(note);
 
             return Ok(new
             {
-                note.Id,
-                path
+                note.Id
             });
         }
 
@@ -126,7 +124,6 @@ namespace Projekcik.Api.Controllers
         ///     Every browser should be able to open this blob file and it stays in memory while user session is on.
         ///     If user hasn't bought the file, then the response is bad request OR (in future) auto-redirect to homepage.
         /// </summary>
-        /// <param name="noteId"></param>
         [Authorize]
         [HttpGet("download-request/{noteId}")]
         public IActionResult DownloadRequest(Guid noteId)
@@ -174,12 +171,26 @@ namespace Projekcik.Api.Controllers
                 x.Description,
                 x.Price,
                 x.Semester,
-                x.CourseId,
-                CourseName = x.Course.Name,
-                x.Course.UniversityId,
-                UniversityName = x.Course.University.Name,
-                x.Course.University.VoivodeshipId,
-                VoivodeshipName = x.Course.University.Voivodeship.Name
+                Author = new
+                {
+                    Id = x.AuthorId,
+                    Name = x.Author.UserName,
+                },
+                Course = new
+                {
+                    Id = x.CourseId,
+                    Name = x.Course.Name,
+                },
+                University = new
+                {
+                    Id = x.Course.UniversityId,
+                    Name = x.Course.University.Name,
+                },
+                Voivodeship = new
+                {
+                    Id = x.Course.University.VoivodeshipId,
+                    Name = x.Course.University.Voivodeship.Name,
+                }
             });
 
             return Ok(new
@@ -194,6 +205,47 @@ namespace Projekcik.Api.Controllers
                 Notes = notes
                     .Skip((pagerParams.Page - 1) * pagerParams.Size)
                     .Take(pagerParams.Size)
+            });
+        }
+
+        [AllowAnonymous]
+        [HttpGet("{noteId}")]
+        public IActionResult GetNotesDetails(Guid noteId)
+        {
+            var result = _noteService.GetNoteById(noteId);
+            if (result == null)
+                return BadRequest();
+
+            return Ok(new
+            {
+                result.Id,
+                result.Name,
+                result.Price,
+                result.Description,
+                result.Semester,
+                result.CreatedAt,
+                OrderCount = result.Buyers.Count,
+                Type = result.FileExtension.ToString().ToUpper(),
+                Author = new
+                {
+                    Id = result.AuthorId,
+                    Name = result.Author.UserName,
+                },
+                Course = new
+                {
+                    Id = result.CourseId,
+                    Name = result.Course.Name,
+                },
+                University = new
+                {
+                    Id = result.Course.UniversityId,
+                    Name = result.Course.University.Name,
+                },
+                Voivodeship = new
+                {
+                    Id = result.Course.University.VoivodeshipId,
+                    Name = result.Course.University.Voivodeship.Name,
+                }
             });
         }
     }
