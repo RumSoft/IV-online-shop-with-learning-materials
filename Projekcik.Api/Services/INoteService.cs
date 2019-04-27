@@ -9,7 +9,7 @@ namespace Projekcik.Api.Services
         Note GetNoteById(Guid id);
         IQueryable<Note> GetNotesByAuthorId(Guid authorId);
         IQueryable<Note> GetQuery();
-        IQueryable<Note> Search(ISearchParams searchParams, IPagerParams pagerParams);
+        IQueryable<Note> Search(ISearchParams searchParams, ISortParams sortParams);
         Note Create(Note note);
         void Buy(User user, Note note);
     }
