@@ -193,37 +193,28 @@ namespace Projekcik.Api.Controllers
         [HttpGet("{noteId}")]
         public IActionResult GetNotesDetails(Guid noteId)
         {
-            var x = _noteService.GetNoteById(noteId);
+            var result = _noteService.GetNoteById(noteId);
             return Ok(new
             {
-                x.Name,
-                x.Id,
-                x.Price,
-                x.Author,
-                x.AuthorId,
-                x.Description,
-                x.Semester,
-                CourseName = x.Course.Name,
-                x.CourseId,
-                UniversityName = x.Course.University.Name,
-                x.Course.UniversityId,
-                VoivodeshipName = x.Course.University.Voivodeship.Name,
-                x.Course.University.VoivodeshipId,
-
+                result.Name,
+                result.Id,
+                result.Price,
+                result.Author,
+                result.AuthorId,
+                result.Description,
+                result.Semester,
+                CourseName = result.Course.Name,
+                result.CourseId,
+                UniversityName = result.Course.University.Name,
+                result.Course.UniversityId,
+                VoivodeshipName = result.Course.University.Voivodeship.Name,
+                result.Course.University.VoivodeshipId,
+                BuyCount= result.Buyers.Count,
+                result.CreatedAt,
+                result.ModifiedAt,
+                FileExt= result.FileExtension.ToString()
 
             });
-            /*return Ok(x.select(x=>new
-            {
-                x.Name,
-                x.Id,
-                x.Author,
-                x.AuthorId,
-                x.Description,
-                x.Semester,
-                x.CourseId,
-                CName=x.Course.Name
-                
-            });*/
         }
     }
 }
