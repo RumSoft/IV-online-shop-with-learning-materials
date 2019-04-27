@@ -194,6 +194,10 @@ namespace Projekcik.Api.Controllers
         public IActionResult GetNotesDetails(Guid noteId)
         {
             var result = _noteService.GetNoteById(noteId);
+
+            if (result == null)
+                return BadRequest();
+
             return Ok(new
             {
                 result.Name,
