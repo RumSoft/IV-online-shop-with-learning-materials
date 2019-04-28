@@ -47,7 +47,7 @@ namespace Projekcik.Api.Controllers
         ///     Get user's notes
         /// </summary>
         /// <param name="userId"></param>
-        [HttpGet("{userId}")]
+        [HttpGet("user/{userId}")]
         public IEnumerable<NoteDto> GetUserNotes(Guid userId)
         {
             var notes = _noteService.GetNotesByAuthorId(userId);
