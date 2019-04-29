@@ -1,37 +1,49 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import './index.scss';
 
 export class SearchBar extends Component {
-  handleSubmit = e => {
-    e.preventDefault();
-    // let query = document.getElementsByName('query')[0].value;
-    // if (query !== '') {
-    //   let getUrl = window.location;
-    //   let baseUrl = getUrl.protocol + '//' + getUrl.host;
-    //   window.location.href = `${baseUrl}/results?=${query}`;
-    // }
-    return <Route to="/results" />;
+  state = {
+    redirect: false
+  };
+
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return (
+        <Redirect
+          to={{
+            pathname: '/results',
+            search: window.location.search
+          }}
+        />
+      );
+    }
+  };
+
+  setRedirect = () => {
+    this.setState({ redirect: true });
   };
 
   render() {
     return (
-      <form className="form-inline container mobile">
-        <input
-          name="query"
-          className="form-control mr-sm-2 item mobile"
-          type="search"
-          placeholder="Wyszukaj notatki..."
-          onChange={this.handleChange}
-        />
-        <button
-          className="btn btn-light "
-          type="submit"
-          onClick={this.handleSubmit}>
-          Szukaj
-        </button>
-      </form>
+      <div>
+        {this.renderRedirect()}
+        <form className="form-inline container mobile">
+          <input
+            name="query"
+            className="form-control mr-sm-2 item mobile"
+            type="search"
+            placeholder="Wyszukaj notatki..."
+          />
+          <button
+            className="btn btn-light "
+            type="submit"
+            onClick={this.setRedirect}>
+            Szukaj
+          </button>
+        </form>
+      </div>
     );
   }
 }

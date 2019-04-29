@@ -74,7 +74,10 @@ class NoteTable extends Component {
     super(props);
     let id = 0;
     NoteService.getAllNotes().then(r => {
-      for (var note of r) {
+      let pager = Object.entries(r)[0][1];
+      let notes = Object.entries(r)[1][1];
+      console.log(notes);
+      for (var note of notes) {
         id += 1;
         this.setState({
           data: [
@@ -83,8 +86,8 @@ class NoteTable extends Component {
               id: id,
               name: note.name,
               price: note.price,
-              uni: note.universityName,
-              course: note.courseName
+              uni: note.university.name,
+              course: note.course.name
             }
           ]
         });
