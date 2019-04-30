@@ -16,4 +16,9 @@ export default class UniService {
       .get(`${API_URL}/api/Uni/university/${universityId}`)
       .then(r => r.data);
   }
+  static getNotes(notesId) {
+    return axios
+      .get(`${API_URL}/api/Uni/notes/${notesId}`)
+      .then(r => r.data);
+  }
 }
