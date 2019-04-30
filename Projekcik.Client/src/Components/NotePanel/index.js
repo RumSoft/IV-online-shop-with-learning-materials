@@ -32,10 +32,10 @@ export default class NoteLayout extends Component {
             <br />
             <Button
               type="submit"
-              className="button login-submit"
+              className="button submit"
               variant="contained"
               color="primary"
-              onClick={this.handleLogin}>
+              onClick={this.handle}>
               Kup teraz
             </Button>
           </Typography>
