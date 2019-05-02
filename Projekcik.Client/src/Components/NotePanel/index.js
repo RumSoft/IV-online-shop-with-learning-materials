@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { Card, Button } from '@material-ui/core';
+import NoteService from '../../Services/NoteService';
 import './index.scss';
 
 export default class NoteLayout extends Component {
+  handleDialogOpen = () => {
+    this.setState(() => NoteService.getAllNotes().then(r => console.log(r)));
+  };
   render() {
     return (
       <div className="home-layout">
@@ -23,13 +27,21 @@ export default class NoteLayout extends Component {
             color="textSecondary"
             paragraph>
             RumSoft.ru jest właścicielem wszelkich praw strony LeniwyStudent.pl
-            <br />
+            <hr />
+            <Button
+              className="button"
+              variant="outlined"
+              color="primary"
+              onClick={this.handleDialogOpen}>
+              Info o notatce
+            </Button>
+            <hr />
             Autor notatki: {this.props.title}
             <br />
             Krótki opis: {this.props.content}
             <br />
-            Unikalne ID notatki: {this.props.ID}
-            <br />
+            Unikalne ID notatki: {this.props.id}
+            <hr />
             <Button
               type="submit"
               className="button submit"

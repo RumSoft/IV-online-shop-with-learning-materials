@@ -8,7 +8,7 @@ export default class NotePage extends Component {
         <NotePanel
           title="Szura Czwura"
           content="PDF dla L6"
-          ID={this.props.match.params.id}
+          id={this.props.match.params.id}
         />
       </div>
     );
