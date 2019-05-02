@@ -1,24 +1,27 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-
 import './index.scss';
 
 export class SearchBar extends Component {
   state = {
+    query: '',
     redirect: false
   };
 
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
   renderRedirect = () => {
-    if (this.state.redirect) {
-      return (
-        <Redirect
-          to={{
-            pathname: '/results',
-            search: window.location.search
-          }}
-        />
-      );
-    }
+    return this.state.redirect ? (
+      <Redirect
+        push
+        to={{
+          pathname: '/results',
+          search: window.location.search
+        }}
+      />
+    ) : null;
   };
 
   setRedirect = () => {
@@ -27,23 +30,23 @@ export class SearchBar extends Component {
 
   render() {
     return (
-      <div>
+      <form
+        className="form-inline container mobile"
+        onSubmit={this.setRedirect}>
         {this.renderRedirect()}
-        <form className="form-inline container mobile">
-          <input
-            name="query"
-            className="form-control mr-sm-2 item mobile"
-            type="search"
-            placeholder="Wyszukaj notatki..."
-          />
-          <button
-            className="btn btn-light "
-            type="submit"
-            onClick={this.setRedirect}>
-            Szukaj
-          </button>
-        </form>
-      </div>
+
+        <input
+          name="query"
+          className="form-control mr-sm-2 item mobile"
+          type="search"
+          placeholder="Wyszukaj notatki..."
+          onChange={this.handleChange}
+          value={this.state.query}
+        />
+        <button className="btn btn-light " disabled={this.state.query === ''}>
+          Szukaj
+        </button>
+      </form>
     );
   }
 }
