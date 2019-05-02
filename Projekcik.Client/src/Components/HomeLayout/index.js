@@ -3,7 +3,6 @@ import Card from '@material-ui/core/Card';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import CourseSelector from '../CourseSelector';
-import NoteTable from '../SearchTable';
 
 import './index.scss';
 
@@ -69,7 +68,6 @@ export default class HomeLayout extends Component {
             </p>
             <a href="#link"> pokaż więcej </a>
           </Card>
-          <NoteTable />
           <footer className="footer">
             <h6 className="footer-item">Stopka</h6>
             <p className="footer-item">
