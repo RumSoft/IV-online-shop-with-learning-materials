@@ -1,30 +1,28 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TablePagination,
+  TableRow,
+  Paper,
+  Collapse,
+  Typography
+} from '@material-ui/core';
+import {
+  Card,
+  CardBody,
+  Input,
+  InputGroupAddon,
+  InputGroup,
+  InputGroupText,
+  Label,
+  FormGroup
+} from 'reactstrap';
 import EnhancedTableHead from './TableHead';
 import EnhancedTableToolbar from './TableToolbar';
 import NoteService from '../../Services/NoteService';
-
-// let counter = 0;
-// function createData(name, price, uni, course) {
-//   counter += 1;
-//   NoteService.getAllNotes().then(r => {
-//     for (var note of r) {
-//       name = note.name;
-//       price = note.price;
-//       uni = note.university;
-//       course = note.course;
-//     }
-//   });
-
-//   return { id: counter, name, price, uni, course };
-// }
+import './index.scss';
 
 //////////////////////////SORTING METHODS////////////////////////////////////
 
@@ -56,27 +54,14 @@ function getSorting(order, orderBy) {
 
 //////////////////////////SORTING METHODS////////////////////////////////////
 
-const styles = theme => ({
-  root: {
-    width: '100%',
-    marginTop: theme.spacing.unit * 3
-  },
-  table: {
-    minWidth: 1020
-  },
-  tableWrapper: {
-    overflowX: 'auto'
-  }
-});
-
-class NoteTable extends Component {
+export default class NoteTable extends Component {
   constructor(props) {
     super(props);
     let id = 0;
     NoteService.getAllNotes().then(r => {
-      let pager = Object.entries(r)[0][1];
+      // let pager = Object.entries(r)[0][1];
       let notes = Object.entries(r)[1][1];
-      console.log(notes);
+      // console.log(notes);
       for (var note of notes) {
         id += 1;
         this.setState({
@@ -86,22 +71,29 @@ class NoteTable extends Component {
               id: id,
               name: note.name,
               price: note.price,
+              voi: note.voivodeship.name,
               uni: note.university.name,
-              course: note.course.name
+              course: note.course.name,
+              author: note.author.name
             }
           ]
         });
       }
     });
+    this.toolbarHandler = this.toolbarHandler.bind(this);
   }
   state = {
     order: 'asc',
     orderBy: 'price',
-    selected: [],
     data: [],
     courses: [],
     page: 0,
-    rowsPerPage: 5
+    rowsPerPage: 10,
+    clicked: false
+  };
+
+  toolbarHandler = data => {
+    this.setState({ clicked: data.clicked });
   };
 
   handleRequestSort = (event, property) => {
@@ -115,33 +107,8 @@ class NoteTable extends Component {
     this.setState({ order, orderBy });
   };
 
-  handleSelectAllClick = event => {
-    if (event.target.checked) {
-      this.setState(state => ({ selected: state.data.map(n => n.id) }));
-      return;
-    }
-    this.setState({ selected: [] });
-  };
-
   handleClick = (event, id) => {
-    const { selected } = this.state;
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    this.setState({ selected: newSelected });
+    console.log('Clicked row no.' + id);
   };
 
   handleChangePage = (event, page) => {
@@ -152,52 +119,144 @@ class NoteTable extends Component {
     this.setState({ rowsPerPage: event.target.value });
   };
 
-  isSelected = id => this.state.selected.indexOf(id) !== -1;
+  // isSelected = id => this.state.selected.indexOf(id) !== -1;
 
   render() {
-    const { classes } = this.props;
-    const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
+    const {
+      data,
+      order,
+      orderBy,
+      selected,
+      rowsPerPage,
+      page,
+      clicked
+    } = this.state;
     const emptyRows =
       rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
     return (
-      <Paper className={classes.root}>
-        <EnhancedTableToolbar numSelected={selected.length} />
-        <div className={classes.tableWrapper}>
-          <Table className={classes.table} aria-labelledby="tableTitle">
+      <Paper className="root">
+        <EnhancedTableToolbar filterData={this.toolbarHandler} />
+
+        <Collapse in={clicked}>
+          <Card className="filter-list">
+            <CardBody>
+              <Typography className="filter-header" variant="h6">
+                Parametry wyszukiwania
+                <Typography variant="caption">
+                  Wybierz kryteria, na podstawie których chcesz wyszukać
+                  notatkę.
+                </Typography>
+              </Typography>
+              <hr />
+              <div className="grid-container">
+                <div className="filter-left ">
+                  <Label for="voi">Województwo</Label>
+                  <InputGroup className="filter-field">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <Input addon type="checkbox" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input id="voi" placeholder="Województwo" />
+                  </InputGroup>
+
+                  <Label for="uni">Uczelnia</Label>
+                  <InputGroup className="filter-field">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <Input addon type="checkbox" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input id="uni" placeholder="Uczelnia" />
+                  </InputGroup>
+
+                  <Label for="course">Kierunek</Label>
+                  <InputGroup className="filter-field">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <Input addon type="checkbox" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input id="course" placeholder="Kierunek" />
+                  </InputGroup>
+                </div>
+
+                <div className="filter-rest">
+                  <Label for="price-input">Cena</Label>
+                  <InputGroup className="filter-field rest">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <Input addon type="checkbox" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input id="price-input" placeholder="Od" />
+                    <InputGroupAddon className="mr-3" addonType="append">
+                      PLN
+                    </InputGroupAddon>
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <Input addon type="checkbox" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input placeholder="Do" />
+                    <InputGroupAddon addonType="append">PLN</InputGroupAddon>
+                  </InputGroup>
+
+                  <FormGroup className="filter-field rest">
+                    <Label for="date-submitted">Data dodania notatki</Label>
+                    <Input
+                      type="date"
+                      id="date-submitted"
+                      placeholder="date placeholder"
+                    />
+                  </FormGroup>
+                  <FormGroup className="filter-field rest">
+                    <Label for="author-input">Autor notatki</Label>
+                    <Input
+                      id="author-input"
+                      placeholder="Imię, nazwisko lub nazwa użytkownika"
+                    />
+                  </FormGroup>
+                </div>
+              </div>
+            </CardBody>
+          </Card>
+        </Collapse>
+
+        <div className="tableWrapper">
+          <Table className="table" aria-labelledby="tableTitle">
             <EnhancedTableHead
-              numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={this.handleSelectAllClick}
               onRequestSort={this.handleRequestSort}
               rowCount={data.length}
             />
-
             <TableBody>
               {stableSort(data, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(n => {
-                  const isSelected = this.isSelected(n.id);
+                  // const isSelected = this.isSelected(n.id);
                   return (
                     <TableRow
+                      className="row"
                       hover
                       onClick={event => this.handleClick(event, n.id)}
-                      role="checkbox"
-                      aria-checked={isSelected}
                       tabIndex={-1}
-                      key={n.id}
-                      selected={isSelected}>
-                      <TableCell padding="checkbox">
-                        <Checkbox checked={isSelected} />
-                      </TableCell>
-                      <TableCell component="th" scope="row" padding="none">
+                      key={n.id}>
+                      <TableCell
+                        className="note-name"
+                        component="th"
+                        scope="row"
+                        padding="default">
                         {n.name}
                       </TableCell>
-                      <TableCell align="right">{n.price}</TableCell>
+                      <TableCell align="right">{n.price} zł</TableCell>
+                      <TableCell align="right">{n.voi}</TableCell>
                       <TableCell align="right">{n.uni}</TableCell>
                       <TableCell align="right">{n.course}</TableCell>
                       <TableCell align="right">{n.semester}</TableCell>
+                      <TableCell align="right">{n.author}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -229,5 +288,3 @@ class NoteTable extends Component {
     );
   }
 }
-
-export default withStyles(styles)(NoteTable);
