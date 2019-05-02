@@ -3,20 +3,22 @@ import TableHead from '@material-ui/core/TableHead';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
+import './index.scss';
 
 const rows = [
   {
     id: 'name',
     numeric: false,
-    disablePadding: true,
+    disablePadding: false,
     label: 'Nazwa notatki'
   },
   { id: 'price', numeric: true, disablePadding: false, label: 'Cena' },
+  { id: 'voi', numeric: true, disablePadding: false, label: 'Województwo' },
   { id: 'uni', numeric: true, disablePadding: false, label: 'Uczelnia' },
   { id: 'course', numeric: true, disablePadding: false, label: 'Kierunek' },
-  { id: 'semester', numeric: true, disablePadding: false, label: 'Semestr' }
+  { id: 'semester', numeric: true, disablePadding: false, label: 'Semestr' },
+  { id: 'author', numeric: true, disablePadding: false, label: 'Autor' }
 ];
 
 export default class EnhancedTableHead extends Component {
@@ -25,24 +27,11 @@ export default class EnhancedTableHead extends Component {
   };
 
   render() {
-    const {
-      onSelectAllClick,
-      order,
-      orderBy,
-      numSelected,
-      rowCount
-    } = this.props;
+    const { order, orderBy } = this.props;
 
     return (
       <TableHead>
         <TableRow>
-          <TableCell padding="checkbox">
-            <Checkbox
-              indeterminate={numSelected > 0 && numSelected < rowCount}
-              checked={numSelected === rowCount}
-              onChange={onSelectAllClick}
-            />
-          </TableCell>
           {rows.map(
             row => (
               <TableCell
@@ -51,9 +40,9 @@ export default class EnhancedTableHead extends Component {
                 padding={row.disablePadding ? 'none' : 'default'}
                 sortDirection={orderBy === row.id ? order : false}>
                 <Tooltip
-                  title="Sort"
+                  title="Sortuj"
                   placement={row.numeric ? 'bottom-end' : 'bottom-start'}
-                  enterDelay={300}>
+                  enterDelay={200}>
                   <TableSortLabel
                     active={orderBy === row.id}
                     direction={order}

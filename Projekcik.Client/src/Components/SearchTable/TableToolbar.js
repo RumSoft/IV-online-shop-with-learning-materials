@@ -1,76 +1,39 @@
-import React from 'react';
-import classNames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import DeleteIcon from '@material-ui/icons/Delete';
+import React, { Component } from 'react';
+import { Typography, IconButton, Tooltip, Toolbar } from '@material-ui/core';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import { lighten } from '@material-ui/core/styles/colorManipulator';
 
-const toolbarStyles = theme => ({
-  root: {
-    paddingRight: theme.spacing.unit
-  },
-  highlight:
-    theme.palette.type === 'light'
-      ? {
-          color: theme.palette.primary.main,
-          backgroundColor: lighten(theme.palette.primary.light, 0.85)
-        }
-      : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.primary.dark
-        },
-  spacer: {
-    flex: '1 1 100%'
-  },
-  actions: {
-    color: theme.palette.text.primary
-  },
-  title: {
-    flex: '0 0 auto'
+export default class EnhancedTableToolbar extends Component {
+  state = {
+    clicked: false
+  };
+
+  handleChange = () => {
+    this.setState({ clicked: !this.state.clicked }, () => this.notifyParent());
+  };
+
+  notifyParent() {
+    this.props.filterData({ clicked: this.state.clicked });
   }
-});
 
-let EnhancedTableToolbar = props => {
-  const { numSelected, classes } = props;
-
-  return (
-    <Toolbar
-      className={classNames(classes.root, {
-        [classes.highlight]: numSelected > 0
-      })}>
-      <div className={classes.title}>
-        {numSelected > 0 ? (
-          <Typography color="inherit" variant="subtitle1">
-            {numSelected} selected
-          </Typography>
-        ) : (
+  render() {
+    return (
+      <Toolbar className="toolbar-root">
+        <div className="toolbar-title">
           <Typography variant="h6" id="tableTitle">
             Znalezione notatki
           </Typography>
-        )}
-      </div>
-      <div className={classes.spacer} />
-      <div className={classes.actions}>
-        {numSelected > 0 ? (
-          <Tooltip title="Delete">
-            <IconButton aria-label="Delete">
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        ) : (
-          <Tooltip title="Filter list">
-            <IconButton aria-label="Filter list">
+        </div>
+        <div className="toolbar-spacer" />
+        <div className="toolbar-actions">
+          <Tooltip title="Parametry wyszukiwania">
+            <IconButton
+              aria-label="Parametry wyszukiwania"
+              onClick={this.handleChange}>
               <FilterListIcon />
             </IconButton>
           </Tooltip>
-        )}
-      </div>
-    </Toolbar>
-  );
-};
-
-export default withStyles(toolbarStyles)(EnhancedTableToolbar);
+        </div>
+      </Toolbar>
+    );
+  }
+}
