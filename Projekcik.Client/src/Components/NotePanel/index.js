@@ -2,12 +2,31 @@ import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { Card, Button } from '@material-ui/core';
 import NoteService from '../../Services/NoteService';
+import CourseSelector from '../NoteSelector';
 import './index.scss';
 
 export default class NoteLayout extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selection: {
+        voivodeshipId: null,
+      }
+    };
+
+    this.courseSelectorHandler = this.courseSelectorHandler.bind(this);
+  }
+
+  courseSelectorHandler(data) {
+    this.setState({ selection: data });
+  }
+
   handleDialogOpen = () => {
     this.setState(() => NoteService.getAllNotes().then(r => console.log(r)));
   };
+
+
   render() {
     return (
       <div className="home-layout">
@@ -28,13 +47,19 @@ export default class NoteLayout extends Component {
             paragraph>
             RumSoft.ru jest właścicielem wszelkich praw strony LeniwyStudent.pl
             <hr />
-            <Button
-              className="button"
-              variant="outlined"
-              color="primary"
-              onClick={this.handleDialogOpen}>
-              Info o notatce
-            </Button>
+            <Card className="course-selector-card mb-3">
+            <CourseSelector searchData={this.courseSelectorHandler} />
+            <hr />
+            <div>Wynik:</div>
+            {/* use those values to search for notes */}
+            <p>
+              {[
+                this.state.selection.voivodeshipId,
+              ]
+                .filter(x => x)
+                .join(', ')}
+            </p>
+          </Card>
             <hr />
             Autor notatki: {this.props.title}
             <br />
