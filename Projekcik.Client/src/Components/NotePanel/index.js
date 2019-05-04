@@ -8,11 +8,10 @@ export default class NoteLayout extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        name: '',
-        price: '',
-        description: '',
-        noteId: this.props.id
-      
+      name: '',
+      price: '',
+      description: '',
+      noteId: this.props.id
     };
   }
   handleNote = noteId => {
@@ -26,11 +25,10 @@ export default class NoteLayout extends Component {
 
       () =>
         NoteService.getNote(this.props.id).then(r => {
+          console.log(r);
           this.setState(r);
-        }),
-      NoteService.getNote(this.props.id).then(r => this.state.description),
-      console.log(this.state)
-    )
+        })
+    );
   };
   render() {
     return (
@@ -58,7 +56,7 @@ export default class NoteLayout extends Component {
             <br />
             Cena notatki: {this.state.price}
             <br />
-            Unikalne ID notatki V1: {this.state.noteId}
+            Unikalne ID notatki: {this.state.noteId}
             <br />
             <Button
               type="submit"
