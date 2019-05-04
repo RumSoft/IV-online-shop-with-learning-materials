@@ -18,26 +18,26 @@ export default class NoteLayout extends Component {
         name: '',
         price: '',
         description: '',
-        noteId: null
+        noteId: this.props.id
       },
       data: {
         name: [],
         price: [],
         description: [],
-        noteId: null
+        noteId: this.props.id
       }
     };
   }
-  handleNote(noteId) {
+  handleNote= noteId =>{
     this.setState(
       {
         name: '',
         price: '',
         description: '',
-        noteId: null
+        noteId: this.props.id
       },
       () =>
-        NoteService.getNote(noteId).then(data => this.setState({ selection: data }))
+        NoteService.getNote(this.props.id).then(data => this.setState({ selection: data }))
     );
   }
   render() {
@@ -67,16 +67,14 @@ export default class NoteLayout extends Component {
             Cena notatki: {this.state.price}
             <br />
             Unikalne ID notatki V1: {this.state.noteId}
-            <br />
-            Unikalne ID notatki V2: {this.props.id}
-            <hr />
+            <br/>
             <Button
               type="submit"
               className="button submit"
               variant="contained"
               color="primary"
-              onClick={this.handle}>
-              Kup teraz
+              onClick={this.handleNote}>
+              Przycisk
             </Button>
           </Typography>
         </Card>
