@@ -7,28 +7,15 @@ import './index.scss';
 export default class NoteLayout extends Component {
   constructor(props) {
     super(props);
-    NoteService.getNote().then(r => {
-      this.setState({
-        data: { ...this.state.data, name: r }
-      });
-    });
-
     this.state = {
-      selection: {
         name: '',
         price: '',
         description: '',
         noteId: this.props.id
-      },
-      data: {
-        name: [],
-        price: [],
-        description: [],
-        noteId: this.props.id
-      }
+      
     };
   }
-  handleNote= noteId =>{
+  handleNote = noteId => {
     this.setState(
       {
         name: '',
@@ -36,10 +23,15 @@ export default class NoteLayout extends Component {
         description: '',
         noteId: this.props.id
       },
+
       () =>
-        NoteService.getNote(this.props.id).then(data => this.setState({ selection: data }))
-    );
-  }
+        NoteService.getNote(this.props.id).then(r => {
+          this.setState(r);
+        }),
+      NoteService.getNote(this.props.id).then(r => this.state.description),
+      console.log(this.state)
+    )
+  };
   render() {
     return (
       <div className="home-layout">
@@ -67,7 +59,7 @@ export default class NoteLayout extends Component {
             Cena notatki: {this.state.price}
             <br />
             Unikalne ID notatki V1: {this.state.noteId}
-            <br/>
+            <br />
             <Button
               type="submit"
               className="button submit"
