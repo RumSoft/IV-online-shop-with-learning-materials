@@ -8,6 +8,7 @@ export default class NoteLayout extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      author: { name: '' },
       name: '',
       price: '',
       description: '',
@@ -17,6 +18,7 @@ export default class NoteLayout extends Component {
   handleNote = noteId => {
     this.setState(
       {
+        author: { name: '' },
         name: '',
         price: '',
         description: '',
@@ -50,6 +52,8 @@ export default class NoteLayout extends Component {
             paragraph>
             RumSoft.ru jest właścicielem wszelkich praw strony LeniwyStudent.pl
             <hr />
+            Autor: {this.state.author.name}
+            <br />
             Nazwa notatki: {this.state.name}
             <br />
             Krótki opis: {this.state.description}
