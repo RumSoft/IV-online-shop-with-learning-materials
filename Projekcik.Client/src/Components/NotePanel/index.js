@@ -2,31 +2,44 @@ import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { Card, Button } from '@material-ui/core';
 import NoteService from '../../Services/NoteService';
-import CourseSelector from '../NoteSelector';
 import './index.scss';
 
 export default class NoteLayout extends Component {
   constructor(props) {
     super(props);
+    NoteService.getNote().then(r => {
+      this.setState({
+        data: { ...this.state.data, name: r }
+      });
+    });
 
     this.state = {
       selection: {
-        voivodeshipId: null,
+        name: '',
+        price: '',
+        description: '',
+        noteId: null
+      },
+      data: {
+        name: [],
+        price: [],
+        description: [],
+        noteId: null
       }
     };
-
-    this.courseSelectorHandler = this.courseSelectorHandler.bind(this);
   }
-
-  courseSelectorHandler(data) {
-    this.setState({ selection: data });
+  handleNote(noteId) {
+    this.setState(
+      {
+        name: '',
+        price: '',
+        description: '',
+        noteId: null
+      },
+      () =>
+        NoteService.getNote(noteId).then(data => this.setState({ selection: data }))
+    );
   }
-
-  handleDialogOpen = () => {
-    this.setState(() => NoteService.getAllNotes().then(r => console.log(r)));
-  };
-
-
   render() {
     return (
       <div className="home-layout">
@@ -47,25 +60,15 @@ export default class NoteLayout extends Component {
             paragraph>
             RumSoft.ru jest właścicielem wszelkich praw strony LeniwyStudent.pl
             <hr />
-            <Card className="course-selector-card mb-3">
-            <CourseSelector searchData={this.courseSelectorHandler} />
-            <hr />
-            <div>Wynik:</div>
-            {/* use those values to search for notes */}
-            <p>
-              {[
-                this.state.selection.voivodeshipId,
-              ]
-                .filter(x => x)
-                .join(', ')}
-            </p>
-          </Card>
-            <hr />
-            Autor notatki: {this.props.title}
+            Nazwa notatki: {this.state.name}
             <br />
-            Krótki opis: {this.props.content}
+            Krótki opis: {this.state.description}
             <br />
-            Unikalne ID notatki: {this.props.id}
+            Cena notatki: {this.state.price}
+            <br />
+            Unikalne ID notatki V1: {this.state.noteId}
+            <br />
+            Unikalne ID notatki V2: {this.props.id}
             <hr />
             <Button
               type="submit"
