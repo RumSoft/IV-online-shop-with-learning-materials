@@ -1,0 +1,21 @@
+.list-item {
+  padding-left: 100px;
+  position: relative;
+
+  .uniImage {
+    position: absolute;
+    top: 5px;
+    left: 0;
+    bottom: 5px;
+    padding-right: 5px;
+    padding-left: 5px;
+    width: 100px;
+
+    img {
+      max-height: 100%;
+      max-width: 90px;
+    }
+
+    border-right: 1px solid rgba(0, 0, 0, 0.125);
+  }
+}
