@@ -21,81 +21,30 @@ import {
   FormGroup
   // Button
 } from 'reactstrap';
+import { Redirect, Link } from 'react-router-dom';
 import EnhancedTableHead from './TableHead';
 import EnhancedTableToolbar from './TableToolbar';
 import NoteService from '../../Services/NoteService';
 import './index.scss';
 
-//////////////////////////SORTING METHODS////////////////////////////////////
-
-function desc(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function stableSort(array, cmp) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = cmp(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map(el => el[0]);
-}
-
-function getSorting(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => desc(a, b, orderBy)
-    : (a, b) => -desc(a, b, orderBy);
-}
-
-//////////////////////////SORTING METHODS////////////////////////////////////
-
 export default class NoteTable extends Component {
   constructor(props) {
     super(props);
     let id = 0;
-    NoteService.getAllNotes().then(r => {
-      // let pager = Object.entries(r)[0][1];
-      let notes = Object.entries(r)[1][1];
-      // console.log(notes);
-      for (var note of notes) {
-        id += 1;
-        this.setState({
-          data: [
-            ...this.state.data,
-            {
-              id: id,
-              name: note.name,
-              price: note.price,
-              voi: note.voivodeship.name,
-              uni: note.university.name,
-              course: note.course.name,
-              author: note.author.name
-            }
-          ]
-        });
-      }
-    });
+    NoteService.getAllNotes().then(r => this.setState({ ...r, loaded: true }));
     this.toolbarHandler = this.toolbarHandler.bind(this);
   }
   state = {
+    loaded: false,
+    open: false,
+    pager: {},
+    notes: [],
     order: 'asc',
-    orderBy: 'price',
-    data: [],
-    courses: [],
-    page: 0,
-    rowsPerPage: 10,
-    clicked: false
+    orderBy: 'price'
   };
 
   toolbarHandler = data => {
-    this.setState({ clicked: data.clicked });
+    this.setState({ clicked: data.clicked, loaded: true });
   };
 
   handleRequestSort = (event, property) => {
@@ -121,16 +70,20 @@ export default class NoteTable extends Component {
     this.setState({ rowsPerPage: event.target.value });
   };
 
+  redirectToNote(id) {
+    this.setState({ redirect: `/note/${id}` });
+  }
+
   render() {
-    const { data, order, orderBy, rowsPerPage, page, clicked } = this.state;
-    const emptyRows =
-      rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+    const { open, loaded, order, orderBy, pager, notes } = this.state;
+
+    if (this.state.redirect) return <Redirect to={this.state.redirect} />;
 
     return (
       <Paper className="root">
         <EnhancedTableToolbar filterData={this.toolbarHandler} />
 
-        <Collapse in={clicked}>
+        <Collapse in={open}>
           <Card className="filter-list">
             <CardBody>
               <Typography className="filter-header" variant="h6">
@@ -228,59 +181,54 @@ export default class NoteTable extends Component {
               order={order}
               orderBy={orderBy}
               onRequestSort={this.handleRequestSort}
-              rowCount={data.length}
+              rowCount={notes.count}
             />
             <TableBody>
-              {stableSort(data, getSorting(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(n => {
-                  return (
-                    <TableRow
-                      className="row"
-                      hover
-                      onClick={event => this.handleClick(event, n.id)}
-                      tabIndex={-1}
-                      key={n.id}>
-                      <TableCell
-                        className="note-name"
-                        component="th"
-                        scope="row"
-                        padding="default">
-                        {n.name}
-                      </TableCell>
-                      <TableCell align="right">{n.price} zł</TableCell>
-                      <TableCell align="right">{n.voi}</TableCell>
-                      <TableCell align="right">{n.uni}</TableCell>
-                      <TableCell align="right">{n.course}</TableCell>
-                      <TableCell align="right">{n.semester}</TableCell>
-                      <TableCell align="right">{n.author}</TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 49 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
+              {loaded &&
+                notes.map((n, i) => (
+                  <TableRow
+                    className="row"
+                    hover
+                    onClick={() => this.redirectToNote(n.id)}
+                    tabIndex={-1}
+                    key={i}>
+                    <TableCell
+                      className="note-name"
+                      component="th"
+                      scope="row"
+                      padding="default">
+                      {n.name}
+                    </TableCell>
+                    <TableCell align="right">{n.price} zł</TableCell>
+                    <TableCell align="right">{n.voivodeship.name}</TableCell>
+                    <TableCell align="right">{n.university.name}</TableCell>
+                    <TableCell align="right">{n.course.name}</TableCell>
+                    <TableCell align="right">{n.semester}</TableCell>
+                    <TableCell align="right">{n.author.name}</TableCell>
+                    {/* </Link> */}
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </div>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={data.length}
-          rowsPerPage={rowsPerPage}
-          labelRowsPerPage="Ilość wyników na stronę:"
-          page={page}
-          backIconButtonProps={{
-            'aria-label': 'Poprzednia Strona'
-          }}
-          nextIconButtonProps={{
-            'aria-label': 'Następna Strona'
-          }}
-          onChangePage={this.handleChangePage}
-          onChangeRowsPerPage={this.handleChangeRowsPerPage}
-        />
+        {loaded && (
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={pager.count}
+            rowsPerPage={pager.size}
+            labelRowsPerPage="Ilość wyników na stronę:"
+            page={pager.page - 1}
+            backIconButtonProps={{
+              'aria-label': 'Poprzednia Strona'
+            }}
+            nextIconButtonProps={{
+              'aria-label': 'Następna Strona'
+            }}
+            onChangePage={this.handleChangePage}
+            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+          />
+        )}
       </Paper>
     );
   }
