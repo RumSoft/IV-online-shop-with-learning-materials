@@ -1,17 +1,22 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import { Card } from '@material-ui/core';
 import AuthService from '../../Services/AuthService';
 import './index.scss';
 
 export class LogoutPage extends Component {
+  state = {
+    redirectNow: false
+  };
+
   render() {
     AuthService.logout();
 
-    let redirectUrl = `${window.location.protocol}//${window.location.host}`;
-
     setTimeout(() => {
-      window.location.href = redirectUrl;
+      this.setState({ redirectNow: true });
     }, 2000);
+
+    if (this.state.redirectNow) return <Redirect to="/" />;
 
     return (
       <div className="logged-out-page">
@@ -20,7 +25,7 @@ export class LogoutPage extends Component {
           <p>Zostaniesz przekierowany na stronę główną</p>
           <hr />
           <p>
-            w razie braku przekierowania kliknij <a href={redirectUrl}>tutaj</a>
+            w razie braku przekierowania kliknij <a href="/">tutaj</a>
           </p>
         </Card>
       </div>
