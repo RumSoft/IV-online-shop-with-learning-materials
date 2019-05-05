@@ -45,18 +45,8 @@
         position: absolute;
         opacity: .4;
         z-index: 5;
-
-        right: 00%;
-
+        right: 0%;
         transform: rotate(0deg);
-
-        &::before {
-          content: 'asd';
-          background: red;
-          left: 10px;
-          width: 10px;
-          height: 10px;
-        }
       }
 
       span {
@@ -65,15 +55,16 @@
         line-height: normal;
         z-index: 10;
         max-width: 85%;
-        text-shadow: 2px 2px 2px white;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, .125);
       }
 
       small {
         z-index: 10;
-        color: #777;
+        color: #555;
         position: absolute;
         right: 5px;
         bottom: 0px;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, .125);
       }
     }
 

@@ -205,15 +205,12 @@ export default class CourseSelector extends Component {
                   item
                   xs={3}
                   key={i}
-                  className={classNames('grid-item', {
-                    disabled: x.noteCount <= 0
-                  })}
+                  className="grid-item"
                   onClick={() => x.noteCount > 0 && this.handleForward(x)}>
                   <Paper className="paper p-md-2 p-1" elevation={4}>
-                    <span>
-                      {x.name}
-                      <small>{this.ileNotatek(x.noteCount)}</small>
-                    </span>
+                    {x.noteCount <= 0 && <div className="disabled" />}
+                    <span>{x.name}</span>
+                    <small>{this.ileNotatek(x.noteCount)}</small>
                   </Paper>
                 </Grid>
               ))}
@@ -236,10 +233,7 @@ export default class CourseSelector extends Component {
                     {x.noteCount <= 0 && <div className="disabled" />}
                     <span>{x.name}</span>
                     <small>{this.ileNotatek(x.noteCount)}</small>
-                    <img
-                      className="uniImage"
-                      src={x.imageUrl}
-                    />
+                    <img className="uniImage" src={x.imageUrl} />
                   </Paper>
                 </Grid>
               ))}
@@ -256,11 +250,10 @@ export default class CourseSelector extends Component {
                   item
                   xs={3}
                   key={i}
-                  className={classNames('grid-item', {
-                    disabled: x.noteCount <= 0
-                  })}
+                  className="grid-item"
                   onClick={() => x.noteCount > 0 && this.handleForward(x)}>
                   <Paper className="paper p-md-3 p-1" elevation={3}>
+                    {x.noteCount <= 0 && <div className="disabled" />}
                     <span>{x.name}</span>
                     <small>{this.ileNotatek(x.noteCount)}</small>
                   </Paper>
