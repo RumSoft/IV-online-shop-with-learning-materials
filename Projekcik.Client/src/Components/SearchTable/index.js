@@ -7,7 +7,8 @@ import {
   TableRow,
   Paper,
   Collapse,
-  Typography
+  Typography,
+  Button
 } from '@material-ui/core';
 import {
   Card,
@@ -18,6 +19,7 @@ import {
   InputGroupText,
   Label,
   FormGroup
+  // Button
 } from 'reactstrap';
 import EnhancedTableHead from './TableHead';
 import EnhancedTableToolbar from './TableToolbar';
@@ -119,18 +121,8 @@ export default class NoteTable extends Component {
     this.setState({ rowsPerPage: event.target.value });
   };
 
-  // isSelected = id => this.state.selected.indexOf(id) !== -1;
-
   render() {
-    const {
-      data,
-      order,
-      orderBy,
-      selected,
-      rowsPerPage,
-      page,
-      clicked
-    } = this.state;
+    const { data, order, orderBy, rowsPerPage, page, clicked } = this.state;
     const emptyRows =
       rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
@@ -220,6 +212,12 @@ export default class NoteTable extends Component {
                   </FormGroup>
                 </div>
               </div>
+              <Button
+                variant="outlined"
+                className="button"
+                style={{ marginTop: '20px' }}>
+                Szukaj
+              </Button>
             </CardBody>
           </Card>
         </Collapse>
@@ -236,7 +234,6 @@ export default class NoteTable extends Component {
               {stableSort(data, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(n => {
-                  // const isSelected = this.isSelected(n.id);
                   return (
                     <TableRow
                       className="row"
