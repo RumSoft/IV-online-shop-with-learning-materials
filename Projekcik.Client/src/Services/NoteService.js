@@ -17,7 +17,10 @@ export default class NoteService {
   }
 
   static getUserNotes(userId) {
-    return axios.get(`${API_URL}/api/Notes/${userId}`).then(r => r.data);
+    return axios.get(`${API_URL}/api/Notes/user/${userId}`).then(r => r.data);
+  }
+  static getNote(noteId) {
+    return axios.get(`${API_URL}/api/Notes/${noteId}`).then(r => r.data);
   }
 
   static getAllNotes() {
