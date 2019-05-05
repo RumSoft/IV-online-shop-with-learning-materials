@@ -1,5 +1,4 @@
 import axios from 'axios';
-import decode from 'jwt-decode';
 
 const API_URL = 'https://projekcik-prz.azurewebsites.net';
 
@@ -31,22 +30,5 @@ export default class APIService {
         window.localStorage.setItem('token', `${response.data.token}`);
         return response.data;
       });
-  }
-
-  static isAuthenticated() {
-    let jwtToken = window.localStorage.getItem('token');
-    if (!jwtToken) {
-      window.localStorage.removeItem('token');
-      return false;
-    } else {
-      let payload = decode(jwtToken);
-      return payload.exp > new Date().getTime() / 1000 ? true : false;
-    }
-  }
-
-  static facebookLogin(accessToken) {
-    return APIService.post('/api/externalauth/facebook-login', {
-      accessToken: accessToken
-    });
   }
 }

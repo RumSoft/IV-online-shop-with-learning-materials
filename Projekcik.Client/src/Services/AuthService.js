@@ -1,4 +1,5 @@
 import APIService from './APIService';
+import decode from 'jwt-decode';
 
 export default class AuthService {
   static register(userData) {
@@ -20,8 +21,19 @@ export default class AuthService {
   }
 
   static logout() {
-    if (APIService.isAuthenticated()) {
+    if (this.isAuthenticated()) {
       window.localStorage.removeItem('token');
+    }
+  }
+
+  static isAuthenticated() {
+    let jwtToken = window.localStorage.getItem('token');
+    if (!jwtToken) {
+      window.localStorage.removeItem('token');
+      return false;
+    } else {
+      let payload = decode(jwtToken);
+      return payload.exp > new Date().getTime() / 1000 ? true : false;
     }
   }
 }

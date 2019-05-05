@@ -1,14 +1,14 @@
 import React from 'react';
 import RegisterPanel from '../../Components/RegisterPanel';
-import APIService from '../../Services/APIService';
 import { Redirect } from 'react-router-dom';
+import { AuthService } from '../../Services';
 
 export const RegisterPage = () => {
   const data = {
     showTitle: true,
     title: 'Zarejestruj się'
   };
-  return APIService.isAuthenticated() ? (
+  return AuthService.isAuthenticated() ? (
     <Redirect to="/protected" />
   ) : (
     <div className="register-page">

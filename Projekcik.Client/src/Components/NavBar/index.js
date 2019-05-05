@@ -20,10 +20,10 @@ import ShopIcon from '@material-ui/icons/ShoppingCart';
 import AddIcon from '@material-ui/icons/Add';
 import { Link } from 'react-router-dom';
 import './index.scss';
-import APIService from '../../Services/APIService';
 import SearchBar from '../SearchBar';
 import logo from './logoWhite.png';
 import { Tooltip } from '@material-ui/core';
+import { AuthService } from '../../Services';
 
 export default class NavBar extends Component {
   constructor(props) {
@@ -41,7 +41,7 @@ export default class NavBar extends Component {
   }
 
   render() {
-    let isLogged = APIService.isAuthenticated() ? true : false;
+    let isLogged = AuthService.isAuthenticated() ? true : false;
     const menu = [
       {
         name: 'Strona główna',
