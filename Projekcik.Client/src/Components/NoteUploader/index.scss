@@ -40,9 +40,14 @@
     margin-bottom: 2rem;
   }
 }
-.errors {
-  background-color: red;
+.eval {
   color: white;
   width: 100%;
   padding: 1rem;
+  &.errors {
+    background-color: red;
+  }
+  &.success {
+    background-color: green;
+  }
 }

@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import './index.scss';
 import ListCourseSelector from '../ListCourseSelector';
+import MyTextField from '../MyTextField';
 
 export default class NoteUploader extends Component {
   constructor(props) {
@@ -28,7 +29,8 @@ export default class NoteUploader extends Component {
       university: '',
       course: '',
 
-      error: ''
+      error: '',
+      success: ''
     };
 
     this.listCourseSelectorHandler = this.listCourseSelectorHandler.bind(this);
@@ -46,6 +48,14 @@ export default class NoteUploader extends Component {
   handleChange = event => {
     this.setState({
       [event.target.id]: event.target.value
+    });
+  };
+
+  handleChangePrice = event => {
+    let value = event.target.value.replace(',', '.');
+    value = value.replace(/[^0-9^.]/, '');
+    this.setState({
+      [event.target.id]: `${value}`
     });
   };
 
@@ -94,8 +104,23 @@ export default class NoteUploader extends Component {
 
     let errors = this.errorHandler();
     if (!errors) {
+      this.setState({
+        name: '',
+        price: '',
+        description: '',
+        file: null,
+        semester: 0,
+        courseId: null,
+        voivodeship: '',
+        university: '',
+        course: ''
+      });
       NoteService.sendNote(note)
-        .then(r => console.log(r))
+        .then(r => {
+          this.setState({ success: 'Dodano notatkę! Możesz ją wyświetlić ' });
+          window.scrollTo(0, 0);
+          console.log(r);
+        })
         .catch(e =>
           this.setState({ error: e.response.data.message }, () =>
             this.errorHandler()
@@ -107,30 +132,55 @@ export default class NoteUploader extends Component {
   render() {
     return (
       <Card className="upload-page-card mb-2">
-        {this.state.error && <div className="errors">{this.state.error}</div>}
+        {this.state.success && (
+          <div className="eval success">
+            {this.state.success}{' '}
+            <a href="../protected" style={{ color: 'lightblue' }}>
+              tutaj!
+            </a>
+          </div>
+        )}
+
+        {this.state.error && (
+          <div className="eval errors">{this.state.error}</div>
+        )}
         <div className="note-upload-header">
           <h3>Dodaj nową notatkę</h3>
           <hr />
         </div>
         <form className="note-form" onSubmit={this.handleSubmit}>
-          <TextField
+          <MyTextField
             id="name"
             className="field"
             label="Nazwa notatki"
-            helperText="Max. 100 znaków..."
             inputProps={{ maxLength: 100 }}
             variant="outlined"
             value={this.state.name}
             onChange={this.handleChange}
+            validationRules={[
+              {
+                func: val => val,
+                message: 'Nazwa notatki jest wymagana'
+              }
+            ]}
           />
-          <TextField
+          <MyTextField
             id="price"
             className="field"
             label="Cena"
             variant="outlined"
-            helperText="Format po kropce np. '13.37'..."
             value={this.state.price}
-            onChange={this.handleChange}
+            onChange={this.handleChangePrice}
+            validationRules={[
+              {
+                func: val => val,
+                message: 'Cena jest wymagana'
+              },
+              {
+                func: val => /^(\d*\.?\d{1,2})$/.test(val),
+                message: 'Nieprawidłowy format'
+              }
+            ]}
           />
           <TextField
             id="voivodeship"

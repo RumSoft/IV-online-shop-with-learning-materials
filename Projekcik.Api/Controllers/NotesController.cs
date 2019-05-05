@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -12,11 +11,9 @@ using Projekcik.Api.Helpers;
 using Projekcik.Api.Models;
 using Projekcik.Api.Models.DTO;
 using Projekcik.Api.Services;
-using static Projekcik.Api.Models.Extension;
 
 namespace Projekcik.Api.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class NotesController : ControllerBase
@@ -35,15 +32,22 @@ namespace Projekcik.Api.Controllers
         }
 
 
-
-        [HttpGet("")]
+        /// <summary>
+        ///     Get my notes
+        /// </summary>
+        [Authorize]
+        [HttpGet("me")]
         public IEnumerable<NoteDto> GetMyNotes()
         {
             var userId = _user.GetCurrentUserId();
             return GetUserNotes(userId);
         }
 
-        [HttpGet("{userId}")]
+        /// <summary>
+        ///     Get user's notes
+        /// </summary>
+        /// <param name="userId"></param>
+        [HttpGet("user/{userId}")]
         public IEnumerable<NoteDto> GetUserNotes(Guid userId)
         {
             var notes = _noteService.GetNotesByAuthorId(userId);
@@ -51,17 +55,12 @@ namespace Projekcik.Api.Controllers
         }
 
         /// <summary>
-        /// Send file to server, currently only pdf supported.
-        /// Please send this as form-data.
-        /// Real parameters are: file, name, description, price, course.
-        /// Please do not get fooled by swagger that spreads file on more properties.
+        ///     Send file to server, currently only pdf supported.
+        ///     Please send this as form-data.
+        ///     Real parameters are: file, name, description, price, course.
+        ///     Please do not get fooled by swagger that spreads file on more properties.
         /// </summary>
-        /// <param name="file">The note</param>
-        /// <param name="name">Name of note</param>
-        /// <param name="description">Description of note</param>
-        /// <param name="price">Price of note</param>
-        /// <param name="course">Course Id - please </param>
-        /// <returns></returns>
+        [Authorize]
         [HttpPost("create")]
         public IActionResult CreateNote(
             [FromForm] IFormFile file,
@@ -98,9 +97,7 @@ namespace Projekcik.Api.Controllers
 
             var noteId = Guid.NewGuid();
             using (var fileStream = new FileStream(Path.Combine(path, noteId.ToString()), FileMode.Create))
-            {
                 file.CopyTo(fileStream);
-            }
 
             var note = new Note
             {
@@ -111,24 +108,23 @@ namespace Projekcik.Api.Controllers
                 Price = price,
                 Description = description,
                 CourseId = course,
-                FileExtension = extension.Value
+                FileExtension = extension.Value,
+                Semester = semester
             };
             _noteService.Create(note);
 
             return Ok(new
             {
-                note.Id,
-                path
+                note.Id
             });
         }
 
         /// <summary>
-        /// Try to download the file, if user has bought note then the response is file itself (blob file result).
-        /// Every browser should be able to open this blob file and it stays in memory while user session is on.
-        /// If user hasn't bought the file, then the response is bad request OR (in future) auto-redirect to homepage.
+        ///     Try to download the file, if user has bought note then the response is file itself (blob file result).
+        ///     Every browser should be able to open this blob file and it stays in memory while user session is on.
+        ///     If user hasn't bought the file, then the response is bad request OR (in future) auto-redirect to homepage.
         /// </summary>
-        /// <param name="noteId"></param>
-        /// <returns></returns>
+        [Authorize]
         [HttpGet("download-request/{noteId}")]
         public IActionResult DownloadRequest(Guid noteId)
         {
@@ -159,24 +155,98 @@ namespace Projekcik.Api.Controllers
             return result;
         }
 
-        [AllowAnonymous]
         [HttpGet("search")]
         public IActionResult Search(
             [FromQuery] SearchParams searchParams,
-            [FromQuery] PagerParams pagerParams
-            )
+            [FromQuery] PagerParams pagerParams,
+            [FromQuery] SortParams sortParams
+        )
         {
-            var result = _noteService.Search(searchParams, pagerParams);
-            //todo mapper
-            return Ok(result.Select(x => new
+            var result = _noteService.Search(searchParams, sortParams);
+            var count = result.Count();
+            var notes = result.Select(x => new
             {
+                x.Id,
                 x.Name,
                 x.Description,
                 x.Price,
                 x.Semester,
-                CourseName = x.Course.Name,
-                UniversityName = x.Course.University.Name,
-            }));
+                Author = new
+                {
+                    Id = x.AuthorId,
+                    Name = x.Author.UserName,
+                },
+                Course = new
+                {
+                    Id = x.CourseId,
+                    Name = x.Course.Name,
+                },
+                University = new
+                {
+                    Id = x.Course.UniversityId,
+                    Name = x.Course.University.Name,
+                },
+                Voivodeship = new
+                {
+                    Id = x.Course.University.VoivodeshipId,
+                    Name = x.Course.University.Voivodeship.Name,
+                }
+            });
+
+            return Ok(new
+            {
+                Pager = new PagerResult
+                {
+                    Size = pagerParams.Size,
+                    Page = pagerParams.Page,
+                    Count = count,
+                    Pages = (int) Math.Ceiling(count / (float) pagerParams.Size)
+                },
+                Notes = notes
+                    .Skip((pagerParams.Page - 1) * pagerParams.Size)
+                    .Take(pagerParams.Size)
+            });
+        }
+
+        [AllowAnonymous]
+        [HttpGet("{noteId}")]
+        public IActionResult GetNotesDetails(Guid noteId)
+        {
+            var result = _noteService.GetNoteById(noteId);
+            if (result == null)
+                return BadRequest();
+
+            return Ok(new
+            {
+                result.Id,
+                result.Name,
+                result.Price,
+                result.Description,
+                result.Semester,
+                result.CreatedAt,
+                OrderCount = result.Buyers.Count,
+                Type = result.FileExtension.ToString().ToUpper(),
+                Author = new
+                {
+                    Id = result.AuthorId,
+                    Name = result.Author.UserName,
+                },
+                Course = new
+                {
+                    Id = result.CourseId,
+                    Name = result.Course.Name,
+                },
+                University = new
+                {
+                    Id = result.Course.UniversityId,
+                    Name = result.Course.University.Name,
+                },
+                Voivodeship = new
+                {
+                    Id = result.Course.University.VoivodeshipId,
+                    Name = result.Course.University.Voivodeship.Name,
+                }
+            });
         }
     }
 }
