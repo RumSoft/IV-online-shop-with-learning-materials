@@ -5,22 +5,21 @@ import HrLabel from '../HrLabel/index';
 import NoteService from '../../Services/NoteService';
 import './index.scss';
 
-export default class NoteLayout extends Component {
+export default class NotePanel extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loaded: false
     };
-    NoteService.getNote(this.props.id).then(r => {
-      console.log(r);
-      this.setState({ ...r, loaded: true });
-    });
+    NoteService.getNote(this.props.id).then(r =>
+      this.setState({ ...r, loaded: true })
+    );
   }
   render() {
     return (
       <div>
         {this.state.loaded ? (
-          <div className="home-layout">
+          <div className="note-panel">
             <Card className="main mb-3 mx-auto">
               <HrLabel text="witam" />
               <Typography
