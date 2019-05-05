@@ -20,11 +20,12 @@ export default class NotePanel extends Component {
     this.state = {
       loaded: false
     };
-    NoteService.getNote(this.props.id).then(r =>
-      this.setState({ ...r, loaded: true })
-    );
+    NoteService.getNote(this.props.id).then(r => {
+      this.setState({ ...r, loaded: true });
+    });
   }
   render() {
+    const note = this.state;
     return (
       <div>
         {this.state.loaded ? (
@@ -37,7 +38,7 @@ export default class NotePanel extends Component {
                   itemtype="http://schema.org/ListItem"
                   itemprop="itemListElement">
                   <a href="#">
-                    <span itemprop="name">Semestr</span>
+                    <span itemprop="name">{note.voivodeship.name}</span>
                     <meta content="1" />
                   </a>
                 </li>
@@ -45,7 +46,7 @@ export default class NotePanel extends Component {
                   itemtype="http://schema.org/ListItem"
                   itemprop="itemListElement">
                   <a href="#">
-                    <span itemprop="name">Semestr</span>
+                    <span itemprop="name">{note.university.name}</span>
                     <meta content="2" />
                   </a>
                 </li>
@@ -53,195 +54,114 @@ export default class NotePanel extends Component {
                   itemtype="http://schema.org/ListItem"
                   itemprop="itemListElement">
                   <a href="#">
-                    <span itemprop="name">Semestr</span>
+                    <span itemprop="name">{note.course.name}</span>
                     <meta content="2" />
-                  </a>
-                </li>
-                <li
-                  itemtype="http://schema.org/ListItem"
-                  itemprop="itemListElement">
-                  <a href="#">
-                    <span itemprop="name">Semestr</span>
-                    <meta content="4" />
                   </a>
                 </li>
               </ol>
 
-              <Card className="file_panel">
-                <CardContent className="mx-auto">
-                  <div className="column-doc">
-                    <div ClassName="document-heading">
-                      <Card className="main mb-3 mx-auto">
-                        <br />
-                        <Typography
-                          component="h1"
-                          className="title mx-auto"
-                          variant="h4"
-                          align="center"
-                          color="textPrimary"
-                          gutterBottom>
-                          {/* Nazwa notatki: */}
-                          {this.state.name}
-                        </Typography>
-                        <Typography
-                          className="subtitle mx-auto"
-                          align="center"
-                          color="textSecondary"
-                          paragraph>
-                          {/* Krótki opis:  */}
-                          {this.state.description}
-                        </Typography>
-                      </Card>
+              <Grid container spacing={16}>
+                <Grid item xs={12} sm={6} md={8} lg={8}>
+                  <Card className="note-data">
+                    <CardContent className="mx-auto">
+                      <Typography
+                        component="h1"
+                        className="title mx-auto"
+                        variant="h4"
+                        align="center"
+                        color="textPrimary"
+                        gutterBottom>
+                        {note.name}
+                      </Typography>
+                      <Typography
+                        className="subtitle mx-auto"
+                        align="center"
+                        color="textSecondary"
+                        paragraph>
+                        {note.description}
+                      </Typography>
 
-                      <div className="card-heading ">
-                        <center>
-                          <span className="docprev-gray">Podgląd</span>
-                          {/* <span className="docprev-number"> z stron</span> */}
-                        </center>
+                      <HrLabel text="Podgląd notatki" />
+                      <div className="preview-image">
+                        <img src="http://placekitten.com/g/400/400" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} lg={4}>
+                  <Card className="note-info">
+                    <Button
+                      fullWidth
+                      type="submit"
+                      className="button submit p-3 mb-2 text-white add-to-cart"
+                      onClick={this.handle}>
+                      <p className="price">
+                        <i className="fa fa-shopping-cart" />{' '}
+                        <span>{note.price} zł</span>
+                      </p>
+                      <p className="label">Dodaj do koszyka</p>
+                    </Button>
+                    <div className="note-author">
+                      <HrLabel text="Autor" />
+                      <span className="author-name mx-auto">
+                        {note.author.name}
+                      </span>
+                      <div className="author-image">
+                        <img src="http://placekitten.com/g/50/50" />
                       </div>
                     </div>
-                    <div className="card-row pos-relative">
-                      <center>
-                        <input
-                          id="iframe_src_doc"
-                          type="hidden"
-                          value="/documentPreview/..."
-                        />
-
-                        <div className="iframe-doc">
-                          <iframe
-                            className="scribd_iframe_embed"
-                            id="document-preview"
-                            title="Internet Memes"
-                            // src="https://www.scribd.com/embeds/408421703/content?start_page=1&view_mode=scroll&show_recommendations=false&access_key=key-kvlLNujEEtjuNGj2xdf6"
-                            data-auto-height="true"
-                            data-aspect-ratio="null"
-                            scrolling="no"
-                            width="100%"
-                            min-height="500px"
-                            frameborder="0"
-                          />
-                        </div>
-                      </center>
-                    </div>
-                  </div>
-                  <HrLabel />
-                </CardContent>
-              </Card>
-              <div className="column-info">
-                <Card className="panel_1">
-                  <CardContent className="mx-auto">
-                    <div className="price-card">
-                      <div className="document-info-type">
-                        <Typography
-                          component="h1"
-                          className="title"
-                          align="center"
-                          color="textSecondary"
-                          gutterBottom>
-                          Cena
-                        </Typography>
-                      </div>
-
-                      <Button
-                        type="submit"
-                        className="button submit p-3 mb-2 bg-success text-white"
-                        //variant="contained"
-                        onClick={this.handle}>
-                        {this.state.price} zł
-                        {/* <i className="fa fa-shopping-cart" /> */}
-                        <br /> <br /> Dodaj do koszyka
-                      </Button>
-                      <HrLabel />
-                    </div>
-                    <div>
-                      <div className="card-heading">
-                        <span className="sellerinfo">
-                          Autor: {this.state.author.name}
-                        </span>
-
-                        <HrLabel />
-                      </div>
-                      <div className="card-row">
-                        <div className="rep-sell-block">
-                          <Grid container justify="center" alignItems="center">
-                            <Avatar
-                              alt="avatar"
-                              src="https://img.icons8.com/metro/52/000000/gender-neutral-user.png"
-                              className="rep-sell-avatar"
-                            />
-                          </Grid>
-                        </div>
-                        <div className="rep-seller-text">
-                          <br />
-                          <a className="seller-name" href="#" target="_blank">
-                            {this.props.title}
-                            <i className="fa fa-external-link" />
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="card-heading">
-                      <span className="sellerinfo">Informacje</span>
-                      <HrLabel />
-                    </div>
-
                     <div className="docinfo-full card-row">
-                      {/* <div className="document-row font-15 border-bottom-gray doc-info-head left" /> */}
-                      <List className="document-row">
-                        <ListItemText
-                          className="document-what"
-                          primary="Semestr"
-                        />
-                        <ListItemText class="document-info" secondary="test" />
-                      </List>
-                      <List className="document-row">
-                        <ListItemText
-                          className="document-what"
-                          primary="Nazwa kierunku"
-                        />
-                        <ListItemText class="document-info" secondary="test" />
-                      </List>
-                      <List className="document-row">
-                        <ListItemText
-                          className="document-what"
-                          primary="Nazwa uczelni"
-                        />
-                        <ListItemText class="document-info" secondary="test" />
-                      </List>
-
-                      <List className="document-row">
-                        <ListItemText
-                          className="document-what"
-                          primary="Nazwa województwa"
-                        />
-                        <ListItemText class="document-info" secondary="test" />
-                      </List>
-                      <List className="document-row">
-                        <ListItemText
-                          className="document-what"
-                          primary="Liczba stron"
-                        />
-                        <ListItemText class="document-info" secondary="test" />
-                      </List>
-                      <List className="document-row">
-                        <ListItemText
-                          className="document-what"
-                          primary="Data dodania"
-                        />
-                        <ListItemText class="document-info" secondary="test" />
-                      </List>
-                      <List className="document-row">
-                        <ListItemText
-                          className="document-what"
-                          primary="Typ pliku"
-                        />
-                        <ListItemText class="document-info" secondary="test" />
-                      </List>
+                      <HrLabel text="Informacje" />
+                      <Grid container spacing={16}>
+                        <Grid item xs={4} sm={6} md={12}>
+                          <ListItemText
+                            className="document-what"
+                            primary="Semestr"
+                            secondary={this.state.semester}
+                          />
+                        </Grid>
+                        <Grid item xs={4} sm={6} md={12}>
+                          <ListItemText
+                            className="document-what"
+                            primary="Województwo"
+                            secondary={note.voivodeship.name}
+                          />
+                        </Grid>
+                        <Grid item xs={4} sm={6} md={12}>
+                          <ListItemText
+                            className="document-what"
+                            primary="Uczelnia"
+                            secondary={note.university.name}
+                          />
+                        </Grid>
+                        <Grid item xs={4} sm={6} md={12}>
+                          <ListItemText
+                            className="document-what"
+                            primary="Kierunek"
+                            secondary={note.course.name}
+                          />
+                        </Grid>
+                        <Grid item xs={4} sm={6} md={12}>
+                          <ListItemText
+                            className="document-what"
+                            primary="Data dodania"
+                            secondary={new Date(
+                              this.state.createdAt
+                            ).toLocaleDateString()}
+                          />
+                        </Grid>
+                        <Grid item xs={4} sm={6} md={12}>
+                          <ListItemText
+                            className="document-what"
+                            primary="Typ pliku"
+                            secondary={this.state.type}
+                          />
+                        </Grid>
+                      </Grid>
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
+                  </Card>
+                </Grid>
+              </Grid>
             </div>
           </div>
         ) : (
