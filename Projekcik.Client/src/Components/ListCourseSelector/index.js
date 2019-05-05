@@ -20,6 +20,7 @@ import {
   DialogActions,
   CircularProgress
 } from '@material-ui/core';
+import './index.scss';
 
 export default class ListCourseSelector extends Component {
   state = {
@@ -133,13 +134,18 @@ export default class ListCourseSelector extends Component {
     )).map(item => {
       return (
         <ListGroupItem
-          className="mb-1 md text-center"
+          className="mb-1 md text-center list-item"
           key={item.id}
           tag="button"
           action
           onClick={() =>
             this.handleTabChange(this.state.activeTab, item.id, item.name)
           }>
+          {item.imageUrl && (
+            <div className="uniImage">
+              <img src={item.imageUrl} />
+            </div>
+          )}
           {item.name}
         </ListGroupItem>
       );

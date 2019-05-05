@@ -68,7 +68,6 @@ export default class HomeLayout extends Component {
             </p>
             <a href="#link"> pokaż więcej </a>
           </Card>
-
           <footer className="footer">
             <h6 className="footer-item">Stopka</h6>
             <p className="footer-item">

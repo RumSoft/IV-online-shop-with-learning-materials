@@ -121,6 +121,13 @@ export default class CourseSelector extends Component {
     }
   }
 
+  ileNotatek(count) {
+    if (count === 0) return 'brak notatek';
+    if (count % 10 == 1) return '1 notatka';
+    if (count % 10 >= 2 && count % 10 <= 4) return `${count} notatki`;
+    return `${count} notatek`;
+  }
+
   render() {
     const { activeStep, selection, data } = this.state;
     return (
@@ -183,60 +190,72 @@ export default class CourseSelector extends Component {
 
         {activeStep === 0 && (
           <Grid
+            className="grid"
             container
             spacing={8}
             direction="row"
             justify="center"
             alignItems="stretch">
             {this.filterList(data.voivodeships)
+              .sort(x => x.noteCount)
+              .reverse()
               .filter((x, i) => i < 8)
               .map((x, i) => (
                 <Grid
                   item
                   xs={3}
-                  key={x.id}
+                  key={i}
                   className="grid-item"
-                  onClick={() => this.handleForward(x)}>
+                  onClick={() => x.noteCount > 0 && this.handleForward(x)}>
                   <Paper className="paper p-md-2 p-1" elevation={4}>
+                    {x.noteCount <= 0 && <div className="disabled" />}
                     <span>{x.name}</span>
+                    <small>{this.ileNotatek(x.noteCount)}</small>
                   </Paper>
                 </Grid>
               ))}
           </Grid>
         )}
         {activeStep === 1 && (
-          <Grid container spacing={8}>
+          <Grid className="grid" container spacing={8}>
             {this.filterList(data.universities)
-              .filter(x => true)
+              .sort(x => x.noteCount)
+              .reverse()
               .filter((x, i) => i < 8)
               .map((x, i) => (
                 <Grid
                   item
                   xs={3}
-                  key={x.id}
+                  key={i}
                   className="grid-item"
-                  onClick={() => this.handleForward(x)}>
+                  onClick={() => x.noteCount > 0 && this.handleForward(x)}>
                   <Paper className="paper p-md-2 p-1" elevation={3}>
+                    {x.noteCount <= 0 && <div className="disabled" />}
                     <span>{x.name}</span>
+                    <small>{this.ileNotatek(x.noteCount)}</small>
+                    <img className="uniImage" src={x.imageUrl} />
                   </Paper>
                 </Grid>
               ))}
           </Grid>
         )}
         {activeStep === 2 && (
-          <Grid container spacing={8}>
+          <Grid className="grid" container spacing={8}>
             {this.filterList(data.courses)
-              .filter(x => true)
+              .sort(x => x.noteCount)
+              .reverse()
               .filter((x, i) => i < 8)
               .map((x, i) => (
                 <Grid
                   item
                   xs={3}
-                  key={x.id}
+                  key={i}
                   className="grid-item"
-                  onClick={() => this.handleForward(x)}>
+                  onClick={() => x.noteCount > 0 && this.handleForward(x)}>
                   <Paper className="paper p-md-3 p-1" elevation={3}>
+                    {x.noteCount <= 0 && <div className="disabled" />}
                     <span>{x.name}</span>
+                    <small>{this.ileNotatek(x.noteCount)}</small>
                   </Paper>
                 </Grid>
               ))}

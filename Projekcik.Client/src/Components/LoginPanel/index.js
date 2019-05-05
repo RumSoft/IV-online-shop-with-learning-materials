@@ -9,7 +9,8 @@ import {
 import Icon from '@material-ui/core/Icon';
 
 import './index.scss';
-import AuthService from '../../Services/AuthService';
+import { AuthService } from '../../Services';
+import { Redirect } from 'react-router-dom';
 import HrLabel from '../HrLabel';
 
 export default class LoginPanel extends Component {
@@ -17,7 +18,8 @@ export default class LoginPanel extends Component {
     emailAddress: '',
     password: '',
     errorMessage: null,
-    loading: false
+    loading: false,
+    logged: AuthService.isAuthenticated()
   };
 
   handleChange = event => {
@@ -32,7 +34,10 @@ export default class LoginPanel extends Component {
       emailAddress: this.state.emailAddress,
       password: this.state.password
     })
-      .then(data => AuthService.handleLogin(data))
+      .then(data => {
+        AuthService.handleLogin(data);
+        this.setState({ logged: AuthService.isAuthenticated() });
+      })
       .catch(error => {
         this.setState({
           errorMessage: error.response.data.message,
@@ -48,7 +53,13 @@ export default class LoginPanel extends Component {
     window.location.href = url;
   };
 
+  redirect() {
+    return <Redirect to={this.props.redirectData} />;
+  }
+
   render() {
+    if (this.state.logged) return this.redirect();
+
     return (
       <Card className="login-panel">
         {this.state.loading && <LinearProgress className="progress" />}
@@ -90,8 +101,7 @@ export default class LoginPanel extends Component {
             className="button login-reset-password"
             variant="contained"
             color="primary"
-            disabled
-            onClick={this.handleLogin}>
+            disabled>
             Resetuj hasło
           </Button>
           <HrLabel text="LUB" />
