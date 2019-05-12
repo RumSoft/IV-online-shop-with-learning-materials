@@ -32,7 +32,7 @@ export default class NotePanel extends Component {
     return (
       <div>
         <ReactPlaceholder
-          ready={this.state.loaded && false}
+          ready={this.state.loaded}
           customPlaceholder={<NotePanelPlaceholder />}>
           {this.state.loaded && (
             <div className="note-panel">
