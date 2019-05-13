@@ -19,6 +19,7 @@ using Projekcik.Api.Models.DTO;
 using Projekcik.Api.Services;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.Extensions.Logging.Log4Net.AspNetCore;
 
 namespace Projekcik.Api
 {
@@ -84,7 +85,7 @@ namespace Projekcik.Api
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             app.UseAuthentication();
 
@@ -113,6 +114,18 @@ namespace Projekcik.Api
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
+
+            loggerFactory.AddLog4Net();
+            if(env.IsDevelopment())
+            {
+                _logger.LogInformation("In Development environment");
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+
         }
     }
 }
