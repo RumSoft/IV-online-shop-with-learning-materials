@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using Projekcik.Api.Helpers;
 using Projekcik.Api.Models;
 using Projekcik.Api.Services;
@@ -20,6 +21,9 @@ namespace Projekcik.Api.Controllers
         private readonly IUserService _userService;
         private readonly IPaymentService _paymentService;
         private readonly DataContext _context;
+
+        private static readonly log4net.ILog _log =
+            log4net.LogManager.GetLogger(typeof(UniController));
 
         public PaymentController(
             IConfiguration configuration,
@@ -55,11 +59,16 @@ namespace Projekcik.Api.Controllers
 
             try
             {
-               var redirect = _paymentService.CreateOrder(notes, user, ipAddress);
+                _log.Info($"Creating payment link for user: {userId}");
+                var redirect = _paymentService.CreateOrder(notes, user, ipAddress);
                return RedirectPreserveMethod(redirect);
             }
             catch (Exception e)
             {
+                _log.Warn($"Couldn't create payment link, reason: {e.Message}, inner: {e.InnerException?.Message ?? "none"}\n" +
+                          $"userId={userId}, " +
+                          $"selectedNotes={string.Join(", ", notes.Select(x => x.Id))}");
+
                 return BadRequest(e);
             }
         }
@@ -83,11 +92,14 @@ namespace Projekcik.Api.Controllers
 
             try
             {
+                _log.Info($"Updating transaction {status.Order.ExtOrderId}, status: {status.Order.Status}");
                 _paymentService.UpdateTransaction(status);
             }
             catch (Exception e)
             {
-
+                _log.Warn($"Transaction notify failed, reason: {e.Message}, inner: {e.InnerException?.Message ?? "none"}" +
+                          $"\n entity:\n" +
+                          $"{JsonConvert.SerializeObject(status, Formatting.Indented)}");
             }
 
             return Ok();
