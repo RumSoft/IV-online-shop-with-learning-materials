@@ -80,6 +80,7 @@ namespace Projekcik.Api
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IHashService, PBKDF2HashSerivce>();
             services.AddScoped<INoteService, NoteService>();
+            services.AddSingleton<IPaymentService, PayUPaymentService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
