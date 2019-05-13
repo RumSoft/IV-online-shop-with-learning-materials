@@ -13,6 +13,7 @@ namespace Projekcik.Api.Models
         public DbSet<University> Universities { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Note> Notes { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
 
         public DbQuery<VoivodeshipNoteCount> VoivodeshipNoteCounts { get; set; }
         public DbQuery<UniversityNoteCount> UniversityNoteCounts { get; set; }
@@ -23,6 +24,7 @@ namespace Projekcik.Api.Models
             User.OnModelCreating(modelBuilder.Entity<User>());
             Note.OnModelCreating(modelBuilder.Entity<Note>());
             UserNote.OnModelCreating(modelBuilder.Entity<UserNote>());
+            Transaction.OnModelCreating(modelBuilder.Entity<Transaction>());
 
             Voivodeship.OnModelCreating(modelBuilder.Entity<Voivodeship>());
             University.OnModelCreating(modelBuilder.Entity<University>());
