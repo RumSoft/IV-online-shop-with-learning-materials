@@ -120,7 +120,7 @@ namespace Projekcik.Api.Services
         private OrderResponse PlaceOrder(string authToken, Order order)
         {
             var handler = new HttpClientHandler {AllowAutoRedirect = false};
-            using (var httpClient = new HttpClient(handler))
+            using (var httpClient = new HttpClient(handler) { BaseAddress = new Uri(baseUrl) })
             {
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", $"Bearer {authToken}");
 
