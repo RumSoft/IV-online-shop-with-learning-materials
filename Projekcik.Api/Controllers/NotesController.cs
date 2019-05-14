@@ -22,6 +22,7 @@ namespace Projekcik.Api.Controllers
         private readonly IHttpContextAccessor _user;
         private readonly IUserService _userService;
 
+        private const  int maxFileSize = 10 * 1024 * 1024;
         public NotesController(INoteService noteService,
             IHttpContextAccessor user,
             IUserService userService)
@@ -85,7 +86,7 @@ namespace Projekcik.Api.Controllers
                 throw new UnsupportedMediaTypeException("unsupported", null);
 
             long fileSize = file.Length;
-            if(fileSize > 10485760)
+            if(fileSize > maxFileSize)
             {
                 return BadRequest("Maxiumum file size (10Mb) exceeded");
             }
