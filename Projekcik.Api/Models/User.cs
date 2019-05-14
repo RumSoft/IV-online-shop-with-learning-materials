@@ -41,6 +41,7 @@ namespace Projekcik.Api.Models
 
             entity.Property(x => x.Balance)
                  .HasColumnType("decimal(5,2)")
+                 .HasDefaultValue(0.0)
                  .IsRequired();
 
             entity.Property(x => x.CreatedAt)
