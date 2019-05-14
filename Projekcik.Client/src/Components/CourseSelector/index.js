@@ -123,7 +123,7 @@ export default class CourseSelector extends Component {
 
   ileNotatek(count) {
     if (count === 0) return 'brak notatek';
-    if (count % 10 == 1) return '1 notatka';
+    if (count % 10 === 1) return '1 notatka';
     if (count % 10 >= 2 && count % 10 <= 4) return `${count} notatki`;
     return `${count} notatek`;
   }
@@ -233,7 +233,7 @@ export default class CourseSelector extends Component {
                     {x.noteCount <= 0 && <div className="disabled" />}
                     <span>{x.name}</span>
                     <small>{this.ileNotatek(x.noteCount)}</small>
-                    <img className="uniImage" src={x.imageUrl} />
+                    <img className="uniImage" src={x.imageUrl} alt=''/>
                   </Paper>
                 </Grid>
               ))}
