@@ -40,8 +40,8 @@ namespace Projekcik.Api.Models
                 .HasMaxLength(256);
 
             entity.Property(x => x.Balance)
-                .HasDefaultValue(0.0)
-                .HasMaxLength(10);
+                 .HasColumnType("decimal(5,2)")
+                 .IsRequired();
 
             entity.Property(x => x.CreatedAt)
                 .HasDefaultValueSql("getdate()")
