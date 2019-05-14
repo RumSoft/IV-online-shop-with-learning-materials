@@ -84,6 +84,12 @@ namespace Projekcik.Api.Controllers
             if (extension == null)
                 throw new UnsupportedMediaTypeException("unsupported", null);
 
+            long fileSize = file.Length;
+            if(fileSize > 10485760)
+            {
+                return BadRequest("Maxiumum file size (10Mb) exceeded");
+            }
+
             var userId = _user.GetCurrentUserId();
             var user = _userService.GetById(userId);
             if (user == null)
