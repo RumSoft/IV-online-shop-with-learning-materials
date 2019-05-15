@@ -14,7 +14,7 @@ namespace Projekcik.Api.Services
     {
         string CreateOrder(Note[] notes, User user, string userIpAddress);
 
-        void UpdateTransaction(object status);
+        void UpdateTransaction(PayUPaymentService.PaymentStatus status);
     }
 
     public class PayUPaymentService : IPaymentService
@@ -47,11 +47,8 @@ namespace Projekcik.Api.Services
             log4net.LogManager.GetLogger(typeof(PayUPaymentService));
 
 
-        public void UpdateTransaction(object status2)
+        public void UpdateTransaction(PaymentStatus status)
         {
-            _log.Warn(JsonConvert.SerializeObject(status2));
-            var status = status2 as PaymentStatus;
-
             var transactionId = status.Order.ExtOrderId;
             var transaction = _context.Transactions.Find(transactionId);
             if(transaction == null)
@@ -63,11 +60,11 @@ namespace Projekcik.Api.Services
                 return;
 
             var orderStatus = status.Order.Status;
-            if (orderStatus.Equals("Completed", StringComparison.InvariantCultureIgnoreCase)) 
+            if (orderStatus.Equals("COMPLETED", StringComparison.InvariantCultureIgnoreCase)) 
                 transaction.Status = TransactionStatus.Completed;
-            else if (orderStatus.Equals("Rejected", StringComparison.InvariantCultureIgnoreCase))
+            else if (orderStatus.Equals("REJECTED", StringComparison.InvariantCultureIgnoreCase))
                 transaction.Status = TransactionStatus.Rejected;
-            else if (orderStatus.Equals("Cancelled", StringComparison.InvariantCultureIgnoreCase))
+            else if (orderStatus.Equals("CANCELLED", StringComparison.InvariantCultureIgnoreCase))
                 transaction.Status = TransactionStatus.Cancelled;
 
             _context.SaveChanges();
