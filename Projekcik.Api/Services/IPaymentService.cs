@@ -14,7 +14,7 @@ namespace Projekcik.Api.Services
     {
         string CreateOrder(Note[] notes, User user, string userIpAddress);
 
-        void UpdateTransaction(PayUPaymentService.PaymentStatus status);
+        void UpdateTransaction(object status);
     }
 
     public class PayUPaymentService : IPaymentService
@@ -43,8 +43,15 @@ namespace Projekcik.Api.Services
             notifyUrl = _configuration["PayU:NotifyUrl"];
         }
 
-        public void UpdateTransaction(PaymentStatus status)
+        private static readonly log4net.ILog _log =
+            log4net.LogManager.GetLogger(typeof(PayUPaymentService));
+
+
+        public void UpdateTransaction(object status2)
         {
+            _log.Warn(JsonConvert.SerializeObject(status2));
+            var status = status2 as PaymentStatus;
+
             var transactionId = status.Order.ExtOrderId;
             var transaction = _context.Transactions.Find(transactionId);
             if(transaction == null)
