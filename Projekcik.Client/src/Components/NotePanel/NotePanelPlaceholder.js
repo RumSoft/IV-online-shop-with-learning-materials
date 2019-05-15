@@ -1,17 +1,7 @@
 import React from 'react';
-import {
-  Card,
-  CardContent,
-  Typography,
-  Button,
-  List,
-  ListItemText,
-  Grid
-} from '@material-ui/core';
-import HrLabel from '../HrLabel/index';
+import { Card, CardContent, Grid } from '@material-ui/core';
 import {
   TextBlock,
-  MediaBlock,
   TextRow,
   RectShape,
   RoundShape
