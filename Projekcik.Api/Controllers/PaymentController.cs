@@ -74,7 +74,7 @@ namespace Projekcik.Api.Controllers
         }
 
         [HttpPost("notify")]
-        public IActionResult NotifyPaymentStatus(object status2)
+        public IActionResult NotifyPaymentStatus([FromBody] object status2)
         {
             _log.Warn("### NOTIFY: ");
             _log.Warn(JsonConvert.SerializeObject(status2));
