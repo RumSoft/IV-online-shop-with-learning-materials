@@ -14,7 +14,7 @@ namespace Projekcik.Api.Services
     {
         string CreateOrder(Note[] notes, User user, string userIpAddress);
 
-        void UpdateTransaction(PayUPaymentService.PaymentStatus status);
+        void UpdateTransaction(object status);
     }
 
     public class PayUPaymentService : IPaymentService
@@ -43,8 +43,15 @@ namespace Projekcik.Api.Services
             notifyUrl = _configuration["PayU:NotifyUrl"];
         }
 
-        public void UpdateTransaction(PaymentStatus status)
+        private static readonly log4net.ILog _log =
+            log4net.LogManager.GetLogger(typeof(PayUPaymentService));
+
+
+        public void UpdateTransaction(object status2)
         {
+            _log.Warn(JsonConvert.SerializeObject(status2));
+            var status = status2 as PaymentStatus;
+
             var transactionId = status.Order.ExtOrderId;
             var transaction = _context.Transactions.Find(transactionId);
             if(transaction == null)
@@ -80,7 +87,7 @@ namespace Projekcik.Api.Services
 
             foreach (var note in notes)
                 _noteService.Buy(user,note);
-            
+            _context.SaveChanges();
         }
 
         public string CreateOrder(Note[] notes, User user, string userIpAddress)
@@ -94,6 +101,15 @@ namespace Projekcik.Api.Services
 
         private Order PrepareOrder(Note[] notes, User user, string userIpAddress)
         {
+            var transaction = new Transaction
+            {
+                BuyerId = user.Id,
+                OrderedNotesIds = notes.Select(x => x.Id),
+                Status = TransactionStatus.New
+            };
+            _context.Transactions.Add(transaction);
+            _context.SaveChanges();
+
             return new Order
             {
                 Buyer = new Buyer
@@ -113,7 +129,7 @@ namespace Projekcik.Api.Services
                 CustomerIp = userIpAddress,
                 MerchantPosId = posId,
                 NotifyUrl = notifyUrl,
-                ExtOrderId = "124"
+                ExtOrderId = transaction.Id.ToString()
             };
         }
 
