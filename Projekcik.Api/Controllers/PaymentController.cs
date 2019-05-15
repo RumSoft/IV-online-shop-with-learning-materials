@@ -74,8 +74,11 @@ namespace Projekcik.Api.Controllers
         }
 
         [HttpPost("notify")]
-        public IActionResult NotifyPaymentStatus(PayUPaymentService.PaymentStatus status)
+        public IActionResult NotifyPaymentStatus(object status2)
         {
+            _log.Warn("### NOTIFY: ");
+            _log.Warn(JsonConvert.SerializeObject(status2));
+
             var sandboxNotifyAddresses = new[]
             {
                 "185.68.14.10",
@@ -92,6 +95,7 @@ namespace Projekcik.Api.Controllers
 
             try
             {
+                var status = status2 as PayUPaymentService.PaymentStatus;
                 _log.Info($"Updating transaction {status.Order.ExtOrderId}, status: {status.Order.Status}");
                 _paymentService.UpdateTransaction(status);
             }
@@ -99,7 +103,7 @@ namespace Projekcik.Api.Controllers
             {
                 _log.Warn($"Transaction notify failed, reason: {e.Message}, inner: {e.InnerException?.Message ?? "none"}" +
                           $"\n entity:\n" +
-                          $"{JsonConvert.SerializeObject(status, Formatting.Indented)}");
+                          $"{JsonConvert.SerializeObject(status2, Formatting.Indented)}");
             }
 
             return Ok();
