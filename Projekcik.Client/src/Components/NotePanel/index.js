@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Link } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import {
@@ -110,10 +110,20 @@ export default class NotePanel extends Component {
                       <div className="note-author">
                         <HrLabel text="Autor" />
                         <span className="author-name mx-auto">
-                          {note.author.name}
+                          <a href={`/note/${note.id}`}>{note.author.name}</a>
+                          {/*
+                          <Link
+                            to={`/note/${note.id}`}
+                            activeClassName="active">
+                            {note.author.name}
+                          </Link>
+                         */}
                         </span>
                         <div className="author-image">
-                          <img src="http://placekitten.com/g/50/50" />
+                          <a href={`/note/${note.id}`}>
+                            {' '}
+                            <img src="http://placekitten.com/g/50/50" />
+                          </a>
                         </div>
                       </div>
                       <div className="docinfo-full card-row">
