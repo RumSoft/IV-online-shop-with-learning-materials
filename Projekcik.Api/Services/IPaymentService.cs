@@ -86,8 +86,8 @@ namespace Projekcik.Api.Services
             _log.Info($"notes: {transaction.Order}, count: {transaction.OrderedNotesIds.Count()}");
 
             var noteIds = transaction.OrderedNotesIds.ToArray();
-            var notes = _context.Notes.Where(x => noteIds.Contains(x.Id));
-            if(!noteIds.Any() && notes.Count() != noteIds.Count())
+            var notes = _context.Notes.Where(x => noteIds.Contains(x.Id)).ToArray();
+            if(!noteIds.Any() && notes.Length != noteIds.Length)
                 throw new Exception("invalid notes selected");
 
             foreach (var note in notes)
