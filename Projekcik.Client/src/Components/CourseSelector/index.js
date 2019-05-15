@@ -130,6 +130,7 @@ export default class CourseSelector extends Component {
 
   render() {
     const { activeStep, selection, data } = this.state;
+
     return (
       <div className="course-selector">
         <Stepper activeStep={activeStep} className="course-selector-stepper">
@@ -197,9 +198,7 @@ export default class CourseSelector extends Component {
             justify="center"
             alignItems="stretch">
             {this.filterList(data.voivodeships)
-              .sort(x => x.noteCount)
-              .reverse()
-              .filter((x, i) => i < 8)
+              .sort((a, b) => a.noteCount < b.noteCount)
               .map((x, i) => (
                 <Grid
                   item
@@ -209,7 +208,7 @@ export default class CourseSelector extends Component {
                   onClick={() => x.noteCount > 0 && this.handleForward(x)}>
                   <Paper className="paper p-md-2 p-1" elevation={4}>
                     {x.noteCount <= 0 && <div className="disabled" />}
-                    <span>{x.name}</span>
+                    <div>{x.name}</div>
                     <small>{this.ileNotatek(x.noteCount)}</small>
                   </Paper>
                 </Grid>
@@ -219,8 +218,7 @@ export default class CourseSelector extends Component {
         {activeStep === 1 && (
           <Grid className="grid" container spacing={8}>
             {this.filterList(data.universities)
-              .sort(x => x.noteCount)
-              .reverse()
+              .sort((a, b) => a.noteCount < b.noteCount)
               .filter((x, i) => i < 8)
               .map((x, i) => (
                 <Grid
@@ -231,7 +229,7 @@ export default class CourseSelector extends Component {
                   onClick={() => x.noteCount > 0 && this.handleForward(x)}>
                   <Paper className="paper p-md-2 p-1" elevation={3}>
                     {x.noteCount <= 0 && <div className="disabled" />}
-                    <span>{x.name}</span>
+                    <div className="uni">{x.name}</div>
                     <small>{this.ileNotatek(x.noteCount)}</small>
                     <img className="uniImage" src={x.imageUrl} alt=''/>
                   </Paper>
@@ -242,8 +240,7 @@ export default class CourseSelector extends Component {
         {activeStep === 2 && (
           <Grid className="grid" container spacing={8}>
             {this.filterList(data.courses)
-              .sort(x => x.noteCount)
-              .reverse()
+              .sort((a, b) => a.noteCount < b.noteCount)
               .filter((x, i) => i < 8)
               .map((x, i) => (
                 <Grid
@@ -254,7 +251,7 @@ export default class CourseSelector extends Component {
                   onClick={() => x.noteCount > 0 && this.handleForward(x)}>
                   <Paper className="paper p-md-3 p-1" elevation={3}>
                     {x.noteCount <= 0 && <div className="disabled" />}
-                    <span>{x.name}</span>
+                    <div>{x.name}</div>
                     <small>{this.ileNotatek(x.noteCount)}</small>
                   </Paper>
                 </Grid>
