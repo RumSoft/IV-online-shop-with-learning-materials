@@ -80,7 +80,7 @@ namespace Projekcik.Api.Services
 
             foreach (var note in notes)
                 _noteService.Buy(user,note);
-            
+            _context.SaveChanges();
         }
 
         public string CreateOrder(Note[] notes, User user, string userIpAddress)
@@ -101,6 +101,7 @@ namespace Projekcik.Api.Services
                 Status = TransactionStatus.New
             };
             _context.Transactions.Add(transaction);
+            _context.SaveChanges();
 
             return new Order
             {
@@ -121,7 +122,7 @@ namespace Projekcik.Api.Services
                 CustomerIp = userIpAddress,
                 MerchantPosId = posId,
                 NotifyUrl = notifyUrl,
-                ExtOrderId = "124"
+                ExtOrderId = transaction.Id.ToString()
             };
         }
 
