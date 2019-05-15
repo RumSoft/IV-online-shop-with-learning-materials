@@ -49,7 +49,7 @@ namespace Projekcik.Api.Services
 
         public void UpdateTransaction(PaymentStatus status)
         {
-            var transactionId = status.Order.ExtOrderId;
+            var transactionId = Guid.Parse(status.Order.ExtOrderId);
             var transaction = _context.Transactions.Find(transactionId);
             if(transaction == null)
                 throw new Exception("transaction does not exist");
