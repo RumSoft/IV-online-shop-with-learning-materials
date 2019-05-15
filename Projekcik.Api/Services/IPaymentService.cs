@@ -94,6 +94,14 @@ namespace Projekcik.Api.Services
 
         private Order PrepareOrder(Note[] notes, User user, string userIpAddress)
         {
+            var transaction = new Transaction
+            {
+                BuyerId = user.Id,
+                OrderedNotesIds = notes.Select(x => x.Id),
+                Status = TransactionStatus.New
+            };
+            _context.Transactions.Add(transaction);
+
             return new Order
             {
                 Buyer = new Buyer
