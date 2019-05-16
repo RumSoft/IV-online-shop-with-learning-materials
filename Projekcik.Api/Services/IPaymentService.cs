@@ -14,7 +14,7 @@ namespace Projekcik.Api.Services
     {
         string CreateOrder(Note[] notes, User user, string userIpAddress);
 
-        void UpdateTransaction(object status);
+        void UpdateTransaction(PayUPaymentService.PaymentStatus status);
     }
 
     public class PayUPaymentService : IPaymentService
@@ -47,12 +47,12 @@ namespace Projekcik.Api.Services
             log4net.LogManager.GetLogger(typeof(PayUPaymentService));
 
 
-        public void UpdateTransaction(object status2)
+        public void UpdateTransaction(PaymentStatus status)
         {
-            _log.Warn(JsonConvert.SerializeObject(status2));
-            var status = status2 as PaymentStatus;
-
-            var transactionId = status.Order.ExtOrderId;
+            _log.Error("############################");
+            _log.Error("############################");
+            _log.Error("############################");
+            var transactionId = Guid.Parse(status.Order.ExtOrderId);
             var transaction = _context.Transactions.Find(transactionId);
             if(transaction == null)
                 throw new Exception("transaction does not exist");
@@ -63,11 +63,11 @@ namespace Projekcik.Api.Services
                 return;
 
             var orderStatus = status.Order.Status;
-            if (orderStatus.Equals("Completed", StringComparison.InvariantCultureIgnoreCase)) 
+            if (orderStatus.Equals("COMPLETED", StringComparison.InvariantCultureIgnoreCase)) 
                 transaction.Status = TransactionStatus.Completed;
-            else if (orderStatus.Equals("Rejected", StringComparison.InvariantCultureIgnoreCase))
+            else if (orderStatus.Equals("REJECTED", StringComparison.InvariantCultureIgnoreCase))
                 transaction.Status = TransactionStatus.Rejected;
-            else if (orderStatus.Equals("Cancelled", StringComparison.InvariantCultureIgnoreCase))
+            else if (orderStatus.Equals("CANCELLED", StringComparison.InvariantCultureIgnoreCase))
                 transaction.Status = TransactionStatus.Cancelled;
 
             _context.SaveChanges();
@@ -75,19 +75,29 @@ namespace Projekcik.Api.Services
             if (transaction.Status != TransactionStatus.Completed)
                 return;
 
+            _log.Info("adding notes for user");
+
             var userId = transaction.BuyerId;
             var user = _context.Users.Find(userId);
             if(user == null)
                 throw new Exception("user does not exist");
 
+            _log.Info($"userId: {userId}");
+            _log.Info($"notes: {transaction.Order}, count: {transaction.OrderedNotesIds.Count()}");
+
             var noteIds = transaction.OrderedNotesIds.ToArray();
-            var notes = _context.Notes.Where(x => noteIds.Contains(x.Id));
-            if(!noteIds.Any() && notes.Count() != noteIds.Count())
+            var notes = _context.Notes.Where(x => noteIds.Contains(x.Id)).ToArray();
+            if(!noteIds.Any() && notes.Length != noteIds.Length)
                 throw new Exception("invalid notes selected");
 
             foreach (var note in notes)
-                _noteService.Buy(user,note);
+            {
+                _log.Info($"adding note '{note.Id}' to user '{user.Id}'");
+                _noteService.Buy(user, note);
+            }
+
             _context.SaveChanges();
+            _log.Info($"finished buying notes");
         }
 
         public string CreateOrder(Note[] notes, User user, string userIpAddress)

@@ -7,7 +7,6 @@ import {
   CardContent,
   Typography,
   Button,
-  List,
   ListItemText
 } from '@material-ui/core';
 import { LinearProgress } from '@material-ui/core';

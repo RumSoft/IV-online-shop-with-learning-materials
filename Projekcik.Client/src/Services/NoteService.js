@@ -23,8 +23,10 @@ export default class NoteService {
     return axios.get(`${API_URL}/api/Notes/${noteId}`).then(r => r.data);
   }
 
-  static getAllNotes() {
-    return axios.get(`${API_URL}/api/Notes/search`).then(r => r.data);
+  static getAllNotes(sorter) {
+    return sorter
+      ? axios.get(`${API_URL}/api/Notes/search/${sorter}`).then(r => r.data)
+      : axios.get(`${API_URL}/api/Notes/search`).then(r => r.data);
   }
 
   static downloadRequest(noteId) {

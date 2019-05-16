@@ -14,6 +14,7 @@ namespace Projekcik.Api.Models
         public string Password { get; set; }
         public string PictureUrl { get; set; }
         public long? FacebookId { get; set; }
+        public decimal Balance { get; set; }
 
         public IList<Note> CreatedNotes { get; set; }
         public IList<UserNote> BoughtNotes { get; set; }
@@ -37,6 +38,11 @@ namespace Projekcik.Api.Models
 
             entity.Property(x => x.Password)
                 .HasMaxLength(256);
+
+            entity.Property(x => x.Balance)
+                 .HasColumnType("decimal(5,2)")
+                 .HasDefaultValue(0.0)
+                 .IsRequired();
 
             entity.Property(x => x.CreatedAt)
                 .HasDefaultValueSql("getdate()")
