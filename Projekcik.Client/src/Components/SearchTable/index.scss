@@ -1,12 +1,51 @@
 .toolbar-root {
+  padding-top: 0.5rem;
   padding-right: 1rem;
 
   .toolbar-title {
     padding-top: 5px;
     flex: 0 0 auto;
   }
+
   .toolbar-spacer {
     flex: 1 1 100%;
+  }
+}
+
+.note-grid-item {
+  height: 100%;
+}
+
+hr {
+  width: 95%;
+}
+
+.note-card {
+  background-color: #eeeeee !important;
+  height: 100%;
+
+
+  &:hover {
+    cursor: pointer;
+    background-color: #c5c5c5;
+  }
+
+  .note-image {
+    width: 200;
+    display: box;
+  }
+
+  .note-info {
+    display: box;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: stretch;
+    align-content: space-between;
+
+    .origin {
+      display: flex;
+    }
   }
 }
 
@@ -66,4 +105,50 @@
 
 .row {
   cursor: pointer;
+}
+
+.page-manipulator {
+  display: flex;
+
+  .page-number {
+    flex-basis: 70%;
+    padding: 0.2rem 2rem;
+  }
+
+  .label {
+    padding-right: 1em;
+    padding-top: 10px;
+  }
+
+  .pageSize {
+    align-content: flex-end;
+    margin-top: 3px;
+    width: 7%;
+  }
+}
+
+.page-link {
+  color: #3f51b5;
+  background-color: #eeeeee;
+  border-color: #8b97a1;
+}
+
+.page-item.active .page-link {
+  color: #fff;
+  border-color: #16288d;
+  background-color: #3f51b5;
+}
+
+.page-item.disabled .page-link {
+  color: #5c6268;
+  pointer-events: none;
+  cursor: auto;
+  border-color: #d5d7d8;
+}
+
+.page-link:hover {
+  color: #fff;
+  text-decoration: none;
+  border-color: #16288d;
+  background-color: #3f51b5;
 }

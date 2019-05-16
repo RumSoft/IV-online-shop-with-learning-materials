@@ -27,8 +27,7 @@ const routes = [
     component: RodoPage
   },
   {
-
-    path: '/results',
+    path: '/search',
     component: SearchPage
   },
   {

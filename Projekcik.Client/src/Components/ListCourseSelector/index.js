@@ -143,7 +143,7 @@ export default class ListCourseSelector extends Component {
           }>
           {item.imageUrl && (
             <div className="uniImage">
-              <img src={item.imageUrl} />
+              <img src={item.imageUrl} alt="" />
             </div>
           )}
           {item.name}
@@ -191,7 +191,7 @@ export default class ListCourseSelector extends Component {
             </DialogContentText>
 
             <Nav tabs>
-              <NavItem>
+              <NavItem className="nav-tab">
                 <NavLink
                   className={classnames({
                     active: this.state.activeTab === 1
@@ -202,7 +202,7 @@ export default class ListCourseSelector extends Component {
                   Województwo
                 </NavLink>
               </NavItem>
-              <NavItem>
+              <NavItem className="nav-tab">
                 <NavLink
                   className={classnames({
                     active: this.state.activeTab === 2
@@ -214,7 +214,7 @@ export default class ListCourseSelector extends Component {
                   Uczelnia
                 </NavLink>
               </NavItem>
-              <NavItem>
+              <NavItem className="nav-tab">
                 <NavLink
                   className={classnames({
                     active: this.state.activeTab === 3

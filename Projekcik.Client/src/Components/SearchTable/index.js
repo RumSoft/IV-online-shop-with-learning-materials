@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TablePagination,
-  TableRow,
+  CircularProgress,
   Paper,
   Collapse,
   Typography,
-  Button
+  Button,
+  Grid
 } from '@material-ui/core';
 import {
   Card,
@@ -18,218 +15,309 @@ import {
   InputGroup,
   InputGroupText,
   Label,
-  FormGroup
-  // Button
+  FormGroup,
+  Pagination,
+  PaginationItem,
+  PaginationLink
 } from 'reactstrap';
-import { Redirect, Link } from 'react-router-dom';
-import EnhancedTableHead from './TableHead';
+
 import EnhancedTableToolbar from './TableToolbar';
 import NoteService from '../../Services/NoteService';
+import queryString from 'query-string';
+import NoteCard from './NoteCard';
 import './index.scss';
 
 export default class NoteTable extends Component {
   constructor(props) {
     super(props);
-    let id = 0;
-    NoteService.getAllNotes().then(r => this.setState({ ...r, loaded: true }));
+    const urlParam = new URLSearchParams(window.location.search);
+    const query = urlParam.get('query');
+    if (query !== null) {
+      urlParam.set('noteName', `${query}`);
+      NoteService.getAllNotes(`?${urlParam.toString()}`).then(r => {
+        urlParam.delete('noteName');
+        this.setState({
+          ...r,
+          loaded: true,
+          q: urlParam.toString()
+        });
+      });
+    } else {
+      NoteService.getAllNotes(window.location.search).then(r =>
+        this.setState({ ...r, loaded: true })
+      );
+    }
     this.toolbarHandler = this.toolbarHandler.bind(this);
   }
   state = {
+    q: '',
     loaded: false,
     open: false,
-    pager: {},
+    page: null,
+    size: null,
     notes: [],
-    order: 'asc',
-    orderBy: 'price'
+
+    noteData: {
+      noteName: '',
+      voivodeship: '',
+      university: '',
+      course: '',
+      SortOrder: '',
+      SortBy: ''
+    }
   };
 
   toolbarHandler = data => {
-    this.setState({ clicked: data.clicked, loaded: true });
+    data.clicked === this.state.open
+      ? this.setState(
+          {
+            noteData: {
+              ...this.state.noteData,
+              SortBy: data.sortBy,
+              SortOrder: data.sortOrder
+            }
+          },
+          () => this.handleQuery()
+        )
+      : this.setState({ open: data.clicked });
   };
 
-  handleRequestSort = (event, property) => {
-    const orderBy = property;
-    let order = 'desc';
+  handleQuery = () => {
+    var queryObject = queryString.parse(this.props.query);
+    if (this.state.page) queryObject.page = this.state.page;
+    if (this.state.size) queryObject.size = this.state.size;
+    if (this.state.noteData.SortOrder)
+      queryObject.SortOrder = this.state.noteData.SortOrder;
+    if (this.state.noteData.SortBy)
+      queryObject.SortBy = this.state.noteData.SortBy;
 
-    if (this.state.orderBy === property && this.state.order === 'desc') {
-      order = 'asc';
-    }
+    let query = queryString.stringify(queryObject);
+    window.history.pushState(null, null, `/search?${query}`);
 
-    this.setState({ order, orderBy });
+    this.setState({ loaded: false }, () =>
+      NoteService.getAllNotes(window.location.search).then(r =>
+        this.setState({ ...r, loaded: true })
+      )
+    );
   };
 
-  handleClick = (event, id) => {
-    console.log('Clicked row no.' + id);
+  handleChange = event => {
+    this.setState({
+      noteData: {
+        ...this.state.noteData,
+        [event.target.id]: event.target.value
+      }
+    });
   };
 
-  handleChangePage = (event, page) => {
-    this.setState({ page });
+  changePageTo(p) {
+    this.setState(
+      {
+        page: p
+      },
+      () => this.handleQuery()
+    );
+  }
+
+  handlePageCount = event => {
+    this.setState(
+      {
+        size: event.target.value
+      },
+      () => this.handleQuery()
+    );
   };
 
-  handleChangeRowsPerPage = event => {
-    this.setState({ rowsPerPage: event.target.value });
-  };
+  renderPagination() {
+    const pageSizes = [6, 12, 18, 24];
+    const { pager, page } = this.state;
+    return (
+      <div className="page-manipulator">
+        <Pagination className="page-number">
+          <PaginationItem className="page-item" disabled={page <= 1}>
+            <PaginationLink
+              previous
+              onClick={() => this.changePageTo(Math.max(page - 1, 1))}
+            />
+          </PaginationItem>
 
-  redirectToNote(id) {
-    this.setState({ redirect: `/note/${id}` });
+          {[...Array(pager.pages)].map((x, i) => (
+            <PaginationItem
+              key={i}
+              className="page-item"
+              active={page === i + 1}>
+              <PaginationLink
+                id={i + 1}
+                onClick={() => this.changePageTo(i + 1)}>
+                {i + 1}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
+
+          <PaginationItem className="page-item" disabled={page >= pager.pages}>
+            <PaginationLink
+              next
+              onClick={() => this.changePageTo(Math.min(page + 1, pager.pages))}
+            />
+          </PaginationItem>
+        </Pagination>
+        <Label for="size" className="label">
+          Ilość wyników na stronę
+        </Label>
+        <Input
+          type="select"
+          className="pageSize"
+          id="size"
+          defaultValue={10}
+          onChange={this.handlePageCount}>
+          {pageSizes.map((x, i) => (
+            <option value={x} key={i}>
+              {x}
+            </option>
+          ))}
+        </Input>
+      </div>
+    );
+  }
+
+  renderFilters() {
+    const { open } = this.state;
+    return (
+      <Collapse in={open}>
+        <Card className="filter-list">
+          <CardBody>
+            <Typography className="filter-header" variant="h6">
+              Parametry wyszukiwania
+              <Typography variant="caption">
+                Wybierz kryteria, na podstawie których chcesz wyszukać notatkę.
+              </Typography>
+            </Typography>
+            <hr />
+            <div className="grid-container">
+              <div className="filter-left ">
+                <Label for="voivodeship">Województwo</Label>
+                <InputGroup className="filter-field">
+                  <InputGroupAddon addonType="prepend">
+                    <InputGroupText>
+                      <Input addon type="checkbox" />
+                    </InputGroupText>
+                  </InputGroupAddon>
+                  <Input
+                    id="voivodeship"
+                    placeholder="Województwo"
+                    onChange={this.handleChange}
+                  />
+                </InputGroup>
+
+                <Label for="university">Uczelnia</Label>
+                <InputGroup className="filter-field">
+                  <InputGroupAddon addonType="prepend">
+                    <InputGroupText>
+                      <Input addon type="checkbox" />
+                    </InputGroupText>
+                  </InputGroupAddon>
+                  <Input
+                    id="university"
+                    placeholder="Uczelnia"
+                    onChange={this.handleChange}
+                  />
+                </InputGroup>
+
+                <Label for="course">Kierunek</Label>
+                <InputGroup className="filter-field">
+                  <InputGroupAddon addonType="prepend">
+                    <InputGroupText>
+                      <Input addon type="checkbox" />
+                    </InputGroupText>
+                  </InputGroupAddon>
+                  <Input
+                    id="course"
+                    placeholder="Kierunek"
+                    onChange={this.handleChange}
+                  />
+                </InputGroup>
+              </div>
+
+              <div className="filter-rest">
+                <Label for="price-input">Cena</Label>
+                <InputGroup className="filter-field rest">
+                  <InputGroupAddon addonType="prepend">
+                    <InputGroupText>
+                      <Input addon type="checkbox" />
+                    </InputGroupText>
+                  </InputGroupAddon>
+                  <Input
+                    id="price-input"
+                    placeholder="Od"
+                    onChange={this.handleChange}
+                  />
+                  <InputGroupAddon className="mr-3" addonType="append">
+                    PLN
+                  </InputGroupAddon>
+                  <InputGroupAddon addonType="prepend">
+                    <InputGroupText>
+                      <Input addon type="checkbox" />
+                    </InputGroupText>
+                  </InputGroupAddon>
+                  <Input placeholder="Do" onChange={this.handleChange} />
+                  <InputGroupAddon addonType="append">PLN</InputGroupAddon>
+                </InputGroup>
+
+                <FormGroup className="filter-field rest">
+                  <Label for="date-submitted">Data dodania notatki</Label>
+                  <Input
+                    type="date"
+                    id="date-submitted"
+                    placeholder="date placeholder"
+                  />
+                </FormGroup>
+                <FormGroup className="filter-field rest">
+                  <Label for="author-input">Autor notatki</Label>
+                  <Input
+                    id="author-input"
+                    placeholder="Imię, nazwisko lub nazwa użytkownika"
+                    onChange={this.handleChange}
+                  />
+                </FormGroup>
+              </div>
+            </div>
+            <Button
+              variant="outlined"
+              className="button"
+              onClick={this.handleQuery}
+              style={{ marginTop: '20px' }}>
+              Szukaj
+            </Button>
+          </CardBody>
+        </Card>
+      </Collapse>
+    );
   }
 
   render() {
-    const { open, loaded, order, orderBy, pager, notes } = this.state;
-
-    if (this.state.redirect) return <Redirect to={this.state.redirect} />;
-
+    const { loaded, notes, pager } = this.state;
     return (
-      <Paper className="root">
-        <EnhancedTableToolbar filterData={this.toolbarHandler} />
-
-        <Collapse in={open}>
-          <Card className="filter-list">
-            <CardBody>
-              <Typography className="filter-header" variant="h6">
-                Parametry wyszukiwania
-                <Typography variant="caption">
-                  Wybierz kryteria, na podstawie których chcesz wyszukać
-                  notatkę.
-                </Typography>
-              </Typography>
-              <hr />
-              <div className="grid-container">
-                <div className="filter-left ">
-                  <Label for="voi">Województwo</Label>
-                  <InputGroup className="filter-field">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <Input addon type="checkbox" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input id="voi" placeholder="Województwo" />
-                  </InputGroup>
-
-                  <Label for="uni">Uczelnia</Label>
-                  <InputGroup className="filter-field">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <Input addon type="checkbox" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input id="uni" placeholder="Uczelnia" />
-                  </InputGroup>
-
-                  <Label for="course">Kierunek</Label>
-                  <InputGroup className="filter-field">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <Input addon type="checkbox" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input id="course" placeholder="Kierunek" />
-                  </InputGroup>
-                </div>
-
-                <div className="filter-rest">
-                  <Label for="price-input">Cena</Label>
-                  <InputGroup className="filter-field rest">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <Input addon type="checkbox" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input id="price-input" placeholder="Od" />
-                    <InputGroupAddon className="mr-3" addonType="append">
-                      PLN
-                    </InputGroupAddon>
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <Input addon type="checkbox" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input placeholder="Do" />
-                    <InputGroupAddon addonType="append">PLN</InputGroupAddon>
-                  </InputGroup>
-
-                  <FormGroup className="filter-field rest">
-                    <Label for="date-submitted">Data dodania notatki</Label>
-                    <Input
-                      type="date"
-                      id="date-submitted"
-                      placeholder="date placeholder"
-                    />
-                  </FormGroup>
-                  <FormGroup className="filter-field rest">
-                    <Label for="author-input">Autor notatki</Label>
-                    <Input
-                      id="author-input"
-                      placeholder="Imię, nazwisko lub nazwa użytkownika"
-                    />
-                  </FormGroup>
-                </div>
-              </div>
-              <Button
-                variant="outlined"
-                className="button"
-                style={{ marginTop: '20px' }}>
-                Szukaj
-              </Button>
-            </CardBody>
-          </Card>
-        </Collapse>
-
-        <div className="tableWrapper">
-          <Table className="table" aria-labelledby="tableTitle">
-            <EnhancedTableHead
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={this.handleRequestSort}
-              rowCount={notes.count}
-            />
-            <TableBody>
-              {loaded &&
-                notes.map((n, i) => (
-                  <TableRow
-                    className="row"
-                    hover
-                    onClick={() => this.redirectToNote(n.id)}
-                    tabIndex={-1}
-                    key={i}>
-                    <TableCell
-                      className="note-name"
-                      component="th"
-                      scope="row"
-                      padding="default">
-                      {n.name}
-                    </TableCell>
-                    <TableCell align="right">{n.price} zł</TableCell>
-                    <TableCell align="right">{n.voivodeship.name}</TableCell>
-                    <TableCell align="right">{n.university.name}</TableCell>
-                    <TableCell align="right">{n.course.name}</TableCell>
-                    <TableCell align="right">{n.semester}</TableCell>
-                    <TableCell align="right">{n.author.name}</TableCell>
-                    {/* </Link> */}
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </div>
-        {loaded && (
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={pager.count}
-            rowsPerPage={pager.size}
-            labelRowsPerPage="Ilość wyników na stronę:"
-            page={pager.page - 1}
-            backIconButtonProps={{
-              'aria-label': 'Poprzednia Strona'
-            }}
-            nextIconButtonProps={{
-              'aria-label': 'Następna Strona'
-            }}
-            onChangePage={this.handleChangePage}
-            onChangeRowsPerPage={this.handleChangeRowsPerPage}
-          />
-        )}
-      </Paper>
+      <div>
+        <Paper className="root">
+          <EnhancedTableToolbar filterData={this.toolbarHandler} />
+          {this.renderFilters()}
+          <hr />
+          {pager && pager.pages && this.renderPagination()}
+          {loaded ? (
+            <Grid container spacing={16}>
+              {notes.map((note, i) => (
+                <NoteCard note={note} key={i} />
+              ))}
+            </Grid>
+          ) : (
+            <div className="text-center">
+              <CircularProgress />
+            </div>
+          )}
+          <hr />
+          {pager && pager.pages && this.renderPagination()}
+        </Paper>
+      </div>
     );
   }
 }
