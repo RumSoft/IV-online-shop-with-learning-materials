@@ -261,3 +261,4 @@ __pycache__/
 *.pyc
 .vscode/extensions.json
 
+Projekcik.Client/src/.vscode/launch.json

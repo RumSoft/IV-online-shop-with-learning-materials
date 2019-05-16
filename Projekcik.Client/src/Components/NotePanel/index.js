@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import {
   Card,
@@ -107,12 +109,14 @@ export default class NotePanel extends Component {
                       </Button>
                       <div className="note-author">
                         <HrLabel text="Autor" />
-                        <span className="author-name mx-auto">
-                          {note.author.name}
-                        </span>
-                        <div className="author-image">
-                          <img src="http://placekitten.com/g/50/50" />
-                        </div>
+                        <Link to={`/user/${note.author.id}`}>
+                          <span className="author-name mx-auto">
+                            {note.author.name}
+                          </span>
+                          <div className="author-image">
+                            <img src="http://placekitten.com/g/50/50" />
+                          </div>
+                        </Link>
                       </div>
                       <div className="docinfo-full card-row">
                         <HrLabel text="Informacje" />
