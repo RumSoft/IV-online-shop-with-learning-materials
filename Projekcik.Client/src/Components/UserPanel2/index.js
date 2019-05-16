@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import UserService from '../../Services/UserService';
 import NoteService from '../../Services/NoteService';
-import { 
-  Card,
-  Grid,
-  TextField,
-  Stepper,
-  Step,
-  StepLabel,
-  Paper,
-  Typography} from '@material-ui/core';
+import { Card, Grid, Paper, Typography } from '@material-ui/core';
 import ReactPlaceholder from 'react-placeholder';
 import NotePanelPlaceholder from '../NotePanel/NotePanelPlaceholder';
 
@@ -17,32 +10,20 @@ export default class UserPanel2 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      note: [],
+      notes: [],
       filtered: [],
       loaded: false
     };
-
-    NoteService.getUserNotes(this.props.id).then(r => {
-      this.setState({ note: r, loaded: true });
-    });
-
-    UserService.getUser(this.props.id).then(data => {
-      this.setState({ user: data, loaded: true });
-    });
-
-    //UserService.getUser(this.props.id).then(r => console.log(r));
-    //NoteService.getUserNotes(this.props.id).then(r => console.log(r));
-
+    UserService.getUser(this.props.id).then(data =>
+      this.setState({ user: data, loaded: true }, () =>
+        NoteService.getUserNotes(this.props.id).then(r =>
+          this.setState({ notes: r })
+        )
+      )
+    );
   }
-  filterList = updatedList => {
-    return (updatedList = updatedList.filter(
-      item =>
-        item.name
-          .search(this.state.filterText.toLowerCase()) !== -1
-    ));
-  };
   render() {
-    const note = this.state.note;
+    const notes = this.state.notes;
     const user = this.state.user;
     return (
       <div>
@@ -50,55 +31,45 @@ export default class UserPanel2 extends Component {
           ready={this.state.loaded}
           customPlaceholder={<NotePanelPlaceholder />}>
           {this.state.loaded && (
-            <Typography
-              component="h1"
-              className="title mx-auto"
-              variant="h4"
-              align="center"
-              color="textPrimary"
-              gutterBottom>
-              Witaj, {user.userName}
-              <img src={user.pictureUrl} alt="UserPicture" />
-            </Typography>
+            <Card className="p-3 p-sx-0">
+              <Typography
+                component="h1"
+                className="title"
+                variant="h4"
+                color="textPrimary"
+                gutterBottom>
+                Profil użytkownika {user.userName}{' '}
+              </Typography>
+              <img
+                src={user.pictureUrl || 'http://placekitten.com/50/50'}
+                alt="UserPicture"
+              />
+            </Card>
           )}
-          <Card className="main">
-            <Typography
-              className="mx-auto"
-              align="center"
-              color="textSecondary"
-              paragraph>
-              <br />
-              lorem ipsum twoja staralorem ipsum twoja staralorem ipsum twoja
-              staralorem ipsum twoja staralorem ipsum twoja staralorem ipsum
-              twoja staralorem ipsum twoja staralorem ipsum twoja staralorem
-              ipsum twoja staralorem ipsum twoja staralorem ipsum twoja staraa
-              <hr />
-              Przeglądaj swoje notatki:
-              <br />
+          <br />
+          {notes && notes.length && (
+            <Card className="main p-3">
               <Grid
-            className="grid"
-            container
-            spacing={8}
-            direction="row"
-            justify="center"
-            alignItems="stretch">
-            {this.filterList(note)
-              .map((x, i) => (
-                <Grid
-                  item
-                  xs={3}
-                  key={i}
-                  className="grid-item"
-                  onClick={() => x.wpuscByZaruchac}>
-                  <Paper className="paper p-md-3 p-1" elevation={3}>
-                    {x.noteCount <= 0 && <div className="disabled" />}
-                    <div>{x.name}</div>
-                  </Paper>
-                </Grid>
-              ))}
-        </Grid>
-            </Typography>
-          </Card>
+                className="grid"
+                container
+                spacing={8}
+                direction="row"
+                justify="flex-start"
+                alignContent="flex-start"
+                alignItems="baseline">
+                {notes.map((x, i) => (
+                  <Grid item sm={3} key={i} className="grid-item">
+                    <Link to={`/note/${x.id}`}>
+                      <Paper className="paper p-md-3 p-1" elevation={3}>
+                        {x.noteCount <= 0 && <div className="disabled" />}
+                        <div>{x.title}</div>
+                      </Paper>
+                    </Link>
+                  </Grid>
+                ))}
+              </Grid>
+            </Card>
+          )}
         </ReactPlaceholder>
       </div>
     );
