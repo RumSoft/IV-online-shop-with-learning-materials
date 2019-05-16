@@ -113,14 +113,6 @@ export default class NotePanel extends Component {
                         <Link to={`/user/${note.author.id}`}>
                           <span className="author-name mx-auto">
                             {note.author.name}
-
-                            {/*
-                          <Link
-                            to={`/note/${note.id}`}
-                            activeClassName="active">
-                            {note.author.name}
-                          </Link>
-                         */}
                           </span>
                           <div className="author-image">
                             <img src="http://placekitten.com/g/50/50" />

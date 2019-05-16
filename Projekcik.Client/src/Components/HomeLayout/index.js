@@ -66,7 +66,9 @@ export default class HomeLayout extends Component {
                 .filter(x => x)
                 .join(', ')}
             </p>
-            <a href="https://projekcik-prz.azurewebsites.net/results"> pokaż więcej </a>
+            <a href="https://projekcik-prz.azurewebsites.net/search">
+              pokaż więcej
+            </a>
           </Card>
           <footer className="footer">
             <h6 className="footer-item">Stopka</h6>
