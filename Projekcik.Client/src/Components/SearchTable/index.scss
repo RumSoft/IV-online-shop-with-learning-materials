@@ -6,17 +6,25 @@
     padding-top: 5px;
     flex: 0 0 auto;
   }
+
   .toolbar-spacer {
     flex: 1 1 100%;
   }
 }
+
+.note-grid-item {
+  height: 100%;
+}
+
 hr {
   width: 95%;
 }
 
 .note-card {
-  background-color: #eeeeee;
-  display: flex;
+  background-color: #eeeeee !important;
+  height: 100%;
+
+
   &:hover {
     cursor: pointer;
     background-color: #c5c5c5;
@@ -24,10 +32,11 @@ hr {
 
   .note-image {
     width: 200;
-    display: flex;
+    display: box;
   }
+
   .note-info {
-    display: flex;
+    display: box;
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -100,6 +109,7 @@ hr {
 
 .page-manipulator {
   display: flex;
+
   .page-number {
     flex-basis: 70%;
     padding: 0.2rem 2rem;
@@ -116,6 +126,7 @@ hr {
     width: 7%;
   }
 }
+
 .page-link {
   color: #3f51b5;
   background-color: #eeeeee;
@@ -127,6 +138,7 @@ hr {
   border-color: #16288d;
   background-color: #3f51b5;
 }
+
 .page-item.disabled .page-link {
   color: #5c6268;
   pointer-events: none;

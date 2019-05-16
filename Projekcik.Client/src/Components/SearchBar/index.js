@@ -17,7 +17,7 @@ export class SearchBar extends Component {
       <Redirect
         push
         to={{
-          pathname: '/results',
+          pathname: '/search',
           search: window.location.search
         }}
       />
@@ -34,18 +34,15 @@ export class SearchBar extends Component {
         className="form-inline container mobile"
         onSubmit={this.setRedirect}>
         {this.renderRedirect()}
-
         <input
           name="query"
           className="form-control mr-sm-2 item mobile"
           type="search"
-          placeholder="Wyszukaj notatki..."
+          placeholder="Wyszukaj notatkę..."
           onChange={this.handleChange}
           value={this.state.query}
         />
-        <button className="btn btn-light " disabled={this.state.query === ''}>
-          Szukaj
-        </button>
+        <button className="btn btn-light ">Szukaj</button>
       </form>
     );
   }

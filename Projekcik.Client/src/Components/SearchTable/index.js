@@ -4,7 +4,8 @@ import {
   Paper,
   Collapse,
   Typography,
-  Button
+  Button,
+  Grid
 } from '@material-ui/core';
 import {
   Card,
@@ -19,11 +20,11 @@ import {
   PaginationItem,
   PaginationLink
 } from 'reactstrap';
-import { Redirect } from 'react-router-dom';
+
 import EnhancedTableToolbar from './TableToolbar';
 import NoteService from '../../Services/NoteService';
 import queryString from 'query-string';
-
+import NoteCard from './NoteCard';
 import './index.scss';
 
 export default class NoteTable extends Component {
@@ -82,25 +83,17 @@ export default class NoteTable extends Component {
   };
 
   handleQuery = () => {
-    const queryObject = {
-      ...this.state.noteData
-    };
-    queryObject.page = this.state.page;
-    queryObject.size = this.state.size;
+    var queryObject = queryString.parse(this.props.query);
+    if (this.state.page) queryObject.page = this.state.page;
+    if (this.state.size) queryObject.size = this.state.size;
+    if (this.state.noteData.SortOrder)
+      queryObject.SortOrder = this.state.noteData.SortOrder;
+    if (this.state.noteData.SortBy)
+      queryObject.SortBy = this.state.noteData.SortBy;
 
-    for (var prop in queryObject) {
-      if (queryObject[prop] === null || queryObject[prop] === '') {
-        delete queryObject[prop];
-      }
-    }
-    console.log(queryObject);
     let query = queryString.stringify(queryObject);
-    console.log(query);
-    window.history.pushState(
-      window.location.pathname,
-      null,
-      window.location.pathname + '?' + this.state.q + '&' + query
-    );
+    window.history.pushState(null, null, `/search?${query}`);
+
     this.setState({ loaded: false }, () =>
       NoteService.getAllNotes(window.location.search).then(r =>
         this.setState({ ...r, loaded: true })
@@ -117,14 +110,14 @@ export default class NoteTable extends Component {
     });
   };
 
-  handlePageChange = event => {
+  changePageTo(p) {
     this.setState(
       {
-        page: event.target.id
+        page: p
       },
       () => this.handleQuery()
     );
-  };
+  }
 
   handlePageCount = event => {
     this.setState(
@@ -135,278 +128,194 @@ export default class NoteTable extends Component {
     );
   };
 
-  redirectToNote = id => {
-    this.setState({ redirect: `/note/${id}` });
-  };
+  renderPagination() {
+    const pageSizes = [6, 12, 18, 24];
+    const { pager, page } = this.state;
+    return (
+      <div className="page-manipulator">
+        <Pagination className="page-number">
+          <PaginationItem className="page-item" disabled={page <= 1}>
+            <PaginationLink
+              previous
+              onClick={() => this.changePageTo(Math.max(page - 1, 1))}
+            />
+          </PaginationItem>
+
+          {[...Array(pager.pages)].map((x, i) => (
+            <PaginationItem
+              key={i}
+              className="page-item"
+              active={page === i + 1}>
+              <PaginationLink
+                id={i + 1}
+                onClick={() => this.changePageTo(i + 1)}>
+                {i + 1}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
+
+          <PaginationItem className="page-item" disabled={page >= pager.pages}>
+            <PaginationLink
+              next
+              onClick={() => this.changePageTo(Math.min(page + 1, pager.pages))}
+            />
+          </PaginationItem>
+        </Pagination>
+        <Label for="size" className="label">
+          Ilość wyników na stronę
+        </Label>
+        <Input
+          type="select"
+          className="pageSize"
+          id="size"
+          defaultValue={10}
+          onChange={this.handlePageCount}>
+          {pageSizes.map((x, i) => (
+            <option value={x} key={i}>
+              {x}
+            </option>
+          ))}
+        </Input>
+      </div>
+    );
+  }
+
+  renderFilters() {
+    const { open } = this.state;
+    return (
+      <Collapse in={open}>
+        <Card className="filter-list">
+          <CardBody>
+            <Typography className="filter-header" variant="h6">
+              Parametry wyszukiwania
+              <Typography variant="caption">
+                Wybierz kryteria, na podstawie których chcesz wyszukać notatkę.
+              </Typography>
+            </Typography>
+            <hr />
+            <div className="grid-container">
+              <div className="filter-left ">
+                <Label for="voivodeship">Województwo</Label>
+                <InputGroup className="filter-field">
+                  <InputGroupAddon addonType="prepend">
+                    <InputGroupText>
+                      <Input addon type="checkbox" />
+                    </InputGroupText>
+                  </InputGroupAddon>
+                  <Input
+                    id="voivodeship"
+                    placeholder="Województwo"
+                    onChange={this.handleChange}
+                  />
+                </InputGroup>
+
+                <Label for="university">Uczelnia</Label>
+                <InputGroup className="filter-field">
+                  <InputGroupAddon addonType="prepend">
+                    <InputGroupText>
+                      <Input addon type="checkbox" />
+                    </InputGroupText>
+                  </InputGroupAddon>
+                  <Input
+                    id="university"
+                    placeholder="Uczelnia"
+                    onChange={this.handleChange}
+                  />
+                </InputGroup>
+
+                <Label for="course">Kierunek</Label>
+                <InputGroup className="filter-field">
+                  <InputGroupAddon addonType="prepend">
+                    <InputGroupText>
+                      <Input addon type="checkbox" />
+                    </InputGroupText>
+                  </InputGroupAddon>
+                  <Input
+                    id="course"
+                    placeholder="Kierunek"
+                    onChange={this.handleChange}
+                  />
+                </InputGroup>
+              </div>
+
+              <div className="filter-rest">
+                <Label for="price-input">Cena</Label>
+                <InputGroup className="filter-field rest">
+                  <InputGroupAddon addonType="prepend">
+                    <InputGroupText>
+                      <Input addon type="checkbox" />
+                    </InputGroupText>
+                  </InputGroupAddon>
+                  <Input
+                    id="price-input"
+                    placeholder="Od"
+                    onChange={this.handleChange}
+                  />
+                  <InputGroupAddon className="mr-3" addonType="append">
+                    PLN
+                  </InputGroupAddon>
+                  <InputGroupAddon addonType="prepend">
+                    <InputGroupText>
+                      <Input addon type="checkbox" />
+                    </InputGroupText>
+                  </InputGroupAddon>
+                  <Input placeholder="Do" onChange={this.handleChange} />
+                  <InputGroupAddon addonType="append">PLN</InputGroupAddon>
+                </InputGroup>
+
+                <FormGroup className="filter-field rest">
+                  <Label for="date-submitted">Data dodania notatki</Label>
+                  <Input
+                    type="date"
+                    id="date-submitted"
+                    placeholder="date placeholder"
+                  />
+                </FormGroup>
+                <FormGroup className="filter-field rest">
+                  <Label for="author-input">Autor notatki</Label>
+                  <Input
+                    id="author-input"
+                    placeholder="Imię, nazwisko lub nazwa użytkownika"
+                    onChange={this.handleChange}
+                  />
+                </FormGroup>
+              </div>
+            </div>
+            <Button
+              variant="outlined"
+              className="button"
+              onClick={this.handleQuery}
+              style={{ marginTop: '20px' }}>
+              Szukaj
+            </Button>
+          </CardBody>
+        </Card>
+      </Collapse>
+    );
+  }
 
   render() {
-    const { open, loaded, notes } = this.state;
-
-    if (this.state.redirect) return <Redirect to={this.state.redirect} />;
-
+    const { loaded, notes, pager } = this.state;
     return (
       <div>
         <Paper className="root">
           <EnhancedTableToolbar filterData={this.toolbarHandler} />
-
-          <Collapse in={open}>
-            <Card className="filter-list">
-              <CardBody>
-                <Typography className="filter-header" variant="h6">
-                  Parametry wyszukiwania
-                  <Typography variant="caption">
-                    Wybierz kryteria, na podstawie których chcesz wyszukać
-                    notatkę.
-                  </Typography>
-                </Typography>
-                <hr />
-                <div className="grid-container">
-                  <div className="filter-left ">
-                    <Label for="voivodeship">Województwo</Label>
-                    <InputGroup className="filter-field">
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <Input addon type="checkbox" />
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input
-                        id="voivodeship"
-                        placeholder="Województwo"
-                        onChange={this.handleChange}
-                      />
-                    </InputGroup>
-
-                    <Label for="university">Uczelnia</Label>
-                    <InputGroup className="filter-field">
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <Input addon type="checkbox" />
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input
-                        id="university"
-                        placeholder="Uczelnia"
-                        onChange={this.handleChange}
-                      />
-                    </InputGroup>
-
-                    <Label for="course">Kierunek</Label>
-                    <InputGroup className="filter-field">
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <Input addon type="checkbox" />
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input
-                        id="course"
-                        placeholder="Kierunek"
-                        onChange={this.handleChange}
-                      />
-                    </InputGroup>
-                  </div>
-
-                  <div className="filter-rest">
-                    <Label for="price-input">Cena</Label>
-                    <InputGroup className="filter-field rest">
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <Input addon type="checkbox" />
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input
-                        id="price-input"
-                        placeholder="Od"
-                        onChange={this.handleChange}
-                      />
-                      <InputGroupAddon className="mr-3" addonType="append">
-                        PLN
-                      </InputGroupAddon>
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <Input addon type="checkbox" />
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input placeholder="Do" onChange={this.handleChange} />
-                      <InputGroupAddon addonType="append">PLN</InputGroupAddon>
-                    </InputGroup>
-
-                    <FormGroup className="filter-field rest">
-                      <Label for="date-submitted">Data dodania notatki</Label>
-                      <Input
-                        type="date"
-                        id="date-submitted"
-                        placeholder="date placeholder"
-                      />
-                    </FormGroup>
-                    <FormGroup className="filter-field rest">
-                      <Label for="author-input">Autor notatki</Label>
-                      <Input
-                        id="author-input"
-                        placeholder="Imię, nazwisko lub nazwa użytkownika"
-                        onChange={this.handleChange}
-                      />
-                    </FormGroup>
-                  </div>
-                </div>
-                <Button
-                  variant="outlined"
-                  className="button"
-                  onClick={this.handleQuery}
-                  style={{ marginTop: '20px' }}>
-                  Szukaj
-                </Button>
-              </CardBody>
-            </Card>
-          </Collapse>
+          {this.renderFilters()}
           <hr />
-          <div />
-          <div className="page-manipulator">
-            <Pagination className="page-number">
-              <PaginationItem disabled className="page-item">
-                <PaginationLink previous />
-              </PaginationItem>
-              <PaginationItem
-                className="page-item"
-                active={this.state.page === 1}>
-                <PaginationLink id={1} onClick={this.handlePageChange}>
-                  1
-                </PaginationLink>
-              </PaginationItem>
-              <PaginationItem
-                className="page-item"
-                active={this.state.page === 2}>
-                <PaginationLink id={2} onClick={this.handlePageChange}>
-                  2
-                </PaginationLink>
-              </PaginationItem>
-              <PaginationItem
-                className="page-item"
-                active={this.state.page === 3}>
-                <PaginationLink id={3} onClick={this.handlePageChange}>
-                  3
-                </PaginationLink>
-              </PaginationItem>
-              <PaginationItem
-                className="page-item"
-                active={this.state.page === 4}>
-                <PaginationLink id={4} onClick={this.handlePageChange}>
-                  4
-                </PaginationLink>
-              </PaginationItem>
-              <PaginationItem className="page-item">
-                <PaginationLink next />
-              </PaginationItem>
-            </Pagination>
-            <Label for="size" className="label">
-              Ilość wyników na stronę
-            </Label>
-            <Input
-              type="select"
-              className="pageSize"
-              id="size"
-              defaultValue={10}
-              onChange={this.handlePageCount}>
-              <option value={5}>5</option>
-              <option value={10}>10</option>
-              <option value={15}>15</option>
-              <option value={20}>20</option>
-            </Input>
-          </div>
+          {pager && pager.pages && this.renderPagination()}
           {loaded ? (
-            notes.map((note, i) => (
-              <Card
-                tag="a"
-                id={i}
-                className="note-card p-2 m-2"
-                onClick={() => this.redirectToNote(note.id)}>
-                <div className="note-image">
-                  <img
-                    className="p-2 m-2"
-                    style={{
-                      width: 128,
-                      height: 128
-                    }}
-                    src="http://placekitten.com/g/400/400"
-                    alt="notePreview"
-                  />
-                  <h5>{note.name}</h5>
-                  <dl>
-                    <Typography>
-                      Województwo: {note.voivodeship.name}
-                    </Typography>
-                    <Typography />
-                    <Typography>
-                      Uczelnia: {note.university.name}
-                    </Typography>{' '}
-                    <Typography />
-                    <Typography>Kierunek: {note.course.name}</Typography>{' '}
-                    <Typography />
-                  </dl>
-                </div>
-                <div className="origin" />
-              </Card>
-            ))
+            <Grid container spacing={16}>
+              {notes.map((note, i) => (
+                <NoteCard note={note} key={i} />
+              ))}
+            </Grid>
           ) : (
             <div className="text-center">
               <CircularProgress />
             </div>
           )}
           <hr />
-          <div className="page-manipulator">
-            <Pagination
-              aria-label="Page navigation example"
-              className="page-number">
-              <PaginationItem disabled>
-                <PaginationLink previous href="#" />
-              </PaginationItem>
-              <PaginationItem
-                className="page-item"
-                active={this.state.page === 1}>
-                <PaginationLink id={1} onClick={this.handlePageChange}>
-                  1
-                </PaginationLink>
-              </PaginationItem>
-              <PaginationItem
-                className="page-item"
-                active={this.state.page === 2}>
-                <PaginationLink id={2} onClick={this.handlePageChange}>
-                  2
-                </PaginationLink>
-              </PaginationItem>
-              <PaginationItem
-                className="page-item"
-                active={this.state.page === 3}>
-                <PaginationLink id={3} onClick={this.handlePageChange}>
-                  3
-                </PaginationLink>
-              </PaginationItem>
-              <PaginationItem
-                className="page-item"
-                active={this.state.page === 4}>
-                <PaginationLink id={4} onClick={this.handlePageChange}>
-                  4
-                </PaginationLink>
-              </PaginationItem>
-
-              <PaginationItem>
-                <PaginationLink next />
-              </PaginationItem>
-            </Pagination>
-            <Label for="size" className="label">
-              Ilość wyników na stronę
-            </Label>
-            <Input
-              type="select"
-              className="pageSize"
-              id="size"
-              defaultValue={10}
-              onChange={this.handlePage}>
-              <option value={5}>5</option>
-              <option value={10}>10</option>
-              <option value={15}>15</option>
-              <option value={20}>20</option>
-            </Input>
-          </div>
+          {pager && pager.pages && this.renderPagination()}
         </Paper>
       </div>
     );

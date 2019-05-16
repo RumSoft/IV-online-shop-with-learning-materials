@@ -3,7 +3,7 @@ import NoteTable from '../../Components/SearchTable';
 
 export class SearchPage extends Component {
   render() {
-    return <NoteTable />;
+    return <NoteTable query={this.props.location.search} />;
   }
 }
 
