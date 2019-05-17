@@ -8,6 +8,7 @@ import RodoPage from './Pages/Rodo';
 import UploadPage from './Pages/Upload';
 import SearchPage from './Pages/Search';
 import NotePage from './Pages/Note';
+import CartPage from './Pages/Cart';
 
 const routes = [
   {
@@ -38,6 +39,10 @@ const routes = [
   {
     path: '/User/:id',
     component: UserPage2
+  },
+  {
+    path: '/cart',
+    component: CartPage
   }
 ];
 
