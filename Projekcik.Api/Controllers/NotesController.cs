@@ -263,6 +263,17 @@ namespace Projekcik.Api.Controllers
             var notes = input?.Select(x => _noteService.GetNoteById(x)).Where(x => x != null).ToArray() ?? new Note[0];
             if (!notes.Any())
                 return BadRequest();
+            var result = notes.Select(x => new
+            {
+                x.Id,
+                x.Name,
+                x.AuthorId,
+                x.Author.UserName,
+                x.Price,
+                x.Description
+            });
+
+            return Ok(result);
         }
     }
 }
