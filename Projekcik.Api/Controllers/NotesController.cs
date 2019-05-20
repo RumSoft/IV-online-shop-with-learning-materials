@@ -256,7 +256,7 @@ namespace Projekcik.Api.Controllers
             });
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpPost("")]
         public IActionResult ListNotes([FromBody] Guid[] input)
         {
