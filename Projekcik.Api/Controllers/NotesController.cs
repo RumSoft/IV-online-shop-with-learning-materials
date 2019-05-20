@@ -267,8 +267,11 @@ namespace Projekcik.Api.Controllers
             {
                 x.Id,
                 x.Name,
-                x.AuthorId,
-                x.Author.UserName,
+                Author = new
+                {
+                    Id = x.AuthorId,
+                    Name = x.Author.UserName,
+                },
                 x.Price,
                 x.Description
             });
