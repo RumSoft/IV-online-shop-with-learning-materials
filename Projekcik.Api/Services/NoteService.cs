@@ -22,7 +22,7 @@ namespace Projekcik.Api.Services
                 .Include(x => x.Course)
                 .ThenInclude(x => x.University)
                 .ThenInclude(x => x.Voivodeship)
-                .First(x => x.Id == id);
+                .FirstOrDefault(x => x.Id == id);
         }
 
         public IQueryable<Note> GetNotesByAuthorId(Guid authorId)

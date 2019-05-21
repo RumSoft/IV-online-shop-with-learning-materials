@@ -255,5 +255,26 @@ namespace Projekcik.Api.Controllers
                 }
             });
         }
+
+        [AllowAnonymous]
+        [HttpPost("")]
+        public IActionResult ListNotes([FromBody] Guid[] input)
+        {
+            var notes = input?.Select(x => _noteService.GetNoteById(x)).Where(x => x != null).ToArray() ?? new Note[0];
+            var result = notes.Select(x => new
+            {
+                x.Id,
+                x.Name,
+                Author = new
+                {
+                    Id = x.AuthorId,
+                    Name = x.Author.UserName,
+                },
+                x.Price,
+                x.Description
+            });
+
+            return Ok(result);
+        }
     }
 }
