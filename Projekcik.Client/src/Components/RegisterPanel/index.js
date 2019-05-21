@@ -4,10 +4,12 @@ import {
   Button,
   Card,
   CardContent,
-  LinearProgress
+  LinearProgress,
+  Typography
 } from '@material-ui/core';
 import AuthService from '../../Services/AuthService';
 import './index.scss';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 export default class RegisterPage extends Component {
   state = {
@@ -59,7 +61,9 @@ export default class RegisterPage extends Component {
         });
       });
   };
-
+  onChange(value) {
+    console.log('Captcha value:', value);
+  }
   render() {
     const { showTitle, title } = this.props;
     return (
@@ -126,6 +130,12 @@ export default class RegisterPage extends Component {
               value={this.state.confirmPassword}
               onChange={this.handleChange}
             />
+            <Typography>
+              <ReCAPTCHA
+                sitekey="6LcJq6QUAAAAALUopg2VSs4evUII1XmMH159bRFl"
+                onChange={this.onChange}
+              />
+            </Typography>
             <Button
               type="submit"
               className="button-submit"
