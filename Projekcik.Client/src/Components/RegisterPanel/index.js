@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   LinearProgress,
-  Typography
 } from '@material-ui/core';
 import AuthService from '../../Services/AuthService';
 import './index.scss';
@@ -153,7 +152,7 @@ export default class RegisterPage extends Component {
             <ReCAPTCHA
               sitekey="6LcJq6QUAAAAALUopg2VSs4evUII1XmMH159bRFl"
               onChange={this.onCaptchaChange}
-              onExpired={this.state.value}
+              onExpired={this.onCaptchaExpired}
             />
 
             <Button
