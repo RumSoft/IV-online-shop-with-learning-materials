@@ -154,7 +154,7 @@ namespace Projekcik.Api.Controllers
 
             if (user.BoughtNotes.FirstOrDefault(x => x.NoteId.Equals(noteId)) == null)
                 return Forbid();
-            
+
             var note = _noteService.GetNoteById(noteId);
             if (note == null)
                 return NotFound();
@@ -276,13 +276,28 @@ namespace Projekcik.Api.Controllers
             {
                 x.Id,
                 x.Name,
+                x.Price,
+                x.Description,
                 Author = new
                 {
                     Id = x.AuthorId,
                     Name = x.Author.UserName,
                 },
-                x.Price,
-                x.Description
+                Course = new
+                {
+                    Id = x.CourseId,
+                    Name = x.Course.Name,
+                },
+                University = new
+                {
+                    Id = x.Course.UniversityId,
+                    Name = x.Course.University.Name,
+                },
+                Voivodeship = new
+                {
+                    Id = x.Course.University.VoivodeshipId,
+                    Name = x.Course.University.Voivodeship.Name,
+                }
             });
 
             return Ok(result);
