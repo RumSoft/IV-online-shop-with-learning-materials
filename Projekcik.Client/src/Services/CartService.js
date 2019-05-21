@@ -13,6 +13,11 @@ export default class CartService {
     return NoteService.getNotesById(noteIDs).then(x => x);
   }
 
+  static cartNoteCount() {
+    let noteIDs = JSON.parse(window.localStorage.getItem('cartnotes'));
+    return noteIDs.length;
+  }
+
   static removeNoteFromCart(noteID) {
     noteArray = JSON.parse(window.localStorage.getItem('cartnotes'));
     for (var i = 0; i < noteArray.length; i++) {
