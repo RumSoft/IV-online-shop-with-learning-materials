@@ -1,9 +1,8 @@
 import NoteService from './NoteService';
 
-let noteArray = [];
-
 export default class CartService {
   static addNoteToCart(noteID) {
+    let noteArray = JSON.parse(window.localStorage.getItem('cartnotes'));
     noteArray.push(noteID);
     window.localStorage.setItem('cartnotes', JSON.stringify(noteArray));
   }
@@ -19,7 +18,7 @@ export default class CartService {
   }
 
   static removeNoteFromCart(noteID) {
-    noteArray = JSON.parse(window.localStorage.getItem('cartnotes'));
+    let noteArray = JSON.parse(window.localStorage.getItem('cartnotes'));
     for (var i = 0; i < noteArray.length; i++) {
       if (noteArray[i] === noteID) {
         noteArray.splice(i, 1);
