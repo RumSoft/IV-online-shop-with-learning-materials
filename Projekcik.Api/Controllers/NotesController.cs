@@ -261,8 +261,6 @@ namespace Projekcik.Api.Controllers
         public IActionResult ListNotes([FromBody] Guid[] input)
         {
             var notes = input?.Select(x => _noteService.GetNoteById(x)).Where(x => x != null).ToArray() ?? new Note[0];
-            if (!notes.Any())
-                return BadRequest();
             var result = notes.Select(x => new
             {
                 x.Id,
