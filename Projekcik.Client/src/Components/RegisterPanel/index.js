@@ -20,7 +20,8 @@ export default class RegisterPage extends Component {
     password: '',
     confirmPassword: '',
     errorMessage: null,
-    loading: false
+    loading: false,
+    onExpired: null
   };
 
   handleChange = event => {
@@ -61,9 +62,13 @@ export default class RegisterPage extends Component {
         });
       });
   };
-  onChange(value) {
-    console.log('Captcha value:', value);
-  }
+
+  onChange = event => {
+    this.setState({
+      onExpired: 1
+    });
+  };
+
   render() {
     const { showTitle, title } = this.props;
     return (
@@ -130,12 +135,12 @@ export default class RegisterPage extends Component {
               value={this.state.confirmPassword}
               onChange={this.handleChange}
             />
-            <Typography>
-              <ReCAPTCHA
-                sitekey="6LcJq6QUAAAAALUopg2VSs4evUII1XmMH159bRFl"
-                onChange={this.onChange}
-              />
-            </Typography>
+
+            <ReCAPTCHA
+              sitekey="6LcJq6QUAAAAALUopg2VSs4evUII1XmMH159bRFl"
+              onChange={this.onChange}
+            />
+
             <Button
               type="submit"
               className="button-submit"
