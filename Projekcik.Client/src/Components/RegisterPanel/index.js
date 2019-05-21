@@ -32,7 +32,6 @@ export default class RegisterPage extends Component {
   };
 
   handleSubmit = event => {
-    console.log(this.state);
     this.setState({
       loading: true
     });
@@ -72,13 +71,13 @@ export default class RegisterPage extends Component {
       });
   };
 
-  onExpired = event => {
+  onCaptchaExpired = event => {
     this.setState({
       onExpired: 0
     });
   };
 
-  onChange = event => {
+  oncaptchaChange = event => {
     this.setState({
       onChange: 1,
       onExpired: 1
@@ -154,8 +153,8 @@ export default class RegisterPage extends Component {
 
             <ReCAPTCHA
               sitekey="6LcJq6QUAAAAALUopg2VSs4evUII1XmMH159bRFl"
-              onChange={this.onChange}
-              onExpired={this.onExpired}
+              onChange={this.onCaptchaChange}
+              onExpired={this.onCpatchaExpired}
             />
 
             <Button
