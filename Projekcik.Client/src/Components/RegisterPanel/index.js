@@ -4,8 +4,7 @@ import {
   Button,
   Card,
   CardContent,
-  LinearProgress,
-  Typography
+  LinearProgress
 } from '@material-ui/core';
 import AuthService from '../../Services/AuthService';
 import './index.scss';
@@ -21,7 +20,8 @@ export default class RegisterPage extends Component {
     confirmPassword: '',
     errorMessage: null,
     loading: false,
-    onExpired: null
+    onExpired: null,
+    onChange: null
   };
 
   handleChange = event => {
@@ -46,6 +46,14 @@ export default class RegisterPage extends Component {
       return;
     }
 
+    if (this.state.onExpired !== this.stateon.onChange) {
+      this.setState({
+        errorMessage: 'Jesteś robotem!',
+        loading: false
+      });
+      return;
+    }
+
     AuthService.register({
       firstName: this.state.firstName,
       lastName: this.state.lastName,
@@ -61,12 +69,6 @@ export default class RegisterPage extends Component {
           loading: false
         });
       });
-  };
-
-  onChange = event => {
-    this.setState({
-      onExpired: 1
-    });
   };
 
   render() {
@@ -138,7 +140,8 @@ export default class RegisterPage extends Component {
 
             <ReCAPTCHA
               sitekey="6LcJq6QUAAAAALUopg2VSs4evUII1XmMH159bRFl"
-              onChange={this.onChange}
+              onChange={this.state.onChange}
+              onExpired={this.state.onExpired}
             />
 
             <Button
