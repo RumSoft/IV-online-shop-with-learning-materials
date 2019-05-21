@@ -21,8 +21,7 @@ export default class RegisterPage extends Component {
     confirmPassword: '',
     errorMessage: null,
     loading: false,
-    onExpired: null,
-    onChange: null
+    value: null,
   };
 
   handleChange = event => {
@@ -32,6 +31,7 @@ export default class RegisterPage extends Component {
   };
 
   handleSubmit = event => {
+    console.log(this.state);
     this.setState({
       loading: true
     });
@@ -46,7 +46,7 @@ export default class RegisterPage extends Component {
       });
       return;
     }
-    if (this.state.onExpired !== this.state.onChange) {
+    if (this.state.value == null) {
       this.setState({
         errorMessage: 'Jesteś robotem!',
         loading: false
@@ -73,14 +73,13 @@ export default class RegisterPage extends Component {
 
   onCaptchaExpired = event => {
     this.setState({
-      onExpired: 0
+      value: event
     });
   };
 
-  oncaptchaChange = event => {
+  onCaptchaChange = event => {
     this.setState({
-      onChange: 1,
-      onExpired: 1
+      value: event
     });
   };
 
@@ -154,7 +153,7 @@ export default class RegisterPage extends Component {
             <ReCAPTCHA
               sitekey="6LcJq6QUAAAAALUopg2VSs4evUII1XmMH159bRFl"
               onChange={this.onCaptchaChange}
-              onExpired={this.onCpatchaExpired}
+              onExpired={this.state.value}
             />
 
             <Button
