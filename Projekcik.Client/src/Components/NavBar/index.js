@@ -103,7 +103,7 @@ export default class NavBar extends Component {
                     <div className="d-none d-sm-block button btn btn-default">
                       <Badge
                         badgeContent={CartService.cartNoteCount()}
-                        showZero={0}
+                        showZero={false}
                         color="secondary">
                         <ShopIcon />
                       </Badge>
@@ -115,7 +115,7 @@ export default class NavBar extends Component {
                     <div className="d-sm-none link">
                       <Badge
                         badgeContent={CartService.cartNoteCount()}
-                        showZero={0}
+                        showZero={false}
                         color="secondary">
                         <ShopIcon />
                       </Badge>
