@@ -22,7 +22,7 @@ namespace Projekcik.Api.Controllers
         private readonly IHttpContextAccessor _user;
         private readonly IUserService _userService;
 
-        private const  int maxFileSize = 10 * 1024 * 1024;
+        private const int maxFileSize = 10 * 1024 * 1024;
         public NotesController(INoteService noteService,
             IHttpContextAccessor user,
             IUserService userService)
@@ -32,6 +32,18 @@ namespace Projekcik.Api.Controllers
             _userService = userService;
         }
 
+
+        [Authorize]
+        [HttpGet("bought")]
+        public IEnumerable<NoteDto> GetMyBoughtNotes()
+        {
+            var userId = _user.GetCurrentUserId();
+            var user = _userService.GetById(userId);
+            if (user == null)
+                return new NoteDto[0];
+
+            return user.BoughtNotes.Select(Mapper.Map<NoteDto>);
+        }
 
         /// <summary>
         ///     Get my notes
@@ -86,9 +98,9 @@ namespace Projekcik.Api.Controllers
                 throw new UnsupportedMediaTypeException("unsupported", null);
 
             long fileSize = file.Length;
-            if(fileSize > maxFileSize)
+            if (fileSize > maxFileSize)
             {
-                return BadRequest("Maxiumum file size (10Mb) exceeded");
+                return BadRequest("Maximum file size (10Mb) exceeded");
             }
 
             var userId = _user.GetCurrentUserId();
@@ -140,9 +152,9 @@ namespace Projekcik.Api.Controllers
             if (user == null)
                 return BadRequest();
 
-            //if(!user has bought note or is owner)
-            //  return 400
-
+            if (user.BoughtNotes.FirstOrDefault(x => x.NoteId.Equals(noteId)) == null)
+                return Forbid();
+            
             var note = _noteService.GetNoteById(noteId);
             if (note == null)
                 return NotFound();
@@ -153,13 +165,12 @@ namespace Projekcik.Api.Controllers
                 note.AuthorId.ToString(),
                 note.Id.ToString());
 
-            var result =
-                new FileContentResult(System.IO.File.ReadAllBytes(filepath), FileType.ToContentType(note.FileExtension))
-                {
-                    FileDownloadName = $"{note.Name}.{note.FileExtension.ToString()}"
-                };
 
-            return result;
+            return File(
+                System.IO.File.ReadAllBytes(filepath),
+                FileType.ToContentType(note.FileExtension),
+                $"{note.Name}.{note.FileExtension.ToString()}"
+                );
         }
 
         [HttpGet("search")]
@@ -207,7 +218,7 @@ namespace Projekcik.Api.Controllers
                     Size = pagerParams.Size,
                     Page = pagerParams.Page,
                     Count = count,
-                    Pages = (int) Math.Ceiling(count / (float) pagerParams.Size)
+                    Pages = (int)Math.Ceiling(count / (float)pagerParams.Size)
                 },
                 Notes = notes
                     .Skip((pagerParams.Page - 1) * pagerParams.Size)
