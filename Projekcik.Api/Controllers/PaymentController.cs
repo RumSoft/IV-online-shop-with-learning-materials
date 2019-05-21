@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -73,6 +74,25 @@ namespace Projekcik.Api.Controllers
             }
         }
 
+        private Task UpdatePaymentStatusAsync(PayUPaymentService.PaymentStatus status)
+        {
+            return Task.Run(()  => 
+            {
+                try
+                {
+                    _log.Info($"Updating transaction {status.Order.ExtOrderId}, status: {status.Order.Status}");
+                    _paymentService.UpdateTransaction(status);
+                }
+                catch (Exception e)
+                {
+                    _log.Warn(
+                        $"Transaction notify failed, reason: {e.Message}, inner: {e.InnerException?.Message ?? "none"}" +
+                        $"\n entity:\n" +
+                        $"{JsonConvert.SerializeObject(status, Formatting.Indented)}");
+                }
+            });
+        }
+
         [HttpPost("notify")]
         public IActionResult NotifyPaymentStatus([FromBody] PayUPaymentService.PaymentStatus status)
         {
@@ -90,18 +110,9 @@ namespace Projekcik.Api.Controllers
             if (!sandboxNotifyAddresses.Select(IPAddress.Parse).Contains(clientIp))
                 return StatusCode(418);
 
-            try
-            {
-                _log.Info($"Updating transaction {status.Order.ExtOrderId}, status: {status.Order.Status}");
-                _paymentService.UpdateTransaction(status);
-            }
-            catch (Exception e)
-            {
-                _log.Warn($"Transaction notify failed, reason: {e.Message}, inner: {e.InnerException?.Message ?? "none"}" +
-                          $"\n entity:\n" +
-                          $"{JsonConvert.SerializeObject(status, Formatting.Indented)}");
-            }
 
+            UpdatePaymentStatusAsync(status);
+            
             return Ok();
         }
     }

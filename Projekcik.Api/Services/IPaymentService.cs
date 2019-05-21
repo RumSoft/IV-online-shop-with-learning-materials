@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -49,41 +51,31 @@ namespace Projekcik.Api.Services
 
         public void UpdateTransaction(PaymentStatus status)
         {
-            _log.Error("############################");
-            _log.Error("############################");
-            _log.Error("############################");
+            if (!status.Order.Status.Equals("COMPLETED", StringComparison.InvariantCultureIgnoreCase))
+                return;
+
             var transactionId = Guid.Parse(status.Order.ExtOrderId);
             var transaction = _context.Transactions.Find(transactionId);
             if(transaction == null)
                 throw new Exception("transaction does not exist");
 
-            if(transaction.Status == TransactionStatus.Cancelled 
-               || transaction.Status == TransactionStatus.Completed 
-               || transaction.Status == TransactionStatus.Rejected)
+            // if completed, no more processing
+            if (transaction.Status == TransactionStatus.Completed)
                 return;
 
             var orderStatus = status.Order.Status;
             if (orderStatus.Equals("COMPLETED", StringComparison.InvariantCultureIgnoreCase)) 
                 transaction.Status = TransactionStatus.Completed;
-            else if (orderStatus.Equals("REJECTED", StringComparison.InvariantCultureIgnoreCase))
-                transaction.Status = TransactionStatus.Rejected;
-            else if (orderStatus.Equals("CANCELLED", StringComparison.InvariantCultureIgnoreCase))
-                transaction.Status = TransactionStatus.Cancelled;
-
             _context.SaveChanges();
 
+            // must be completed here
             if (transaction.Status != TransactionStatus.Completed)
                 return;
-
-            _log.Info("adding notes for user");
 
             var userId = transaction.BuyerId;
             var user = _context.Users.Find(userId);
             if(user == null)
                 throw new Exception("user does not exist");
-
-            _log.Info($"userId: {userId}");
-            _log.Info($"notes: {transaction.Order}, count: {transaction.OrderedNotesIds.Count()}");
 
             var noteIds = transaction.OrderedNotesIds.ToArray();
             var notes = _context.Notes.Where(x => noteIds.Contains(x.Id)).ToArray();
@@ -91,13 +83,8 @@ namespace Projekcik.Api.Services
                 throw new Exception("invalid notes selected");
 
             foreach (var note in notes)
-            {
-                _log.Info($"adding note '{note.Id}' to user '{user.Id}'");
                 _noteService.Buy(user, note);
-            }
-
             _context.SaveChanges();
-            _log.Info($"finished buying notes");
         }
 
         public string CreateOrder(Note[] notes, User user, string userIpAddress)
