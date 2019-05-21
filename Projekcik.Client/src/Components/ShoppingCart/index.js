@@ -11,7 +11,13 @@ export default class ShoppingCart extends Component {
     super(props);
 
     CartService.getCartNotes().then(x => {
-      this.setState({ notes: x, loaded: true });
+      this.setState({ notes: x, loaded: true }, () => {
+        let sum = 0;
+        for (var note of this.state.notes) {
+          sum = sum + note.price;
+        }
+        this.setState({ totalPrice: sum });
+      });
     });
   }
 
