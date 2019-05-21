@@ -1,24 +1,28 @@
+import NoteService from './NoteService';
+
+let noteArray = [];
+
 export default class CartService {
-  noteArray = [];
   static addNoteToCart(noteID) {
-    this.noteArray.push(noteID);
-    window.localStorage.setItem('cartnotes', JSON.stringify(this.noteArray));
+    noteArray.push(noteID);
+    window.localStorage.setItem('cartnotes', JSON.stringify(noteArray));
   }
 
   static getCartNotes() {
-    return JSON.parse(window.localStorage.getItem('cartnotes'));
+    let noteIDs = JSON.parse(window.localStorage.getItem('cartnotes'));
+    return NoteService.getNotesById(noteIDs).then(x => x);
   }
 
   static removeNoteFromCart(noteID) {
-    this.noteArray = JSON.parse(window.localStorage.getItem('cartnotes'));
-    for (var i = 0; i < this.noteArray.length; i++) {
-      if (this.noteArray[i] === noteID) {
-        this.noteArray.splice(i, 1);
+    noteArray = JSON.parse(window.localStorage.getItem('cartnotes'));
+    for (var i = 0; i < noteArray.length; i++) {
+      if (noteArray[i] === noteID) {
+        noteArray.splice(i, 1);
         i--;
         break;
       }
     }
-    window.localStorage.setItem('cartnotes', JSON.stringify(this.noteArray));
+    window.localStorage.setItem('cartnotes', JSON.stringify(noteArray));
   }
 
   static clearNoteCart() {

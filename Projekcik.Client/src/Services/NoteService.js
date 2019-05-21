@@ -23,6 +23,10 @@ export default class NoteService {
     return axios.get(`${API_URL}/api/Notes/${noteId}`).then(r => r.data);
   }
 
+  static getNotesById(idArray) {
+    return axios.post(`${API_URL}/api/Notes`, idArray).then(r => r.data);
+  }
+
   static getAllNotes(sorter) {
     return sorter
       ? axios.get(`${API_URL}/api/Notes/search/${sorter}`).then(r => r.data)
