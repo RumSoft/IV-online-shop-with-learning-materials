@@ -45,19 +45,9 @@ export default class SmallCard extends React.Component {
     return (
       <Card className="note-card p-2 m-2">
         <div className="note-image">
-          <img
-            className="p-2 m-2"
-            style={{
-              width: 128,
-              height: 128
-            }}
-            src="http://placekitten.com/g/400/400"
-            alt="notePreview"
-          />
           <div className="note-name">
             <Link to={`/note/${note.id}`} style={{ textDecoration: 'none' }}>
               <h5>{note.name}</h5>
-              <h6>{note.price} zł</h6>
             </Link>
           </div>
           <dl>
@@ -76,13 +66,13 @@ export default class SmallCard extends React.Component {
             className="btn note btn-md rounded-right"
             onClick={() => this.redirectToNote(note.id)}>
             <i className="fa fa-book-open" />
-            <span> Zobacz notatkę</span>
+            <span> Zobacz </span>
           </Button>
           <Button
             className="btn cart btn-md rounded-left"
             onClick={() => this.addToCart(note.id)}>
             <i className="fa fa-shopping-cart" />
-            <span> Dodaj do koszyka</span>
+            <span> {note.price} zł</span>
           </Button>
           <Snackbar
             anchorOrigin={{
