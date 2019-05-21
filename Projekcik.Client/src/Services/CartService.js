@@ -2,19 +2,22 @@ import NoteService from './NoteService';
 
 export default class CartService {
   static addNoteToCart(noteID) {
-    let noteArray = JSON.parse(window.localStorage.getItem('cartnotes'));
+    let noteArray = JSON.parse(window.localStorage.getItem('cartnotes')) || [];
     noteArray.push(noteID);
     window.localStorage.setItem('cartnotes', JSON.stringify(noteArray));
   }
 
   static getCartNotes() {
     let noteIDs = JSON.parse(window.localStorage.getItem('cartnotes'));
-    return NoteService.getNotesById(noteIDs).then(x => x);
+    if (noteIDs && noteIDs.length)
+      return NoteService.getNotesById(noteIDs).then(x => x);
+    return this.emptyPromise([]);
   }
 
   static cartNoteCount() {
     let noteIDs = JSON.parse(window.localStorage.getItem('cartnotes'));
-    return noteIDs.length;
+    if (noteIDs && noteIDs.length) return noteIDs.length;
+    return 0;
   }
 
   static removeNoteFromCart(noteID) {
@@ -31,5 +34,11 @@ export default class CartService {
 
   static clearNoteCart() {
     window.localStorage.removeItem('cartnotes');
+  }
+
+  static emptyPromise(val = null) {
+    return new Promise(resolve => {
+      resolve(val);
+    });
   }
 }

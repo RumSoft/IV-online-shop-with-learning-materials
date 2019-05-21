@@ -5,6 +5,8 @@ import Typography from '@material-ui/core/Typography';
 import CourseSelector from '../CourseSelector';
 
 import './index.scss';
+import NoteService from '../../Services/NoteService';
+import SmallCard from './SmallCard';
 
 export default class HomeLayout extends Component {
   constructor(props) {
@@ -15,14 +17,22 @@ export default class HomeLayout extends Component {
         voivodeshipId: null,
         universityId: null,
         courseId: null
-      }
+      },
+      notes: null
     };
 
     this.courseSelectorHandler = this.courseSelectorHandler.bind(this);
+    this.loadNotes();
+  }
+
+  loadNotes() {
+    NoteService.search(this.state.selection).then(x => {
+      this.setState({ notes: x.notes }, () => {});
+    });
   }
 
   courseSelectorHandler(data) {
-    this.setState({ selection: data });
+    this.setState({ selection: data }, () => this.loadNotes());
   }
 
   render() {
@@ -55,17 +65,17 @@ export default class HomeLayout extends Component {
           <Card className="course-selector-card mb-3">
             <CourseSelector searchData={this.courseSelectorHandler} />
             <hr />
-            <div>szybkie okienko pierwszych wników</div>
-            {/* use those values to search for notes */}
-            <p>
-              {[
-                this.state.selection.voivodeshipId,
-                this.state.selection.universityId,
-                this.state.selection.courseId
-              ]
-                .filter(x => x)
-                .join(', ')}
-            </p>
+            <a href="https://projekcik-prz.azurewebsites.net/search">
+              pokaż więcej
+            </a>
+            {this.state.notes &&
+              this.state.notes.length &&
+              // <Carousel>
+              this.state.notes.map((note, i) => (
+                <SmallCard note={note} key={i} />
+              ))
+            // </Carousel>
+            }
             <a href="https://projekcik-prz.azurewebsites.net/search">
               pokaż więcej
             </a>

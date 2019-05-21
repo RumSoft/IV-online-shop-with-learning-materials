@@ -23,6 +23,22 @@
       align-items: center;
       padding-bottom: 1rem !important;
 
+      .hover {
+        width: 100%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        height: 100%;
+        z-index: 16;
+
+        &:hover {
+          background-color: rgba($primary, 0.1);
+          transition: 0.1s all ease;
+        }
+      }
+
       .disabled {
         z-index: 15;
         background: #ddd;
@@ -59,14 +75,6 @@
         right: 5px;
         bottom: 0px;
         text-shadow: 1px 1px 1px rgba(0, 0, 0, .125);
-      }
-    }
-
-
-    &:hover {
-      .paper {
-        background-color: rgba($primary, 0.1);
-        transition: 0.1s all ease;
       }
     }
   }

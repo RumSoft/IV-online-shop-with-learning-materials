@@ -208,6 +208,7 @@ export default class CourseSelector extends Component {
                   onClick={() => x.noteCount > 0 && this.handleForward(x)}>
                   <Paper className="paper p-md-2 p-1" elevation={4}>
                     {x.noteCount <= 0 && <div className="disabled" />}
+                    {x.noteCount > 0 && <div className="hover" />}
                     <div>{x.name}</div>
                     <small>{this.ileNotatek(x.noteCount)}</small>
                   </Paper>
@@ -229,9 +230,10 @@ export default class CourseSelector extends Component {
                   onClick={() => x.noteCount > 0 && this.handleForward(x)}>
                   <Paper className="paper p-md-2 p-1" elevation={3}>
                     {x.noteCount <= 0 && <div className="disabled" />}
+                    {x.noteCount > 0 && <div className="hover" />}
                     <div className="uni">{x.name}</div>
                     <small>{this.ileNotatek(x.noteCount)}</small>
-                    <img className="uniImage" src={x.imageUrl} alt=''/>
+                    <img className="uniImage" src={x.imageUrl} alt="" />
                   </Paper>
                 </Grid>
               ))}
@@ -251,6 +253,7 @@ export default class CourseSelector extends Component {
                   onClick={() => x.noteCount > 0 && this.handleForward(x)}>
                   <Paper className="paper p-md-3 p-1" elevation={3}>
                     {x.noteCount <= 0 && <div className="disabled" />}
+                    {x.noteCount > 0 && <div className="hover" />}
                     <div>{x.name}</div>
                     <small>{this.ileNotatek(x.noteCount)}</small>
                   </Paper>
