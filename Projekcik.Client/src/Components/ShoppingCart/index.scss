@@ -26,11 +26,15 @@ hr {
     width: 320px;
     padding: 1rem 1.5rem;
     padding-top: 1.5rem;
+    .name {
+      color: rgb(58, 88, 223);
+      font-weight: bold;
+    }
   }
   .note-price {
     display: flex;
     flex-direction: column;
-    padding-top: 1rem;
+    padding-top: 1.2rem;
     align-items: center;
     flex-grow: 5;
 
