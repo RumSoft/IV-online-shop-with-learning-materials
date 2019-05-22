@@ -106,7 +106,7 @@ export default class ShoppingCart extends Component {
               </Card>
             ))
           ) : (
-            <div>empty</div>
+            <div className="empty-cart">Twój koszyk jest pusty :(</div>
           )
         ) : (
           <div className="text-center">
@@ -116,10 +116,12 @@ export default class ShoppingCart extends Component {
         <hr />
         <div className="checkout">
           <Typography variant="h5" className="pb-3 mr-2">
-            Wartość zamówienia:{' '}
+            Wartość zamówienia: &nbsp;
             {this.state.notes.reduce((total, note) => total + note.price, 0)} zł
           </Typography>
-          <Button className="btn dollar btn-md">
+          <Button
+            className="btn dollar btn-md"
+            disabled={this.state.notes.length === 0}>
             <i className="fa fa-dollar-sign" />
             <span> Złóż zamówienie</span>
           </Button>

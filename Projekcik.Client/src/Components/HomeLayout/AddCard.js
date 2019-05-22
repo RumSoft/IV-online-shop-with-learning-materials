@@ -1,13 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from 'reactstrap';
-import {
-  Grid,
-  Card,
-  Typography,
-  Snackbar,
-  SnackbarContent
-} from '@material-ui/core';
+import { Card } from '@material-ui/core';
 import './index.scss';
 
 export default class AddCard extends React.Component {

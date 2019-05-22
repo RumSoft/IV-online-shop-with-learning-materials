@@ -1,13 +1,7 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Button } from 'reactstrap';
-import {
-  Grid,
-  Card,
-  Typography,
-  Snackbar,
-  SnackbarContent
-} from '@material-ui/core';
+import { Card, Typography, Snackbar, SnackbarContent } from '@material-ui/core';
 import CartService from '../../Services/CartService';
 import './index.scss';
 
@@ -44,12 +38,12 @@ export default class SmallCard extends React.Component {
 
     return (
       <Card className="note-card p-2 m-2">
-        <div className="note-image">
-          <div className="note-name">
-            <Link to={`/note/${note.id}`} style={{ textDecoration: 'none' }}>
-              <h5>{note.name}</h5>
-            </Link>
-          </div>
+        <div className="note-name">
+          <Link to={`/note/${note.id}`} style={{ textDecoration: 'none' }}>
+            <h5>{note.name}</h5>
+          </Link>
+        </div>
+        <div className="note-small-info">
           <dl>
             <Typography>Województwo: {note.voivodeship.name}</Typography>
             <Typography />
@@ -61,7 +55,7 @@ export default class SmallCard extends React.Component {
             <Typography />
           </dl>
         </div>
-        <div className="btn-group">
+        <div className="btn-small-group">
           <Button
             className="btn note btn-md rounded-right"
             onClick={() => this.redirectToNote(note.id)}>
@@ -69,7 +63,8 @@ export default class SmallCard extends React.Component {
             <span> Zobacz </span>
           </Button>
           <Button
-            className="btn cart btn-md rounded-left"
+            className="btn cart btn-md rounded-left rounded-right"
+            disabled={CartService.checkDuplicate(note.id)}
             onClick={() => this.addToCart(note.id)}>
             <i className="fa fa-shopping-cart" />
             <span> {note.price} zł</span>
