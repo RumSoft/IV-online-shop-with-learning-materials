@@ -28,7 +28,8 @@ export class UserPanel extends Component {
         <button onClick={() => this.handlePayout()}>
           wypłać {user.balance}zł
         </button>
-        <p> moje notatki</p>
+        <p> notatki zakupione przeze mnie: </p>
+        <p> moje notatki:</p>
       </div>
     );
   }

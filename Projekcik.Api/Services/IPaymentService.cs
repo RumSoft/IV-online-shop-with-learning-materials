@@ -176,7 +176,7 @@ namespace Projekcik.Api.Services
                 CustomerIp = userIpAddress,
                 MerchantPosId = posId,
                 NotifyUrl = notifyUrl,
-                ContinueUrl = $"http://localhost:3000/order-details/{transaction.Id}",
+                ContinueUrl = $"https://projekcik-prz.azurewebsites.net/order-details/{transaction.Id}",
                 ExtOrderId = transaction.Id.ToString()
             };
         }
