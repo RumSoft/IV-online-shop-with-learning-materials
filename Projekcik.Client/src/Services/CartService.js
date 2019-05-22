@@ -32,6 +32,11 @@ export default class CartService {
     window.localStorage.setItem('cartnotes', JSON.stringify(noteArray));
   }
 
+  static checkDuplicate(noteID) {
+    let noteArray = JSON.parse(window.localStorage.getItem('cartnotes'));
+    return noteArray.includes(noteID) ? true : false;
+  }
+
   static clearNoteCart() {
     window.localStorage.removeItem('cartnotes');
   }

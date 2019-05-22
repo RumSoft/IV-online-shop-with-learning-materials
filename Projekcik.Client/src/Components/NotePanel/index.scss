@@ -26,8 +26,9 @@
       text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
       background: linear-gradient(to top, #f47a20, #faa51a);
-      // background: linear-gradient(to top, #31ad32, #25ea3c);
-
+      &[disabled] {
+        background: linear-gradient(to top, #ffb938, #ff9138);
+      }
       p {
         margin: 0px;
       }

@@ -80,7 +80,8 @@ export default class NoteCard extends React.Component {
               <span> Zobacz notatkę</span>
             </Button>
             <Button
-              className="btn cart btn-md rounded-left"
+              className="btn cart btn-md rounded-left rounded-right"
+              disabled={CartService.checkDuplicate(note.id)}
               onClick={() => this.addToCart(note.id)}>
               <i className="fa fa-shopping-cart" />
               <span> Dodaj do koszyka</span>
