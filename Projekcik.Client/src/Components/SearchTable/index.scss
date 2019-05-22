@@ -16,6 +16,9 @@
   height: 100%;
 }
 
+dl {
+  height: 80px;
+}
 hr {
   width: 95%;
 }
@@ -24,27 +27,15 @@ hr {
   background-color: #eeeeee !important;
   height: 100%;
 
-
-  &:hover {
-    cursor: pointer;
-    background-color: #c5c5c5;
-  }
-
   .note-image {
     width: 200;
-    display: box;
   }
 
-  .note-info {
-    display: box;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: stretch;
-    align-content: space-between;
-
-    .origin {
-      display: flex;
+  .note-name {
+    color: rgb(0, 146, 231);
+    &:hover {
+      cursor: pointer;
+      color: rgb(0, 107, 168);
     }
   }
 }
@@ -98,13 +89,28 @@ hr {
     }
   }
 }
+.btn-group {
+  display: flex;
 
-.note-name:hover {
-  color: rgb(0, 146, 231);
-}
-
-.row {
-  cursor: pointer;
+  .btn {
+    margin: 3px;
+    width: 180px;
+    &.cart {
+      color: white;
+      background-color: #3f51b5;
+      border-color: #16288d;
+      &:hover {
+        background-color: #16288d;
+      }
+    }
+    &.note {
+      color: black;
+      background: linear-gradient(to top, #f47a20, #faa51a);
+      &:hover {
+        background: linear-gradient(to top, #dd5d02, #d38200);
+      }
+    }
+  }
 }
 
 .page-manipulator {

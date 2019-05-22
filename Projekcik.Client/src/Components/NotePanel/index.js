@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import {
   Card,
@@ -9,12 +8,13 @@ import {
   Button,
   ListItemText
 } from '@material-ui/core';
-import { LinearProgress } from '@material-ui/core';
 import HrLabel from '../HrLabel/index';
 import NoteService from '../../Services/NoteService';
 import NotePanelPlaceholder from './NotePanelPlaceholder';
 import ReactPlaceholder from 'react-placeholder';
 import 'react-placeholder/lib/reactPlaceholder.css';
+import { Redirect } from 'react-router-dom';
+import { CartService } from '../../Services';
 import './index.scss';
 
 export default class NotePanel extends Component {
@@ -27,8 +27,17 @@ export default class NotePanel extends Component {
       this.setState({ note: r, loaded: true });
     });
   }
+
+  addToCart = noteID => {
+    CartService.addNoteToCart(noteID);
+    this.setState({ open: true, redirectToCart: `/cart` });
+  };
+
   render() {
     const note = this.state.note;
+    if (this.state.redirectToCart)
+      return <Redirect to={this.state.redirectToCart} />;
+
     return (
       <div>
         <ReactPlaceholder
@@ -39,28 +48,28 @@ export default class NotePanel extends Component {
               <div className="document-viewer dashboard-wrapper">
                 <ol
                   className="breadcrumb clearfiks"
-                  itemtype="http://schema.org/BreadcrumbList">
+                  itemType="http://schema.org/BreadcrumbList">
                   <li
-                    itemtype="http://schema.org/ListItem"
-                    itemprop="itemListElement">
-                    <a href="#">
-                      <span itemprop="name">{note.voivodeship.name}</span>
+                    itemType="http://schema.org/ListItem"
+                    itemProp="itemListElement">
+                    <a href="/">
+                      <span itemProp="name">{note.voivodeship.name}</span>
                       <meta content="1" />
                     </a>
                   </li>
                   <li
-                    itemtype="http://schema.org/ListItem"
-                    itemprop="itemListElement">
-                    <a href="#">
-                      <span itemprop="name">{note.university.name}</span>
+                    itemType="http://schema.org/ListItem"
+                    itemProp="itemListElement">
+                    <a href="/">
+                      <span itemProp="name">{note.university.name}</span>
                       <meta content="2" />
                     </a>
                   </li>
                   <li
-                    itemtype="http://schema.org/ListItem"
-                    itemprop="itemListElement">
-                    <a href="#">
-                      <span itemprop="name">{note.course.name}</span>
+                    itemType="http://schema.org/ListItem"
+                    itemProp="itemListElement">
+                    <a href="/">
+                      <span itemProp="name">{note.course.name}</span>
                       <meta content="2" />
                     </a>
                   </li>
@@ -89,7 +98,7 @@ export default class NotePanel extends Component {
 
                         <HrLabel text="Podgląd notatki" />
                         <div className="preview-image">
-                          <img src="http://placekitten.com/g/400/400" />
+                          <img src="http://placekitten.com/g/400/400" alt="" />
                         </div>
                       </CardContent>
                     </Card>
@@ -99,8 +108,9 @@ export default class NotePanel extends Component {
                       <Button
                         fullWidth
                         type="submit"
+                        disabled={CartService.checkDuplicate(note.id)}
                         className="button submit p-3 mb-2 text-white add-to-cart"
-                        onClick={this.handle}>
+                        onClick={() => this.addToCart(note.id)}>
                         <p className="price">
                           <i className="fa fa-shopping-cart" />{' '}
                           <span>{note.price} zł</span>
@@ -114,7 +124,7 @@ export default class NotePanel extends Component {
                             {note.author.name}
                           </span>
                           <div className="author-image">
-                            <img src="http://placekitten.com/g/50/50" />
+                            <img src="http://placekitten.com/g/50/50" alt="" />
                           </div>
                         </Link>
                       </div>

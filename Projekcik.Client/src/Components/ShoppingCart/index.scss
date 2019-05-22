@@ -1,0 +1,102 @@
+hr {
+  width: 98%;
+}
+
+.my-cart {
+  padding-top: 1.15rem;
+  padding-left: 2rem;
+}
+
+.empty-cart {
+  text-align: center;
+}
+
+.cart-list {
+  padding-bottom: 0.5rem;
+}
+
+.cart-note {
+  background-color: #eef1fc;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+  .note-image {
+    width: 200;
+    display: flex;
+  }
+
+  .note-main {
+    width: 320px;
+    padding: 1rem 1.5rem;
+    padding-top: 1.5rem;
+
+    .name {
+      color: rgb(58, 88, 223);
+      font-weight: bold;
+    }
+  }
+
+  .note-price {
+    display: flex;
+    flex-direction: column;
+    padding-top: 1.2rem;
+    align-items: center;
+    flex-grow: 5;
+
+    .btn-circle {
+      width: 40px;
+      height: 40px;
+      padding: 6px 0px;
+      font-size: 18px;
+      line-height: 1;
+      border-radius: 20px;
+      background: rgba(255, 52, 52, 0.5);
+
+      &:hover {
+        background: rgba(255, 0, 0, 0.6);
+      }
+    }
+
+    .fa {
+      position: relative;
+    }
+  }
+
+  .note-origins {
+    width: 480px;
+
+    .text {
+      line-height: 1.5em;
+      padding: 1.5rem 0 0.5rem 5px;
+    }
+
+    .btn {
+      margin: 3px;
+      width: 170px;
+      color: black;
+      background: linear-gradient(to top, #f47a20, #faa51a);
+
+      &:hover {
+        background: linear-gradient(to top, #dd5d02, #d38200);
+      }
+    }
+  }
+}
+
+.checkout {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-right: 1rem;
+
+  .btn.dollar {
+    margin: 3px;
+    width: 180px;
+    color: white;
+    background-color: #3f51b5;
+    border-color: #16288d;
+
+    &:hover {
+      background-color: #16288d;
+    }
+  }
+}

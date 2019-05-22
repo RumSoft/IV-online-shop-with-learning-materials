@@ -1,4 +1,5 @@
 import axios from 'axios';
+const queryString = require('query-string');
 
 const API_URL = 'https://projekcik-prz.azurewebsites.net';
 
@@ -23,10 +24,22 @@ export default class NoteService {
     return axios.get(`${API_URL}/api/Notes/${noteId}`).then(r => r.data);
   }
 
+  static getNotesById(idArray) {
+    return axios.post(`${API_URL}/api/Notes`, idArray).then(r => r.data);
+  }
+
   static getAllNotes(sorter) {
     return sorter
       ? axios.get(`${API_URL}/api/Notes/search/${sorter}`).then(r => r.data)
       : axios.get(`${API_URL}/api/Notes/search`).then(r => r.data);
+  }
+
+  static search(data) {
+    this.cleanObject(data);
+    let dataQueryString = queryString.stringify(data);
+    return axios
+      .get(`${API_URL}/api/Notes/search?${dataQueryString}`)
+      .then(r => r.data);
   }
 
   static downloadRequest(noteId) {
@@ -34,4 +47,14 @@ export default class NoteService {
       .get(`${API_URL}/api/Notes/download-request/${noteId}`)
       .then(r => r.data);
   }
+
+  static cleanObject = function(obj) {
+    var propNames = Object.getOwnPropertyNames(obj);
+    for (var i = 0; i < propNames.length; i++) {
+      var propName = propNames[i];
+      if (obj[propName] === null || obj[propName] === undefined) {
+        delete obj[propName];
+      }
+    }
+  };
 }

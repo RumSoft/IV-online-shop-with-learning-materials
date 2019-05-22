@@ -5,6 +5,10 @@ import Typography from '@material-ui/core/Typography';
 import CourseSelector from '../CourseSelector';
 
 import './index.scss';
+import NoteService from '../../Services/NoteService';
+import SmallCard from './SmallCard';
+import Slider from 'react-slick';
+import AddCard from './AddCard';
 
 export default class HomeLayout extends Component {
   constructor(props) {
@@ -15,17 +19,67 @@ export default class HomeLayout extends Component {
         voivodeshipId: null,
         universityId: null,
         courseId: null
-      }
+      },
+      notes: null
     };
 
     this.courseSelectorHandler = this.courseSelectorHandler.bind(this);
+    this.loadNotes();
+  }
+
+  loadNotes() {
+    NoteService.search({
+      ...this.state.selection,
+      sortBy: 'created',
+      sortOrder: 'DESC'
+    }).then(x => {
+      this.setState({ notes: x.notes }, () => {
+        this.slider.forceUpdate();
+      });
+      console.log(x);
+    });
   }
 
   courseSelectorHandler(data) {
-    this.setState({ selection: data });
+    this.setState({ selection: data }, () => this.loadNotes());
   }
 
   render() {
+    const sliderSettings = {
+      autoplay: true,
+      rows: 1,
+      infinite: this.state.notes && this.state.notes.length >= 4,
+      slidesToShow: 4,
+      swipeToSlide: true,
+      adaptiveHeight: false,
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 4,
+            slidesToScroll: 4,
+            infinite: true,
+            dots: true
+          }
+        },
+        {
+          breakpoint: 991,
+          settings: {
+            slidesToShow: 3,
+            slidesToScroll: 3,
+            initialSlide: 3
+          }
+        },
+        {
+          breakpoint: 767,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2
+          }
+        }
+      ]
+    };
+
     return (
       <div className="home-layout">
         <React.Fragment>
@@ -55,28 +109,23 @@ export default class HomeLayout extends Component {
           <Card className="course-selector-card mb-3">
             <CourseSelector searchData={this.courseSelectorHandler} />
             <hr />
-            <div>szybkie okienko pierwszych wników</div>
-            {/* use those values to search for notes */}
-            <p>
-              {[
-                this.state.selection.voivodeshipId,
-                this.state.selection.universityId,
-                this.state.selection.courseId
-              ]
-                .filter(x => x)
-                .join(', ')}
-            </p>
+            <h4>Ostatnie notatki</h4>
+            {this.state.notes && this.state.notes.length && (
+              <Slider
+                ref={ref => {
+                  this.slider = ref;
+                }}
+                {...sliderSettings}>
+                {this.state.notes.map((note, i) => (
+                  <SmallCard note={note} key={i} />
+                ))}
+                <AddCard />
+              </Slider>
+            )}
             <a href="https://projekcik-prz.azurewebsites.net/search">
               pokaż więcej
             </a>
           </Card>
-          <footer className="footer">
-            <h6 className="footer-item">Stopka</h6>
-            <p className="footer-item">
-              Skontaktuj się z nami (zwykły tag p > Typography)
-            </p>
-          </footer>
-          {/* End Stopka */}
         </React.Fragment>
       </div>
     );

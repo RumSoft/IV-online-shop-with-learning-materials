@@ -23,7 +23,7 @@ import './index.scss';
 import SearchBar from '../SearchBar';
 import logo from './logoWhite.png';
 import { Tooltip } from '@material-ui/core';
-import { AuthService } from '../../Services';
+import { AuthService, CartService } from '../../Services';
 
 export default class NavBar extends Component {
   constructor(props) {
@@ -99,18 +99,24 @@ export default class NavBar extends Component {
               <ul className="navbar-nav flex-grow ">
                 <SearchBar className="nav-search" />
                 <NavItem>
-                  <NavLink>
+                  <NavLink tag={Link} to="/cart" className="text-dark">
                     <div className="d-none d-sm-block button btn btn-default">
-                      <Badge badgeContent={5} showZero={0} color="secondary">
+                      <Badge
+                        badgeContent={CartService.cartNoteCount()}
+                        showZero={false}
+                        color="secondary">
                         <ShopIcon />
                       </Badge>
                     </div>
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink>
+                  <NavLink tag={Link} to="/cart" className="text-dark">
                     <div className="d-sm-none link">
-                      <Badge badgeContent={5} showZero={0} color="secondary">
+                      <Badge
+                        badgeContent={CartService.cartNoteCount()}
+                        showZero={false}
+                        color="secondary">
                         <ShopIcon />
                       </Badge>
                       Plecak pełen keszu

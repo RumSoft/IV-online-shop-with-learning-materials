@@ -1,10 +1,5 @@
 .home-layout {
   .main {
-    // padding: 2rem 5rem;
-    // margin: rem 0;
-    h1 {
-    }
-
     p {
       max-width: 600px;
     }
@@ -12,6 +7,33 @@
 
   .course-selector-card {
     padding: 1rem;
+  }
+  .note-small-info {
+    display: inline-block;
+  }
+
+  .btn-small-group {
+    display: flex;
+    .btn {
+      margin: 3px;
+      width: 180px;
+      &.cart {
+        color: white;
+        background-color: #3f51b5;
+        border-color: #16288d;
+        &:hover {
+          background-color: #16288d;
+        }
+      }
+      &.note {
+        color: black;
+        background: linear-gradient(to top, #f47a20, #faa51a);
+
+        &:hover {
+          background: linear-gradient(to top, #dd5d02, #d38200);
+        }
+      }
+    }
   }
 
   .footer {
