@@ -1,24 +1,34 @@
 import React, { Component } from 'react';
 import APIService from '../../Services/APIService';
+import PaymentService from '../../Services/PaymentService';
 
 export class UserPanel extends Component {
   state = {
-    data: {}
+    user: {}
   };
 
   componentDidMount() {
-    APIService.get('api/Auth/me').then(data => {
-      this.setState({ data });
+    APIService.get('api/user/me').then(user => {
+      this.setState({ user });
     });
   }
 
+  handlePayout() {
+    PaymentService.payout('12312412412');
+  }
+
   render() {
+    const { user } = this.state;
     return (
       <div>
-        <pre>{JSON.stringify(this.state.data, null, 2)}</pre>
-        {this.state.data && this.state.data.pictureUrl && (
-          <img src={this.state.data.pictureUrl} alt={this.state.username} />
-        )}
+        <p> moje dane</p>
+        <pre>{JSON.stringify(user, null, 2)}</pre>
+        {user.pictureUrl && <img src={user.pictureUrl} alt={user.username} />}
+        <p> wypłać kasę </p>
+        <button onClick={() => this.handlePayout()}>
+          wypłać {user.balance}zł
+        </button>
+        <p> moje notatki</p>
       </div>
     );
   }

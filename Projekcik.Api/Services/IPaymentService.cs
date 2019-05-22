@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis;
+using log4net;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -15,12 +14,17 @@ namespace Projekcik.Api.Services
     public interface IPaymentService
     {
         string CreateOrder(Note[] notes, User user, string userIpAddress);
-
         void UpdateTransaction(PayUPaymentService.PaymentStatus status);
+        Transaction GetTransactionDetails(Guid transId);
+
+        void CreatePayout(User user, PayUPaymentService.PayoutParameters payoutParameters);
     }
 
     public class PayUPaymentService : IPaymentService
     {
+        private static readonly ILog _log =
+            LogManager.GetLogger(typeof(PayUPaymentService));
+
         private readonly IConfiguration _configuration;
         private readonly DataContext _context;
         private readonly INoteService _noteService;
@@ -28,9 +32,10 @@ namespace Projekcik.Api.Services
         private readonly string baseUrl;
         private readonly string clientId;
         private readonly string clientSecret;
-        private string md5;
         private readonly string notifyUrl;
         private readonly string posId;
+        private readonly string shopId;
+        private string md5;
 
         public PayUPaymentService(IConfiguration configuration, DataContext context, INoteService noteService)
         {
@@ -40,13 +45,11 @@ namespace Projekcik.Api.Services
             baseUrl = _configuration["PayU:Url"];
             posId = _configuration["PayU:PosId"];
             clientId = _configuration["PayU:ClientId"];
+            shopId = _configuration["PayU:ShopId"];
             clientSecret = _configuration["PayU:ClientSecret"];
             md5 = _configuration["PayU:Md5"];
             notifyUrl = _configuration["PayU:NotifyUrl"];
         }
-
-        private static readonly log4net.ILog _log =
-            log4net.LogManager.GetLogger(typeof(PayUPaymentService));
 
 
         public void UpdateTransaction(PaymentStatus status)
@@ -56,7 +59,7 @@ namespace Projekcik.Api.Services
 
             var transactionId = Guid.Parse(status.Order.ExtOrderId);
             var transaction = _context.Transactions.Find(transactionId);
-            if(transaction == null)
+            if (transaction == null)
                 throw new Exception("transaction does not exist");
 
             // if completed, no more processing
@@ -64,7 +67,7 @@ namespace Projekcik.Api.Services
                 return;
 
             var orderStatus = status.Order.Status;
-            if (orderStatus.Equals("COMPLETED", StringComparison.InvariantCultureIgnoreCase)) 
+            if (orderStatus.Equals("COMPLETED", StringComparison.InvariantCultureIgnoreCase))
                 transaction.Status = TransactionStatus.Completed;
             _context.SaveChanges();
 
@@ -74,17 +77,28 @@ namespace Projekcik.Api.Services
 
             var userId = transaction.BuyerId;
             var user = _context.Users.Find(userId);
-            if(user == null)
+            if (user == null)
                 throw new Exception("user does not exist");
 
             var noteIds = transaction.OrderedNotesIds.ToArray();
             var notes = _context.Notes.Where(x => noteIds.Contains(x.Id)).ToArray();
-            if(!noteIds.Any() && notes.Length != noteIds.Length)
+            if (!noteIds.Any() && notes.Length != noteIds.Length)
                 throw new Exception("invalid notes selected");
 
             foreach (var note in notes)
                 _noteService.Buy(user, note);
             _context.SaveChanges();
+        }
+
+        public void CreatePayout(User user, PayoutParameters payoutParameters)
+        {
+            var authToken = GetAuthToken();
+            var request = PreparePayout(user, payoutParameters);
+            var result = ProceedPayout(authToken, request);
+
+            if (!result.Status.StatusCode.Equals("SUCCESS", StringComparison.InvariantCultureIgnoreCase))
+                throw new Exception("error creating payout",
+                    new Exception(JsonConvert.SerializeObject(result.Status)));
         }
 
         public string CreateOrder(Note[] notes, User user, string userIpAddress)
@@ -94,6 +108,42 @@ namespace Projekcik.Api.Services
             var result = PlaceOrder(authToken, order);
 
             return result.RedirectUri;
+        }
+
+        public Transaction GetTransactionDetails(Guid transId)
+        {
+            return _context.Transactions.Find(transId);
+        }
+
+        private PayoutRequest PreparePayout(User user, PayoutParameters payoutParameters)
+        {
+            return new PayoutRequest
+            {
+                Account = new Account {AccountNumber = payoutParameters.AccountNumber},
+                CustomerAddress = new CustomerAddress {Name = $"{user.FirstName} {user.LastName}"},
+                Payout = new Payout {Amount = ConvertPrice(user.Balance), Description = "Wypłata ze sklepu"},
+                ShopId = shopId
+            };
+        }
+
+        private PayoutResponse ProceedPayout(string authToken, PayoutRequest request)
+        {
+            var handler = new HttpClientHandler {AllowAutoRedirect = false};
+            using (var httpClient = new HttpClient(handler) {BaseAddress = new Uri(baseUrl)})
+            {
+                httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", $"Bearer {authToken}");
+
+                var camelCaseSettings = new JsonSerializerSettings
+                    {ContractResolver = new CamelCasePropertyNamesContractResolver()};
+                var orderSerialized = JsonConvert.SerializeObject(request, Formatting.None, camelCaseSettings);
+
+                using (var content = new StringContent(orderSerialized, Encoding.UTF8, "application/json"))
+                using (var response = httpClient.PostAsync("api/v2_1/payouts/", content).Result)
+                {
+                    var responseData = response.Content.ReadAsStringAsync().Result;
+                    return JsonConvert.DeserializeObject<PayoutResponse>(responseData);
+                }
+            }
         }
 
         private Order PrepareOrder(Note[] notes, User user, string userIpAddress)
@@ -126,6 +176,7 @@ namespace Projekcik.Api.Services
                 CustomerIp = userIpAddress,
                 MerchantPosId = posId,
                 NotifyUrl = notifyUrl,
+                ContinueUrl = $"http://localhost:3000/order-details/{transaction.Id}",
                 ExtOrderId = transaction.Id.ToString()
             };
         }
@@ -133,12 +184,12 @@ namespace Projekcik.Api.Services
         private OrderResponse PlaceOrder(string authToken, Order order)
         {
             var handler = new HttpClientHandler {AllowAutoRedirect = false};
-            using (var httpClient = new HttpClient(handler) { BaseAddress = new Uri(baseUrl) })
+            using (var httpClient = new HttpClient(handler) {BaseAddress = new Uri(baseUrl)})
             {
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", $"Bearer {authToken}");
 
                 var camelCaseSettings = new JsonSerializerSettings
-                { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+                    {ContractResolver = new CamelCasePropertyNamesContractResolver()};
                 var orderSerialized = JsonConvert.SerializeObject(order, Formatting.None, camelCaseSettings);
 
                 using (var content = new StringContent(orderSerialized, Encoding.UTF8, "application/json"))
@@ -152,7 +203,7 @@ namespace Projekcik.Api.Services
 
         private string GetAuthToken()
         {
-            using (var httpClient = new HttpClient { BaseAddress = new Uri(baseUrl) })
+            using (var httpClient = new HttpClient {BaseAddress = new Uri(baseUrl)})
             using (var content = new StringContent(
                 $"grant_type=client_credentials&client_id={clientId}&client_secret={clientSecret}",
                 Encoding.Default, "application/x-www-form-urlencoded"))
@@ -166,10 +217,44 @@ namespace Projekcik.Api.Services
 
         private int ConvertPrice(decimal x)
         {
-            return (int)(x * 100);
+            return (int) (x * 100);
         }
 
         #region model
+
+        public class PayoutParameters
+        {
+            public string AccountNumber { get; set; }
+        }
+
+        public class PayoutRequest
+        {
+            public string ShopId { get; set; }
+            public Payout Payout { get; set; }
+            public Account Account { get; set; }
+            public CustomerAddress CustomerAddress { get; set; }
+        }
+
+        public class Payout
+        {
+            public int Amount { get; set; }
+            public string Description { get; set; }
+        }
+
+        public class PayoutResponse
+        {
+            public Status Status { get; set; }
+        }
+
+        public class Account
+        {
+            public string AccountNumber { get; set; }
+        }
+
+        public class CustomerAddress
+        {
+            public string Name { get; set; }
+        }
 
         public class PaymentStatus
         {
@@ -221,6 +306,8 @@ namespace Projekcik.Api.Services
             public string ExtOrderId { get; set; }
             public Buyer Buyer { get; set; }
             public string Status { get; set; }
+            public string ContinueUrl { get; set; }
+
             public IEnumerable<Product> Products { get; set; }
         }
 

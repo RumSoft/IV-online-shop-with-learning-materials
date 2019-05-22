@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Projekcik.Api.Models;
 
 namespace Projekcik.Api.Services
@@ -68,14 +65,12 @@ namespace Projekcik.Api.Services
             return user;
         }
 
-        public void Update(User user, string password = null)
+        public void PayoutBalance(User user, decimal money)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(Guid id)
-        {
-            throw new NotImplementedException();
+            if (money < 0)
+                throw new ArgumentOutOfRangeException(nameof(money), "Cannot payout negative value");
+            user.Balance -= money;
+            _context.SaveChanges();
         }
 
         private string HashPassword(string password)

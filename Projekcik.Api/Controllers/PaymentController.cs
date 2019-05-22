@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using log4net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,15 +17,13 @@ namespace Projekcik.Api.Controllers
     [Route("api/[controller]")]
     public class PaymentController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
+        private static readonly ILog _log =
+            LogManager.GetLogger(typeof(UniController));
+
         private readonly INoteService _noteService;
+        private readonly IPaymentService _paymentService;
         private readonly IHttpContextAccessor _user;
         private readonly IUserService _userService;
-        private readonly IPaymentService _paymentService;
-        private readonly DataContext _context;
-
-        private static readonly log4net.ILog _log =
-            log4net.LogManager.GetLogger(typeof(UniController));
 
         public PaymentController(
             IConfiguration configuration,
@@ -33,12 +32,10 @@ namespace Projekcik.Api.Controllers
             IHttpContextAccessor user,
             IPaymentService paymentService, DataContext context)
         {
-            _configuration = configuration;
             _noteService = noteService;
             _userService = userService;
             _user = user;
             _paymentService = paymentService;
-            _context = context;
         }
 
         [Authorize]
@@ -50,7 +47,8 @@ namespace Projekcik.Api.Controllers
             if (user == null)
                 return Unauthorized();
 
-            var notes = input?.Select(x => _noteService.GetNoteById(x)).Where(x => x != null).ToArray() ?? new Note[0];
+            var notes = input?.Select(x => _noteService.GetNoteById(x)).Where(x => x != null && x.AuthorId != userId)
+                            .ToArray() ?? new Note[0];
             if (!notes.Any())
                 return BadRequest();
 
@@ -62,13 +60,17 @@ namespace Projekcik.Api.Controllers
             {
                 _log.Info($"Creating payment link for user: {userId}");
                 var redirect = _paymentService.CreateOrder(notes, user, ipAddress);
-               return RedirectPreserveMethod(redirect);
+                return Ok(new
+                {
+                    redirectUrl = redirect
+                });
             }
             catch (Exception e)
             {
-                _log.Warn($"Couldn't create payment link, reason: {e.Message}, inner: {e.InnerException?.Message ?? "none"}\n" +
-                          $"userId={userId}, " +
-                          $"selectedNotes={string.Join(", ", notes.Select(x => x.Id))}");
+                _log.Warn(
+                    $"Couldn't create payment link, reason: {e.Message}, inner: {e.InnerException?.Message ?? "none"}\n" +
+                    $"userId={userId}, " +
+                    $"selectedNotes={string.Join(", ", notes.Select(x => x.Id))}");
 
                 return BadRequest(e);
             }
@@ -76,7 +78,7 @@ namespace Projekcik.Api.Controllers
 
         private Task UpdatePaymentStatusAsync(PayUPaymentService.PaymentStatus status)
         {
-            return Task.Run(()  => 
+            return Task.Run(() =>
             {
                 try
                 {
@@ -87,7 +89,7 @@ namespace Projekcik.Api.Controllers
                 {
                     _log.Warn(
                         $"Transaction notify failed, reason: {e.Message}, inner: {e.InnerException?.Message ?? "none"}" +
-                        $"\n entity:\n" +
+                        "\n entity:\n" +
                         $"{JsonConvert.SerializeObject(status, Formatting.Indented)}");
                 }
             });
@@ -110,10 +112,61 @@ namespace Projekcik.Api.Controllers
             if (!sandboxNotifyAddresses.Select(IPAddress.Parse).Contains(clientIp))
                 return StatusCode(418);
 
-
             UpdatePaymentStatusAsync(status);
-            
+
             return Ok();
+        }
+
+        [HttpPost("payout")]
+        public IActionResult Payout([FromBody] PayUPaymentService.PayoutParameters payoutParameters)
+        {
+            var userId = _user.GetCurrentUserId();
+            var user = _userService.GetById(userId);
+            if (user == null)
+                return Unauthorized();
+
+            if (user.Balance <= 1m)
+                return BadRequest();
+
+            try
+            {
+                _log.Info($"Creating payout for user: {userId} for {user.Balance}zł");
+                _paymentService.CreatePayout(user, payoutParameters);
+                _log.Info($"Successfully payed out {user.Balance}zł for user: {userId}");
+                _userService.PayoutBalance(user, user.Balance);
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                _log.Warn(
+                    $"Couldn't create payout link, reason: {e.Message}, inner: {e.InnerException?.Message ?? "none"}\n" +
+                    $"userId={userId}, " +
+                    $"params: {JsonConvert.SerializeObject(payoutParameters)}");
+                return BadRequest(e);
+            }
+        }
+
+        [HttpGet("order-details/{transactionId}")]
+        public IActionResult GetTransactionDetails(string transactionId)
+        {
+            Guid.TryParse(transactionId, out var transId);
+            var transaction = _paymentService.GetTransactionDetails(transId);
+            if (transaction == null)
+                return NotFound();
+
+            var noteIds = transaction.OrderedNotesIds;
+            var notes = _noteService.GetQuery().Where(x => noteIds.Contains(x.Id));
+
+            return Ok(new
+            {
+                status = transaction.Status,
+                notes = notes.Select(x => new
+                {
+                    x.Id,
+                    x.Name
+                })
+            });
         }
     }
 }

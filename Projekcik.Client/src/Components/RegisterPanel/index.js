@@ -50,7 +50,7 @@ export default class RegisterPage extends Component {
       emailAddress: this.state.emailAddress,
       password: this.state.password
     })
-      .then(() => window.localStorage.removeItem('token'))
+      .then(() => window.localStorage.removeItem('auth_token'))
       .then(() => (window.location.href = `${baseUrl}/login`))
       .catch(error => {
         this.setState({
