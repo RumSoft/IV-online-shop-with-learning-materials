@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import AuthService from '../../Services/AuthService';
 import './index.scss';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 export default class RegisterPage extends Component {
   state = {
@@ -18,7 +19,8 @@ export default class RegisterPage extends Component {
     password: '',
     confirmPassword: '',
     errorMessage: null,
-    loading: false
+    loading: false,
+    captchaValue: null
   };
 
   handleChange = event => {
@@ -42,6 +44,13 @@ export default class RegisterPage extends Component {
       });
       return;
     }
+    if (this.state.captchaValue == null) {
+      this.setState({
+        errorMessage: 'Jesteś robotem!',
+        loading: false
+      });
+      return;
+    }
 
     AuthService.register({
       firstName: this.state.firstName,
@@ -58,6 +67,18 @@ export default class RegisterPage extends Component {
           loading: false
         });
       });
+  };
+
+  onCaptchaExpired = event => {
+    this.setState({
+      captchaValue: null
+    });
+  };
+
+  onCaptchaChange = event => {
+    this.setState({
+      captchaValue: event
+    });
   };
 
   render() {
@@ -126,6 +147,13 @@ export default class RegisterPage extends Component {
               value={this.state.confirmPassword}
               onChange={this.handleChange}
             />
+
+            <ReCAPTCHA
+              sitekey="6LcJq6QUAAAAALUopg2VSs4evUII1XmMH159bRFl"
+              onChange={this.onCaptchaChange}
+              onExpired={this.onCaptchaExpired}
+            />
+
             <Button
               type="submit"
               className="button-submit"
