@@ -96,7 +96,7 @@ namespace Projekcik.Api.Services
                 NoteId = note.Id
             };
             _context.Add(link);
-            user.Balance += note.Price;
+            _context.Users.Find(note.AuthorId).Balance += note.Price;
             _context.SaveChanges();
         }
     }
