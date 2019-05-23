@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { CircularProgress, Paper, Typography } from '@material-ui/core';
 import { Card, Button } from 'reactstrap';
-import { Redirect } from 'react-router-dom';
 import CartService from '../../Services/CartService';
+import ShowNoteButton from '../Buttons/ShowNoteButton';
 
 import './index.scss';
 import PaymentService from '../../Services/PaymentService';
@@ -26,22 +26,8 @@ export default class ShoppingCart extends Component {
     });
   };
 
-  handleBuy() {
-    let noteIds = this.state.notes.map(x => x.id);
-    console.log(noteIds);
-
-    PaymentService.placeOrder(noteIds).then(r => {
-      window.location.href = r.redirectUrl;
-    });
-  }
-
-  redirectToNote(id) {
-    this.setState({ redirect: `/note/${id}` });
-  }
-
   render() {
     const { loaded } = this.state;
-    if (this.state.redirect) return <Redirect to={this.state.redirect} />;
     return (
       <Paper className="cart-list">
         <Typography variant="h5" className="my-cart">
@@ -87,14 +73,11 @@ export default class ShoppingCart extends Component {
                         &nbsp; {note.course.name}
                       </Typography>
                     </div>
-                    <div className="view-note">
-                      <button
-                        className="btn btn-md"
-                        onClick={() => this.redirectToNote(note.id)}>
-                        <i className="fa fa-book-open" />
-                        <span> Zobacz notatkę</span>
-                      </button>
-                    </div>
+                    <ShowNoteButton
+                      className="view-note"
+                      id={note.id}
+                      text="Zobacz notatkę"
+                    />
                   </div>
                   <div className="note-price">
                     <Typography variant="h5" className="pb-3 mr-1">
