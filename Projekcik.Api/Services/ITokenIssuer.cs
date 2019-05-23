@@ -1,7 +1,7 @@
-﻿using Projekcik.Api.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Projekcik.Api.Models;
 
 namespace Projekcik.Api.Services
 {

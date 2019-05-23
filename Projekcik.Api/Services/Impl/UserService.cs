@@ -2,7 +2,7 @@
 using System.Linq;
 using Projekcik.Api.Models;
 
-namespace Projekcik.Api.Services
+namespace Projekcik.Api.Services.Impl
 {
     public class UserService : IUserService
     {

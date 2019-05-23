@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using Projekcik.Api.Models;
 
-namespace Projekcik.Api.Services
+namespace Projekcik.Api.Services.Impl
 {
     public class NoteService : INoteService
     {
