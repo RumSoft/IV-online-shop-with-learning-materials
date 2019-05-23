@@ -102,12 +102,24 @@ namespace Projekcik.Api
                 .AllowAnyMethod()
                 .AllowAnyHeader());
 
-            app.UseMvc(routes =>
+            app.Use(async (context, next) =>
             {
-                routes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new {controller = "Home", Action = "Index"});
+                await next();
+                var path = context.Request.Path.Value;
+
+                if (!path.StartsWith("/api", StringComparison.InvariantCultureIgnoreCase) && !Path.HasExtension(path))
+                {
+                    context.Request.Path = "/index.html";
+                    await next();
+                }
             });
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
+            app.UseMvc();
+
+          
 
             if (env.IsDevelopment())
                 app.UseSpa(spa =>
@@ -118,8 +130,7 @@ namespace Projekcik.Api
 
             Mapper.Initialize(x => x.AddProfile(new AutoMapperProfile()));
 
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
+         
 
             loggerFactory.AddLog4Net();
            
