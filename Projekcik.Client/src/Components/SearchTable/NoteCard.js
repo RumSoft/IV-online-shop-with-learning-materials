@@ -1,46 +1,12 @@
-import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import { Button } from 'reactstrap';
-import {
-  Grid,
-  Card,
-  Typography,
-  Snackbar,
-  SnackbarContent
-} from '@material-ui/core';
-import CartService from '../../Services/CartService';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { Grid, Card, Typography } from '@material-ui/core';
 import './index.scss';
+import { ShowNoteButton, AddToCartButton } from '../Buttons';
 
-export default class NoteCard extends React.Component {
-  state = {
-    redirect: null,
-    renderSnackbar: false,
-    open: false
-  };
-
-  handleClick = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    this.setState({ open: false });
-  };
-
-  redirectToNote = id => {
-    this.setState({ redirect: `/note/${id}` });
-  };
-
-  addToCart = noteID => {
-    CartService.addNoteToCart(noteID);
-    this.setState({ open: true });
-  };
-
+export default class NoteCard extends Component {
   render() {
     const { note } = this.props;
-    if (this.state.redirect) return <Redirect to={this.state.redirect} />;
 
     return (
       <Grid item sm={6}>
@@ -73,32 +39,8 @@ export default class NoteCard extends React.Component {
             </dl>
           </div>
           <div className="btn-group">
-            <Button
-              className="btn note btn-md rounded-right"
-              onClick={() => this.redirectToNote(note.id)}>
-              <i className="fa fa-book-open" />
-              <span> Zobacz notatkę</span>
-            </Button>
-            <Button
-              className="btn cart btn-md rounded-left rounded-right"
-              disabled={CartService.exists(note.id)}
-              onClick={() => this.addToCart(note.id)}>
-              <i className="fa fa-shopping-cart" />
-              <span> Dodaj do koszyka</span>
-            </Button>
-            <Snackbar
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left'
-              }}
-              open={this.state.open}
-              autoHideDuration={6000}
-              onClose={this.handleClose}>
-              <SnackbarContent
-                onClose={this.handleClose}
-                message="Dodano notatkę do koszyka!"
-              />
-            </Snackbar>
+            <ShowNoteButton text="Zobacz notatkę" id={note.id} />
+            <AddToCartButton id={note.id} />
           </div>
         </Card>
       </Grid>

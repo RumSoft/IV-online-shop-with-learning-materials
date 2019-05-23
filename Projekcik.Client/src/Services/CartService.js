@@ -3,7 +3,7 @@ import NoteService from './NoteService';
 const _cart = 'cart_notes';
 
 export default class CartService {
-  static addNoteToCart(noteID) {
+  static add(noteID) {
     if (!this.exists(noteID)) this.set([...this.get(), noteID]);
   }
 

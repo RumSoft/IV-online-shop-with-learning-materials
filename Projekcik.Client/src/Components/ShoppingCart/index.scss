@@ -18,6 +18,10 @@ hr {
 .cart-note {
   background-color: #eef1fc;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  cursor: context-menu;
+  &:hover {
+    background-color: #cfd9fd;
+  }
 
   .note-image {
     width: 200;

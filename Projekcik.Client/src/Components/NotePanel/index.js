@@ -1,21 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
-import {
-  Card,
-  CardContent,
-  Typography,
-  Button,
-  ListItemText
-} from '@material-ui/core';
+import { Card, CardContent, Typography, ListItemText } from '@material-ui/core';
 import HrLabel from '../HrLabel/index';
 import NoteService from '../../Services/NoteService';
 import NotePanelPlaceholder from './NotePanelPlaceholder';
 import ReactPlaceholder from 'react-placeholder';
 import 'react-placeholder/lib/reactPlaceholder.css';
-import { Redirect } from 'react-router-dom';
-import { CartService } from '../../Services';
 import './index.scss';
+import { BigAddToCartButton } from '../Buttons';
 
 export default class NotePanel extends Component {
   constructor(props) {
@@ -28,15 +21,8 @@ export default class NotePanel extends Component {
     });
   }
 
-  addToCart = noteID => {
-    CartService.addNoteToCart(noteID);
-    this.setState({ open: true, redirectToCart: `/cart` });
-  };
-
   render() {
     const note = this.state.note;
-    if (this.state.redirectToCart)
-      return <Redirect to={this.state.redirectToCart} />;
 
     return (
       <div>
@@ -105,18 +91,11 @@ export default class NotePanel extends Component {
                   </Grid>
                   <Grid item xs={12} sm={6} md={4} lg={4}>
                     <Card className="note-info">
-                      <Button
-                        fullWidth
-                        type="submit"
-                        disabled={CartService.exists(note.id)}
-                        className="button submit p-3 mb-2 text-white add-to-cart"
-                        onClick={() => this.addToCart(note.id)}>
-                        <p className="price">
-                          <i className="fa fa-shopping-cart" />{' '}
-                          <span>{note.price} zł</span>
-                        </p>
-                        <p className="label">Dodaj do koszyka</p>
-                      </Button>
+                      <BigAddToCartButton
+                        className="add-to-cart"
+                        id={note.id}
+                        price={note.price}
+                      />
                       <div className="note-author">
                         <HrLabel text="Autor" />
                         <Link to={`/user/${note.author.id}`}>

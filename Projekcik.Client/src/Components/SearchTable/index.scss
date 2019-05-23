@@ -94,13 +94,16 @@ hr {
 
   .btn {
     margin: 3px;
-    width: 180px;
     &.cart {
+      width: 250px;
       color: white;
       background-color: #3f51b5;
       border-color: #16288d;
       &:hover {
         background-color: #16288d;
+      }
+      &:disabled {
+        background-color: #5c6268;
       }
     }
     &.note {
