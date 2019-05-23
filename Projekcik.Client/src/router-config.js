@@ -9,6 +9,7 @@ import UploadPage from './Pages/Upload';
 import SearchPage from './Pages/Search';
 import NotePage from './Pages/Note';
 import CartPage from './Pages/Cart';
+import OrderDetails from './Pages/OrderDetails';
 
 const routes = [
   {
@@ -59,6 +60,10 @@ const protectedRoutes = [
   {
     path: '/upload',
     component: UploadPage
+  },
+  {
+    path: '/order-details/:id',
+    component: OrderDetails
   }
 ];
 

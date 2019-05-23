@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace Projekcik.Api.Services
+namespace Projekcik.Api.Services.Impl
 {
     public class PBKDF2HashSerivce : IHashService
     {

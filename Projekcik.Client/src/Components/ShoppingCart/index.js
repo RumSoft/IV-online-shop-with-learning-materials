@@ -5,14 +5,13 @@ import { Redirect } from 'react-router-dom';
 import CartService from '../../Services/CartService';
 
 import './index.scss';
+import PaymentService from '../../Services/PaymentService';
 
 export default class ShoppingCart extends Component {
   constructor(props) {
     super(props);
 
-    CartService.getCartNotes().then(x =>
-      this.setState({ notes: x, loaded: true })
-    );
+    CartService.getNotes().then(x => this.setState({ notes: x, loaded: true }));
   }
 
   state = {
@@ -21,15 +20,24 @@ export default class ShoppingCart extends Component {
   };
 
   handleRemove = noteID => {
-    CartService.removeNoteFromCart(noteID);
+    CartService.remove(noteID);
     this.setState({
       notes: this.state.notes.filter(x => x.id !== noteID)
     });
   };
 
-  redirectToNote = id => {
+  handleBuy() {
+    let noteIds = this.state.notes.map(x => x.id);
+    console.log(noteIds);
+
+    PaymentService.placeOrder(noteIds).then(r => {
+      window.location.href = r.redirectUrl;
+    });
+  }
+
+  redirectToNote(id) {
     this.setState({ redirect: `/note/${id}` });
-  };
+  }
 
   render() {
     const { loaded } = this.state;
@@ -56,9 +64,6 @@ export default class ShoppingCart extends Component {
                   />
 
                   <div className="note-main">
-                    <Typography variant="caption" className="pb-2">
-                      {note.id}
-                    </Typography>
                     <Typography variant="h5" className="name pb-2">
                       {note.name}
                     </Typography>
@@ -121,6 +126,7 @@ export default class ShoppingCart extends Component {
           </Typography>
           <Button
             className="btn dollar btn-md"
+            onClick={() => this.handleBuy()}
             disabled={this.state.notes.length === 0}>
             <i className="fa fa-dollar-sign" />
             <span> Złóż zamówienie</span>

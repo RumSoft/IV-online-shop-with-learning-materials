@@ -1,6 +1,8 @@
 import APIService from './APIService';
 import decode from 'jwt-decode';
 
+const authToken = 'auth_token';
+
 export default class AuthService {
   static register(userData) {
     return APIService.post('api/Auth/register', userData);
@@ -17,23 +19,26 @@ export default class AuthService {
   }
 
   static handleLogin(data) {
-    window.localStorage.setItem('token', `${data.token}`);
+    window.localStorage.setItem(authToken, `${data.token}`);
   }
 
   static logout() {
     if (this.isAuthenticated()) {
-      window.localStorage.removeItem('token');
+      window.localStorage.removeItem(authToken);
     }
   }
 
   static isAuthenticated() {
-    let jwtToken = window.localStorage.getItem('token');
-    if (!jwtToken) {
-      window.localStorage.removeItem('token');
-      return false;
-    } else {
+    let jwtToken = window.localStorage.getItem(authToken);
+    if (
+      jwtToken &&
+      jwtToken.length &&
+      jwtToken != undefined &&
+      jwtToken != 'undefined'
+    ) {
       let payload = decode(jwtToken);
       return payload.exp > new Date().getTime() / 1000 ? true : false;
     }
+    return false;
   }
 }

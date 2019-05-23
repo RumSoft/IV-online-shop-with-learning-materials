@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using Projekcik.Api.Models;
 
-namespace Projekcik.Api.Services
+namespace Projekcik.Api.Services.Impl
 {
     public class NoteService : INoteService
     {
@@ -17,11 +16,6 @@ namespace Projekcik.Api.Services
         public Note GetNoteById(Guid id)
         {
             return _context.Notes
-                .Include(x => x.Author)
-                .Include(x => x.Buyers)
-                .Include(x => x.Course)
-                .ThenInclude(x => x.University)
-                .ThenInclude(x => x.Voivodeship)
                 .FirstOrDefault(x => x.Id == id);
         }
 
@@ -95,8 +89,8 @@ namespace Projekcik.Api.Services
                 Note = note,
                 NoteId = note.Id
             };
-
             _context.Add(link);
+            _context.Users.Find(note.AuthorId).Balance += note.Price;
             _context.SaveChanges();
         }
     }

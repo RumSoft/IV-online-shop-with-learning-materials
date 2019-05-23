@@ -1,24 +1,17 @@
-﻿using Microsoft.IdentityModel.Logging;
-using Microsoft.IdentityModel.Tokens;
-using Projekcik.Api.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
+using Projekcik.Api.Models;
 
-namespace Projekcik.Api.Services
+namespace Projekcik.Api.Services.Impl
 {
     public class TokenIssuer : ITokenIssuer
     {
         private readonly JwtSecurityTokenHandler _tokenHandler;
-        public string Issuer { get; set; }
-        public string Audience { get; set; }
-        public string SecurityKey { get; set; }
-
-        protected SecurityKey SigningKey => new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecurityKey));
 
         public TokenIssuer()
         {
@@ -27,6 +20,11 @@ namespace Projekcik.Api.Services
             _tokenHandler.OutboundClaimTypeMap.Clear();
             _tokenHandler.InboundClaimTypeMap.Clear();
         }
+
+        protected SecurityKey SigningKey => new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecurityKey));
+        public string Issuer { get; set; }
+        public string Audience { get; set; }
+        public string SecurityKey { get; set; }
 
         public JwtSecurityToken Issue(IEnumerable<Claim> claims)
         {
@@ -45,7 +43,8 @@ namespace Projekcik.Api.Services
 
         public string Issue(User user)
         {
-            var claims = new[] {
+            var claims = new[]
+            {
                 new Claim(ClaimTypes.Sid, user.Id.ToString()),
                 new Claim(ClaimTypes.Email, user.EmailAddress),
                 new Claim(ClaimTypes.Name, user.FirstName),
@@ -77,7 +76,6 @@ namespace Projekcik.Api.Services
                 // when token is null
                 return false;
             }
-
         }
 
         public string SerializeToken(JwtSecurityToken token)

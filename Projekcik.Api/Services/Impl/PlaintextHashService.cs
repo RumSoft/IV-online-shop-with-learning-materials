@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Projekcik.Api.Services
+﻿namespace Projekcik.Api.Services.Impl
 {
     public class PlaintextHashService : IHashService
     {
@@ -19,7 +14,7 @@ namespace Projekcik.Api.Services
 
         public string HashPassword(string input, string salt)
         {
-            return input+':'+salt;
+            return input + ':' + salt;
         }
     }
 }

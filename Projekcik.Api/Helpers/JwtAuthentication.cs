@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Projekcik.Api.Services;
+using Projekcik.Api.Services.Impl;
 
 namespace Projekcik.Api.Helpers
 {

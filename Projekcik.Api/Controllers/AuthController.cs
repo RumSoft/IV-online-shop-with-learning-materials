@@ -3,7 +3,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Projekcik.Api.Helpers;
 using Projekcik.Api.Models;
 using Projekcik.Api.Models.DTO;
 using Projekcik.Api.Services;
@@ -60,15 +59,6 @@ namespace Projekcik.Api.Controllers
             {
                 return BadRequest(new {message = ex.Message});
             }
-        }
-
-        [HttpGet("me")]
-        public IActionResult GetById()
-        {
-            var userId = _user.GetCurrentUserId();
-            var user = _userService.GetById(userId);
-            var userDto = Mapper.Map<UserDto>(user);
-            return Ok(userDto);
         }
     }
 }

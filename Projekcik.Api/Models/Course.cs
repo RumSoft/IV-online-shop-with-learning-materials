@@ -11,7 +11,7 @@ namespace Projekcik.Api.Models
         public string Name { get; set; }
         public string ImageUrl { get; set; }
 
-        public IEnumerable<University> Universities { get; set; }
+        public virtual IEnumerable<University> Universities { get; set; }
 
         public static void OnModelCreating(EntityTypeBuilder<Voivodeship> entity)
         {
@@ -40,8 +40,8 @@ namespace Projekcik.Api.Models
         public string ImageUrl { get; set; }
 
         public int VoivodeshipId { get; set; }
-        public Voivodeship Voivodeship { get; set; }
-        public IEnumerable<Course> Courses { get; set; }
+        public virtual Voivodeship Voivodeship { get; set; }
+        public virtual IEnumerable<Course> Courses { get; set; }
 
         public static void OnModelCreating(EntityTypeBuilder<University> entity)
         {
@@ -68,8 +68,8 @@ namespace Projekcik.Api.Models
         public string Name { get; set; }
 
         public int UniversityId { get; set; }
-        public University University { get; set; }
-        public IEnumerable<Note> Notes { get; set; }
+        public virtual University University { get; set; }
+        public virtual IEnumerable<Note> Notes { get; set; }
 
         public static void OnModelCreating(EntityTypeBuilder<Course> entity)
         {
