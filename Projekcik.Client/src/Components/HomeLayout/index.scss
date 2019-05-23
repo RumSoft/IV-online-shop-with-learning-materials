@@ -16,16 +16,20 @@
     display: flex;
     .btn {
       margin: 3px;
-      width: 180px;
       &.cart {
+        width: 120px;
         color: white;
         background-color: #3f51b5;
         border-color: #16288d;
         &:hover {
           background-color: #16288d;
         }
+        &:disabled {
+          background-color: #5c6268;
+        }
       }
       &.note {
+        width: 100%;
         color: black;
         background: linear-gradient(to top, #f47a20, #faa51a);
 
