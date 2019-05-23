@@ -81,7 +81,7 @@ export default class NoteCard extends React.Component {
             </Button>
             <Button
               className="btn cart btn-md rounded-left rounded-right"
-              disabled={CartService.checkDuplicate(note.id)}
+              disabled={CartService.exists(note.id)}
               onClick={() => this.addToCart(note.id)}>
               <i className="fa fa-shopping-cart" />
               <span> Dodaj do koszyka</span>

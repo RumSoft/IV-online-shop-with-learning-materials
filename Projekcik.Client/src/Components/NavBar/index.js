@@ -102,7 +102,7 @@ export default class NavBar extends Component {
                   <NavLink tag={Link} to="/cart" className="text-dark">
                     <div className="d-none d-sm-block button btn btn-default">
                       <Badge
-                        badgeContent={CartService.cartNoteCount()}
+                        badgeContent={CartService.count()}
                         showZero={false}
                         color="secondary">
                         <ShopIcon />
@@ -114,7 +114,7 @@ export default class NavBar extends Component {
                   <NavLink tag={Link} to="/cart" className="text-dark">
                     <div className="d-sm-none link">
                       <Badge
-                        badgeContent={CartService.cartNoteCount()}
+                        badgeContent={CartService.count()}
                         showZero={false}
                         color="secondary">
                         <ShopIcon />

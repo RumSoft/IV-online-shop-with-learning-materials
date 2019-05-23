@@ -108,7 +108,7 @@ export default class NotePanel extends Component {
                       <Button
                         fullWidth
                         type="submit"
-                        disabled={CartService.checkDuplicate(note.id)}
+                        disabled={CartService.exists(note.id)}
                         className="button submit p-3 mb-2 text-white add-to-cart"
                         onClick={() => this.addToCart(note.id)}>
                         <p className="price">

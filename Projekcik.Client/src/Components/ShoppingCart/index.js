@@ -11,9 +11,7 @@ export default class ShoppingCart extends Component {
   constructor(props) {
     super(props);
 
-    CartService.getCartNotes().then(x =>
-      this.setState({ notes: x, loaded: true })
-    );
+    CartService.getNotes().then(x => this.setState({ notes: x, loaded: true }));
   }
 
   state = {
@@ -22,7 +20,7 @@ export default class ShoppingCart extends Component {
   };
 
   handleRemove = noteID => {
-    CartService.removeNoteFromCart(noteID);
+    CartService.remove(noteID);
     this.setState({
       notes: this.state.notes.filter(x => x.id !== noteID)
     });
