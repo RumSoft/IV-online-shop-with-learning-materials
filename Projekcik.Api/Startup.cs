@@ -102,11 +102,13 @@ namespace Projekcik.Api
                 .AllowAnyMethod()
                 .AllowAnyHeader());
 
+            loggerFactory.AddLog4Net();
+
             app.Use(async (context, next) =>
             {
                 await next();
                 var path = context.Request.Path.Value;
-
+                _logger.LogWarning($"path is: {path}");
                 if (!path.StartsWith("/api", StringComparison.InvariantCultureIgnoreCase) && !Path.HasExtension(path))
                 {
                     context.Request.Path = "/index.html";
@@ -128,7 +130,6 @@ namespace Projekcik.Api
 
             Mapper.Initialize(x => x.AddProfile(new AutoMapperProfile()));
 
-            loggerFactory.AddLog4Net();
           
         }
     }
