@@ -117,9 +117,7 @@ namespace Projekcik.Api
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
-            app.UseMvc();
-
-          
+            app.UseMvc();        
 
             if (env.IsDevelopment())
                 app.UseSpa(spa =>
@@ -130,10 +128,8 @@ namespace Projekcik.Api
 
             Mapper.Initialize(x => x.AddProfile(new AutoMapperProfile()));
 
-         
-
             loggerFactory.AddLog4Net();
-           
+          
         }
     }
 }
