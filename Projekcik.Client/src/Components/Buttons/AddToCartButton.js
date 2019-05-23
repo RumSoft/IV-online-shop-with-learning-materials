@@ -5,12 +5,12 @@ import { Snackbar, SnackbarContent } from '@material-ui/core';
 
 export default class ShowNoteButton extends Component {
   state = {
-    disabled: CartService.checkDuplicate(this.props.id),
+    disabled: CartService.exists(this.props.id),
     open: false
   };
 
   addToCart = noteID => {
-    CartService.addNoteToCart(noteID);
+    CartService.add(noteID);
     this.setState({ open: true, disabled: true });
   };
 

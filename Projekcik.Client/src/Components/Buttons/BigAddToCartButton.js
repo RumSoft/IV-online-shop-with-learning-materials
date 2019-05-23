@@ -9,7 +9,7 @@ export default class ShowNoteButton extends Component {
   };
 
   addToCart = noteID => {
-    CartService.addNoteToCart(noteID);
+    CartService.add(noteID);
     this.setState({ redirectToCart: '/cart' });
   };
 
@@ -21,7 +21,7 @@ export default class ShowNoteButton extends Component {
       <div>
         <Button
           type="submit"
-          disabled={CartService.checkDuplicate(id)}
+          disabled={CartService.exists(id)}
           className="button submit p-3 mb-2 text-white add-to-cart"
           onClick={() => this.addToCart(id)}>
           <p className="price">
