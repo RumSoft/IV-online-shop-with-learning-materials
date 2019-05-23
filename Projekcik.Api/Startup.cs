@@ -7,6 +7,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
@@ -101,7 +102,22 @@ namespace Projekcik.Api
                 .AllowAnyMethod()
                 .AllowAnyHeader());
 
-            app.UseMvc();
+            app.Use(async (context, next) =>
+            {
+                await next();
+                var path = context.Request.Path.Value;
+
+                if (!path.StartsWith("/api", StringComparison.InvariantCultureIgnoreCase) && !Path.HasExtension(path))
+                {
+                    context.Request.Path = "/index.html";
+                    await next();
+                }
+            });
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
+            app.UseMvc();        
 
             if (env.IsDevelopment())
                 app.UseSpa(spa =>
@@ -112,11 +128,8 @@ namespace Projekcik.Api
 
             Mapper.Initialize(x => x.AddProfile(new AutoMapperProfile()));
 
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
-
             loggerFactory.AddLog4Net();
-           
+          
         }
     }
 }
