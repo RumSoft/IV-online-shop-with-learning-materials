@@ -54,6 +54,7 @@ namespace Projekcik.Api.Controllers
                 user.FirstName,
                 user.LastName,
                 user.UserName,
+                user.Balance,
                 user.PictureUrl
             });
         }

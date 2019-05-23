@@ -17,14 +17,15 @@ using Projekcik.Api.Helpers;
 using Projekcik.Api.Models;
 using Projekcik.Api.Models.DTO;
 using Projekcik.Api.Services;
+using Projekcik.Api.Services.Impl;
 using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using Microsoft.Extensions.Logging.Log4Net.AspNetCore;
 
 namespace Projekcik.Api
 {
     public class Startup
     {
+        private readonly ILogger _logger;
+
         public Startup(IConfiguration configuration, ILogger<Startup> logger)
         {
             Configuration = configuration;
@@ -32,12 +33,13 @@ namespace Projekcik.Api
         }
 
         public IConfiguration Configuration { get; }
-        private readonly ILogger _logger;
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options
+                    .UseLazyLoadingProxies()
+                    .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddJwtAuthentication(Configuration);
 
@@ -56,7 +58,7 @@ namespace Projekcik.Api
             var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
             _logger.LogInformation($"trying to open xml documentation file: {xmlPath}");
-            if(!File.Exists(xmlFile))
+            if (!File.Exists(xmlFile))
                 _logger.LogInformation("file does not exist");
 
             services.AddSwaggerGen(c =>
@@ -71,12 +73,10 @@ namespace Projekcik.Api
                 });
                 c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
                 {
-                    { "Bearer", new string[] { } }
+                    {"Bearer", new string[] { }}
                 });
                 c.IncludeXmlComments(xmlPath);
             });
-
-            
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IHashService, PBKDF2HashSerivce>();
@@ -100,7 +100,7 @@ namespace Projekcik.Api
             app.UseCors(x => x.AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());
-           
+
             app.UseMvc();
 
             if (env.IsDevelopment())
@@ -116,7 +116,7 @@ namespace Projekcik.Api
             app.UseStaticFiles();
 
             loggerFactory.AddLog4Net();
-            if(env.IsDevelopment())
+            if (env.IsDevelopment())
             {
                 _logger.LogInformation("In Development environment");
                 app.UseDeveloperExceptionPage();
@@ -125,7 +125,6 @@ namespace Projekcik.Api
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
         }
     }
 }

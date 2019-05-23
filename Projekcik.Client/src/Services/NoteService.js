@@ -3,9 +3,10 @@ const queryString = require('query-string');
 
 const API_URL = 'https://projekcik-prz.azurewebsites.net';
 
+const authToken = 'auth_token';
 export default class NoteService {
   static sendNote(note) {
-    let token = window.localStorage.getItem('token');
+    let token = window.localStorage.getItem(authToken);
     const authHeader = {
       headers: {
         Authorization: `Bearer ${token}`,

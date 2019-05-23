@@ -12,11 +12,11 @@ namespace Projekcik.Api.Models
         public string Description { get; set; }
         public int? Semester { get; set; }
 
-        public Course Course { get; set; }
+        public virtual Course Course { get; set; }
         public int CourseId { get; set; }
-        public User Author { get; set; }
+        public virtual User Author { get; set; }
         public Guid AuthorId { get; set; }
-        public IList<UserNote> Buyers { get; set; }
+        public virtual IList<UserNote> Buyers { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }

@@ -16,8 +16,8 @@ namespace Projekcik.Api.Models
         public long? FacebookId { get; set; }
         public decimal Balance { get; set; }
 
-        public IList<Note> CreatedNotes { get; set; }
-        public IList<UserNote> BoughtNotes { get; set; }
+        public virtual IList<Note> CreatedNotes { get; set; }
+        public virtual IList<UserNote> BoughtNotes { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }

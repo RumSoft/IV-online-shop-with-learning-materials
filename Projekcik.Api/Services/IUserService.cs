@@ -11,7 +11,6 @@ namespace Projekcik.Api.Services
         User GetById(Guid id);
         User GetByEmailAddress(string emailAddress);
         User Create(User user, string password);
-        void Update(User user, string password = null);
-        void Delete(Guid id);
+        void PayoutBalance(User user, decimal money);
     }
 }

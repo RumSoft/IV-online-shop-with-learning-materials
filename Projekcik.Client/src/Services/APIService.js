@@ -2,9 +2,11 @@ import axios from 'axios';
 
 const API_URL = 'https://projekcik-prz.azurewebsites.net';
 
+const authToken = 'auth_token';
+
 export default class APIService {
   static get(address) {
-    let token = window.localStorage.getItem('token');
+    let token = window.localStorage.getItem(authToken);
     const authHeader = {
       headers: {
         Authorization: `Bearer ${token}`
@@ -17,7 +19,7 @@ export default class APIService {
   }
 
   static post(address, data) {
-    let token = window.localStorage.getItem('token');
+    let token = window.localStorage.getItem(authToken);
     const authHeader = {
       headers: {
         Authorization: `Bearer ${token}`
@@ -27,7 +29,6 @@ export default class APIService {
     return axios
       .post(`${API_URL}/${address}`, data, authHeader)
       .then(response => {
-        window.localStorage.setItem('token', `${response.data.token}`);
         return response.data;
       });
   }

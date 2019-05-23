@@ -1,46 +1,51 @@
 import NoteService from './NoteService';
 
+const _cart = 'cart_notes';
+
 export default class CartService {
   static addNoteToCart(noteID) {
-    let noteArray = JSON.parse(window.localStorage.getItem('cartnotes')) || [];
-    noteArray.push(noteID);
-    window.localStorage.setItem('cartnotes', JSON.stringify(noteArray));
+    if (!this.exists(noteID)) this.set([...this.get(), noteID]);
   }
 
-  static getCartNotes() {
-    let noteIDs = JSON.parse(window.localStorage.getItem('cartnotes'));
+  static getNotes() {
+    let noteIDs = this.get();
     if (noteIDs && noteIDs.length)
       return NoteService.getNotesById(noteIDs).then(x => x);
     return this.emptyPromise([]);
   }
 
-  static cartNoteCount() {
-    let noteIDs = JSON.parse(window.localStorage.getItem('cartnotes'));
-    if (noteIDs && noteIDs.length) return noteIDs.length;
-    return 0;
+  static count() {
+    return this.get().length;
   }
 
-  static removeNoteFromCart(noteID) {
-    let noteArray = JSON.parse(window.localStorage.getItem('cartnotes'));
-    for (var i = 0; i < noteArray.length; i++) {
-      if (noteArray[i] === noteID) {
-        noteArray.splice(i, 1);
-        i--;
-        break;
-      }
-    }
-    window.localStorage.setItem('cartnotes', JSON.stringify(noteArray));
+  static remove(noteID) {
+    this.set(this.get().filter(x => x !== noteID));
   }
 
-  static checkDuplicate(noteID) {
-    let noteArray = JSON.parse(window.localStorage.getItem('cartnotes'));
-    return noteArray.includes(noteID) ? true : false;
+  static exists(noteID) {
+    return this.get().includes(noteID);
   }
 
-  static clearNoteCart() {
-    window.localStorage.removeItem('cartnotes');
+  static clear() {
+    window.localStorage.removeItem(_cart);
   }
 
+  static get() {
+    let cart = localStorage[_cart];
+    if (!cart) return [];
+
+    let cartItems = JSON.parse(cart);
+    if (!cartItems || cartItems.length === 0) return [];
+
+    return cartItems;
+  }
+
+  static set(newCart) {
+    localStorage[_cart] = JSON.stringify(newCart);
+  }
+
+  // this is needed because
+  // app uses return getCartNotes().then(x => ...)
   static emptyPromise(val = null) {
     return new Promise(resolve => {
       resolve(val);

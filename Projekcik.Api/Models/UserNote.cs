@@ -6,10 +6,10 @@ namespace Projekcik.Api.Models
 {
     public class UserNote
     {
-        public User User { get; set; }
+        public virtual User User { get; set; }
         public Guid UserId { get; set; }
 
-        public Note Note { get; set; }
+        public virtual Note Note { get; set; }
         public Guid NoteId { get; set; }
 
         public static void OnModelCreating(EntityTypeBuilder<UserNote> entity)
