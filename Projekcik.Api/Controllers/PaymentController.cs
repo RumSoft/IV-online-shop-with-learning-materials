@@ -10,7 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Projekcik.Api.Helpers;
 using Projekcik.Api.Models;
+using Projekcik.Api.Models.DTO;
 using Projekcik.Api.Services;
+using Projekcik.Api.Services.Impl;
 
 namespace Projekcik.Api.Controllers
 {
@@ -76,7 +78,7 @@ namespace Projekcik.Api.Controllers
             }
         }
 
-        private Task UpdatePaymentStatusAsync(PayUPaymentService.PaymentStatus status)
+        private Task UpdatePaymentStatusAsync(PaymentStatus status)
         {
             return Task.Run(() =>
             {
@@ -96,7 +98,7 @@ namespace Projekcik.Api.Controllers
         }
 
         [HttpPost("notify")]
-        public IActionResult NotifyPaymentStatus([FromBody] PayUPaymentService.PaymentStatus status)
+        public IActionResult NotifyPaymentStatus([FromBody] PaymentStatus status)
         {
             var sandboxNotifyAddresses = new[]
             {
@@ -118,7 +120,7 @@ namespace Projekcik.Api.Controllers
         }
 
         [HttpPost("payout")]
-        public IActionResult Payout([FromBody] PayUPaymentService.PayoutParameters payoutParameters)
+        public IActionResult Payout([FromBody] PayoutParameters payoutParameters)
         {
             var userId = _user.GetCurrentUserId();
             var user = _userService.GetById(userId);
