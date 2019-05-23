@@ -3,7 +3,7 @@ import Card from '@material-ui/core/Card';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import CourseSelector from '../CourseSelector';
-
+import { Link } from 'react-router-dom';
 import './index.scss';
 import NoteService from '../../Services/NoteService';
 import SmallCard from './SmallCard';
@@ -122,9 +122,7 @@ export default class HomeLayout extends Component {
                 <AddCard />
               </Slider>
             )}
-            <a href="https://projekcik-prz.azurewebsites.net/search">
-              pokaż więcej
-            </a>
+            <Link to={`/search`}>pokaz wiecej</Link>
           </Card>
         </React.Fragment>
       </div>

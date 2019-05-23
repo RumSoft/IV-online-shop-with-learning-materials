@@ -5,8 +5,7 @@ import {
   Card,
   CardContent,
   Typography,
-  ListItemText,
-  ListItemIcon
+  ListItemText
 } from '@material-ui/core';
 import HrLabel from '../HrLabel/index';
 import NoteService from '../../Services/NoteService';
