@@ -116,15 +116,7 @@ namespace Projekcik.Api
             app.UseStaticFiles();
 
             loggerFactory.AddLog4Net();
-            if (env.IsDevelopment())
-            {
-                _logger.LogInformation("In Development environment");
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
+           
         }
     }
 }
