@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
-import {
-  Card,
-  CardContent,
-  Typography,
-  ListItemText
-} from '@material-ui/core';
+import { Card, CardContent, Typography, ListItemText } from '@material-ui/core';
 import HrLabel from '../HrLabel/index';
 import NoteService from '../../Services/NoteService';
 import NotePanelPlaceholder from './NotePanelPlaceholder';
@@ -44,7 +39,7 @@ export default class NotePanel extends Component {
                     itemType="http://schema.org/ListItem"
                     itemProp="itemListElement">
                     <a href="/">
-                      <i className="fa fa-globe" /> &nbsp;
+                      <i className="fa fa-globe" />
                       <span itemProp="name">{note.voivodeship.name}</span>
                       <meta content="1" />
                     </a>
@@ -53,7 +48,7 @@ export default class NotePanel extends Component {
                     itemType="http://schema.org/ListItem"
                     itemProp="itemListElement">
                     <a href="/">
-                      <i className="fa fa-university" /> &nbsp;
+                      <i className="fa fa-university" />
                       <span itemProp="name">{note.university.name}</span>
                       <meta content="2" />
                     </a>
@@ -62,7 +57,7 @@ export default class NotePanel extends Component {
                     itemType="http://schema.org/ListItem"
                     itemProp="itemListElement">
                     <a href="/">
-                      <i className="fa fa-book" /> &nbsp;
+                      <i className="fa fa-book" />
                       <span itemProp="name">{note.course.name}</span>
                       <meta content="2" />
                     </a>
@@ -123,7 +118,7 @@ export default class NotePanel extends Component {
                               className="document-what"
                               primary={[
                                 <i className="fa fa-sort-numeric-up" />,
-                                ' Semestr'
+                                'Semestr'
                               ]}
                               secondary={this.state.semester}
                             />
@@ -133,7 +128,7 @@ export default class NotePanel extends Component {
                               className="document-what"
                               primary={[
                                 <i className="fa fa-globe" />,
-                                ' Województwo'
+                                'Województwo'
                               ]}
                               secondary={note.voivodeship.name}
                             />
@@ -144,7 +139,7 @@ export default class NotePanel extends Component {
                               className="document-what"
                               primary={[
                                 <i className="fa fa-university" />,
-                                ' Uniwersytet'
+                                'Uniwersytet'
                               ]}
                               secondary={note.university.name}
                             />
@@ -154,7 +149,7 @@ export default class NotePanel extends Component {
                               className="document-what"
                               primary={[
                                 <i className="fa fa-book" />,
-                                ' Kierunek'
+                                'Kierunek'
                               ]}
                               secondary={note.course.name}
                             />
@@ -164,7 +159,7 @@ export default class NotePanel extends Component {
                               className="document-what"
                               primary={[
                                 <i className="fa fa-calendar-plus" />,
-                                ' Data dodania'
+                                'Data dodania'
                               ]}
                               secondary={new Date(
                                 note.createdAt
@@ -176,7 +171,7 @@ export default class NotePanel extends Component {
                               className="document-what"
                               primary={[
                                 <i className="fa fa-print" />,
-                                ' Typ pliku'
+                                'Typ pliku'
                               ]}
                               secondary={note.type}
                             />

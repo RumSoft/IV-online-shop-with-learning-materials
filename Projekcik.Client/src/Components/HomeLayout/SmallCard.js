@@ -19,18 +19,18 @@ export default class SmallCard extends React.Component {
           <dl>
             <Typography>
               <i className="fa fa-globe" />
-              &nbsp;&nbsp;
+
               {note.voivodeship.name}
             </Typography>
             <Typography />
             <Typography>
               <i className="fa fa-university" />
-              &nbsp; {note.university.name}
+              {note.university.name}
             </Typography>
             <Typography />
             <Typography>
               <i className="fa fa-book" />
-              &nbsp; {note.course.name}, sem. {note.semester}
+              {note.course.name}, sem. {note.semester}
             </Typography>
             <Typography />
           </dl>
