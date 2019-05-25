@@ -51,10 +51,12 @@ Np:
 	],
 	"Status": 0 //(jakiś numerek) - później sie go przerobi na nazwę statusu
   }
-]  ```
+]  
+```
 		
 
 6) Komponent "Moje zarobki" - lista zarobionych na poszczególnych notatkach; będzie pobierał z serwera dane, zwracane w taki sposób: 
+
 ```[
   { 
     "Id": "192418241-412-412-4124"
@@ -70,11 +72,14 @@ Np:
 	"Purchases": 50,
 	"Profit": 525
   },
-]  ```
+]  
+```
 
 7) Zrobienie "placeholderów" dla różnych stron/komponentów - tak jak to jest w NotePanel
 zanim strona się załaduje to widoczny jest NotePanelPlaceholder
 
 
 ## podane obiekty w formacie JSON można bez problemu wstawić do kodu
+```
 let mojazmienna = ...wklejacie.... ;
+```
