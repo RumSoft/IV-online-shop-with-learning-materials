@@ -29,27 +29,27 @@ Np:
 ```[
   { 
     "Date": "jakaś data",
-	"Notes: [ 
-	  {
-	    "Id":"1212412124",
-		"Name":"Moja super notatka"
-	  },
-	  {
-	    "Id":"109241980241-241-25214,
-		"Name":"ujebany projekt z SI"
-	  }
-	],
-	"Status": 4 //(jakiś numerek) - później sie go przerobi na nazwę statusu
+    "Notes: [ 
+      {
+        "Id":"1212412124",
+        "Name":"Moja super notatka"
+      },
+      {
+        "Id":"109241980241-241-25214,
+        "Name":"ujebany projekt z SI"
+      }
+      ],
+     "Status": 4 //(jakiś numerek) - później sie go przerobi na nazwę statusu
   },
   { 
     "Date": "jakaś data 2",
-	"Notes: [
-	  {
-	    "Id":"109241980241-241-25214,
-		"Name":"ujebany projekt z SI 2"
-	  }
-	],
-	"Status": 0 //(jakiś numerek) - później sie go przerobi na nazwę statusu
+    "Notes: [
+      {
+        "Id":"109241980241-241-25214,
+        "Name":"ujebany projekt z SI 2"
+      }
+    ],
+    Status": 0 //(jakiś numerek) - później sie go przerobi na nazwę statusu
   }
 ]  
 ```
@@ -61,17 +61,17 @@ Np:
   { 
     "Id": "192418241-412-412-4124"
     "Name":"ujebane sprawko SI"
-	"Price": 10.5,
-	"Purchases": 5,
-	"Profit": 52.5
+    "Price": 10.5,
+    "Purchases": 5,
+    "Profit": 52.5
   },
- { 
+  { 
     "Id": "192418241-412-412-4126"
     "Name":"zdane sprawko z SI"
-	"Price": 10.5,
-	"Purchases": 50,
-	"Profit": 525
-  },
+    "Price": 10.5,
+    "Purchases": 50,
+    "Profit": 525
+  }
 ]  
 ```
 
