@@ -18,7 +18,7 @@ export default class ShowNoteButton extends Component {
       <Button
         className="btn note btn-md rounded-right"
         onClick={() => this.redirectToNote(id)}>
-        <i className="fa fa-book-open" />
+        <i className="fa fa-book-open " />
         {text ? <span> {text}</span> : <span> Zobacz</span>}
       </Button>
     );

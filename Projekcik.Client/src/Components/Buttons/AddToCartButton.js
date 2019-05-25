@@ -29,9 +29,9 @@ export default class ShowNoteButton extends Component {
           className="btn cart btn-md rounded-left rounded-right"
           disabled={this.state.disabled}
           onClick={() => this.addToCart(id)}>
-          <i className="fa fa-shopping-cart" />
+          <i className="fa fa-shopping-cart" /> <br />
           {price ? (
-            <span> {price} zł</span>
+            <span>{price} zł</span>
           ) : this.state.disabled ? (
             <span> Już w koszyku</span>
           ) : (

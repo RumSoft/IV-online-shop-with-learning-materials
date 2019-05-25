@@ -119,7 +119,6 @@ export default class NoteUploader extends Component {
         .then(r => {
           this.setState({ success: 'Dodano notatkę! Możesz ją wyświetlić ' });
           window.scrollTo(0, 0);
-          console.log(r);
         })
         .catch(e =>
           this.setState({ error: e.response.data.message }, () =>
@@ -182,7 +181,7 @@ export default class NoteUploader extends Component {
               }
             ]}
           />
-          <TextField
+          <MyTextField
             id="voivodeship"
             className="field"
             label="Województwo"
@@ -190,7 +189,7 @@ export default class NoteUploader extends Component {
             disabled
             value={this.state.voivodeship}
           />
-          <TextField
+          <MyTextField
             id="university"
             className="field"
             label="Uczelnia"
@@ -198,7 +197,7 @@ export default class NoteUploader extends Component {
             disabled
             value={this.state.university}
           />
-          <TextField
+          <MyTextField
             id="course"
             className="field"
             label="Kierunek"
@@ -208,8 +207,7 @@ export default class NoteUploader extends Component {
           />
 
           <ListCourseSelector searchData={this.listCourseSelectorHandler} />
-
-          <TextField
+          <MyTextField
             id="description"
             label="Opis notatki"
             multiline
