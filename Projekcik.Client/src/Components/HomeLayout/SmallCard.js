@@ -19,7 +19,6 @@ export default class SmallCard extends React.Component {
           <dl>
             <Typography>
               <i className="fa fa-globe" />
-
               {note.voivodeship.name}
             </Typography>
             <Typography />

@@ -36,7 +36,6 @@ export default class HomeLayout extends Component {
       this.setState({ notes: x.notes }, () => {
         this.slider.forceUpdate();
       });
-      console.log(x);
     });
   }
 
