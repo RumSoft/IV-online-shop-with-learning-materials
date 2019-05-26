@@ -303,10 +303,15 @@ namespace Projekcik.Api.Controllers
             return Ok(result);
         }
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpGet("earnings")]
-        public IActionResult GetEarnings(Guid userId)
+        public IActionResult GetEarnings()
         {
+            var userId = _user.GetCurrentUserId();
+            var user = _userService.GetById(userId);
+            if (user == null)
+                return BadRequest("Invalid user");
+
             var notes = _noteService.GetNotesByAuthorId(userId);
             var result = notes.Select(x => new
             {

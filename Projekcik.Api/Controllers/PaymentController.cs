@@ -171,11 +171,16 @@ namespace Projekcik.Api.Controllers
             });
         }
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpGet("paymenthistory")]
-        public IActionResult GetPayment(Guid userId)
+        public IActionResult GetPayment()
         {
-            var query = _paymentService.GetTransactionByBuyerId(userId);
+            var userId = _user.GetCurrentUserId();
+            var user = _userService.GetById(userId);
+            if (user == null)
+                return BadRequest("Invalid user");
+
+            var query = _paymentService.GetTransactionsByBuyerId(userId);
             var result = query.Select(x => new
             {
                 x.CreatedAt,
