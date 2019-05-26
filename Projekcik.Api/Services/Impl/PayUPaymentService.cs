@@ -86,7 +86,7 @@ namespace Projekcik.Api.Services.Impl
             return _context.Transactions.Find(transId);
         }
 
-        public IQueryable<Transaction> GetTransactionByBuyerId(Guid userId)
+        public IQueryable<Transaction> GetTransactionsByBuyerId(Guid userId)
         {
             return _context.Transactions.Where(x => x.BuyerId == userId);
         }
