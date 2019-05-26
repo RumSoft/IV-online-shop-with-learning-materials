@@ -302,5 +302,22 @@ namespace Projekcik.Api.Controllers
 
             return Ok(result);
         }
+
+        [AllowAnonymous]
+        [HttpGet("earnings")]
+        public IActionResult GetEarnings(Guid userId)
+        {
+            var notes = _noteService.GetNotesByAuthorId(userId);
+            var result = notes.Select(x => new
+            {
+                x.Id,
+                x.Name,
+                x.Price,
+                Purchases = x.Buyers.Count,
+                Profit = x.Price * x.Buyers.Count,
+            });
+
+            return Ok(result);
+        }
     }
 }
