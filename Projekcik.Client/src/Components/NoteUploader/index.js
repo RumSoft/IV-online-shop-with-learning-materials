@@ -152,7 +152,7 @@ export default class NoteUploader extends Component {
             id="name"
             className="field"
             label="Nazwa notatki"
-            inputProps={{ maxLength: 100 }}
+            inputProps={{ maxLength: 50 }}
             variant="outlined"
             value={this.state.name}
             onChange={this.handleChange}

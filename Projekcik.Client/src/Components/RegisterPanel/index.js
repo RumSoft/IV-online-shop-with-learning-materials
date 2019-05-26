@@ -102,6 +102,7 @@ export default class RegisterPage extends Component {
               className="field"
               label="Imię"
               variant="outlined"
+              inputProps={{ maxLength: 30 }}
               value={this.state.firstName}
               onChange={this.handleChange}
               validationRules={[
@@ -120,6 +121,7 @@ export default class RegisterPage extends Component {
               className="field"
               label="Nazwisko"
               variant="outlined"
+              inputProps={{ maxLength: 30 }}
               value={this.state.lastName}
               onChange={this.handleChange}
               validationRules={[
@@ -138,6 +140,7 @@ export default class RegisterPage extends Component {
               className="field"
               label="Nazwa Użytkownika"
               variant="outlined"
+              inputProps={{ maxLength: 30 }}
               value={this.state.userName}
               onChange={this.handleChange}
               validationRules={[
@@ -151,7 +154,7 @@ export default class RegisterPage extends Component {
               id="emailAddress"
               className="field"
               label="Adres e-mail"
-              inputProps={{ maxLength: 100 }}
+              inputProps={{ maxLength: 30 }}
               variant="outlined"
               value={this.state.emailAddress}
               onChange={this.handleChange}
@@ -174,6 +177,7 @@ export default class RegisterPage extends Component {
               className="field"
               label="Hasło"
               variant="outlined"
+              inputProps={{ maxLength: 50 }}
               value={this.state.password}
               onChange={this.handleChange}
               validationRules={[
@@ -192,6 +196,7 @@ export default class RegisterPage extends Component {
               className="field"
               label="Potwierdź hasło"
               variant="outlined"
+              inputProps={{ maxLength: 50 }}
               value={this.state.confirmPassword}
               onChange={this.handleChange}
               validationRules={[
