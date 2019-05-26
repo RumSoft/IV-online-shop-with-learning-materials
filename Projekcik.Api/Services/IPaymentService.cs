@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Projekcik.Api.Models;
 using Projekcik.Api.Models.DTO;
 
@@ -13,6 +14,7 @@ namespace Projekcik.Api.Services
         string CreateOrder(Note[] notes, User user, string userIpAddress);
         void UpdateTransaction(PaymentStatus status);
         Transaction GetTransactionDetails(Guid transId);
+        IQueryable<Transaction> GetTransactionByBuyerId(Guid userId);
         void CreatePayout(User user, PayoutParameters payoutParameters);
     }
 }
