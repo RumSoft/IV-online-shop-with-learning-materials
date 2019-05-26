@@ -170,5 +170,24 @@ namespace Projekcik.Api.Controllers
                 })
             });
         }
+
+        [AllowAnonymous]
+        [HttpGet("paymenthistory")]
+        public IActionResult GetPayment(Guid userId)
+        {
+            var query = _paymentService.GetTransactionByBuyerId(userId);
+            var result = query.Select(x => new
+            {
+                x.CreatedAt,
+                notes = x.OrderedNotesIds.Select(xd => _noteService.GetNoteById(xd)).Select(xd => new
+                {
+                    xd.Id,
+                    xd.Name
+                }),
+                x.Status,
+            });
+
+            return Ok(result);
+        }
     }
 }
