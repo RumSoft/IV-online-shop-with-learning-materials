@@ -312,7 +312,7 @@ namespace Projekcik.Api.Controllers
             if (user == null)
                 return BadRequest("Invalid user");
 
-            var notes = _noteService.GetNotesByAuthorId(userId);
+            var notes = _noteService.GetNotesByAuthorId(user);
             var result = notes.Select(x => new
             {
                 x.Id,
