@@ -3,7 +3,7 @@ import Card from '@material-ui/core/Card';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import CourseSelector from '../CourseSelector';
-
+import { Link } from 'react-router-dom';
 import './index.scss';
 import NoteService from '../../Services/NoteService';
 import SmallCard from './SmallCard';
@@ -36,7 +36,6 @@ export default class HomeLayout extends Component {
       this.setState({ notes: x.notes }, () => {
         this.slider.forceUpdate();
       });
-      console.log(x);
     });
   }
 
@@ -109,7 +108,7 @@ export default class HomeLayout extends Component {
           <Card className="course-selector-card mb-3">
             <CourseSelector searchData={this.courseSelectorHandler} />
             <hr />
-            <h4>Ostatnie notatki</h4>
+            <h4><i className="fa fa-yin-yang fa-spin " />Ostatnie notatki</h4>
             {this.state.notes && this.state.notes.length && (
               <Slider
                 ref={ref => {
@@ -122,9 +121,7 @@ export default class HomeLayout extends Component {
                 <AddCard />
               </Slider>
             )}
-            <a href="https://projekcik-prz.azurewebsites.net/search">
-              pokaż więcej
-            </a>
+            <Link to={`/search`}>pokaz wiecej</Link>
           </Card>
         </React.Fragment>
       </div>
