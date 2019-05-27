@@ -24,6 +24,7 @@ import SearchBar from '../SearchBar';
 import logo from './logoWhite.png';
 import { Tooltip } from '@material-ui/core';
 import { AuthService, CartService } from '../../Services';
+import CookieNoticeBar from '../CookieNoticeBar';
 
 export default class NavBar extends Component {
   constructor(props) {
@@ -82,6 +83,7 @@ export default class NavBar extends Component {
     ];
     return (
       <header>
+        <CookieNoticeBar />
         <Navbar
           className="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3"
           dark>
