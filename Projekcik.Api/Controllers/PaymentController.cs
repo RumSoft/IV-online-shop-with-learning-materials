@@ -180,7 +180,7 @@ namespace Projekcik.Api.Controllers
             if (user == null)
                 return BadRequest("Invalid user");
 
-            var query = _paymentService.GetTransactionsByBuyerId(user);
+            var query = _paymentService.GetTransactionsByBuyerId(user.Id);
             var result = query.Select(x => new
             {
                 x.CreatedAt,
