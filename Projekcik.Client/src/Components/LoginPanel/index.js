@@ -108,7 +108,7 @@ export default class LoginPanel extends Component {
                 },
                 {
                   func: val => /^(?=.{6,})/.test(val),
-                  message: 'Nieprawidłowy format'
+                  message: 'Hasło powinno mieć min. 6 znaków'
                 }
               ]}
             />
