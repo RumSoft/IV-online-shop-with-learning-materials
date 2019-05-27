@@ -17,7 +17,7 @@
 }
 
 dl {
-  height: 80px;
+  height: 5rem;
 }
 hr {
   width: 95%;
@@ -28,13 +28,16 @@ hr {
   height: 100%;
 
   .note-image {
+    display: flex;
     width: 200;
   }
 
-  .note-name {
+  .note-other {
+    overflow: auto;
+    text-overflow: ellipsis;
+    white-space: normal;
     color: rgb(0, 146, 231);
     &:hover {
-      cursor: pointer;
       color: rgb(0, 107, 168);
     }
   }

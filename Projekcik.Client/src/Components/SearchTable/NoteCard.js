@@ -21,22 +21,23 @@ export default class NoteCard extends Component {
               src="http://placekitten.com/g/400/400"
               alt="notePreview"
             />
-            <div className="note-name">
+            <div className="note-other">
               <Link to={`/note/${note.id}`} style={{ textDecoration: 'none' }}>
                 <h5>{note.name}</h5>
                 <h6>{note.price} zł</h6>
               </Link>
+
+              <dl>
+                <Typography>Województwo: {note.voivodeship.name}</Typography>
+                <Typography />
+                <Typography>Uczelnia: {note.university.name}</Typography>
+                <Typography />
+                <Typography>
+                  Kierunek: {note.course.name}, sem. {note.semester}
+                </Typography>
+                <Typography />
+              </dl>
             </div>
-            <dl>
-              <Typography>Województwo: {note.voivodeship.name}</Typography>
-              <Typography />
-              <Typography>Uczelnia: {note.university.name}</Typography>
-              <Typography />
-              <Typography>
-                Kierunek: {note.course.name}, sem. {note.semester}
-              </Typography>
-              <Typography />
-            </dl>
           </div>
           <div className="btn-group">
             <ShowNoteButton text="Zobacz notatkę" id={note.id} />
