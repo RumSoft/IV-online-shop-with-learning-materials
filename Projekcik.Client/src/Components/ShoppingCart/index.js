@@ -5,7 +5,7 @@ import CartService from '../../Services/CartService';
 import ShowNoteButton from '../Buttons/ShowNoteButton';
 
 import './index.scss';
-import PaymentService from '../../Services/PaymentService';
+// import PaymentService from '../../Services/PaymentService';
 
 export default class ShoppingCart extends Component {
   constructor(props) {
