@@ -55,22 +55,22 @@ export default class ShoppingCart extends Component {
                     </Typography>
                     <Typography variant="subtitle2" className="pb-2">
                       <i className="fa fa-user" />
-                      &nbsp; {note.author.name}
+                      {note.author.name}
                     </Typography>
                   </div>
                   <div className="note-origins">
                     <div className="text">
                       <Typography>
                         <i className="fa fa-globe" />
-                        &nbsp; {note.voivodeship.name}
+                        {note.voivodeship.name}
                       </Typography>
                       <Typography>
                         <i className="fa fa-university" />
-                        &nbsp; {note.university.name}
+                        {note.university.name}
                       </Typography>
                       <Typography>
                         <i className="fa fa-book" />
-                        &nbsp; {note.course.name}
+                        {note.course.name}
                       </Typography>
                     </div>
                     <ShowNoteButton
@@ -104,7 +104,7 @@ export default class ShoppingCart extends Component {
         <hr />
         <div className="checkout">
           <Typography variant="h5" className="pb-3 mr-2">
-            Wartość zamówienia: &nbsp;
+            Wartość zamówienia:&nbsp;
             {this.state.notes.reduce((total, note) => total + note.price, 0)} zł
           </Typography>
           <Button

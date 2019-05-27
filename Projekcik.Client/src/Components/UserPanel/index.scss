@@ -1,4 +1,4 @@
-.note-panel {
+.user-panel {
   .note-data {
     .preview-image {
       img {
@@ -21,7 +21,18 @@
     .note-author {
       text-align: center;
     }
-
+    .btn {
+      margin-left: 30px;
+      &.cart {
+        width: 100%;
+        color: black;
+        background: linear-gradient(to top, #f47a20, #faa51a);
+    
+        &:hover {
+          background: linear-gradient(to top, #dd5d02, #d38200);
+        }
+      }
+    }
     .add-to-cart {
       display: block !important;
       width: 100%;
@@ -57,40 +68,3 @@
   content: ' > ';
 }
 
-@media only screen and (max-width: 599px) {
-  .note-panel {
-    .breadcrumb {
-      font-size: 0.7rem;
-    }
-
-    .note-info {
-      .add-to-cart {
-        .price {
-          font-size: 1rem;
-        }
-      }
-    }
-
-    .document-what {
-      p,
-      span {
-        font-size: 0.7rem;
-      }
-    }
-  }
-}
-
-@media only screen and (max-width: 767px) {
-  .note-panel {
-    .breadcrumb {
-      font-size: 0.7rem;
-    }
-
-    .document-what {
-      p,
-      span {
-        font-size: 0.7rem;
-      }
-    }
-  }
-}

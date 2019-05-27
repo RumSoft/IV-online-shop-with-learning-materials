@@ -23,7 +23,6 @@ export default class NotePanel extends Component {
 
   render() {
     const note = this.state.note;
-
     return (
       <div>
         <ReactPlaceholder
@@ -39,6 +38,7 @@ export default class NotePanel extends Component {
                     itemType="http://schema.org/ListItem"
                     itemProp="itemListElement">
                     <a href="/">
+                      <i className="fa fa-globe" />
                       <span itemProp="name">{note.voivodeship.name}</span>
                       <meta content="1" />
                     </a>
@@ -47,6 +47,7 @@ export default class NotePanel extends Component {
                     itemType="http://schema.org/ListItem"
                     itemProp="itemListElement">
                     <a href="/">
+                      <i className="fa fa-university" />
                       <span itemProp="name">{note.university.name}</span>
                       <meta content="2" />
                     </a>
@@ -55,6 +56,7 @@ export default class NotePanel extends Component {
                     itemType="http://schema.org/ListItem"
                     itemProp="itemListElement">
                     <a href="/">
+                      <i className="fa fa-book" />
                       <span itemProp="name">{note.course.name}</span>
                       <meta content="2" />
                     </a>
@@ -113,35 +115,51 @@ export default class NotePanel extends Component {
                           <Grid item xs={4} sm={6} md={12}>
                             <ListItemText
                               className="document-what"
-                              primary="Semestr"
-                              secondary={this.state.semester}
+                              primary={[
+                                <i className="fa fa-sort-numeric-up" />,
+                                'Semestr'
+                              ]}
+                              secondary={note.semester}
                             />
                           </Grid>
                           <Grid item xs={4} sm={6} md={12}>
                             <ListItemText
                               className="document-what"
-                              primary="Województwo"
+                              primary={[
+                                <i className="fa fa-globe" />,
+                                'Województwo'
+                              ]}
                               secondary={note.voivodeship.name}
                             />
                           </Grid>
                           <Grid item xs={4} sm={6} md={12}>
                             <ListItemText
+                              dense
                               className="document-what"
-                              primary="Uczelnia"
+                              primary={[
+                                <i className="fa fa-university" />,
+                                'Uniwersytet'
+                              ]}
                               secondary={note.university.name}
                             />
                           </Grid>
                           <Grid item xs={4} sm={6} md={12}>
                             <ListItemText
                               className="document-what"
-                              primary="Kierunek"
+                              primary={[
+                                <i className="fa fa-book" />,
+                                'Kierunek'
+                              ]}
                               secondary={note.course.name}
                             />
                           </Grid>
                           <Grid item xs={4} sm={6} md={12}>
                             <ListItemText
                               className="document-what"
-                              primary="Data dodania"
+                              primary={[
+                                <i className="fa fa-calendar-plus" />,
+                                'Data dodania'
+                              ]}
                               secondary={new Date(
                                 note.createdAt
                               ).toLocaleDateString()}
@@ -150,7 +168,10 @@ export default class NotePanel extends Component {
                           <Grid item xs={4} sm={6} md={12}>
                             <ListItemText
                               className="document-what"
-                              primary="Typ pliku"
+                              primary={[
+                                <i className="fa fa-print" />,
+                                'Typ pliku'
+                              ]}
                               secondary={note.type}
                             />
                           </Grid>
