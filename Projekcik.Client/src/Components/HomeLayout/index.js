@@ -108,7 +108,10 @@ export default class HomeLayout extends Component {
           <Card className="course-selector-card mb-3">
             <CourseSelector searchData={this.courseSelectorHandler} />
             <hr />
-            <h4><i className="fa fa-yin-yang fa-spin " />Ostatnie notatki</h4>
+            <h4>
+              <i className="fa fa-yin-yang fa-spin " />
+              Ostatnie notatki
+            </h4>
             {this.state.notes && this.state.notes.length && (
               <Slider
                 ref={ref => {
@@ -123,6 +126,13 @@ export default class HomeLayout extends Component {
             )}
             <Link to={`/search`}>pokaz wiecej</Link>
           </Card>
+          <footer className="footer border-bottom box-shadow mb-3" dark>
+            <h4 className="footer-item">
+              Powered by React <i className="fab fa-react fa-spin" />, created
+              by <i className="fa fa-procedures" />
+              RumSoft Sp. zoo.{' '}
+            </h4>
+          </footer>
         </React.Fragment>
       </div>
     );
