@@ -64,27 +64,27 @@ export class UserPanel extends Component {
 
             <div className="row m-4">
               <Grid item md={6}>
-                <br />
+                <br/>
                 <ListItemText
-                  className="document-what"
+                  className="document-what m-3"
                   primary={[
                     <i className="fa fa-user-cog" />,
                     'Twój unikalny id użytkownika'
                   ]}
                   secondary={user.id}
                 />
-                <br />
+
                 <ListItemText
-                  className="document-what"
+                  className="document-what m-3"
                   primary={[
                     <i className="fa fa-user" />,
                     'Imię i nazwisko użytkownika'
                   ]}
                   secondary={`${user.firstName} ${user.lastName}`}
                 />
-                <br />
+
                 <ListItemText
-                  className="document-what"
+                  className="document-what m-3"
                   primary={[
                     <i className="fa fa-envelope" />,
                     'Twój adres e-mail'
@@ -93,30 +93,30 @@ export class UserPanel extends Component {
                 />
               </Grid>
               <Grid item md={6}>
-                <br />
+                <br/>
                 <ListItemText
-                  className="document-what"
+                  className="document-what m-3"
                   primary={[
                     <i className="fa fa-dollar-sign" />,
                     'Obecny stan konta'
                   ]}
                   secondary={user.balance}
                 />
-                <br />
+
                 <ListItemText
-                  className="document-what"
+                  className="document-what m-2"
                   primary={[
                     <i className="fa fa-hand-holding-usd" />,
                     'A może chcesz wypłacić swoje pieniądze?'
                   ]}
                 />
 
-                <div className="btn-group p-3">
+                <div className="btn-group">
                   <Button
-                    className="btn bg-success  p-3 mb-5"
+                    className="btn bg-success"
                     onClick={() => this.handlePayout()}>
                     <h6>wypłać całą swoją fortunę w ilości</h6>
-                    <h3>{user.balance}zł</h3>
+                    <h3>{user.balance} zł</h3>
                   </Button>
                 </div>
               </Grid>
