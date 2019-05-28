@@ -16,18 +16,22 @@ export class UserPanel extends Component {
     this.state = {
       user: {},
       notes: [],
+      boughtNotes: [],
       loaded: false
     };
-    NoteService.getUserNotes('af25dcf3-f4d8-4375-3cfe-08d6c060c269').then(r =>
-      this.setState({ notes: r, loaded: true })
+    APIService.get('api/user/me').then(user => {
+      this.setState({ user }, () =>
+        NoteService.getUserNotes(this.state.user.id).then(r =>
+          this.setState({ notes: r, loaded: true })
+        )
+      );
+    });
+    NoteService.getBoughtNote().then(data =>
+      this.setState({ boughtNotes: data })
     );
   }
 
-  componentDidMount() {
-    APIService.get('api/user/me').then(user => {
-      this.setState({ user });
-    });
-  }
+  componentDidMount() {}
 
   handlePayout() {
     PaymentService.payout('12312412412');
@@ -36,6 +40,7 @@ export class UserPanel extends Component {
   render() {
     const user = this.state.user;
     const notes = this.state.notes;
+    const boughtNotes = this.state.boughtNotes;
     return (
       <div className="user-panel">
         {this.state.loaded && (
@@ -57,8 +62,8 @@ export class UserPanel extends Component {
                     {' '}
                     <i className="fa fa-cog fa-spin" />
                     Witaj {user.userName}{' '}
-                    <img src={user.pictureUrl} alt={user.userName} />w swoim
-                    panelu użytkownika!
+                    <img src="http://placekitten.com/50/50" alt="photo" /> w
+                    swoim panelu użytkownika!
                   </h2>
 
                   <HrLabel text="Podgląd informacji" />
@@ -131,8 +136,25 @@ export class UserPanel extends Component {
                       </Grid>
                     </Card>
                   )}
-                  <p> Historia zakupów: </p>
+                  <h2> Historia zakupów: </h2>
                   <i class="fa fa-spinner fa-pulse" />
+
+                  <Card className="main p-3">
+                    <Grid
+                      className="grid"
+                      container
+                      spacing={8}
+                      direction="row"
+                      justify="flex-start"
+                      alignContent="flex-start"
+                      alignItems="baseline">
+                      {boughtNotes.map((note, i) => (
+                        <Grid item sm={4} key={i} className="grid-item-note">
+                          <SmallCard note={note} key={i} />
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </Card>
                 </CardContent>
               </Card>
             </Grid>
