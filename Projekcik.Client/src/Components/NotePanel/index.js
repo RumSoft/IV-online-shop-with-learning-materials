@@ -9,6 +9,7 @@ import ReactPlaceholder from 'react-placeholder';
 import 'react-placeholder/lib/reactPlaceholder.css';
 import './index.scss';
 import { BigAddToCartButton } from '../Buttons';
+import NotePreview from './notePreview';
 
 export default class NotePanel extends Component {
   constructor(props) {
@@ -23,7 +24,6 @@ export default class NotePanel extends Component {
 
   render() {
     const note = this.state.note;
-
     return (
       <div>
         <ReactPlaceholder
@@ -86,9 +86,7 @@ export default class NotePanel extends Component {
                         </Typography>
 
                         <HrLabel text="Podgląd notatki" />
-                        <div className="preview-image">
-                          <img src="http://placekitten.com/g/400/400" alt="" />
-                        </div>
+                        <NotePreview note={note} />
                       </CardContent>
                     </Card>
                   </Grid>
