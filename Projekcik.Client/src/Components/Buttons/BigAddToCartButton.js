@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
 import CartService from '../../Services/CartService';
+import './index.scss';
 
 export default class ShowNoteButton extends Component {
   state = {

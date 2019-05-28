@@ -94,29 +94,6 @@ hr {
 }
 .btn-group {
   display: flex;
-
-  .btn {
-    margin: 3px;
-    &.cart {
-      width: 250px;
-      color: white;
-      background-color: #3f51b5;
-      border-color: #16288d;
-      &:hover {
-        background-color: #16288d;
-      }
-      &:disabled {
-        background-color: #5c6268;
-      }
-    }
-    &.note {
-      color: black;
-      background: linear-gradient(to top, #f47a20, #faa51a);
-      &:hover {
-        background: linear-gradient(to top, #dd5d02, #d38200);
-      }
-    }
-  }
 }
 
 .page-manipulator {

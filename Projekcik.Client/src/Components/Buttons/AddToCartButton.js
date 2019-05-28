@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import CartService from '../../Services/CartService';
 import { Snackbar, SnackbarContent } from '@material-ui/core';
+import './index.scss';
 
 export default class ShowNoteButton extends Component {
   state = {

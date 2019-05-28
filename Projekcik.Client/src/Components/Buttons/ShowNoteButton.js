@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
+import './index.scss';
 
 export default class ShowNoteButton extends Component {
   state = {
