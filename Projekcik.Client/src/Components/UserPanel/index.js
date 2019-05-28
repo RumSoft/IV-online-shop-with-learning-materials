@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import APIService from '../../Services/APIService';
 import PaymentService from '../../Services/PaymentService';
+import PaymentHistory from '../PaymentHistory';
+import UserEarnings from '../UserEarnings';
 
 export class UserPanel extends Component {
   state = {
@@ -28,7 +30,10 @@ export class UserPanel extends Component {
         <button onClick={() => this.handlePayout()}>
           wypłać {user.balance}zł
         </button>
+        <p> notatki zakupione ode mnie: </p>
+        <UserEarnings />
         <p> notatki zakupione przeze mnie: </p>
+        <PaymentHistory />
         <p> moje notatki:</p>
       </div>
     );
