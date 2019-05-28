@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import CartService from '../../Services/CartService';
 import { Snackbar, SnackbarContent } from '@material-ui/core';
-
+import './index.scss';
 export default class ShowNoteButton extends Component {
   state = {
     disabled: CartService.exists(this.props.id),
@@ -26,10 +26,10 @@ export default class ShowNoteButton extends Component {
     return (
       <div>
         <Button
-          className="btn cart btn-md rounded-left rounded-right"
+          className="btn cart btn-md rounded-left rounded-right px-0"
           disabled={this.state.disabled}
           onClick={() => this.addToCart(id)}>
-          <i className="fa fa-shopping-cart" /> <br />
+          <i className="fa fa-shopping-cart" />
           {price ? (
             <span>{price} zł</span>
           ) : this.state.disabled ? (

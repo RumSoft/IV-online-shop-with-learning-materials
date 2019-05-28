@@ -6,9 +6,9 @@ import CourseSelector from '../CourseSelector';
 import { Link } from 'react-router-dom';
 import './index.scss';
 import NoteService from '../../Services/NoteService';
-import SmallCard from './SmallCard';
 import Slider from 'react-slick';
 import AddCard from './AddCard';
+import { SmallNoteCard } from '../NoteCards';
 
 export default class HomeLayout extends Component {
   constructor(props) {
@@ -119,7 +119,7 @@ export default class HomeLayout extends Component {
                 }}
                 {...sliderSettings}>
                 {this.state.notes.map((note, i) => (
-                  <SmallCard note={note} key={i} />
+                  <SmallNoteCard note={note} key={i} />
                 ))}
                 <AddCard />
               </Slider>

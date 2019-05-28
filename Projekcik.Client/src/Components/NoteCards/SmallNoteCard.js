@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Typography } from '@material-ui/core';
+import { Typography, Paper } from '@material-ui/core';
 import { ShowNoteButton, AddToCartButton } from '../Buttons';
 import './index.scss';
 
-export default class SmallCard extends React.Component {
+export default class SmallNoteCard extends React.Component {
   render() {
     const { note } = this.props;
 
     return (
-      <Card className="note-card p-2 m-2">
+      <Paper className="small-note-card note-card p-2 m-2">
         <div className="note-name">
           <Link to={`/note/${note.id}`} style={{ textDecoration: 'none' }}>
             <h5>{note.name}</h5>
@@ -42,7 +42,7 @@ export default class SmallCard extends React.Component {
             id={note.id}
           />
         </div>
-      </Card>
+      </Paper>
     );
   }
 }
