@@ -28,19 +28,12 @@ export default class NoteCard extends Component {
               </Link>
 
               <dl>
-                <Typography>
-                  <i className="fa fa-globe" />
-                  {note.voivodeship.name}
-                </Typography>
+                <Typography>Województwo: {note.voivodeship.name}</Typography>
+                <Typography />
+                <Typography>Uczelnia: {note.university.name}</Typography>
                 <Typography />
                 <Typography>
-                  <i className="fa fa-university" />
-                  {note.university.name}
-                </Typography>
-                <Typography />
-                <Typography>
-                  <i className="fa fa-book" />
-                  {note.course.name}, sem. {note.semester}
+                  Kierunek: {note.course.name}, sem. {note.semester}
                 </Typography>
                 <Typography />
               </dl>

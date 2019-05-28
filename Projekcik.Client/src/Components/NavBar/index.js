@@ -121,7 +121,7 @@ export default class NavBar extends Component {
                         color="secondary">
                         <ShopIcon />
                       </Badge>
-                      &nbsp;&nbsp;&nbsp;Plecak pełen keszu
+                      Plecak pełen keszu
                     </div>
                   </NavLink>
                 </NavItem>

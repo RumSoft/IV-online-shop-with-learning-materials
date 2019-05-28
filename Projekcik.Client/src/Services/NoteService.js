@@ -24,9 +24,6 @@ export default class NoteService {
   static getNote(noteId) {
     return axios.get(`${API_URL}/api/Notes/${noteId}`).then(r => r.data);
   }
-  static getBoughtNote() {
-    return axios.get(`${API_URL}/api/Notes/bought`).then(r => r.data);
-  }
 
   static getNotesById(idArray) {
     return axios.post(`${API_URL}/api/Notes`, idArray).then(r => r.data);
