@@ -10,6 +10,7 @@ import SearchPage from './Pages/Search';
 import NotePage from './Pages/Note';
 import CartPage from './Pages/Cart';
 import OrderDetails from './Pages/OrderDetails';
+import OrderNotes from './Pages/OrderNote';
 
 const routes = [
   {
@@ -64,6 +65,10 @@ const protectedRoutes = [
   {
     path: '/order-details/:id',
     component: OrderDetails
+  },
+  {
+    path: '/order-notes/',
+    component: OrderNotes
   }
 ];
 

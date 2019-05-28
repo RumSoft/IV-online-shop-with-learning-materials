@@ -22,6 +22,9 @@ namespace Projekcik.Api.Models
         public DateTime ModifiedAt { get; set; }
         public Extension FileExtension { get; set; }
 
+        public string PreviewUrl { get; set; }
+        public int? PageCount { get; set; }
+
         public static void OnModelCreating(EntityTypeBuilder<Note> entity)
         {
             entity.Property(x => x.Name)
@@ -42,10 +45,12 @@ namespace Projekcik.Api.Models
                 .HasColumnType("decimal(5,2)")
                 .IsRequired();
 
-
             entity.Property(x => x.Description)
                 .IsRequired()
                 .HasMaxLength(1000);
+
+            entity.Property(x => x.PreviewUrl)
+                .HasMaxLength(500);
 
             entity.Property(x => x.CreatedAt)
                 .HasDefaultValueSql("getdate()")
