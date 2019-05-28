@@ -62,72 +62,79 @@ export class UserPanel extends Component {
             <HrLabel className="m-5" text="Podgląd informacji" />
 
             <div className="row m-4">
-              <Grid item md={6}>
-                <ListItemText
-                  className="document-what m-3"
-                  primary={[
-                    <i className="fa fa-user-cog" />,
-                    'Twój unikalny id użytkownika'
-                  ]}
-                  secondary={user.id}
-                />
-              </Grid>
-              <Grid item md={6}>
-                <ListItemText
-                  className="document-what m-3"
-                  primary={[
-                    <i className="fa fa-user" />,
-                    'Imię i nazwisko użytkownika'
-                  ]}
-                  secondary={`${user.firstName} ${user.lastName}`}
-                />
-              </Grid>
-              <Grid item md={6}>
-                <ListItemText
-                  className="document-what m-3"
-                  primary={[
-                    <i className="fa fa-envelope" />,
-                    'Twój adres e-mail'
-                  ]}
-                  secondary={user.emailAddress}
-                />
-              </Grid>
-              <Grid item md={6}>
-                <ListItemText
-                  className="document-what m-3"
-                  primary={[
-                    <i className="fa fa-dollar-sign" />,
-                    'Obecny stan konta'
-                  ]}
-                  secondary={user.balance}
-                />
-              </Grid>
-              <Grid item md={6}>
-                <ListItemText
-                  className="document-what m-3"
-                  primary={[
-                    <i className="fa fa-hand-holding-usd" />,
-                    'A może chcesz wypłacić swoje pieniądze?'
-                  ]}
-                />
-              </Grid>
-              <Grid item md={6}>
-                <div className="btn-group">
-                  <Button
-                    className="btn bg-success btn-buy"
-                    onClick={() => this.handlePayout()}>
-                    <Grid container>
-                      <Grid item xs={5} className="text-right">
-                        <i className=" fa fa-dollar-sign fa-spin" />
-                      </Grid>
-                      <Grid item xs={7} className="text-left">
-                        {' '}
-                        wypłać całą swoją fortunę
-                        <h3>{user.balance} zł</h3>
-                      </Grid>
-                    </Grid>
-                  </Button>
-                </div>
+              <Grid container>
+                <Grid item md={6}>
+                  <Grid item>
+                    <ListItemText
+                      className="document-what m-3"
+                      primary={[
+                        <i className="fa fa-user-cog" />,
+                        'Twój unikalny id użytkownika'
+                      ]}
+                      secondary={user.id}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <ListItemText
+                      className="document-what m-3"
+                      primary={[
+                        <i className="fa fa-user" />,
+                        'Imię i nazwisko użytkownika'
+                      ]}
+                      secondary={`${user.firstName} ${user.lastName}`}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <ListItemText
+                      className="document-what m-3"
+                      primary={[
+                        <i className="fa fa-envelope" />,
+                        'Twój adres e-mail'
+                      ]}
+                      secondary={user.emailAddress}
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item md={6}>
+                  <Grid item>
+                    <ListItemText
+                      className="document-what m-3"
+                      primary={[
+                        <i className="fa fa-dollar-sign" />,
+                        'Obecny stan konta'
+                      ]}
+                      secondary={user.balance}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <ListItemText
+                      className="document-what m-3"
+                      primary={[
+                        <i className="fa fa-hand-holding-usd" />,
+                        'A może chcesz wypłacić swoje pieniądze?'
+                      ]}
+                    />
+                  </Grid>
+
+                  <Grid item>
+                    <div className="btn-group">
+                      <Button
+                        className="btn bg-success btn-buy"
+                        onClick={() => this.handlePayout()}>
+                        <Grid container>
+                          <Grid item xs={0} sm={5} className="text-right">
+                            <i className=" fa fa-dollar-sign fa-spin d-none d-sm-inline-block" />
+                          </Grid>
+                          <Grid item xs={12} sm={7} className="text-left">
+                            {' '}
+                            wypłać całą swoją fortunę
+                            <h3>{user.balance} zł</h3>
+                          </Grid>
+                        </Grid>
+                      </Button>
+                    </div>
+                  </Grid>
+                </Grid>
               </Grid>
             </div>
             <HrLabel className="m-5" text="Notatki" />
