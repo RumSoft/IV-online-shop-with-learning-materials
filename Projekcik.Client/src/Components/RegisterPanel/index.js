@@ -127,7 +127,7 @@ export default class RegisterPage extends Component {
               validationRules={[
                 {
                   func: val => val,
-                  message: 'Imię jest wymagane'
+                  message: 'Nazwisko jest wymagane'
                 },
                 {
                   func: val => /^[a-zA-Z]+$/.test(val),
@@ -177,6 +177,7 @@ export default class RegisterPage extends Component {
               className="field"
               label="Hasło"
               variant="outlined"
+              type='password'
               inputProps={{ maxLength: 50 }}
               value={this.state.password}
               onChange={this.handleChange}
@@ -187,7 +188,7 @@ export default class RegisterPage extends Component {
                 },
                 {
                   func: val => /^(?=.{6,})/.test(val),
-                  message: 'Nieprawidłowy format'
+                  message: 'Hasło powinno mieć min. 6 znaków'
                 }
               ]}
             />
@@ -196,6 +197,7 @@ export default class RegisterPage extends Component {
               className="field"
               label="Potwierdź hasło"
               variant="outlined"
+              type='password'
               inputProps={{ maxLength: 50 }}
               value={this.state.confirmPassword}
               onChange={this.handleChange}
@@ -206,7 +208,7 @@ export default class RegisterPage extends Component {
                 },
                 {
                   func: val => /^(?=.{6,})/.test(val),
-                  message: 'Nieprawidłowy format'
+                  message: 'Hasło powinno mieć min. 6 znaków'
                 }
               ]}
             />

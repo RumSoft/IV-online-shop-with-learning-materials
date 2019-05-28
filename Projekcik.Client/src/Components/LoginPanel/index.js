@@ -98,6 +98,7 @@ export default class LoginPanel extends Component {
               className="field"
               label="Hasło"
               variant="outlined"
+              type='password'
               inputProps={{ maxLength: 50 }}
               value={this.state.password}
               onChange={this.handleChange}
@@ -108,7 +109,7 @@ export default class LoginPanel extends Component {
                 },
                 {
                   func: val => /^(?=.{6,})/.test(val),
-                  message: 'Nieprawidłowy format'
+                  message: 'Hasło powinno mieć min. 6 znaków'
                 }
               ]}
             />

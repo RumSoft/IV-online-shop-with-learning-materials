@@ -24,8 +24,8 @@ import {
 import EnhancedTableToolbar from './TableToolbar';
 import NoteService from '../../Services/NoteService';
 import queryString from 'query-string';
-import NoteCard from './NoteCard';
 import './index.scss';
+import { SearchNoteCard } from '../NoteCards';
 
 export default class NoteTable extends Component {
   constructor(props) {
@@ -298,7 +298,7 @@ export default class NoteTable extends Component {
     const { loaded, notes, pager } = this.state;
     return (
       <div>
-        <Paper className="root">
+        <Paper className="root p-3">
           <EnhancedTableToolbar filterData={this.toolbarHandler} />
           {this.renderFilters()}
           <hr />
@@ -306,7 +306,7 @@ export default class NoteTable extends Component {
           {loaded ? (
             <Grid container spacing={16}>
               {notes.map((note, i) => (
-                <NoteCard note={note} key={i} />
+                <SearchNoteCard note={note} key={i} />
               ))}
             </Grid>
           ) : (

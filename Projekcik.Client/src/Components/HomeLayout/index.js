@@ -6,9 +6,9 @@ import CourseSelector from '../CourseSelector';
 import { Link } from 'react-router-dom';
 import './index.scss';
 import NoteService from '../../Services/NoteService';
-import SmallCard from './SmallCard';
 import Slider from 'react-slick';
 import AddCard from './AddCard';
+import { SmallNoteCard } from '../NoteCards';
 
 export default class HomeLayout extends Component {
   constructor(props) {
@@ -91,7 +91,7 @@ export default class HomeLayout extends Component {
               align="center"
               color="textPrimary"
               gutterBottom>
-              Witaj w sklepie "Witam Pozdrawiam"!
+              Witaj w sklepie z notatkami leniwystudent.pl !
             </Typography>
             <Typography
               className="subtitle mx-auto"
@@ -108,7 +108,10 @@ export default class HomeLayout extends Component {
           <Card className="course-selector-card mb-3">
             <CourseSelector searchData={this.courseSelectorHandler} />
             <hr />
-            <h4><i className="fa fa-yin-yang fa-spin " />Ostatnie notatki</h4>
+            <h4>
+              <i className="fa fa-yin-yang fa-spin " />
+              Ostatnie notatki
+            </h4>
             {this.state.notes && this.state.notes.length && (
               <Slider
                 ref={ref => {
@@ -116,13 +119,19 @@ export default class HomeLayout extends Component {
                 }}
                 {...sliderSettings}>
                 {this.state.notes.map((note, i) => (
-                  <SmallCard note={note} key={i} />
+                  <SmallNoteCard note={note} key={i} />
                 ))}
                 <AddCard />
               </Slider>
             )}
             <Link to={`/search`}>pokaz wiecej</Link>
           </Card>
+          <footer className="footer border-bottom box-shadow mb-3" dark>
+            <h4 className="footer-item">
+              Strona powstała dzięki <i className="fa fa-procedures" />
+              RumSoft Sp. zoo.
+            </h4>
+          </footer>
         </React.Fragment>
       </div>
     );

@@ -2,15 +2,18 @@ import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
 import CartService from '../../Services/CartService';
+import './index.scss';
 
 export default class ShowNoteButton extends Component {
   state = {
-    redirectToCart: null
+    redirectToCart: null,
+    open: false,
+    disabled: false
   };
 
   addToCart = noteID => {
     CartService.add(noteID);
-    this.setState({ redirectToCart: '/cart' });
+    this.setState({ open: true, disabled: true, redirectToCart: '/cart'});
   };
 
   render() {
@@ -28,7 +31,11 @@ export default class ShowNoteButton extends Component {
             <i className="fa fa-shopping-cart" />
             <span> {price} zł</span>
           </p>
-          <p className="label">Dodaj do koszyka</p>
+          {this.state.disabled ? (
+            <p className="label">Już w koszyku</p>
+          ) : (
+            <p className="label">Dodaj do koszyka</p>
+          )}
         </Button>
       </div>
     );

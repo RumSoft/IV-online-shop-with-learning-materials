@@ -118,7 +118,7 @@ export default class NotePanel extends Component {
                                 <i className="fa fa-sort-numeric-up" />,
                                 'Semestr'
                               ]}
-                              secondary={this.state.semester}
+                              secondary={note.semester}
                             />
                           </Grid>
                           <Grid item xs={4} sm={6} md={12}>
