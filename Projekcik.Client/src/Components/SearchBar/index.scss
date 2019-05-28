@@ -4,12 +4,10 @@
 
   .form-control {
     flex: 2;
-    min-width: 30rem;
   }
 }
 @media only screen and (max-width: 600px) {
   .mobile {
     width: 100%;
-    min-width: 10rem;
   }
 }
