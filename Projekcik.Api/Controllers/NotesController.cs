@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using AutoMapper;
+using ConvertApiDotNet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -115,8 +116,28 @@ namespace Projekcik.Api.Controllers
             Directory.CreateDirectory(path);
 
             var noteId = Guid.NewGuid();
-            using (var fileStream = new FileStream(Path.Combine(path, noteId.ToString()), FileMode.Create))
+            var notepath = Path.Combine(path, noteId.ToString());
+            using (var fileStream = new FileStream(notepath, FileMode.Create))
+            {
                 file.CopyTo(fileStream);
+                fileStream.Seek(0, SeekOrigin.Begin);
+
+                //secret: oprRGzQiNqQ1g4Kn
+                //apikey: 136525084
+                var convertApi = new ConvertApi("oprRGzQiNqQ1g4Kn");
+
+                var thumbnail = convertApi.ConvertAsync(extension.ToString(),"jpg",
+                    new ConvertApiFileParam(fileStream, $"{noteId.ToString()}.{extension.ToString()}"),
+                    new ConvertApiParam("ScaleImage", "true"),
+                    new ConvertApiParam("ScaleProportions", "true"),
+                    new ConvertApiParam("ImageHeight", "200"),
+                    new ConvertApiParam("ImageWidth", "200"),
+                    new ConvertApiParam("ScaleIfLarger", "true"),
+                    new ConvertApiParam("JpgQuality", 10));
+
+                var previewPath = Path.Combine(path, $"{noteId.ToString()}.jpg");
+                thumbnail.Result.SaveFiles(path);
+            }
 
             var note = new Note
             {
