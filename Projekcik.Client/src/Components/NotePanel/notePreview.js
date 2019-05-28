@@ -28,13 +28,25 @@ export default class NotePreview extends Component {
 
     return (
       <div>
-        <p>
-          strona {this.state.page + 1} z {note.pageCount}
-        </p>
-        <button onClick={() => this.changePage(1)}>Next</button>
-        <button onClick={() => this.changePage(-1)}>prev</button>
         <div className="preview-image">
           <img src={this.getPreviewImage()} alt={note.name} />
+        </div>
+        <div className="text-center">
+          <p>
+            Strona {this.state.page + 1} z {note.pageCount}
+          </p>
+          <div className=" btn-group">
+            <button
+              className="btn btn-dark md-3 p-2"
+              onClick={() => this.changePage(-1)}>
+              Poprzednia
+            </button>
+            <button
+              className="btn btn-info md-3 p-2"
+              onClick={() => this.changePage(1)}>
+              Następna
+            </button>
+          </div>
         </div>
       </div>
     );
