@@ -7,7 +7,8 @@ import {
   Select,
   FormControl,
   OutlinedInput,
-  InputLabel
+  InputLabel,
+  CircularProgress
 } from '@material-ui/core';
 import './index.scss';
 import ListCourseSelector from '../ListCourseSelector';
@@ -30,7 +31,8 @@ export default class NoteUploader extends Component {
       course: '',
 
       error: '',
-      success: ''
+      success: '',
+      sending: false
     };
 
     this.listCourseSelectorHandler = this.listCourseSelectorHandler.bind(this);
@@ -113,16 +115,21 @@ export default class NoteUploader extends Component {
         courseId: null,
         voivodeship: '',
         university: '',
-        course: ''
+        course: '',
+        sending: true
       });
       NoteService.sendNote(note)
         .then(r => {
-          this.setState({ success: 'Dodano notatkę! Możesz ją wyświetlić ' });
+          this.setState({
+            success: 'Dodano notatkę! Możesz ją wyświetlić ',
+            sending: false
+          });
           window.scrollTo(0, 0);
         })
         .catch(e =>
-          this.setState({ error: e.response.data.message }, () =>
-            this.errorHandler()
+          this.setState(
+            { error: e.response.data.message, sending: false },
+            () => this.errorHandler()
           )
         );
     }
@@ -140,6 +147,16 @@ export default class NoteUploader extends Component {
           </div>
         )}
 
+        {this.state.sending ? (
+          <div className="sending-overlay">
+            <div className="progress-text">
+              <CircularProgress />
+              <h1 className="h3">Wysyłane notatki</h1>
+            </div>
+          </div>
+        ) : (
+          ''
+        )}
         {this.state.error && (
           <div className="eval errors">{this.state.error}</div>
         )}
