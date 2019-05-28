@@ -54,17 +54,16 @@ export class UserPanel extends Component {
               gutterBottom>
               {user.name}
             </Typography>
-            <h2>
+            <h2 className="text-center">
               {' '}
               <i className="fa fa-cog fa-spin" />
-              Witaj {user.userName}
-              <img src="http://placekitten.com/50/50" alt="photo" /> w swoim
-              panelu użytkownika!
+              Witaj <img src="http://placekitten.com/50/50" alt="photo" />{' '}
+              {user.userName} w swoim panelu użytkownika!
             </h2>
             <HrLabel className="m-5" text="Podgląd informacji" />
-            
+
             <div className="row m-4">
-              <Grid item xs={3} md={6}>
+              <Grid item md={6}>
                 <br />
                 <ListItemText
                   className="document-what"
@@ -93,7 +92,7 @@ export class UserPanel extends Component {
                   secondary={user.emailAddress}
                 />
               </Grid>
-              <Grid item sm={3} md={6}>
+              <Grid item md={6}>
                 <br />
                 <ListItemText
                   className="document-what"
@@ -111,26 +110,19 @@ export class UserPanel extends Component {
                     'A może chcesz wypłacić swoje pieniądze?'
                   ]}
                 />
-                <br />
 
-                <Button
-                  className="btn bg-success  p-3 mb-5"
-                  onClick={() => this.handlePayout()}>
-                  <i className="fa fa-dollar-sign fa-spin" />
-                  <i className="fa fa-dollar-sign fa-spin" />
-                  <i className="fa fa-dollar-sign fa-spin" />
-                  <i className="fa fa-dollar-sign fa-spin" />
-                  <i className="fa fa-dollar-sign fa-spin" />
-                  <i className="fa fa-dollar-sign fa-spin" />
-                  <i className="fa fa-dollar-sign fa-spin" />
-                  <i className="fa fa-dollar-sign fa-spin" />
-                  <br />
-                  wypłać całą swoją fortunę w ilości {user.balance}zł
-                </Button>
+                <div className="btn-group p-3">
+                  <Button
+                    className="btn bg-success  p-3 mb-5"
+                    onClick={() => this.handlePayout()}>
+                    <h6>wypłać całą swoją fortunę w ilości</h6>
+                    <h3>{user.balance}zł</h3>
+                  </Button>
+                </div>
               </Grid>
             </div>
             <HrLabel className="m-5" text="Notatki" />
-            <h2>
+            <h2 className="p-3">
               <i class="fa fa-book-reader" /> Moje notatki:{' '}
             </h2>
 
@@ -151,9 +143,8 @@ export class UserPanel extends Component {
                 ))}
               </Grid>
             )}
-            <h2>
-              {' '}
-              <i class="fa fa-sync-alt fa-spin  " /> Historia zakupów:{' '}
+            <h2 className="p-3">
+              <i class="fa fa-sync-alt fa-spin  " /> Historia zakupów:
             </h2>
             <i class="fa fa-spinner fa-pulse" />
 

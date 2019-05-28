@@ -128,9 +128,8 @@ export default class HomeLayout extends Component {
           </Card>
           <footer className="footer border-bottom box-shadow mb-3" dark>
             <h4 className="footer-item">
-              Powered by <i className="fab fa-react fa-spin" />React , created
-              by <i className="fa fa-procedures" />
-              RumSoft Sp. zoo.{' '}
+              Strona powstała dzięki <i className="fa fa-procedures" />
+              RumSoft Sp. zoo.
             </h4>
           </footer>
         </React.Fragment>
