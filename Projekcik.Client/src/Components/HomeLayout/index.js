@@ -91,7 +91,7 @@ export default class HomeLayout extends Component {
               align="center"
               color="textPrimary"
               gutterBottom>
-              Witaj w sklepie "Witam Pozdrawiam"!
+              Witaj w sklepie z notatkami leniwystudent.pl !
             </Typography>
             <Typography
               className="subtitle mx-auto"
@@ -128,7 +128,7 @@ export default class HomeLayout extends Component {
           </Card>
           <footer className="footer border-bottom box-shadow mb-3" dark>
             <h4 className="footer-item">
-              Powered by React <i className="fab fa-react fa-spin" />, created
+              Powered by <i className="fab fa-react fa-spin" />React , created
               by <i className="fa fa-procedures" />
               RumSoft Sp. zoo.{' '}
             </h4>
