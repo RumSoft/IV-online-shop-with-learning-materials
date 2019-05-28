@@ -1,0 +1,14 @@
+﻿{
+  "ProviderId": "Microsoft.Azure.Storage",
+  "Version": "16.0",
+  "GettingStartedDocument": {
+    "Uri": "https://go.microsoft.com/fwlink/?LinkId=513126"
+  },
+  "ExtendedData": {
+    "PublishEnvironmentProperties": {
+      "ConnectionStringName": [
+        "DefaultEndpointsProtocol=https;AccountName=projekcikstorage;AccountKey=pnsR7c1PED/vv+PXeQCvieHdpIHHXw7yHidjZrMmBZ59mTP+htBEOoEf1IEEF5qCU+/NOham9Af1ZsiF58NpIg==;EndpointSuffix=core.windows.net"
+      ]
+    }
+  }
+}
