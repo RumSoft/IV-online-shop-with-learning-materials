@@ -71,7 +71,8 @@ export class UserPanel extends Component {
                   ]}
                   secondary={user.id}
                 />
-
+              </Grid>
+              <Grid item md={6}>
                 <ListItemText
                   className="document-what m-3"
                   primary={[
@@ -80,7 +81,8 @@ export class UserPanel extends Component {
                   ]}
                   secondary={`${user.firstName} ${user.lastName}`}
                 />
-
+              </Grid>
+              <Grid item md={6}>
                 <ListItemText
                   className="document-what m-3"
                   primary={[
@@ -99,7 +101,8 @@ export class UserPanel extends Component {
                   ]}
                   secondary={user.balance}
                 />
-
+              </Grid>
+              <Grid item md={6}>
                 <ListItemText
                   className="document-what m-3"
                   primary={[
@@ -107,21 +110,22 @@ export class UserPanel extends Component {
                     'A może chcesz wypłacić swoje pieniądze?'
                   ]}
                 />
-
+              </Grid>
+              <Grid item md={6}>
                 <div className="btn-group">
                   <Button
                     className="btn bg-success btn-buy"
                     onClick={() => this.handlePayout()}>
-                    <h6>
-                      <i className="fa fa-dollar-sign fa-spin" />
-                      <i className="fa fa-dollar-sign fa-spin" />
-                      <i className="fa fa-dollar-sign fa-spin mr-3" />
-                      wypłać całą swoją fortunę
-                      <i className="fa fa-dollar-sign fa-spin ml-3" />
-                      <i className="fa fa-dollar-sign fa-spin" />
-                      <i className="fa fa-dollar-sign fa-spin" />
-                    </h6>
-                    <h3>{user.balance} zł</h3>
+                    <Grid container>
+                      <Grid item xs={5} className="text-right">
+                        <i className=" fa fa-dollar-sign fa-spin" />
+                      </Grid>
+                      <Grid item xs={7} className="text-left">
+                        {' '}
+                        wypłać całą swoją fortunę
+                        <h3>{user.balance} zł</h3>
+                      </Grid>
+                    </Grid>
                   </Button>
                 </div>
               </Grid>
