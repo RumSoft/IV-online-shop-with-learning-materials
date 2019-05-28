@@ -12,7 +12,7 @@ export default class WideSmallNoteCard extends React.Component {
       <Paper className="wide-small-note-card note-card p-2 m-1">
         <div className="note">
           <Link to={`/note/${note.id}`} style={{ textDecoration: 'none' }}>
-            <h6>{note.title}</h6>
+            <h5>{note.name}</h5>
           </Link>
           <p>{note.description}</p>
         </div>

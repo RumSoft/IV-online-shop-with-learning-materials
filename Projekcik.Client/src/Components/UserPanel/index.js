@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import { Card, CardContent, Typography, ListItemText } from '@material-ui/core';
 import { isError } from 'util';
 import { WideSmallNoteCard } from '../NoteCards';
+import './index.scss';
 
 export class UserPanel extends Component {
   constructor(props) {
@@ -102,7 +103,7 @@ export class UserPanel extends Component {
                 />
 
                 <ListItemText
-                  className="document-what m-2"
+                  className="document-what m-3"
                   primary={[
                     <i className="fa fa-hand-holding-usd" />,
                     'A może chcesz wypłacić swoje pieniądze?'
@@ -111,9 +112,17 @@ export class UserPanel extends Component {
 
                 <div className="btn-group">
                   <Button
-                    className="btn bg-success"
+                    className="btn bg-success btn-buy"
                     onClick={() => this.handlePayout()}>
-                    <h6>wypłać całą swoją fortunę w ilości</h6>
+                    <h6>
+                      <i className="fa fa-dollar-sign fa-spin" />
+                      <i className="fa fa-dollar-sign fa-spin" />
+                      <i className="fa fa-dollar-sign fa-spin mr-3" />
+                      wypłać całą swoją fortunę
+                      <i className="fa fa-dollar-sign fa-spin ml-3" />
+                      <i className="fa fa-dollar-sign fa-spin" />
+                      <i className="fa fa-dollar-sign fa-spin" />
+                    </h6>
                     <h3>{user.balance} zł</h3>
                   </Button>
                 </div>
@@ -123,24 +132,22 @@ export class UserPanel extends Component {
             <h2 className="p-3">
               <i class="fa fa-book-reader" /> Moje notatki:{' '}
             </h2>
+            <Grid
+              className="grid"
+              container
+              spacing={8}
+              direction="row"
+              justify="flex-start"
+              alignContent="flex-start"
+              alignItems="baseline">
+              {notes.map((note, i) => (
+                <Grid item sm={4} key={i} className="grid-item-note">
+                  {note.noteCount <= 0 && <div className="disabled" />}
+                  <SmallCard note={note} key={i} />
+                </Grid>
+              ))}
+            </Grid>
 
-            {notes && notes.length && (
-              <Grid
-                className="grid"
-                container
-                spacing={8}
-                direction="row"
-                justify="flex-start"
-                alignContent="flex-start"
-                alignItems="baseline">
-                {notes.map((note, i) => (
-                  <Grid item sm={4} key={i} className="grid-item-note">
-                    {note.noteCount <= 0 && <div className="disabled" />}
-                    <WideSmallNoteCard note={note} key={i} />
-                  </Grid>
-                ))}
-              </Grid>
-            )}
             <h2 className="p-3">
               <i class="fa fa-sync-alt fa-spin  " /> Historia zakupów:
             </h2>
