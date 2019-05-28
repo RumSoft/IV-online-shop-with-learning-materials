@@ -54,7 +54,7 @@ export class UserPanel extends Component {
               gutterBottom>
               {user.name}
             </Typography>
-            <h2 className="text-center">
+            <h2 className="text-center m-3">
               {' '}
               <i className="fa fa-cog fa-spin" />
               Witaj <img src="http://placekitten.com/50/50" alt="photo" />{' '}
