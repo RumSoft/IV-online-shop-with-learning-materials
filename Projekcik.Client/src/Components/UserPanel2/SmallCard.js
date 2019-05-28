@@ -12,7 +12,7 @@ export default class SmallCard extends React.Component {
       <Card className="note-card p-2 m-1">
         <div className="note">
           <Link to={`/note/${note.id}`} style={{ textDecoration: 'none' }}>
-            <h6>{note.title}</h6>
+            <h5>{note.name}</h5>
           </Link>
           <p>{note.description}</p>
         </div>
