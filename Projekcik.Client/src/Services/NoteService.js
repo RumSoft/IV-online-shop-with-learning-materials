@@ -1,4 +1,5 @@
 import axios from 'axios';
+import APIService from './APIService';
 const queryString = require('query-string');
 
 const API_URL = 'https://projekcik-prz.azurewebsites.net';
@@ -47,6 +48,10 @@ export default class NoteService {
     return axios
       .get(`${API_URL}/api/Notes/download-request/${noteId}`)
       .then(r => r.data);
+  }
+
+  static getUserEarnings() {
+    return APIService.get('api/Notes/earnings');
   }
 
   static cleanObject = function(obj) {
