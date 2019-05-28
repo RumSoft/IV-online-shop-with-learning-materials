@@ -16,7 +16,7 @@ export default class SmallCard extends React.Component {
           </Link>
           <p>{note.description}</p>
         </div>
-        <div className="btn-small-group">
+        <div className="btn-group">
           <ShowNoteButton id={note.id} />
         </div>
       </Card>

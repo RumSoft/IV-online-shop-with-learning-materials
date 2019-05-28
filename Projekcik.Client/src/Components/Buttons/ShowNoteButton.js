@@ -16,7 +16,7 @@ export default class ShowNoteButton extends Component {
     if (this.state.redirect) return <Redirect to={this.state.redirect} />;
     return (
       <Button
-        className="btn note btn-md rounded-right bg-info"
+        className="btn note btn-md "
         onClick={() => this.redirectToNote(id)}>
         <i className="fa fa-book-open " />
         {text ? <span> {text}</span> : <span> Zobacz</span>}
