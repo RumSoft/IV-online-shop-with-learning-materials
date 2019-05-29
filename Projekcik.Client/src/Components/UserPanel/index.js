@@ -7,6 +7,8 @@ import classnames from 'classnames';
 import Grid from '@material-ui/core/Grid';
 import { Card, Typography, ListItemText } from '@material-ui/core';
 import { WideSmallNoteCard } from '../NoteCards';
+import PaymentHistory from './PaymentHistory';
+import UserEarnings from './UserEarnings';
 import './index.scss';
 
 export class UserPanel extends Component {
@@ -15,7 +17,6 @@ export class UserPanel extends Component {
     this.state = {
       user: {},
       notes: [],
-      // boughtNotes: [],
       loaded: false,
       activeTab: 1
     };
@@ -26,12 +27,6 @@ export class UserPanel extends Component {
         )
       );
     });
-
-    // not really needed here with api/paymenthistory
-    //
-    // NoteService.getBoughtNote().then(data =>
-    //   this.setState({ boughtNotes: data })
-    // );
   }
 
   toggle(tab) {
@@ -51,7 +46,6 @@ export class UserPanel extends Component {
   render() {
     const user = this.state.user;
     const notes = this.state.notes;
-    // const boughtNotes = this.state.boughtNotes;
     return (
       <div className="user-panel">
         {this.state.loaded && (
@@ -222,19 +216,11 @@ export class UserPanel extends Component {
               </TabPane>
 
               <TabPane tabId={3}>
-                <h2 className="p-3">
-                  <i className="fa fa-sync-alt fa-spin  " /> (Tu komponent
-                  PaymentHistory)
-                </h2>
-                <i className="fa fa-spinner fa-pulse" />
+                <PaymentHistory />
               </TabPane>
 
               <TabPane tabId={4}>
-                <h2 className="p-3">
-                  <i className="fa fa-sync-alt fa-spin  " /> (Tu komponent
-                  UserEarnings)
-                </h2>
-                <i className="fa fa-spinner fa-pulse" />
+                <UserEarnings />
               </TabPane>
             </TabContent>
           </Card>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Typography } from '@material-ui/core';
 import { Table } from 'reactstrap';
-import { PaymentService } from '../../Services';
+import { PaymentService } from '../../../Services';
 import './index.scss';
 
 export default class PaymentHistory extends Component {
@@ -10,6 +10,7 @@ export default class PaymentHistory extends Component {
     PaymentService.getPaymentHistory().then(payments => {
       if (!payments || payments.length === 0) this.setState({ payments: [] });
       this.setState({ payments });
+      console.log(payments);
     });
   }
 
@@ -19,7 +20,7 @@ export default class PaymentHistory extends Component {
 
   render() {
     const { payments } = this.state;
-    console.log('render');
+    console.log(payments);
     return (
       <Card className="p-2 m-2">
         <Typography variant="h5" className="p-2 m-2">

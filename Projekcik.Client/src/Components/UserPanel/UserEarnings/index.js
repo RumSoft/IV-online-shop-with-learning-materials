@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Typography } from '@material-ui/core';
 import { Table } from 'reactstrap';
-import { NoteService } from '../../Services';
+import { NoteService } from '../../../Services';
 import './index.scss';
 
 export default class UserEarnings extends Component {
