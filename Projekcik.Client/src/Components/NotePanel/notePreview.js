@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import NoPreviewImage from '../../images/alt900.png';
 
 export default class NotePreview extends Component {
   constructor(props) {
@@ -24,7 +25,12 @@ export default class NotePreview extends Component {
 
   render() {
     const { note } = this.props;
-    if (!note || !note.previewUrl) return <p>brak podglądu</p>;
+    if (!note || !note.previewUrl)
+      return (
+        <div className="preview-image">
+          <img src={NoPreviewImage} alt="brak podglądu" />
+        </div>
+      );
 
     return (
       <div>
