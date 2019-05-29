@@ -404,7 +404,7 @@ namespace Projekcik.Api.Controllers
                 Purchases = x.Buyers.Count,
                 Profit = x.Price * x.Buyers.Count,
             });
-
+            result = result.Where(x=>x.Purchases > 0);
             return Ok(result);
         }
     }
