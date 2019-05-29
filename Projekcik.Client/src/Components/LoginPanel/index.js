@@ -54,7 +54,6 @@ export default class LoginPanel extends Component {
   };
 
   redirect() {
-    window.location.href = this.props.redirectData.to;
     return <Redirect to={this.props.redirectData} />;
   }
 
@@ -85,7 +84,7 @@ export default class LoginPanel extends Component {
               type="password"
               label="Hasło"
               variant="outlined"
-              type='password'
+              type="password"
               inputProps={{ maxLength: 50 }}
               value={this.state.password}
               onChange={this.handleChange}
