@@ -1,0 +1,10 @@
+.logged-out-page {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+
+  &-card {
+    padding: 2rem;
+  }
+}
