@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Typography } from '@material-ui/core';
 import { Table } from 'reactstrap';
-import { PaymentService } from '../../Services';
+import { PaymentService } from '../../../Services';
 import './index.scss';
 
 export default class PaymentHistory extends Component {
