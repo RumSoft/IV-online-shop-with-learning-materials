@@ -190,7 +190,8 @@ namespace Projekcik.Api.Controllers
                     xd.Name
                 }),
                 x.Status,
-            });
+            }).OrderBy(x => x.CreatedAt)
+                .Take(30);
 
             return Ok(result);
         }
