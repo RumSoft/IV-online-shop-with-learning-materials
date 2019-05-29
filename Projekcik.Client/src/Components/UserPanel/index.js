@@ -15,7 +15,7 @@ export class UserPanel extends Component {
     this.state = {
       user: {},
       notes: [],
-      boughtNotes: [],
+      // boughtNotes: [],
       loaded: false
     };
     APIService.get('api/user/me').then(user => {
@@ -25,9 +25,9 @@ export class UserPanel extends Component {
         )
       );
     });
-    NoteService.getBoughtNote().then(data =>
-      this.setState({ boughtNotes: data })
-    );
+    // NoteService.getBoughtNote().then(data =>
+    //   this.setState({ boughtNotes: data })
+    // );
   }
 
   componentDidMount() {}
@@ -39,7 +39,7 @@ export class UserPanel extends Component {
   render() {
     const user = this.state.user;
     const notes = this.state.notes;
-    const boughtNotes = this.state.boughtNotes;
+    // const boughtNotes = this.state.boughtNotes;
     return (
       <div className="user-panel">
         {this.state.loaded && (
