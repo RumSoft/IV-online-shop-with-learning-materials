@@ -54,7 +54,6 @@ export default class LoginPanel extends Component {
   };
 
   redirect() {
-    window.location.href = this.props.redirectData.to;
     return <Redirect to={this.props.redirectData} />;
   }
 

@@ -2,6 +2,10 @@
   background-color: #f0f0f0 !important;
   height: 100%;
   // border: 1px solid rgba(black, 0.5);
+
+  .note-preview {
+    height: 100px;
+  }
 }
 
 .search-note-card {
@@ -16,13 +20,17 @@
     height: 100%;
     width: 100%;
   }
+
   .btn-group {
     display: flex;
+
     .btn {
       margin: 3px;
+
       &.cart {
         width: 250px;
       }
+
       &.note {
         width: 100%;
       }
