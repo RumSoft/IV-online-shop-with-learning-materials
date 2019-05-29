@@ -27,7 +27,7 @@ export default class NotePreview extends Component {
     const { note } = this.props;
     if (!note || !note.previewUrl)
       return (
-        <div className="preview-image">
+        <div className="preview-image no-preview">
           <img src={NoPreviewImage} alt="brak podglądu" />
         </div>
       );

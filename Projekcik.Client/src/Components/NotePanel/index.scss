@@ -10,6 +10,11 @@
         margin-right: auto;
       }
     }
+    .no-preview {
+      img {
+        filter: none;
+      }
+    }
   }
 
   .fa {
@@ -47,7 +52,6 @@
     }
 
     .document-what {
-
       p,
       span {
         font-size: 0.7rem;
@@ -63,7 +67,6 @@
     }
 
     .document-what {
-
       p,
       span {
         font-size: 0.7rem;
