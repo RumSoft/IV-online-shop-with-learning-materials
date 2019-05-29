@@ -28,6 +28,15 @@ export default class AuthService {
     }
   }
 
+  static getCurrentUserId() {
+    if (!this.isAuthenticated()) return '';
+
+    let jwtToken = window.localStorage.getItem(authToken);
+    let payload = decode(jwtToken);
+    let idKey = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid';
+    return payload[idKey];
+  }
+
   static isAuthenticated() {
     let jwtToken = window.localStorage.getItem(authToken);
     if (

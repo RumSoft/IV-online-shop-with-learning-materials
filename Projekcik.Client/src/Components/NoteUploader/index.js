@@ -75,6 +75,11 @@ export default class NoteUploader extends Component {
       this.state.course
     ];
 
+    if (this.state.price < 1 || this.state.price > 1000) {
+      this.setState({ error: 'Nieprawidłowa cena!' });
+      return true;
+    }
+
     if (this.state.file === null) {
       this.setState({ error: 'Dodaj plik notatki!' });
       window.scrollTo(0, 0);
@@ -193,6 +198,14 @@ export default class NoteUploader extends Component {
               {
                 func: val => val,
                 message: 'Cena jest wymagana'
+              },
+              {
+                func: val => val >= 1.0,
+                message: 'Minimalna cena to 1zł'
+              },
+              {
+                func: val => val < 1000,
+                message: 'Notatka musi kosztować mniej niż 1000zł'
               },
               {
                 func: val => /^(\d*\.?\d{1,2})$/.test(val),

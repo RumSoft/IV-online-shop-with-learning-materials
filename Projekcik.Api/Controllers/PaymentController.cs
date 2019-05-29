@@ -20,7 +20,7 @@ namespace Projekcik.Api.Controllers
     public class PaymentController : ControllerBase
     {
         private static readonly ILog _log =
-            LogManager.GetLogger(typeof(UniController));
+            LogManager.GetLogger(typeof(PaymentController));
 
         private readonly INoteService _noteService;
         private readonly IPaymentService _paymentService;
@@ -70,7 +70,7 @@ namespace Projekcik.Api.Controllers
             }
             catch (Exception e)
             {
-                _log.Warn(
+                _log.Error(
                     $"Couldn't create payment link, reason: {e.Message}, inner: {e.InnerException?.Message ?? "none"}\n" +
                     $"userId={userId}, " +
                     $"selectedNotes={string.Join(", ", notes.Select(x => x.Id))}");
@@ -85,15 +85,13 @@ namespace Projekcik.Api.Controllers
             {
                 try
                 {
-                    _log.Info($"Updating transaction {status.Order.ExtOrderId}, status: {status.Order.Status}");
+                    _log.Warn($"Updating transaction {status.Order.ExtOrderId}, status: {status.Order.Status}");
                     _paymentService.UpdateTransaction(status);
                 }
                 catch (Exception e)
                 {
-                    _log.Warn(
-                        $"Transaction notify failed, reason: {e.Message}, inner: {e.InnerException?.Message ?? "none"}" +
-                        "\n entity:\n" +
-                        $"{JsonConvert.SerializeObject(status, Formatting.Indented)}");
+                    _log.Error(
+                        $"Transaction notify failed, reason: {e.Message}, inner: {e.InnerException?.Message ?? "none"}");
                 }
             });
         }
@@ -111,12 +109,23 @@ namespace Projekcik.Api.Controllers
                 "185.68.14.28"
             };
 
+
+            _log.Warn("=================================================");
+            _log.Warn("updating this fucking transaction, the model is:");
+            _log.Warn(JsonConvert.SerializeObject(status));
+
+
             var clientIp = HttpContext.Connection.RemoteIpAddress.MapToIPv4();
             if (!sandboxNotifyAddresses.Select(IPAddress.Parse).Contains(clientIp))
+            {
+                _log.Error($"wrong notify ip address: {clientIp}");
                 return StatusCode(418);
+
+            }
 
             UpdatePaymentStatusAsync(status);
 
+            _log.Warn("finished updating this shit, return ok");
             return Ok();
         }
 
@@ -142,7 +151,7 @@ namespace Projekcik.Api.Controllers
             }
             catch (Exception e)
             {
-                _log.Warn(
+                _log.Error(
                     $"Couldn't create payout link, reason: {e.Message}, inner: {e.InnerException?.Message ?? "none"}\n" +
                     $"userId={userId}, " +
                     $"params: {JsonConvert.SerializeObject(payoutParameters)}");
@@ -188,7 +197,8 @@ namespace Projekcik.Api.Controllers
                 notes = x.OrderedNotesIds.Select(xd => _noteService.GetNoteById(xd)).Select(xd => new
                 {
                     xd.Id,
-                    xd.Name
+                    xd.Name,
+                    xd.Price
                 }),
                 x.Status,
             }).OrderBy(x => x.CreatedAt)
