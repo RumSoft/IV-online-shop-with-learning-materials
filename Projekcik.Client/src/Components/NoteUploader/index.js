@@ -166,7 +166,6 @@ export default class NoteUploader extends Component {
         {this.state.error && (
           <div className="eval errors">{this.state.error}</div>
         )}
-        <div className="loader">Loading</div>
         <div className="note-upload-header">
           <h3>Dodaj nową notatkę</h3>
           <hr />
