@@ -110,7 +110,6 @@ namespace Projekcik.Api.Controllers
             };
 
 
-
             _log.Warn("=================================================");
             _log.Warn("updating this fucking transaction, the model is:");
             _log.Warn(JsonConvert.SerializeObject(status));
@@ -125,6 +124,8 @@ namespace Projekcik.Api.Controllers
             }
 
             UpdatePaymentStatusAsync(status);
+
+            _log.Warn("finished updating this shit, return ok");
             return Ok();
         }
 
