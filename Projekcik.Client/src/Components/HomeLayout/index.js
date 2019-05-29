@@ -3,7 +3,7 @@ import Card from '@material-ui/core/Card';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import CourseSelector from '../CourseSelector';
-import { Link } from 'react-router-dom';
+
 import './index.scss';
 import NoteService from '../../Services/NoteService';
 import Slider from 'react-slick';
@@ -36,6 +36,7 @@ export default class HomeLayout extends Component {
       this.setState({ notes: x.notes }, () => {
         this.slider.forceUpdate();
       });
+      console.log(x);
     });
   }
 
@@ -124,7 +125,9 @@ export default class HomeLayout extends Component {
                 <AddCard />
               </Slider>
             )}
-            <Link to={`/search`}>pokaz wiecej</Link>
+            <a href="https://projekcik-prz.azurewebsites.net/search">
+              pokaż więcej
+            </a>
           </Card>
           <footer className="footer border-bottom box-shadow mb-3" dark>
             <h4 className="footer-item">

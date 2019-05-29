@@ -9,7 +9,7 @@ import {
 import AuthService from '../../Services/AuthService';
 import './index.scss';
 import ReCAPTCHA from 'react-google-recaptcha';
-import MyTextField from '../MyTextField';
+
 export default class RegisterPage extends Component {
   state = {
     firstName: '',
@@ -97,121 +97,61 @@ export default class RegisterPage extends Component {
                 <hr />
               </div>
             )}
-            <MyTextField
+            <TextField
               id="firstName"
               className="field"
               label="Imię"
               variant="outlined"
-              inputProps={{ maxLength: 30 }}
               value={this.state.firstName}
               onChange={this.handleChange}
-              validationRules={[
-                {
-                  func: val => val,
-                  message: 'Imię jest wymagane'
-                },
-                {
-                  func: val => /^[a-zA-Z]+$/.test(val),
-                  message: 'Nieprawidłowy format'
-                }
-              ]}
             />
-            <MyTextField
+            <TextField
               id="lastName"
               className="field"
               label="Nazwisko"
               variant="outlined"
-              inputProps={{ maxLength: 30 }}
               value={this.state.lastName}
               onChange={this.handleChange}
-              validationRules={[
-                {
-                  func: val => val,
-                  message: 'Nazwisko jest wymagane'
-                },
-                {
-                  func: val => /^[a-zA-Z]+$/.test(val),
-                  message: 'Nieprawidłowy format'
-                }
-              ]}
             />
-            <MyTextField
+            <TextField
               id="userName"
               className="field"
-              label="Nazwa Użytkownika"
+              label="Nazwa użytkownika"
               variant="outlined"
-              inputProps={{ maxLength: 30 }}
               value={this.state.userName}
               onChange={this.handleChange}
-              validationRules={[
-                {
-                  func: val => val,
-                  message: 'Nazwa użytkownika jest wymagana'
-                }
-              ]}
             />
-            <MyTextField
+            <TextField
               id="emailAddress"
               className="field"
               label="Adres e-mail"
-              inputProps={{ maxLength: 30 }}
               variant="outlined"
               value={this.state.emailAddress}
               onChange={this.handleChange}
-              validationRules={[
-                {
-                  func: val => val,
-                  message: 'E-mail jest wymagany'
-                },
-                {
-                  func: val =>
-                    /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/.test(
-                      val
-                    ),
-                  message: 'Nieprawidłowy format'
-                }
-              ]}
             />
-            <MyTextField
+            <TextField
               id="password"
               className="field"
+              type="password"
               label="Hasło"
               variant="outlined"
               type='password'
               inputProps={{ maxLength: 50 }}
               value={this.state.password}
               onChange={this.handleChange}
-              validationRules={[
-                {
-                  func: val => val,
-                  message: 'Hasło jest wymagane'
-                },
-                {
-                  func: val => /^(?=.{6,})/.test(val),
-                  message: 'Hasło powinno mieć min. 6 znaków'
-                }
-              ]}
             />
-            <MyTextField
+            <TextField
               id="confirmPassword"
               className="field"
+              type="password"
               label="Potwierdź hasło"
               variant="outlined"
               type='password'
               inputProps={{ maxLength: 50 }}
               value={this.state.confirmPassword}
               onChange={this.handleChange}
-              validationRules={[
-                {
-                  func: val => val,
-                  message: 'Potwierdzenie hasła jest wymagane'
-                },
-                {
-                  func: val => /^(?=.{6,})/.test(val),
-                  message: 'Hasło powinno mieć min. 6 znaków'
-                }
-              ]}
             />
+
             <ReCAPTCHA
               sitekey="6LcJq6QUAAAAALUopg2VSs4evUII1XmMH159bRFl"
               onChange={this.onCaptchaChange}

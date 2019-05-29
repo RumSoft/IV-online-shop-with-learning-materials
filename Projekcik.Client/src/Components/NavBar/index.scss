@@ -27,36 +27,6 @@ $colHighlight: #ecdbff;
       color: $colHighlight;
     }
   }
-  .navbar-text {
-    color: $colDefault;
-    a {
-      color: $colHighlight;
-      &:hover,
-      &:focus {
-        color: $colHighlight;
-      }
-    }
-  }
-  .navbar-nav {
-    .nav-link {
-      &:not(.disabled) {
-        &:hover,
-        &:focus {
-          color: $bgHighlight;
-        }
-      }
-    }
-
-    .nav-item.active,
-    .nav-item.show {
-      .nav-link,
-      .nav-link:hover,
-      .nav-link:focus {
-        color: $colHighlight;
-        background-color: $bgHighlight;
-      }
-    }
-  }
 }
 
 @media (min-width: 576px) {
@@ -72,7 +42,6 @@ $colHighlight: #ecdbff;
         background: $colDefault;
         height: 100%;
         &:hover {
-          // ale chujowy kolor
           background: $colHighlight;
         }
       }

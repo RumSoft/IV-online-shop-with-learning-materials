@@ -12,6 +12,31 @@
     height: 100%;
     width: 100%;
   }
+  .btn-group {
+    display: flex;
+    .btn {
+      margin: 3px;
+      &.cart {
+        width: 250px;
+      }
+      &.note {
+        width: 100%;
+      }
+    }
+  }
 }
-
-.wide-small-note-card {}
+// .btn-small-group,
+// .btn-group {
+//   display: flex;
+//   .btn {
+//     margin: 3px;
+//     &.cart {
+//       width: 250px;
+//     }
+//     &.note {
+//       // width: 100%;
+//     }
+//   }
+// }
+.wide-small-note-card {
+}
