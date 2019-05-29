@@ -102,7 +102,7 @@ export default class ShoppingCart extends Component {
                       type="button"
                       onClick={() => this.handleRemove(note.id)}
                       className="btn btn-danger btn-circle btn-lg">
-                      <i className="fa fa-times" />
+                      <i className="fa fa-times m-0" />
                     </Button>
                   </div>
                 </div>

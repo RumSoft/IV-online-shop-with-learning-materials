@@ -10,6 +10,7 @@ import 'react-placeholder/lib/reactPlaceholder.css';
 import './index.scss';
 import { BigAddToCartButton } from '../Buttons';
 import NotePreview from './notePreview';
+import { AuthService } from '../../Services';
 
 export default class NotePanel extends Component {
   constructor(props) {
@@ -90,11 +91,15 @@ export default class NotePanel extends Component {
                   </Grid>
                   <Grid item xs={12} sm={6} md={4} lg={4}>
                     <Card className="note-info">
-                      <BigAddToCartButton
-                        className="add-to-cart"
-                        id={note.id}
-                        price={note.price}
-                      />
+                      {note.author.id !== AuthService.getCurrentUserId() ? (
+                        <BigAddToCartButton
+                          className="add-to-cart"
+                          id={note.id}
+                          price={note.price}
+                        />
+                      ) : (
+                        <p className="h6 text-center">To twoja notatka</p>
+                      )}
                       <div className="note-author">
                         <HrLabel text="Autor" />
                         <Link to={`/user/${note.author.id}`}>
