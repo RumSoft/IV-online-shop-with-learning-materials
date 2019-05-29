@@ -1,0 +1,17 @@
+.note-card {
+  background-color: #f0f0f0 !important;
+  height: 100%;
+  // border: 1px solid rgba(black, 0.5);
+}
+
+.search-note-card {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+
+  .grid-item-note {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.wide-small-note-card {}

@@ -1,0 +1,104 @@
+.note-panel {
+  .note-data {
+    .preview-image {
+      img {
+        width: 80%;
+        height: auto;
+        display: block;
+        filter: blur(2px);
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+  }
+
+  .fa {
+    margin-right: 0.5rem;
+  }
+
+  .note-info {
+    padding: 1rem;
+    font-size: 10pt;
+    line-height: 18px;
+
+    .note-author {
+      text-align: center;
+    }
+
+    .add-to-cart {
+      display: block !important;
+      width: 100%;
+      border-radius: 0.5em;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      background: linear-gradient(to top, #1d0ea0, #00a2ff);
+
+      &[hover] {
+        background: linear-gradient(to top, #080401, #3888ff);
+      }
+
+      &[disabled] {
+        background: rgb(70, 70, 70);
+      }
+
+      p {
+        margin: 0px;
+      }
+
+      .price {
+        font-size: 1.9rem;
+        font-weight: 200;
+      }
+
+      .label {
+        font-size: 1.2rem;
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+.breadcrumb li:after {
+  color: #ccc;
+  content: ' > ';
+}
+
+@media only screen and (max-width: 599px) {
+  .note-panel {
+    .breadcrumb {
+      font-size: 0.7rem;
+    }
+
+    .note-info {
+      .add-to-cart {
+        .price {
+          font-size: 1rem;
+        }
+      }
+    }
+
+    .document-what {
+
+      p,
+      span {
+        font-size: 0.7rem;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .note-panel {
+    .breadcrumb {
+      font-size: 0.7rem;
+    }
+
+    .document-what {
+
+      p,
+      span {
+        font-size: 0.7rem;
+      }
+    }
+  }
+}

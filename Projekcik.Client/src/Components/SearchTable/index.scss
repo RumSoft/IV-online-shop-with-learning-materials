@@ -1,0 +1,158 @@
+.toolbar-root {
+  padding-top: 0.5rem;
+  padding-right: 1rem;
+
+  .toolbar-title {
+    padding-top: 5px;
+    flex: 0 0 auto;
+  }
+
+  .toolbar-spacer {
+    flex: 1 1 100%;
+  }
+}
+
+.fa {
+  margin-right: 0.5rem;
+}
+
+.note-grid-item {
+  height: 100%;
+}
+
+dl {
+  height: 80px;
+}
+
+hr {
+  width: 95%;
+}
+
+
+.root {
+  width: 100%;
+  margin-top: 2rem;
+
+  .table {
+    min-width: 1020;
+  }
+
+  .tableWrapper {
+    overflow-x: auto;
+  }
+}
+
+.filter-list {
+  margin: 0.5rem 1rem;
+  background-color: #eeeeee;
+
+  .filter-header {
+    padding-left: 5px;
+    padding-bottom: 10px;
+  }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas:
+      'filter-left filter-rest'
+      'filter-left filter-rest'
+      'filter-left filter-rest';
+
+    .filter-left {
+      grid-area: filter-left;
+    }
+
+    .filter-rest {
+      grid-area: filter-rest;
+    }
+
+    .filter-field {
+      width: 70%;
+      padding-bottom: 1rem;
+
+      &.rest {
+        margin-bottom: 0px;
+      }
+    }
+  }
+}
+
+.btn-group {
+  display: flex;
+
+  .btn {
+    margin: 3px;
+
+    &.cart {
+      width: 250px;
+      color: white;
+      background-color: #3f51b5;
+      border-color: #16288d;
+
+      &:hover {
+        background-color: #16288d;
+      }
+
+      &:disabled {
+        background-color: #5c6268;
+      }
+    }
+
+    &.note {
+      color: black;
+      background: linear-gradient(to top, #f47a20, #faa51a);
+
+      &:hover {
+        background: linear-gradient(to top, #dd5d02, #d38200);
+      }
+    }
+  }
+}
+
+.page-manipulator {
+  display: flex;
+
+  .page-number {
+    flex-basis: 70%;
+    padding: 0.2rem 2rem;
+  }
+
+  .label {
+    padding-right: 1em;
+    padding-top: 10px;
+  }
+
+  .pageSize {
+    align-content: flex-end;
+    margin-top: 3px;
+    width: 7%;
+  }
+}
+
+.page-link {
+  color: #3f51b5;
+  background-color: #eeeeee;
+  border-color: #8b97a1;
+}
+
+.page-item.active .page-link {
+  color: #fff;
+  border-color: #16288d;
+  background-color: #3f51b5;
+}
+
+.page-item.disabled .page-link {
+  color: #5c6268;
+  pointer-events: none;
+  cursor: auto;
+  border-color: #d5d7d8;
+}
+
+.page-link:hover {
+  color: #fff;
+  text-decoration: none;
+  border-color: #16288d;
+  background-color: #3f51b5;
+}

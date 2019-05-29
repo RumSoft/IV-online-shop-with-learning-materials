@@ -1,5 +1,7 @@
-* {
-    color: black;
-    background-color: blue; //robie zmiany
-    background-color: rgb(165, 208, 248); 
+@import './variables.scss';
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+
+body {
+  background: $background;
 }
