@@ -23,9 +23,9 @@ export default class UserEarnings extends Component {
     console.log('earnings: ', earnings);
     return (
       <div>
-        <Typography variant="h5" className="p-2 m-2">
-          Historia zarobków
-        </Typography>
+        <h2 className="p-2 m-2">
+          <i className="fa fa-money-bill" /> Historia zarobków
+        </h2>
         {earnings !== null ? (
           <Table responsive striped bordered>
             <thead>
