@@ -69,7 +69,7 @@ namespace Projekcik.Api.Controllers
             }
             catch (Exception e)
             {
-                _log.Warn(
+                _log.Error(
                     $"Couldn't create payment link, reason: {e.Message}, inner: {e.InnerException?.Message ?? "none"}\n" +
                     $"userId={userId}, " +
                     $"selectedNotes={string.Join(", ", notes.Select(x => x.Id))}");
@@ -89,7 +89,7 @@ namespace Projekcik.Api.Controllers
                 }
                 catch (Exception e)
                 {
-                    _log.Warn(
+                    _log.Error(
                         $"Transaction notify failed, reason: {e.Message}, inner: {e.InnerException?.Message ?? "none"}" +
                         "\n entity:\n" +
                         $"{JsonConvert.SerializeObject(status, Formatting.Indented)}");
@@ -141,7 +141,7 @@ namespace Projekcik.Api.Controllers
             }
             catch (Exception e)
             {
-                _log.Warn(
+                _log.Error(
                     $"Couldn't create payout link, reason: {e.Message}, inner: {e.InnerException?.Message ?? "none"}\n" +
                     $"userId={userId}, " +
                     $"params: {JsonConvert.SerializeObject(payoutParameters)}");
@@ -187,7 +187,8 @@ namespace Projekcik.Api.Controllers
                 notes = x.OrderedNotesIds.Select(xd => _noteService.GetNoteById(xd)).Select(xd => new
                 {
                     xd.Id,
-                    xd.Name
+                    xd.Name,
+                    xd.Price
                 }),
                 x.Status,
             }).OrderBy(x => x.CreatedAt)
