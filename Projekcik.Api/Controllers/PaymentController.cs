@@ -124,8 +124,6 @@ namespace Projekcik.Api.Controllers
             }
 
             UpdatePaymentStatusAsync(status);
-            if (status.Order.Status.Equals("COMPLETED", StringComparison.InvariantCultureIgnoreCase))
-                return BadRequest();
             return Ok();
         }
 
