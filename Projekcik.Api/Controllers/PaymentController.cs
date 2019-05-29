@@ -108,6 +108,8 @@ namespace Projekcik.Api.Controllers
                 "185.68.14.28"
             };
 
+
+
             _log.Warn("=================================================");
             _log.Warn("updating this fucking transaction, the model is:");
             _log.Warn(JsonConvert.SerializeObject(status));
@@ -122,7 +124,8 @@ namespace Projekcik.Api.Controllers
             }
 
             UpdatePaymentStatusAsync(status);
-
+            if (status.Order.Status.Equals("COMPLETED", StringComparison.InvariantCultureIgnoreCase))
+                return BadRequest();
             return Ok();
         }
 
