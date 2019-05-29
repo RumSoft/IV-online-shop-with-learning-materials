@@ -14,8 +14,8 @@ export default class LoginPage extends Component {
         .catch(x => console.log(x));
     }
 
-    var redirectData = (this.props.location.state &&
-      this.props.location.state.from) || { to: '/protected' };
+    var redirectData =
+      this.props.location.state && this.props.location.state.from;
 
     return (
       <div className="login-page">

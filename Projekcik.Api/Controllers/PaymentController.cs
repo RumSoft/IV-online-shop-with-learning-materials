@@ -62,6 +62,7 @@ namespace Projekcik.Api.Controllers
             {
                 _log.Info($"Creating payment link for user: {userId}");
                 var redirect = _paymentService.CreateOrder(notes, user, ipAddress);
+                _log.Info($"Succesfully created payment link: {userId}");
                 return Ok(new
                 {
                     redirectUrl = redirect
@@ -109,7 +110,6 @@ namespace Projekcik.Api.Controllers
             };
 
 
-
             _log.Warn("=================================================");
             _log.Warn("updating this fucking transaction, the model is:");
             _log.Warn(JsonConvert.SerializeObject(status));
@@ -124,6 +124,8 @@ namespace Projekcik.Api.Controllers
             }
 
             UpdatePaymentStatusAsync(status);
+
+            _log.Warn("finished updating this shit, return ok");
             return Ok();
         }
 
