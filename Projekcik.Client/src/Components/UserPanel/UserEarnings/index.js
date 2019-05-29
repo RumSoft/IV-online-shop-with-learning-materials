@@ -9,48 +9,54 @@ export default class UserEarnings extends Component {
   constructor(props) {
     super(props);
     NoteService.getUserEarnings().then(earnings => {
-      if (!earnings || earnings.length === 0) this.setState({ earnings: [] });
-      this.setState({ earnings });
+      if (!earnings || earnings.length === 0) this.setState({ earnings: null });
+      else this.setState({ earnings });
     });
   }
 
   state = {
-    earnings: []
+    earnings: null
   };
 
   render() {
     const { earnings } = this.state;
-    console.log('render');
+    console.log('earnings: ', earnings);
     return (
       <div>
         <Typography variant="h5" className="p-2 m-2">
           Historia zarobków
         </Typography>
-        <Table responsive striped bordered>
-          <thead>
-            <tr>
-              <th>L.p.</th>
-              <th>Nazwa notatki</th>
-              <th>Cena</th>
-              <th>Ilość zakupów</th>
-              <th>Całkowity zysk</th>
-            </tr>
-          </thead>
-          <tbody>
-            {earnings &&
-              earnings.map((earning, idx) => (
-                <tr key={idx}>
-                  <th scope="row">{idx + 1}.</th>
-                  <td>
-                    <Link to={`/note/${earning.id}`}>{earning.name}</Link>
-                  </td>
-                  <td>{earning.price} zł</td>
-                  <td>{earning.purchases}</td>
-                  <td>{earning.profit} zł</td>
-                </tr>
-              ))}
-          </tbody>
-        </Table>
+        {earnings !== null ? (
+          <Table responsive striped bordered>
+            <thead>
+              <tr>
+                <th>L.p.</th>
+                <th>Nazwa notatki</th>
+                <th>Cena</th>
+                <th>Ilość zakupów</th>
+                <th>Całkowity zysk</th>
+              </tr>
+            </thead>
+            <tbody>
+              {earnings &&
+                earnings.map((earning, idx) => (
+                  <tr key={idx}>
+                    <th scope="row">{idx + 1}.</th>
+                    <td>
+                      <Link to={`/note/${earning.id}`}>{earning.name}</Link>
+                    </td>
+                    <td>{earning.price} zł</td>
+                    <td>{earning.purchases}</td>
+                    <td>{earning.profit} zł</td>
+                  </tr>
+                ))}
+            </tbody>
+          </Table>
+        ) : (
+          <Typography className="text-center mb-2">
+            Nie sprzedałeś obecnie żadnych notatek.
+          </Typography>
+        )}
       </div>
     );
   }

@@ -85,12 +85,12 @@ export default class LoginPanel extends Component {
               type="password"
               label="Hasło"
               variant="outlined"
-              type='password'
               inputProps={{ maxLength: 50 }}
               value={this.state.password}
               onChange={this.handleChange}
             />
           </form>
+
           <Button
             type="submit"
             className="button login-submit"
@@ -99,6 +99,7 @@ export default class LoginPanel extends Component {
             onClick={this.handleLogin}>
             Zaloguj
           </Button>
+
           <Button
             type="submit"
             className="button login-reset-password"

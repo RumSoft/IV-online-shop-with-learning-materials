@@ -5,14 +5,11 @@ import NoteService from '../../Services/NoteService';
 import { Button, Nav, NavItem, NavLink, TabPane, TabContent } from 'reactstrap';
 import classnames from 'classnames';
 import Grid from '@material-ui/core/Grid';
-import PaymentHistory from './PaymentHistory';
 import { Card, Typography, ListItemText } from '@material-ui/core';
 import { WideSmallNoteCard } from '../NoteCards';
 import PaymentHistory from './PaymentHistory';
 import UserEarnings from './UserEarnings';
 import './index.scss';
-import UserEarnings from './UserEarnings';
-
 export class UserPanel extends Component {
   constructor(props) {
     super(props);
