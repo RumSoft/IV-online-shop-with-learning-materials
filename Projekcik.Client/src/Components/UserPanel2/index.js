@@ -5,6 +5,8 @@ import NoteService from '../../Services/NoteService';
 import { Card, Grid, Paper, Typography } from '@material-ui/core';
 import ReactPlaceholder from 'react-placeholder';
 import NotePanelPlaceholder from '../NotePanel/NotePanelPlaceholder';
+import './index.scss';
+import { WideSmallNoteCard } from '../NoteCards';
 
 export default class UserPanel2 extends Component {
   constructor(props) {
@@ -38,7 +40,7 @@ export default class UserPanel2 extends Component {
                 variant="h4"
                 color="textPrimary"
                 gutterBottom>
-                Profil użytkownika {user.userName}{' '}
+                Profil użytkownika {user.userName}
               </Typography>
               <img
                 src={user.pictureUrl || 'http://placekitten.com/50/50'}
@@ -46,7 +48,7 @@ export default class UserPanel2 extends Component {
               />
             </Card>
           )}
-          <br />
+
           {notes && notes.length && (
             <Card className="main p-3">
               <Grid
@@ -57,14 +59,10 @@ export default class UserPanel2 extends Component {
                 justify="flex-start"
                 alignContent="flex-start"
                 alignItems="baseline">
-                {notes.map((x, i) => (
-                  <Grid item sm={3} key={i} className="grid-item">
-                    <Link to={`/note/${x.id}`}>
-                      <Paper className="paper p-md-3 p-1" elevation={3}>
-                        {x.noteCount <= 0 && <div className="disabled" />}
-                        <div>{x.title}</div>
-                      </Paper>
-                    </Link>
+                {notes.map((note, i) => (
+                  <Grid item sm={4} key={i} className="grid-item-note">
+                    {note.noteCount <= 0 && <div className="disabled" />}
+                    <WideSmallNoteCard note={note} key={i} />
                   </Grid>
                 ))}
               </Grid>

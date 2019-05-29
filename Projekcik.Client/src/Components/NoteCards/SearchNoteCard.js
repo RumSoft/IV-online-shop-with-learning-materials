@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Grid, Card, Typography } from '@material-ui/core';
+import { Grid, Typography, Paper } from '@material-ui/core';
 import './index.scss';
 import { ShowNoteButton, AddToCartButton } from '../Buttons';
 
-export default class NoteCard extends Component {
+export default class SearchNoteCard extends Component {
   render() {
     const { note } = this.props;
 
     return (
       <Grid item sm={6}>
-        <Card className="note-card p-2 m-2">
+        <Paper className="search-note-card note-card p-2 m-2">
           <div className="note-image">
             <img
               className="p-2 m-2"
@@ -43,7 +43,7 @@ export default class NoteCard extends Component {
             <ShowNoteButton text="Zobacz notatkę" id={note.id} />
             <AddToCartButton id={note.id} />
           </div>
-        </Card>
+        </Paper>
       </Grid>
     );
   }

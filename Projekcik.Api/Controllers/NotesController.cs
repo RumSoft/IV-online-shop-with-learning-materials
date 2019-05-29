@@ -4,9 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using AutoMapper;
+using ConvertApiDotNet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 using Projekcik.Api.Helpers;
 using Projekcik.Api.Models;
 using Projekcik.Api.Models.DTO;
@@ -21,28 +25,43 @@ namespace Projekcik.Api.Controllers
         private readonly INoteService _noteService;
         private readonly IHttpContextAccessor _user;
         private readonly IUserService _userService;
+        private readonly IConfiguration _configuration;
 
         private const int maxFileSize = 10 * 1024 * 1024;
         public NotesController(INoteService noteService,
             IHttpContextAccessor user,
-            IUserService userService)
+            IUserService userService, IConfiguration configuration)
         {
             _noteService = noteService;
             _user = user;
             _userService = userService;
+            _configuration = configuration;
         }
 
 
         [Authorize]
         [HttpGet("bought")]
-        public IEnumerable<NoteDto> GetMyBoughtNotes()
+        public IActionResult GetMyBoughtNotes()
         {
             var userId = _user.GetCurrentUserId();
             var user = _userService.GetById(userId);
             if (user == null)
-                return new NoteDto[0];
+                return Ok(new NoteDto[0]);
 
-            return user.BoughtNotes.Select(Mapper.Map<NoteDto>);
+            var result = user.BoughtNotes
+                .Select(x => x.Note)
+                .Select(x => new
+                {
+                    x.Id,
+                    x.Name,
+                    x.PreviewUrl,
+                    x.PageCount,
+                    x.Price,
+                    x.Description,
+                    x.Semester
+                });
+
+            return Ok(result);
         }
 
         /// <summary>
@@ -50,7 +69,7 @@ namespace Projekcik.Api.Controllers
         /// </summary>
         [Authorize]
         [HttpGet("me")]
-        public IEnumerable<NoteDto> GetMyNotes()
+        public IActionResult GetMyNotes()
         {
             var userId = _user.GetCurrentUserId();
             return GetUserNotes(userId);
@@ -61,10 +80,20 @@ namespace Projekcik.Api.Controllers
         /// </summary>
         /// <param name="userId"></param>
         [HttpGet("user/{userId}")]
-        public IEnumerable<NoteDto> GetUserNotes(Guid userId)
+        public IActionResult GetUserNotes(Guid userId)
         {
             var notes = _noteService.GetNotesByAuthorId(userId);
-            return notes.Select(Mapper.Map<NoteDto>);
+            var result = notes.Select(x=>new
+            {
+                x.Id,
+                x.Name,
+                x.PreviewUrl,
+                x.PageCount,
+                x.Price,
+                x.Description,
+                x.Semester
+            });
+            return Ok(result);
         }
 
         /// <summary>
@@ -115,9 +144,6 @@ namespace Projekcik.Api.Controllers
             Directory.CreateDirectory(path);
 
             var noteId = Guid.NewGuid();
-            using (var fileStream = new FileStream(Path.Combine(path, noteId.ToString()), FileMode.Create))
-                file.CopyTo(fileStream);
-
             var note = new Note
             {
                 Id = noteId,
@@ -130,6 +156,48 @@ namespace Projekcik.Api.Controllers
                 FileExtension = extension.Value,
                 Semester = semester
             };
+
+
+            var notepath = Path.Combine(path, noteId.ToString());
+            using (var fileStream = new FileStream(notepath, FileMode.Create))
+            {
+                file.CopyTo(fileStream);
+                fileStream.Seek(0, SeekOrigin.Begin);
+
+                //secret: oprRGzQiNqQ1g4Kn
+                //apikey: 136525084
+
+                if (!new[] { Extension.ZIP, Extension.RAR, }.Contains(extension.Value))
+                {
+                    var convertApi = new ConvertApi("oprRGzQiNqQ1g4Kn");
+
+                    var thumbnail = convertApi.ConvertAsync(extension.ToString(), "jpg",
+                        new ConvertApiFileParam(fileStream, $"{noteId.ToString()}.{extension.ToString()}"),
+                        new ConvertApiParam("ScaleImage", "true"),
+                        new ConvertApiParam("ScaleProportions", "true"),
+                        new ConvertApiParam("ImageHeight", "250"),
+                        new ConvertApiParam("ImageWidth", "250"),
+                        new ConvertApiParam("ScaleIfLarger", "true"),
+                        new ConvertApiParam("JpgQuality", 10));
+
+                    var previews = thumbnail.Result.FilesStream().ToList();
+                    note.PageCount = previews.Count;
+
+                    var container = GetCloudBlobContainer();
+                    var blockBlob = container.GetBlockBlobReference($"previews/{noteId.ToString()}");
+                    blockBlob.UploadFromStreamAsync(previews.First());
+                    note.PreviewUrl = blockBlob.SnapshotQualifiedStorageUri.PrimaryUri.ToString();
+
+                    var i = 1;
+                    foreach (var preview in previews.Skip(1))
+                    {
+                        blockBlob = container.GetBlockBlobReference($"previews/{noteId.ToString()}-{i}");
+                        blockBlob.UploadFromStreamAsync(preview);
+                        i += 1;
+                    }
+                }
+            }
+
             _noteService.Create(note);
 
             return Ok(new
@@ -173,6 +241,15 @@ namespace Projekcik.Api.Controllers
                 );
         }
 
+        private CloudBlobContainer GetCloudBlobContainer()
+        {
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                _configuration.GetConnectionString("AzureStorage"));
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            CloudBlobContainer container = blobClient.GetContainerReference("mag1");
+            return container;
+        }
+
         [HttpGet("search")]
         public IActionResult Search(
             [FromQuery] SearchParams searchParams,
@@ -189,6 +266,8 @@ namespace Projekcik.Api.Controllers
                 x.Description,
                 x.Price,
                 x.Semester,
+                x.PageCount,
+                x.PreviewUrl,
                 Author = new
                 {
                     Id = x.AuthorId,
@@ -244,6 +323,8 @@ namespace Projekcik.Api.Controllers
                 result.CreatedAt,
                 OrderCount = result.Buyers.Count,
                 Type = result.FileExtension.ToString().ToUpper(),
+                result.PageCount,
+                result.PreviewUrl,
                 Author = new
                 {
                     Id = result.AuthorId,
@@ -278,6 +359,8 @@ namespace Projekcik.Api.Controllers
                 x.Name,
                 x.Price,
                 x.Description,
+                x.PageCount,
+                x.PreviewUrl,
                 Author = new
                 {
                     Id = x.AuthorId,

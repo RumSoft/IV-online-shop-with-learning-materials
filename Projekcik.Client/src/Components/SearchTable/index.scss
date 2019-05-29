@@ -12,6 +12,10 @@
   }
 }
 
+.fa {
+  margin-right: 0.5rem;
+}
+
 .note-grid-item {
   height: 100%;
 }
@@ -19,29 +23,11 @@
 dl {
   height: 5rem;
 }
+
 hr {
   width: 95%;
 }
 
-.note-card {
-  background-color: #eeeeee !important;
-  height: 100%;
-
-  .note-image {
-    display: flex;
-    width: 200;
-  }
-
-  .note-other {
-    overflow: auto;
-    text-overflow: ellipsis;
-    white-space: normal;
-    color: rgb(0, 146, 231);
-    &:hover {
-      color: rgb(0, 107, 168);
-    }
-  }
-}
 
 .root {
   width: 100%;
@@ -92,6 +78,7 @@ hr {
     }
   }
 }
+
 .btn-group {
   display: flex;
 }

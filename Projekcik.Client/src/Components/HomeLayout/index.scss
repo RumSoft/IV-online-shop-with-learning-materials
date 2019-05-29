@@ -8,6 +8,7 @@
   .course-selector-card {
     padding: 1rem;
   }
+
   .note-small-info {
     display: inline-block;
   }
@@ -23,12 +24,16 @@
         width: 100%;
       }
     }
+  .fa {
+    margin-right: 0.5rem
   }
+
 
   .footer {
     background-color: #3f51b5;
     padding: 2rem;
   }
+
   .footer-item {
     text-align: center;
     color: white;

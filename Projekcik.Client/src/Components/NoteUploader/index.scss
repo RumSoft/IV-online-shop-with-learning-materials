@@ -2,9 +2,32 @@
   margin-top: 1rem;
   margin-left: 1rem;
   margin-right: 1rem;
+
+}
+
+.upload-page-card {
+  position: relative;
+
+  .sending-overlay {
+    position: fixed;
+    background-color: rgba(white, 0.8);
+    height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+
+    .progress-text {
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+      text-align: center;
+    }
+  }
 }
 
 .note-form {
+
   flex-direction: column;
   display: flex;
   align-items: left;
@@ -40,13 +63,16 @@
     margin-bottom: 2rem;
   }
 }
+
 .eval {
   color: white;
   width: 100%;
   padding: 1rem;
+
   &.errors {
     background-color: red;
   }
+
   &.success {
     background-color: green;
   }

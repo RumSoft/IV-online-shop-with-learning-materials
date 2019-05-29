@@ -85,6 +85,8 @@ export default class LoginPanel extends Component {
               type="password"
               label="Hasło"
               variant="outlined"
+              type='password'
+              inputProps={{ maxLength: 50 }}
               value={this.state.password}
               onChange={this.handleChange}
             />
