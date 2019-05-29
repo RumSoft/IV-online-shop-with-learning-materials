@@ -42,7 +42,10 @@ namespace Projekcik.Api.Services.Impl
             notifyUrl = _configuration["PayU:NotifyUrl"];
         }
 
-
+        public IQueryable<Transaction> GetTransactionsByBuyerId(Guid userId)
+        {
+            return _context.Transactions.Where(x => x.BuyerId == userId);
+        }
         public void UpdateTransaction(PaymentStatus status)
         {
             if (!status.Order.Status.Equals("COMPLETED", StringComparison.InvariantCultureIgnoreCase))
