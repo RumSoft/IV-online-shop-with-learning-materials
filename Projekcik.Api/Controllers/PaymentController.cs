@@ -84,7 +84,7 @@ namespace Projekcik.Api.Controllers
             {
                 try
                 {
-                    _log.Info($"Updating transaction {status.Order.ExtOrderId}, status: {status.Order.Status}");
+                    _log.Warn($"Updating transaction {status.Order.ExtOrderId}, status: {status.Order.Status}");
                     _paymentService.UpdateTransaction(status);
                 }
                 catch (Exception e)
@@ -112,7 +112,10 @@ namespace Projekcik.Api.Controllers
 
             var clientIp = HttpContext.Connection.RemoteIpAddress.MapToIPv4();
             if (!sandboxNotifyAddresses.Select(IPAddress.Parse).Contains(clientIp))
+            {
+                _log.Error($"wrong notify ip address: {clientIp}");
                 return StatusCode(418);
+            }
 
             UpdatePaymentStatusAsync(status);
 
