@@ -62,6 +62,7 @@ namespace Projekcik.Api.Controllers
             {
                 _log.Info($"Creating payment link for user: {userId}");
                 var redirect = _paymentService.CreateOrder(notes, user, ipAddress);
+                _log.Info($"Succesfully created payment link: {userId}");
                 return Ok(new
                 {
                     redirectUrl = redirect

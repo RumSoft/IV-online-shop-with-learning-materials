@@ -9,6 +9,7 @@ import PaymentHistory from './PaymentHistory';
 import { Card, Typography, ListItemText } from '@material-ui/core';
 import { WideSmallNoteCard } from '../NoteCards';
 import './index.scss';
+import UserEarnings from './UserEarnings';
 
 export class UserPanel extends Component {
   constructor(props) {
@@ -56,7 +57,7 @@ export class UserPanel extends Component {
     return (
       <div className="user-panel">
         {this.state.loaded && (
-          <Card className="user-data mx-auto p-3">
+          <Card className="user-data mx-auto p-3 p-sx-0">
             <Typography
               component="h1"
               className="title mx-auto"
@@ -181,6 +182,7 @@ export class UserPanel extends Component {
                       <Grid item>
                         <div className="btn-group">
                           <Button
+                            style={{ maxWidth: '400px' }}
                             className="btn bg-success btn-buy"
                             onClick={() => this.handlePayout()}>
                             <Grid container>
@@ -223,15 +225,11 @@ export class UserPanel extends Component {
               </TabPane>
 
               <TabPane tabId={3}>
-                <h2 className="p-3">
-                  <i className="fa fa-sync-alt fa-spin  " /> (Tu komponent
-                  PaymentHistory)
-                </h2>
-                <i className="fa fa-spinner fa-pulse" />
+                <PaymentHistory />
               </TabPane>
 
               <TabPane tabId={4}>
-                <PaymentHistory />
+                <UserEarnings />
               </TabPane>
             </TabContent>
           </Card>

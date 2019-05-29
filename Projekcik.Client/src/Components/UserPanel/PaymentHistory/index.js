@@ -7,21 +7,23 @@ import './index.scss';
 export default class PaymentHistory extends Component {
   constructor(props) {
     super(props);
-    PaymentService.getPaymentHistory().then(payments => {
-      if (!payments || payments.length === 0) this.setState({ payments: [] });
-      this.setState({ payments });
-    });
+    // PaymentService.getPaymentHistory().then(payments => {
+    //   if (payments && payments.length > 0)
+    //     this.setState({ payments: payments });
+    //   else this.setState({ payments: [] });
+    // });
   }
 
   state = {
-    payments: []
+    payments: [],
+    loaded: false
   };
 
   render() {
     const { payments } = this.state;
     console.log('render');
     return (
-      <Card className="p-2 m-2">
+      <div>
         <Typography variant="h5" className="p-2 m-2">
           Historia zamówień
         </Typography>
@@ -56,7 +58,7 @@ export default class PaymentHistory extends Component {
               ))}
           </tbody>
         </Table>
-      </Card>
+      </div>
     );
   }
 }

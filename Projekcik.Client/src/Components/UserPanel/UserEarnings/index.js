@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, Typography } from '@material-ui/core';
 import { Table } from 'reactstrap';
 import { NoteService } from '../../../Services';
@@ -21,7 +22,7 @@ export default class UserEarnings extends Component {
     const { earnings } = this.state;
     console.log('render');
     return (
-      <Card className="p-2 m-2">
+      <div>
         <Typography variant="h5" className="p-2 m-2">
           Historia zarobków
         </Typography>
@@ -29,7 +30,6 @@ export default class UserEarnings extends Component {
           <thead>
             <tr>
               <th>L.p.</th>
-              <th>ID notatki</th>
               <th>Nazwa notatki</th>
               <th>Cena</th>
               <th>Ilość zakupów</th>
@@ -41,8 +41,9 @@ export default class UserEarnings extends Component {
               earnings.map((earning, idx) => (
                 <tr key={idx}>
                   <th scope="row">{idx + 1}.</th>
-                  <td>{earning.id}</td>
-                  <td>{earning.name}</td>
+                  <td>
+                    <Link to={`/note/${earning.id}`}>{earning.name}</Link>
+                  </td>
                   <td>{earning.price} zł</td>
                   <td>{earning.purchases}</td>
                   <td>{earning.profit} zł</td>
@@ -50,7 +51,7 @@ export default class UserEarnings extends Component {
               ))}
           </tbody>
         </Table>
-      </Card>
+      </div>
     );
   }
 }
