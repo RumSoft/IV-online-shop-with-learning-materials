@@ -86,11 +86,6 @@ namespace Projekcik.Api.Services.Impl
             return _context.Transactions.Find(transId);
         }
 
-        public IQueryable<Transaction> GetTransactionsByBuyerId(Guid userId)
-        {
-            return _context.Transactions.Where(x => x.BuyerId == userId);
-        }
-
         public string CreateOrder(Note[] notes, User user, string userIpAddress)
         {
             var authToken = GetAuthToken();

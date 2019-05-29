@@ -6,6 +6,7 @@ import CartService from '../../Services/CartService';
 import ShowNoteButton from '../Buttons/ShowNoteButton';
 
 import './index.scss';
+// import PaymentService from '../../Services/PaymentService';
 
 export default class ShoppingCart extends Component {
   constructor(props) {
@@ -69,22 +70,22 @@ export default class ShoppingCart extends Component {
                     </Typography>
                     <Typography variant="subtitle2" className="pb-2">
                       <i className="fa fa-user" />
-                      {note.author.name}
+                      &nbsp; {note.author.name}
                     </Typography>
                   </div>
                   <div className="note-origins">
                     <div className="text">
                       <Typography>
                         <i className="fa fa-globe" />
-                        {note.voivodeship.name}
+                        &nbsp; {note.voivodeship.name}
                       </Typography>
                       <Typography>
                         <i className="fa fa-university" />
-                        {note.university.name}
+                        &nbsp; {note.university.name}
                       </Typography>
                       <Typography>
                         <i className="fa fa-book" />
-                        {note.course.name}
+                        &nbsp; {note.course.name}
                       </Typography>
                     </div>
                     <ShowNoteButton
@@ -118,7 +119,7 @@ export default class ShoppingCart extends Component {
         <hr />
         <div className="checkout">
           <Typography variant="h5" className="pb-3 mr-2">
-            Wartość zamówienia:&nbsp;
+            Wartość zamówienia: &nbsp;
             {this.state.notes.reduce((total, note) => total + note.price, 0)} zł
           </Typography>
           <Button
