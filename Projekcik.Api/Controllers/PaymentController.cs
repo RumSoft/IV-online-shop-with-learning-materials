@@ -170,5 +170,30 @@ namespace Projekcik.Api.Controllers
                 })
             });
         }
+
+        [Authorize]
+        [HttpGet("paymenthistory")]
+        public IActionResult GetPayment()
+        {
+            var userId = _user.GetCurrentUserId();
+            var user = _userService.GetById(userId);
+            if (user == null)
+                return BadRequest("Invalid user");
+
+            var query = _paymentService.GetTransactionsByBuyerId(user.Id);
+            var result = query.Select(x => new
+            {
+                x.CreatedAt,
+                notes = x.OrderedNotesIds.Select(xd => _noteService.GetNoteById(xd)).Select(xd => new
+                {
+                    xd.Id,
+                    xd.Name
+                }),
+                x.Status,
+            }).OrderBy(x => x.CreatedAt)
+                .Take(30);
+
+            return Ok(result);
+        }
     }
 }

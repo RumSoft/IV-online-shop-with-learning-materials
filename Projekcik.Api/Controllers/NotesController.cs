@@ -385,5 +385,27 @@ namespace Projekcik.Api.Controllers
 
             return Ok(result);
         }
+
+        [Authorize]
+        [HttpGet("earnings")]
+        public IActionResult GetEarnings()
+        {
+            var userId = _user.GetCurrentUserId();
+            var user = _userService.GetById(userId);
+            if (user == null)
+                return BadRequest("Invalid user");
+
+            var notes = _noteService.GetNotesByAuthorId(user.Id);
+            var result = notes.Select(x => new
+            {
+                x.Id,
+                x.Name,
+                x.Price,
+                Purchases = x.Buyers.Count,
+                Profit = x.Price * x.Buyers.Count,
+            });
+            result = result.Where(x=>x.Purchases > 0);
+            return Ok(result);
+        }
     }
 }
