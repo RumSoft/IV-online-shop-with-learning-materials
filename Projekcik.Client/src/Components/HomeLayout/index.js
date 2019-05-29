@@ -122,7 +122,6 @@ export default class HomeLayout extends Component {
                 {this.state.notes.map((note, i) => (
                   <SmallNoteCard note={note} key={i} />
                 ))}
-                <AddCard />
               </Slider>
             )}
             <a href="https://projekcik-prz.azurewebsites.net/search">
