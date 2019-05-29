@@ -5,11 +5,13 @@ import NoteService from '../../Services/NoteService';
 import { Button, Nav, NavItem, NavLink, TabPane, TabContent } from 'reactstrap';
 import classnames from 'classnames';
 import Grid from '@material-ui/core/Grid';
+import PaymentHistory from './PaymentHistory';
 import { Card, Typography, ListItemText } from '@material-ui/core';
 import { WideSmallNoteCard } from '../NoteCards';
 import PaymentHistory from './PaymentHistory';
 import UserEarnings from './UserEarnings';
 import './index.scss';
+import UserEarnings from './UserEarnings';
 
 export class UserPanel extends Component {
   constructor(props) {
@@ -49,7 +51,7 @@ export class UserPanel extends Component {
     return (
       <div className="user-panel">
         {this.state.loaded && (
-          <Card className="user-data mx-auto p-3">
+          <Card className="user-data mx-auto p-3 p-sx-0">
             <Typography
               component="h1"
               className="title mx-auto"
@@ -174,6 +176,7 @@ export class UserPanel extends Component {
                       <Grid item>
                         <div className="btn-group">
                           <Button
+                            style={{ maxWidth: '400px' }}
                             className="btn bg-success btn-buy"
                             onClick={() => this.handlePayout()}>
                             <Grid container>
