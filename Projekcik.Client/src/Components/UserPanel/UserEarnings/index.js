@@ -9,8 +9,8 @@ export default class UserEarnings extends Component {
   constructor(props) {
     super(props);
     NoteService.getUserEarnings().then(earnings => {
-      if (!earnings || earnings.length === 0) this.setState({ earnings: [] });
-      this.setState({ earnings });
+      if (earnings || earnings.length > 0) this.setState({ earnings });
+      else this.setState({ earnings: [] });
     });
   }
 

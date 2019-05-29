@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Card, Typography } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import { Typography } from '@material-ui/core';
 import { Table } from 'reactstrap';
 import { PaymentService } from '../../../Services';
 import './index.scss';
@@ -7,11 +8,11 @@ import './index.scss';
 export default class PaymentHistory extends Component {
   constructor(props) {
     super(props);
-    // PaymentService.getPaymentHistory().then(payments => {
-    //   if (payments && payments.length > 0)
-    //     this.setState({ payments: payments });
-    //   else this.setState({ payments: [] });
-    // });
+    PaymentService.getPaymentHistory().then(payments => {
+      if (payments && payments.length > 0)
+        this.setState({ payments: payments, loaded: true });
+      else this.setState({ payments: [], loaded: true });
+    });
   }
 
   state = {
@@ -19,8 +20,12 @@ export default class PaymentHistory extends Component {
     loaded: false
   };
 
+  sumNotesPrices(notes) {
+    return notes.reduce((total, note) => total + note.price, 0);
+  }
+
   render() {
-    const { payments } = this.state;
+    const { payments, loaded } = this.state;
     console.log('render');
     return (
       <div>
@@ -32,27 +37,30 @@ export default class PaymentHistory extends Component {
             <tr>
               <th>L.p.</th>
               <th>Data zamówienia</th>
-              <th>ID zamówienia</th>
               <th>Status</th>
               <th>Wartość</th>
               <th>Zakupione notatki</th>
             </tr>
           </thead>
           <tbody>
-            {payments &&
+            {loaded &&
+              payments &&
               payments.map((payment, idx) => (
                 <tr key={idx}>
                   <th scope="row">{idx + 1}.</th>
-                  <td>{payment.createdAt}</td>
-                  <td>payment.id(?)</td>
-                  <td>{payment.status}</td>
-                  <td>payment.price(?)</td>
+                  <td>{new Date(payment.createdAt).toLocaleString()}</td>
                   <td>
-                    {payment.notes.length > 1
-                      ? payment.notes.map((note, index) => (
-                          <div>- {payment.notes[index].name}</div>
-                        ))
-                      : payment.notes[0].name}
+                    {payment.status > 0 ? 'ZAKOŃCZONE' : 'błąd płatności'}
+                  </td>
+                  <td>{this.sumNotesPrices(payment.notes)}zł</td>
+                  <td>
+                    {payment.notes.map((note, index) => (
+                      <div>
+                        <Link to={`/note/${note.id}`}>{note.name}:</Link>
+                        {'  '}
+                        {note.price}zł
+                      </div>
+                    ))}
                   </td>
                 </tr>
               ))}
