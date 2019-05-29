@@ -33,8 +33,8 @@ export default class AuthService {
     if (
       jwtToken &&
       jwtToken.length &&
-      jwtToken != undefined &&
-      jwtToken != 'undefined'
+      jwtToken !== undefined &&
+      jwtToken !== 'undefined'
     ) {
       let payload = decode(jwtToken);
       return payload.exp > new Date().getTime() / 1000 ? true : false;

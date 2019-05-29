@@ -13,10 +13,21 @@
     display: inline-block;
   }
 
-  .fa {
-    margin-right: 0.5rem
+  .btn-small-group {
+    display: flex;
+    .btn {
+      margin: 3px;
+      &.cart {
+        width: 120px;
+      }
+      &.note {
+        width: 100%;
+      }
+    }
   }
-
+  .fa {
+    margin-right: 0.5rem;
+  }
 
   .footer {
     background-color: #3f51b5;
