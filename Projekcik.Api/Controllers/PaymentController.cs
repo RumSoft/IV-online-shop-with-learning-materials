@@ -20,7 +20,7 @@ namespace Projekcik.Api.Controllers
     public class PaymentController : ControllerBase
     {
         private static readonly ILog _log =
-            LogManager.GetLogger(typeof(UniController));
+            LogManager.GetLogger(typeof(PaymentController));
 
         private readonly INoteService _noteService;
         private readonly IPaymentService _paymentService;
@@ -90,9 +90,7 @@ namespace Projekcik.Api.Controllers
                 catch (Exception e)
                 {
                     _log.Error(
-                        $"Transaction notify failed, reason: {e.Message}, inner: {e.InnerException?.Message ?? "none"}" +
-                        "\n entity:\n" +
-                        $"{JsonConvert.SerializeObject(status, Formatting.Indented)}");
+                        $"Transaction notify failed, reason: {e.Message}, inner: {e.InnerException?.Message ?? "none"}");
                 }
             });
         }
@@ -110,11 +108,17 @@ namespace Projekcik.Api.Controllers
                 "185.68.14.28"
             };
 
+            _log.Warn("=================================================");
+            _log.Warn("updating this fucking transaction, the model is:");
+            _log.Warn(JsonConvert.SerializeObject(status));
+
+
             var clientIp = HttpContext.Connection.RemoteIpAddress.MapToIPv4();
             if (!sandboxNotifyAddresses.Select(IPAddress.Parse).Contains(clientIp))
             {
                 _log.Error($"wrong notify ip address: {clientIp}");
                 return StatusCode(418);
+
             }
 
             UpdatePaymentStatusAsync(status);

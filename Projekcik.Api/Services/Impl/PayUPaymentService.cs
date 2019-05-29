@@ -48,13 +48,20 @@ namespace Projekcik.Api.Services.Impl
         }
         public void UpdateTransaction(PaymentStatus status)
         {
+            _log.Warn("=== update transaction");
+
             if (!status.Order.Status.Equals("COMPLETED", StringComparison.InvariantCultureIgnoreCase))
                 return;
+
+            _log.Warn("=== order status completed");
+
 
             var transactionId = Guid.Parse(status.Order.ExtOrderId);
             var transaction = _context.Transactions.Find(transactionId);
             if (transaction == null)
                 throw new Exception("transaction does not exist");
+
+            _log.Warn("=== transaction exists");
 
             // if completed, no more processing
             if (transaction.Status == TransactionStatus.Completed)
@@ -69,6 +76,8 @@ namespace Projekcik.Api.Services.Impl
             if (transaction.Status != TransactionStatus.Completed)
                 return;
 
+            _log.Warn("=== transaction completed");
+
             var userId = transaction.BuyerId;
             var user = _context.Users.Find(userId);
             if (user == null)
@@ -82,6 +91,7 @@ namespace Projekcik.Api.Services.Impl
             foreach (var note in notes)
                 _noteService.Buy(user, note);
             _context.SaveChanges();
+            _log.Warn("=== update completed");
         }
 
         public Transaction GetTransactionDetails(Guid transId)
