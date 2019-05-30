@@ -4,6 +4,7 @@ import { Typography } from '@material-ui/core';
 import { Table } from 'reactstrap';
 import { NoteService } from '../../../Services';
 import './index.scss';
+import graph from '../graphs/graph';
 
 export default class UserEarnings extends Component {
   constructor(props) {
@@ -25,6 +26,7 @@ export default class UserEarnings extends Component {
         <h2 className="p-2 m-2">
           <i className="fa fa-money-bill" /> Historia zarobków
         </h2>
+        <graph/>
         {earnings !== null ? (
           <Table responsive striped bordered>
             <thead>

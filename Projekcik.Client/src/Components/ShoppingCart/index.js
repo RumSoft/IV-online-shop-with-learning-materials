@@ -52,31 +52,28 @@ export default class ShoppingCart extends Component {
           this.state.notes.length ? (
             this.state.notes.map((note, i) => (
               <Card key={i} className="cart-note p-2 m-2">
-                <div className="note-image">
-                  {note.previewUrl ? (
-                    <img
-                      className="p-2 m-2"
-                      style={{
-                        width: 128,
-                        height: 128
-                      }}
-                      src={note.previewUrl}
-                      alt="notePreview"
-                    />
-                  ) : (
-                    <img
-                      className="p-2 m-2"
-                      style={{
-                        width: 128,
-                        height: 128
-                      }}
-                      src="http://placekitten.com/g/400/400"
-                      alt="notePreview"
-                    />
-                  )}
-
+                <div className="note-all-info">
+                  <div className="note-image">
+                    {note.previewUrl ? (
+                      <img
+                        className="img- fluid p-2 m-2"
+                        style={{
+                          width: 128,
+                          height: 128
+                        }}
+                        src={note.previewUrl}
+                        alt="notePreview"
+                      />
+                    ) : (
+                      <img
+                        className="img-fluid rounded-circle p-2 m-2"
+                        src="http://placekitten.com/g/100/100"
+                        alt="notePreview"
+                      />
+                    )}
+                  </div>
                   <div className="note-main">
-                    <Typography variant="h5" className="name pb-2">
+                    <Typography variant="h6" className="name pb-2">
                       {note.name}
                     </Typography>
                     <Typography variant="subtitle2" className="pb-2">
