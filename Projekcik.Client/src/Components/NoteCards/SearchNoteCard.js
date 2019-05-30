@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Grid, Typography, Paper } from '@material-ui/core';
 import './index.scss';
 import { ShowNoteButton, AddToCartButton } from '../Buttons';
+import NoPreviewImage from '../../images/alt128.png';
 
 export default class SearchNoteCard extends Component {
   render() {
@@ -12,27 +13,11 @@ export default class SearchNoteCard extends Component {
       <Grid item sm={6}>
         <Paper className="search-note-card note-card p-2 m-2">
           <div className="note-image">
-            {note.previewUrl ? (
-              <img
-                className="p-2 m-2"
-                style={{
-                  width: 128,
-                  height: 128
-                }}
-                src={note.previewUrl}
-                alt="notePreview"
-              />
-            ) : (
-              <img
-                className="p-2 m-2"
-                style={{
-                  width: 128,
-                  height: 128
-                }}
-                src="http://placekitten.com/g/400/400"
-                alt="notePreview"
-              />
-            )}
+            <img
+              src={note.previewUrl || NoPreviewImage}
+              className="note-preview my-auto m-2"
+              alt="notePreview"
+            />
             <div className="note-other">
               <Link to={`/note/${note.id}`} style={{ textDecoration: 'none' }}>
                 <h5>{note.name}</h5>

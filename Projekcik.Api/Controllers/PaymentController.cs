@@ -87,6 +87,8 @@ namespace Projekcik.Api.Controllers
                 {
                     _log.Warn($"Updating transaction {status.Order.ExtOrderId}, status: {status.Order.Status}");
                     _paymentService.UpdateTransaction(status);
+                    _log.Warn($"sucessfully updated, status: {status.Order.Status}");
+
                 }
                 catch (Exception e)
                 {
