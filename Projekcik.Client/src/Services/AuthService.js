@@ -28,13 +28,22 @@ export default class AuthService {
     }
   }
 
+  static getCurrentUserId() {
+    if (!this.isAuthenticated()) return '';
+
+    let jwtToken = window.localStorage.getItem(authToken);
+    let payload = decode(jwtToken);
+    let idKey = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid';
+    return payload[idKey];
+  }
+
   static isAuthenticated() {
     let jwtToken = window.localStorage.getItem(authToken);
     if (
       jwtToken &&
       jwtToken.length &&
-      jwtToken != undefined &&
-      jwtToken != 'undefined'
+      jwtToken !== undefined &&
+      jwtToken !== 'undefined'
     ) {
       let payload = decode(jwtToken);
       return payload.exp > new Date().getTime() / 1000 ? true : false;

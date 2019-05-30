@@ -1,4 +1,5 @@
 import axios from 'axios';
+import APIService from './APIService';
 const queryString = require('query-string');
 
 const API_URL = 'https://projekcik-prz.azurewebsites.net';
@@ -24,9 +25,6 @@ export default class NoteService {
   static getNote(noteId) {
     return axios.get(`${API_URL}/api/Notes/${noteId}`).then(r => r.data);
   }
-  static getBoughtNote() {
-    return axios.get(`${API_URL}/api/Notes/bought`).then(r => r.data);
-  }
 
   static getNotesById(idArray) {
     return axios.post(`${API_URL}/api/Notes`, idArray).then(r => r.data);
@@ -36,6 +34,10 @@ export default class NoteService {
     return sorter
       ? axios.get(`${API_URL}/api/Notes/search/${sorter}`).then(r => r.data)
       : axios.get(`${API_URL}/api/Notes/search`).then(r => r.data);
+  }
+
+  static getBoughtNotes() {
+    return APIService.get('/api/notes/bought');
   }
 
   static search(data) {
@@ -50,6 +52,10 @@ export default class NoteService {
     return axios
       .get(`${API_URL}/api/Notes/download-request/${noteId}`)
       .then(r => r.data);
+  }
+
+  static getUserEarnings() {
+    return APIService.get('api/Notes/earnings');
   }
 
   static cleanObject = function(obj) {

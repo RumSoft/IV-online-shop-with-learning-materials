@@ -14,7 +14,7 @@ namespace Projekcik.Api.Services
         string CreateOrder(Note[] notes, User user, string userIpAddress);
         void UpdateTransaction(PaymentStatus status);
         Transaction GetTransactionDetails(Guid transId);
-        IQueryable<Transaction> GetTransactionsByBuyerId(Guid userId);
         void CreatePayout(User user, PayoutParameters payoutParameters);
+        IQueryable<Transaction> GetTransactionsByBuyerId(Guid userId);
     }
 }

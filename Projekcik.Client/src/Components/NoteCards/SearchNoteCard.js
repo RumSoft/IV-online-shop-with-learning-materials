@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Grid, Typography, Paper } from '@material-ui/core';
 import './index.scss';
 import { ShowNoteButton, AddToCartButton } from '../Buttons';
+import NoPreviewImage from '../../images/alt128.png';
 
 export default class SearchNoteCard extends Component {
   render() {
@@ -13,37 +14,36 @@ export default class SearchNoteCard extends Component {
         <Paper className="search-note-card note-card p-2 m-2">
           <div className="note-image">
             <img
-              className="p-2 m-2"
-              style={{
-                width: 128,
-                height: 128
-              }}
-              src="http://placekitten.com/g/400/400"
+              src={note.previewUrl || NoPreviewImage}
+              className="note-preview my-auto m-2"
               alt="notePreview"
             />
-            <div className="note-name">
+            <div className="note-other">
               <Link to={`/note/${note.id}`} style={{ textDecoration: 'none' }}>
                 <h5>{note.name}</h5>
                 <h6>{note.price} zł</h6>
               </Link>
+
+              <dl>
+                <Typography>
+                  {' '}
+                  <i className="fa fa-globe" />
+                  {note.voivodeship.name}
+                </Typography>
+                <Typography />
+                <Typography>
+                  {' '}
+                  <i className="fa fa-university" />
+                  {note.university.name}
+                </Typography>
+                <Typography />
+                <Typography>
+                  <i className="fa fa-book" />
+                  {note.course.name}, sem. {note.semester}
+                </Typography>
+                <Typography />
+              </dl>
             </div>
-            <dl>
-              <Typography>
-                <i className="fa fa-globe" />
-                {note.voivodeship.name}
-              </Typography>
-              <Typography />
-              <Typography>
-                <i className="fa fa-university" />
-                {note.university.name}
-              </Typography>
-              <Typography />
-              <Typography>
-                <i className="fa fa-book" />
-                {note.course.name}, sem. {note.semester}
-              </Typography>
-              <Typography />
-            </dl>
           </div>
           <div className="btn-group">
             <ShowNoteButton text="Zobacz notatkę" id={note.id} />

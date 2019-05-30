@@ -27,29 +27,22 @@ export default class UserPanel2 extends Component {
     const notes = this.state.notes;
     const user = this.state.user;
     return (
-      <div>
-        <ReactPlaceholder
-          ready={this.state.loaded}
-          customPlaceholder={<NotePanelPlaceholder />}>
-          {this.state.loaded && (
-            <Card className="p-3 p-sx-0">
-              <Typography
-                component="h1"
-                className="title"
-                variant="h4"
-                color="textPrimary"
-                gutterBottom>
-                Profil użytkownika {user.userName}
-              </Typography>
-              <img
-                src={user.pictureUrl || 'http://placekitten.com/50/50'}
-                alt="UserPicture"
-              />
-            </Card>
-          )}
+      <ReactPlaceholder
+        ready={this.state.loaded}
+        customPlaceholder={<NotePanelPlaceholder />}>
+        {this.state.loaded && (
+          <Card className="p-3 p-sx-0 user-panel-2">
+            <Typography
+              component="h1"
+              className="title"
+              variant="h4"
+              color="textPrimary"
+              gutterBottom>
+              Profil użytkownika {user.userName}
+            </Typography>
+            <img src="http://placekitten.com/100/100" alt="UserPicture" />
 
-          {notes && notes.length && (
-            <Card className="main p-3">
+            {notes && notes.length && (
               <Grid
                 className="grid"
                 container
@@ -65,10 +58,10 @@ export default class UserPanel2 extends Component {
                   </Grid>
                 ))}
               </Grid>
-            </Card>
-          )}
-        </ReactPlaceholder>
-      </div>
+            )}
+          </Card>
+        )}
+      </ReactPlaceholder>
     );
   }
 }

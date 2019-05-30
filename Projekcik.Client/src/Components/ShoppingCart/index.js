@@ -6,6 +6,7 @@ import CartService from '../../Services/CartService';
 import ShowNoteButton from '../Buttons/ShowNoteButton';
 
 import './index.scss';
+// import PaymentService from '../../Services/PaymentService';
 
 export default class ShoppingCart extends Component {
   constructor(props) {
@@ -41,7 +42,6 @@ export default class ShoppingCart extends Component {
   render() {
     const { loaded } = this.state;
     if (this.state.redirectToBuy) return this.redirectToOrderPage();
-
     return (
       <Paper className="cart-list">
         <Typography variant="h5" className="my-cart">
@@ -53,38 +53,47 @@ export default class ShoppingCart extends Component {
             this.state.notes.map((note, i) => (
               <Card key={i} className="cart-note p-2 m-2">
                 <div className="note-image">
-                  <img
-                    className="p-2 m-2"
-                    style={{
-                      width: 128,
-                      height: 128
-                    }}
-                    src="http://placekitten.com/g/400/400"
-                    alt="notePreview"
-                  />
+                  {note.previewUrl ? (
+                    <img
+                      className="p-2 m-2"
+                      style={{
+                        width: 128,
+                        height: 128
+                      }}
+                      src={note.previewUrl}
+                      alt="notePreview"
+                    />
+                  ) : (
+                    <img
+                      className="p-2 m-2"
+                      style={{
+                        width: 128,
+                        height: 128
+                      }}
+                      src="http://placekitten.com/g/400/400"
+                      alt="notePreview"
+                    />
+                  )}
 
                   <div className="note-main">
                     <Typography variant="h5" className="name pb-2">
                       {note.name}
                     </Typography>
                     <Typography variant="subtitle2" className="pb-2">
-                      <i className="fa fa-user" />
-                      {note.author.name}
+                      <i className="fa fa-user" /> {note.author.name}
                     </Typography>
                   </div>
                   <div className="note-origins">
                     <div className="text">
                       <Typography>
-                        <i className="fa fa-globe" />
-                        {note.voivodeship.name}
+                        <i className="fa fa-globe" /> {note.voivodeship.name}
                       </Typography>
                       <Typography>
-                        <i className="fa fa-university" />
+                        <i className="fa fa-university" />{' '}
                         {note.university.name}
                       </Typography>
                       <Typography>
-                        <i className="fa fa-book" />
-                        {note.course.name}
+                        <i className="fa fa-book" /> {note.course.name}
                       </Typography>
                     </div>
                     <ShowNoteButton
@@ -101,7 +110,7 @@ export default class ShoppingCart extends Component {
                       type="button"
                       onClick={() => this.handleRemove(note.id)}
                       className="btn btn-danger btn-circle btn-lg">
-                      <i className="fa fa-times" />
+                      <i className="fa fa-times m-0" />
                     </Button>
                   </div>
                 </div>
@@ -118,7 +127,7 @@ export default class ShoppingCart extends Component {
         <hr />
         <div className="checkout">
           <Typography variant="h5" className="pb-3 mr-2">
-            Wartość zamówienia:&nbsp;
+            Wartość zamówienia:{' '}
             {this.state.notes.reduce((total, note) => total + note.price, 0)} zł
           </Typography>
           <Button

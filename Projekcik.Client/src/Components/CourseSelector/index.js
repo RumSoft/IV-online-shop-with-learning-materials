@@ -143,10 +143,7 @@ export default class CourseSelector extends Component {
                   {selection.voivodeship ? selection.voivodeship.name : '-'}
                 </Typography>
               }>
-              <Typography className="step-label-title">
-                <i className="fa fa-globe" />
-                Województwo
-              </Typography>
+              <Typography className="step-label-title">Województwo</Typography>
             </StepLabel>
           </Step>
           <Step>
@@ -160,10 +157,7 @@ export default class CourseSelector extends Component {
                   {selection.university ? selection.university.name : '-'}
                 </Typography>
               }>
-              <Typography className="step-label-title">
-                <i className="fa fa-university" />
-                Uczelnia
-              </Typography>
+              <Typography className="step-label-title">Uczelnia</Typography>
             </StepLabel>
           </Step>
           <Step>
@@ -179,10 +173,7 @@ export default class CourseSelector extends Component {
                   {selection.course ? selection.course.name : '-'}
                 </Typography>
               }>
-              <Typography className="step-label-title">
-                <i className="fa fa-book" />
-                Kierunek
-              </Typography>
+              <Typography className="step-label-title">Kierunek</Typography>
             </StepLabel>
           </Step>
         </Stepper>

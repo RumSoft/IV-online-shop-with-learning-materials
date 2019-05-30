@@ -14,4 +14,8 @@ export default class PaymentService {
       AccountNumber: bankAccountNumber
     });
   }
+
+  static getPaymentHistory() {
+    return APIService.get('api/Payment/paymenthistory');
+  }
 }

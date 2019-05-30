@@ -10,6 +10,7 @@ import 'react-placeholder/lib/reactPlaceholder.css';
 import './index.scss';
 import { BigAddToCartButton } from '../Buttons';
 import NotePreview from './notePreview';
+import { AuthService } from '../../Services';
 
 export default class NotePanel extends Component {
   constructor(props) {
@@ -24,6 +25,7 @@ export default class NotePanel extends Component {
 
   render() {
     const note = this.state.note;
+
     return (
       <div>
         <ReactPlaceholder
@@ -39,7 +41,6 @@ export default class NotePanel extends Component {
                     itemType="http://schema.org/ListItem"
                     itemProp="itemListElement">
                     <a href="/">
-                      <i className="fa fa-globe" />
                       <span itemProp="name">{note.voivodeship.name}</span>
                       <meta content="1" />
                     </a>
@@ -48,7 +49,6 @@ export default class NotePanel extends Component {
                     itemType="http://schema.org/ListItem"
                     itemProp="itemListElement">
                     <a href="/">
-                      <i className="fa fa-university" />
                       <span itemProp="name">{note.university.name}</span>
                       <meta content="2" />
                     </a>
@@ -57,7 +57,6 @@ export default class NotePanel extends Component {
                     itemType="http://schema.org/ListItem"
                     itemProp="itemListElement">
                     <a href="/">
-                      <i className="fa fa-book" />
                       <span itemProp="name">{note.course.name}</span>
                       <meta content="2" />
                     </a>
@@ -92,11 +91,15 @@ export default class NotePanel extends Component {
                   </Grid>
                   <Grid item xs={12} sm={6} md={4} lg={4}>
                     <Card className="note-info">
-                      <BigAddToCartButton
-                        className="add-to-cart"
-                        id={note.id}
-                        price={note.price}
-                      />
+                      {note.author.id !== AuthService.getCurrentUserId() ? (
+                        <BigAddToCartButton
+                          className="add-to-cart"
+                          id={note.id}
+                          price={note.price}
+                        />
+                      ) : (
+                        <p className="h6 text-center">To twoja notatka</p>
+                      )}
                       <div className="note-author">
                         <HrLabel text="Autor" />
                         <Link to={`/user/${note.author.id}`}>
@@ -114,51 +117,35 @@ export default class NotePanel extends Component {
                           <Grid item xs={4} sm={6} md={12}>
                             <ListItemText
                               className="document-what"
-                              primary={[
-                                <i className="fa fa-sort-numeric-up" />,
-                                'Semestr'
-                              ]}
-                              secondary={note.semester}
+                              primary="Semestr"
+                              secondary={this.state.semester}
                             />
                           </Grid>
                           <Grid item xs={4} sm={6} md={12}>
                             <ListItemText
                               className="document-what"
-                              primary={[
-                                <i className="fa fa-globe" />,
-                                'Województwo'
-                              ]}
+                              primary="Województwo"
                               secondary={note.voivodeship.name}
                             />
                           </Grid>
                           <Grid item xs={4} sm={6} md={12}>
                             <ListItemText
-                              dense
                               className="document-what"
-                              primary={[
-                                <i className="fa fa-university" />,
-                                'Uniwersytet'
-                              ]}
+                              primary="Uczelnia"
                               secondary={note.university.name}
                             />
                           </Grid>
                           <Grid item xs={4} sm={6} md={12}>
                             <ListItemText
                               className="document-what"
-                              primary={[
-                                <i className="fa fa-book" />,
-                                'Kierunek'
-                              ]}
+                              primary="Kierunek"
                               secondary={note.course.name}
                             />
                           </Grid>
                           <Grid item xs={4} sm={6} md={12}>
                             <ListItemText
                               className="document-what"
-                              primary={[
-                                <i className="fa fa-calendar-plus" />,
-                                'Data dodania'
-                              ]}
+                              primary="Data dodania"
                               secondary={new Date(
                                 note.createdAt
                               ).toLocaleDateString()}
@@ -167,10 +154,7 @@ export default class NotePanel extends Component {
                           <Grid item xs={4} sm={6} md={12}>
                             <ListItemText
                               className="document-what"
-                              primary={[
-                                <i className="fa fa-print" />,
-                                'Typ pliku'
-                              ]}
+                              primary="Typ pliku"
                               secondary={note.type}
                             />
                           </Grid>

@@ -75,6 +75,11 @@ export default class NoteUploader extends Component {
       this.state.course
     ];
 
+    if (this.state.price < 1 || this.state.price > 1000) {
+      this.setState({ error: 'Nieprawidłowa cena!' });
+      return true;
+    }
+
     if (this.state.file === null) {
       this.setState({ error: 'Dodaj plik notatki!' });
       window.scrollTo(0, 0);
@@ -125,6 +130,7 @@ export default class NoteUploader extends Component {
             sending: false
           });
           window.scrollTo(0, 0);
+          console.log(r);
         })
         .catch(e =>
           this.setState(
@@ -169,7 +175,7 @@ export default class NoteUploader extends Component {
             id="name"
             className="field"
             label="Nazwa notatki"
-            inputProps={{ maxLength: 50 }}
+            inputProps={{ maxLength: 100 }}
             variant="outlined"
             value={this.state.name}
             onChange={this.handleChange}
@@ -193,12 +199,20 @@ export default class NoteUploader extends Component {
                 message: 'Cena jest wymagana'
               },
               {
+                func: val => val >= 1.0,
+                message: 'Minimalna cena to 1zł'
+              },
+              {
+                func: val => val < 1000,
+                message: 'Notatka musi kosztować mniej niż 1000zł'
+              },
+              {
                 func: val => /^(\d*\.?\d{1,2})$/.test(val),
                 message: 'Nieprawidłowy format'
               }
             ]}
           />
-          <MyTextField
+          <TextField
             id="voivodeship"
             className="field"
             label="Województwo"
@@ -206,7 +220,7 @@ export default class NoteUploader extends Component {
             disabled
             value={this.state.voivodeship}
           />
-          <MyTextField
+          <TextField
             id="university"
             className="field"
             label="Uczelnia"
@@ -214,7 +228,7 @@ export default class NoteUploader extends Component {
             disabled
             value={this.state.university}
           />
-          <MyTextField
+          <TextField
             id="course"
             className="field"
             label="Kierunek"
@@ -224,7 +238,8 @@ export default class NoteUploader extends Component {
           />
 
           <ListCourseSelector searchData={this.listCourseSelectorHandler} />
-          <MyTextField
+
+          <TextField
             id="description"
             label="Opis notatki"
             multiline
