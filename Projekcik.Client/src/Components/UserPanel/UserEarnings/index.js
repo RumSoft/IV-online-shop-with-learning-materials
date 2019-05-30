@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { Table } from 'reactstrap';
 import { NoteService } from '../../../Services';
 import './index.scss';
@@ -20,7 +20,6 @@ export default class UserEarnings extends Component {
 
   render() {
     const { earnings } = this.state;
-    console.log('earnings: ', earnings);
     return (
       <div>
         <h2 className="p-2 m-2">
@@ -50,6 +49,20 @@ export default class UserEarnings extends Component {
                     <td>{earning.profit} zł</td>
                   </tr>
                 ))}
+              <tr>
+                <td />
+                <td />
+                <td />
+                <td />
+                <td>
+                  <strong>Razem:</strong>{' '}
+                  {earnings.reduce(
+                    (total, earning) => total + earning.price,
+                    0
+                  )}{' '}
+                  zł
+                </td>
+              </tr>
             </tbody>
           </Table>
         ) : (
