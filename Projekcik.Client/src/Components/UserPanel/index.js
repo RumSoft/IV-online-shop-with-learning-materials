@@ -63,6 +63,7 @@ export class UserPanel extends Component {
               {' '}
               <i className="fa fa-cog fa-spin" />
               Witaj <img
+              className="img-fluid rounded-circle"
                 src="http://placekitten.com/50/50"
                 alt="profile-pic"
               />{' '}

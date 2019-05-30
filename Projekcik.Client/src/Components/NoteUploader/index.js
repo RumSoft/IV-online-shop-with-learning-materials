@@ -212,7 +212,7 @@ export default class NoteUploader extends Component {
               }
             ]}
           />
-          <TextField
+          <MyTextField
             id="voivodeship"
             className="field"
             label="Województwo"
@@ -220,7 +220,7 @@ export default class NoteUploader extends Component {
             disabled
             value={this.state.voivodeship}
           />
-          <TextField
+          <MyTextField
             id="university"
             className="field"
             label="Uczelnia"
@@ -228,7 +228,7 @@ export default class NoteUploader extends Component {
             disabled
             value={this.state.university}
           />
-          <TextField
+          <MyTextField
             id="course"
             className="field"
             label="Kierunek"
@@ -277,11 +277,13 @@ export default class NoteUploader extends Component {
               <option value={7}>Siódmy</option>
             </Select>
           </FormControl>
+          <p>Preferowan rozszerzenia to .pdf .docx .jpg .zip</p>
           <input
             className="file-submit"
             type="file"
             onChange={this.fileHandler}
           />
+          
           <Button
             //type="submit"
             className="file-submit button"

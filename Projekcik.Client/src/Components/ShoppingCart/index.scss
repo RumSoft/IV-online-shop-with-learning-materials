@@ -22,14 +22,22 @@ hr {
   &:hover {
     background-color: #cfd9fd;
   }
-
-  .note-image {
-    width: 200;
+  .note-all-info {
+   width: 100%;
     display: flex;
   }
-
+  .note-image {
+   width: 20%;
+    display: flex;
+  }
+  @media only screen and (max-width: 600px) {
+    .note-all-info {
+      width: 300%;
+       display: block;
+     }
+  }
   .note-main {
-    width: 320px;
+    width: 30%;
     padding: 1rem 1.5rem;
     padding-top: 1.5rem;
 
@@ -40,11 +48,13 @@ hr {
   }
 
   .note-price {
+    width: 20%;
     display: flex;
     flex-direction: column;
     padding-top: 1.2rem;
     align-items: center;
     flex-grow: 5;
+
 
     .btn-circle {
       width: 40px;
@@ -66,7 +76,7 @@ hr {
   }
 
   .note-origins {
-    width: 480px;
+    width: 30%;
 
     .text {
       line-height: 1.5em;
