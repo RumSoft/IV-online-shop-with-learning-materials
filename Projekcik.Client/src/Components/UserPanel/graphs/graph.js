@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 var CanvasJSReact = require('./canvasjs.react');
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
  
-export default class graph extends Component {
+export default class NoteGraph extends Component {
 	constructor() {
 		super();
 		this.generateDataPoints = this.generateDataPoints.bind(this);
