@@ -2,17 +2,16 @@ import React, { Component } from 'react';
 import APIService from '../../Services/APIService';
 import PaymentService from '../../Services/PaymentService';
 import NoteService from '../../Services/NoteService';
-import { Button, Nav, NavItem, NavLink, TabPane, TabContent } from 'reactstrap';
+import { Nav, NavItem, NavLink, TabPane, TabContent } from 'reactstrap';
 import classnames from 'classnames';
-import Grid from '@material-ui/core/Grid';
-import { Card, Typography, ListItemText } from '@material-ui/core';
-import { WideSmallNoteCard } from '../NoteCards';
+import { Card, Typography } from '@material-ui/core';
 import PaymentHistory from './PaymentHistory';
 import UserEarnings from './UserEarnings';
 import './index.scss';
 import BoughtNotes from './boughtNotes';
 import MyNotes from './myNotes';
 import MyInfo from './myInfo';
+import queryString from 'query-string';
 
 export class UserPanel extends Component {
   constructor(props) {
@@ -23,6 +22,8 @@ export class UserPanel extends Component {
       loaded: false,
       activeTab: 0
     };
+
+    console.log(this.state);
     APIService.get('api/user/me').then(user => {
       this.setState({ user }, () =>
         NoteService.getUserNotes(this.state.user.id).then(r =>
