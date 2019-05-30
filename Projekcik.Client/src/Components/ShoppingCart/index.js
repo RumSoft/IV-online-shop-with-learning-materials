@@ -44,7 +44,7 @@ export default class ShoppingCart extends Component {
     if (this.state.redirectToBuy) return this.redirectToOrderPage();
     return (
       <Paper className="cart-list">
-        <Typography variant="h5" className="my-cart">
+        <Typography variant="h6" className="my-cart">
           Twój koszyk
         </Typography>
         <hr />
@@ -52,8 +52,8 @@ export default class ShoppingCart extends Component {
           this.state.notes.length ? (
             this.state.notes.map((note, i) => (
               <Card key={i} className="cart-note p-2 m-2">
-                <div className="note-all-info">
-                  <div className="note-image">
+                <div className="note-all">
+                  <div className="note-image d-none d-md-block">
                     {note.previewUrl ? (
                       <img
                         className="img- fluid p-2 m-2"
@@ -100,14 +100,11 @@ export default class ShoppingCart extends Component {
                     />
                   </div>
                   <div className="note-price">
-                    <Typography variant="h5" className="pb-3 mr-1">
-                      {note.price} zł
-                    </Typography>
                     <Button
                       type="button"
                       onClick={() => this.handleRemove(note.id)}
                       className="btn btn-danger btn-circle btn-lg">
-                      <i className="fa fa-times m-0" />
+                      <i className="fa fa-times m-0" /> <h6>{note.price} zł</h6>
                     </Button>
                   </div>
                 </div>
@@ -123,7 +120,7 @@ export default class ShoppingCart extends Component {
         )}
         <hr />
         <div className="checkout">
-          <Typography variant="h5" className="pb-3 mr-2">
+          <Typography variant="h6" className="pb-3 mr-2">
             Wartość zamówienia:{' '}
             {this.state.notes.reduce((total, note) => total + note.price, 0)} zł
           </Typography>
