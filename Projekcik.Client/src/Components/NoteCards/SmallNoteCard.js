@@ -16,13 +16,20 @@ export default class SmallNoteCard extends React.Component {
           </Link>
         </div>
         <div className="note-small-info">
-          <dl>
-            <Typography>Województwo: {note.voivodeship.name}</Typography>
-            <Typography />
-            <Typography>Uczelnia: {note.university.name}</Typography>
+        <dl>
+            <Typography>
+              <i className="fa fa-globe" />
+              {note.voivodeship.name}
+            </Typography>
             <Typography />
             <Typography>
-              Kierunek: {note.course.name}, sem. {note.semester}
+              <i className="fa fa-university" />
+              {note.university.name}
+            </Typography>
+            <Typography />
+            <Typography>
+              <i className="fa fa-book" />
+              {note.course.name}, sem. {note.semester}
             </Typography>
             <Typography />
           </dl>

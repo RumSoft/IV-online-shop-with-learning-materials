@@ -44,7 +44,7 @@ export default class ShoppingCart extends Component {
     if (this.state.redirectToBuy) return this.redirectToOrderPage();
     return (
       <Paper className="cart-list">
-        <Typography variant="h5" className="my-cart">
+        <Typography variant="h6" className="my-cart">
           Twój koszyk
         </Typography>
         <hr />
@@ -52,31 +52,28 @@ export default class ShoppingCart extends Component {
           this.state.notes.length ? (
             this.state.notes.map((note, i) => (
               <Card key={i} className="cart-note p-2 m-2">
-                <div className="note-image">
-                  {note.previewUrl ? (
-                    <img
-                      className="p-2 m-2"
-                      style={{
-                        width: 128,
-                        height: 128
-                      }}
-                      src={note.previewUrl}
-                      alt="notePreview"
-                    />
-                  ) : (
-                    <img
-                      className="p-2 m-2"
-                      style={{
-                        width: 128,
-                        height: 128
-                      }}
-                      src="http://placekitten.com/g/400/400"
-                      alt="notePreview"
-                    />
-                  )}
-
+                <div className="note-all">
+                  <div className="note-image d-none d-md-block">
+                    {note.previewUrl ? (
+                      <img
+                        className="img- fluid p-2 m-2"
+                        style={{
+                          width: 128,
+                          height: 128
+                        }}
+                        src={note.previewUrl}
+                        alt="notePreview"
+                      />
+                    ) : (
+                      <img
+                        className="img-fluid rounded-circle p-2 m-2"
+                        src="http://placekitten.com/g/100/100"
+                        alt="notePreview"
+                      />
+                    )}
+                  </div>
                   <div className="note-main">
-                    <Typography variant="h5" className="name pb-2">
+                    <Typography variant="h6" className="name pb-2">
                       {note.name}
                     </Typography>
                     <Typography variant="subtitle2" className="pb-2">
@@ -103,14 +100,11 @@ export default class ShoppingCart extends Component {
                     />
                   </div>
                   <div className="note-price">
-                    <Typography variant="h5" className="pb-3 mr-1">
-                      {note.price} zł
-                    </Typography>
                     <Button
                       type="button"
                       onClick={() => this.handleRemove(note.id)}
                       className="btn btn-danger btn-circle btn-lg">
-                      <i className="fa fa-times m-0" />
+                      <i className="fa fa-times m-0" /> <h6>{note.price} zł</h6>
                     </Button>
                   </div>
                 </div>
@@ -126,7 +120,7 @@ export default class ShoppingCart extends Component {
         )}
         <hr />
         <div className="checkout">
-          <Typography variant="h5" className="pb-3 mr-2">
+          <Typography variant="h6" className="pb-3 mr-2">
             Wartość zamówienia:{' '}
             {this.state.notes.reduce((total, note) => total + note.price, 0)} zł
           </Typography>

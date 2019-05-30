@@ -45,8 +45,9 @@ export default class DownloadNoteCard extends React.Component {
             <div className="btn-group">
               <Button
                 id="download"
+                className="btn btn-info"
                 onClick={() => this.handleDownload(note.id)}>
-                pobierz
+                Pobierz
               </Button>
             </div>
           </Grid>

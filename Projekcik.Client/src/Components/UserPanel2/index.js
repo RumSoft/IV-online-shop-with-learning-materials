@@ -38,9 +38,9 @@ export default class UserPanel2 extends Component {
               variant="h4"
               color="textPrimary"
               gutterBottom>
-              Profil użytkownika {user.userName}
+              Notatki użytkownika {user.userName}  <img className='img-fluid rounded-circle' src="http://placekitten.com/50/50" alt="UserPicture" />
             </Typography>
-            <img src="http://placekitten.com/100/100" alt="UserPicture" />
+            
 
             {notes && notes.length && (
               <Grid
