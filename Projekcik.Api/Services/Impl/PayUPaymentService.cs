@@ -46,6 +46,7 @@ namespace Projekcik.Api.Services.Impl
         {
             return _context.Transactions.Where(x => x.BuyerId == userId);
         }
+
         public void UpdateTransaction(PaymentStatus status)
         {
             _log.Warn("=== update transaction");

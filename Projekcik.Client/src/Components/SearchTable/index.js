@@ -48,6 +48,8 @@ export default class NoteTable extends Component {
       );
     }
     this.toolbarHandler = this.toolbarHandler.bind(this);
+
+    this.handleQuery();
   }
   state = {
     q: '',
@@ -62,8 +64,8 @@ export default class NoteTable extends Component {
       voivodeship: '',
       university: '',
       course: '',
-      SortOrder: '',
-      SortBy: ''
+      SortOrder: 'created',
+      SortBy: 'asc'
     }
   };
 

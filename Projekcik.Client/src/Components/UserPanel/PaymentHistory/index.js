@@ -54,7 +54,7 @@ export default class PaymentHistory extends Component {
                     </td>
                     <td>{this.sumNotesPrices(payment.notes)}zł</td>
                     <td>
-                      {payment.notes.map((note, index) => (
+                      {payment.notes.reverse().map((note, index) => (
                         <div key={index}>
                           <Link to={`/note/${note.id}`}>{note.name}:</Link>
                           {'  '}
