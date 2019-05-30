@@ -26,7 +26,6 @@ export default class PaymentHistory extends Component {
 
   render() {
     const { payments, loaded } = this.state;
-    console.log('payments: ', payments);
     return (
       <div>
         <h2 className="p-2 m-2">
@@ -55,8 +54,8 @@ export default class PaymentHistory extends Component {
                     </td>
                     <td>{this.sumNotesPrices(payment.notes)}zł</td>
                     <td>
-                      {payment.notes.map((note, index) => (
-                        <div>
+                      {payment.notes.reverse().map((note, index) => (
+                        <div key={index}>
                           <Link to={`/note/${note.id}`}>{note.name}:</Link>
                           {'  '}
                           {note.price}zł

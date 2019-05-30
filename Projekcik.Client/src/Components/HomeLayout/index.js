@@ -3,11 +3,9 @@ import Card from '@material-ui/core/Card';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import CourseSelector from '../CourseSelector';
-
 import './index.scss';
 import NoteService from '../../Services/NoteService';
 import Slider from 'react-slick';
-import AddCard from './AddCard';
 import { SmallNoteCard } from '../NoteCards';
 
 export default class HomeLayout extends Component {
@@ -36,7 +34,6 @@ export default class HomeLayout extends Component {
       this.setState({ notes: x.notes }, () => {
         this.slider.forceUpdate();
       });
-      console.log(x);
     });
   }
 
@@ -128,7 +125,7 @@ export default class HomeLayout extends Component {
               pokaż więcej
             </a>
           </Card>
-          <footer className="footer border-bottom box-shadow mb-3" dark>
+          <footer className="footer border-bottom box-shadow mb-3">
             <h4 className="footer-item">
               Strona powstała dzięki <i className="fa fa-procedures" />
               RumSoft Sp. zoo.

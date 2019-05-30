@@ -36,6 +36,10 @@ export default class NoteService {
       : axios.get(`${API_URL}/api/Notes/search`).then(r => r.data);
   }
 
+  static getBoughtNotes() {
+    return APIService.get('/api/notes/bought');
+  }
+
   static search(data) {
     this.cleanObject(data);
     let dataQueryString = queryString.stringify(data);

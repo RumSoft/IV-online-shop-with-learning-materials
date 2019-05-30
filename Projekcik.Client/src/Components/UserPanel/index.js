@@ -10,6 +10,7 @@ import { WideSmallNoteCard } from '../NoteCards';
 import PaymentHistory from './PaymentHistory';
 import UserEarnings from './UserEarnings';
 import './index.scss';
+import BoughtNotes from './boughtNotes';
 export class UserPanel extends Component {
   constructor(props) {
     super(props);
@@ -99,7 +100,7 @@ export class UserPanel extends Component {
                   onClick={() => {
                     this.toggle(3);
                   }}>
-                  Historia zakupów
+                  Kupione notatki
                 </NavLink>
               </NavItem>
               <NavItem className="nav-tab">
@@ -108,9 +109,20 @@ export class UserPanel extends Component {
                     active: this.state.activeTab === 4
                   })}
                   onClick={() => {
-                    this.toggle(4);
+                    this.toggle(3);
                   }}>
                   Sprzedane notatki
+                </NavLink>
+              </NavItem>
+              <NavItem className="nav-tab">
+                <NavLink
+                  className={classnames({
+                    active: this.state.activeTab === 5
+                  })}
+                  onClick={() => {
+                    this.toggle(4);
+                  }}>
+                  Historia zakupów
                 </NavLink>
               </NavItem>
             </Nav>
@@ -214,13 +226,14 @@ export class UserPanel extends Component {
                   ))}
                 </Grid>
               </TabPane>
-
               <TabPane tabId={3}>
-                <PaymentHistory />
+                <BoughtNotes />
               </TabPane>
-
               <TabPane tabId={4}>
                 <UserEarnings />
+              </TabPane>
+              <TabPane tabId={5}>
+                <PaymentHistory />
               </TabPane>
             </TabContent>
           </Card>
