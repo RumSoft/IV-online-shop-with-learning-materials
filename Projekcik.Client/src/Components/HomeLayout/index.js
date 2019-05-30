@@ -7,6 +7,7 @@ import './index.scss';
 import NoteService from '../../Services/NoteService';
 import Slider from 'react-slick';
 import { SmallNoteCard } from '../NoteCards';
+import { Link } from 'react-router-dom';
 
 export default class HomeLayout extends Component {
   constructor(props) {
@@ -121,9 +122,8 @@ export default class HomeLayout extends Component {
                 ))}
               </Slider>
             )}
-            <a href="https://projekcik-prz.azurewebsites.net/search">
-              pokaż więcej
-            </a>
+
+            <Link to="/search">pokaż więcej</Link>
           </Card>
           <footer className="footer border-bottom box-shadow mb-3">
             <h4 className="footer-item">
