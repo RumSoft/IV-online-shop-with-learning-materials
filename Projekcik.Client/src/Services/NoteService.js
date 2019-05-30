@@ -49,9 +49,9 @@ export default class NoteService {
   }
 
   static downloadRequest(noteId) {
-    return axios
-      .get(`${API_URL}/api/Notes/download-request/${noteId}`)
-      .then(r => r.data);
+    return APIService.rawGet(`api/Notes/download-request/${noteId}`).then(
+      r => r
+    );
   }
 
   static getUserEarnings() {

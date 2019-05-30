@@ -16,7 +16,6 @@ export default class LoginPage extends Component {
 
     var redirectData =
       this.props.location.state && this.props.location.state.from;
-
     return (
       <div className="login-page">
         <LoginPanel redirectData={redirectData} />

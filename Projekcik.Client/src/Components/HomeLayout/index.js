@@ -8,6 +8,7 @@ import NoteService from '../../Services/NoteService';
 import Slider from 'react-slick';
 import { SmallNoteCard } from '../NoteCards';
 import { Link } from 'react-router-dom';
+import queryString from 'query-string';
 
 export default class HomeLayout extends Component {
   constructor(props) {
@@ -123,7 +124,13 @@ export default class HomeLayout extends Component {
               </Slider>
             )}
 
-            <Link to="/search">pokaż więcej</Link>
+            <Link
+              to={{
+                pathname: '/search',
+                search: queryString.stringify(this.state.selection)
+              }}>
+              pokaż więcej
+            </Link>
           </Card>
           <footer className="footer border-bottom box-shadow mb-3">
             <h4 className="footer-item">

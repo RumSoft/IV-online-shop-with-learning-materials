@@ -58,7 +58,8 @@ namespace Projekcik.Api.Controllers
                     x.PageCount,
                     x.Price,
                     x.Description,
-                    x.Semester
+                    x.Semester,
+                    FileExtension=x.FileExtension.ToString().ToLower()
                 });
 
             return Ok(result);
@@ -220,25 +221,26 @@ namespace Projekcik.Api.Controllers
             if (user == null)
                 return BadRequest();
 
-            if (user.BoughtNotes.FirstOrDefault(x => x.NoteId.Equals(noteId)) == null)
-                return Forbid();
-
             var note = _noteService.GetNoteById(noteId);
             if (note == null)
                 return NotFound();
 
-            var filepath = Path.Combine(
+            if (note.AuthorId != user.Id || user.BoughtNotes.All(x => x.NoteId != noteId) )
+                Forbid();
+
+                var filepath = Path.Combine(
                 Directory.GetParent(Directory.GetCurrentDirectory()).FullName,
                 "uploads",
                 note.AuthorId.ToString(),
                 note.Id.ToString());
 
+            var result =
+                new FileContentResult(System.IO.File.ReadAllBytes(filepath), FileType.ToContentType(note.FileExtension))
+                {
+                    FileDownloadName = $"{note.Name}.{note.FileExtension.ToString()}"
+                };
 
-            return File(
-                System.IO.File.ReadAllBytes(filepath),
-                FileType.ToContentType(note.FileExtension),
-                $"{note.Name}.{note.FileExtension.ToString()}"
-                );
+            return result;
         }
 
         private CloudBlobContainer GetCloudBlobContainer()
@@ -350,9 +352,27 @@ namespace Projekcik.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost("")]
-        public IActionResult ListNotes([FromBody] Guid[] input)
+        public IActionResult ListNotesForCart([FromBody] string[] input)
         {
-            var notes = input?.Select(x => _noteService.GetNoteById(x)).Where(x => x != null).ToArray() ?? new Note[0];
+            var ids = input.Select(x =>
+            {
+                Guid.TryParse(x, out var guid);
+                return guid;
+            }).Where(x => x != null && x != Guid.Empty);
+
+            var userId = _user.GetCurrentUserId();
+            if (userId != Guid.Empty)
+            {
+                var user = _userService.GetById(userId);
+                if (user != null)
+                    ids = ids.Where(x => x != null && !user.BoughtNotes.Any(y => y.NoteId == x));
+            }
+
+            var notes = ids.Select(x => _noteService.GetNoteById(x))
+                            .Where(x => x != null)
+                            .Where(x => x.AuthorId != userId)
+                            .ToArray() ??
+                        new Note[0];
             var result = notes.Select(x => new
             {
                 x.Id,

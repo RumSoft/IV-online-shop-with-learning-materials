@@ -54,70 +54,77 @@ export default class LoginPanel extends Component {
   };
 
   redirect() {
-    return <Redirect to={this.props.redirectData} />;
+    return <Redirect to={this.props.redirectData || '/protected'} />;
   }
 
   render() {
     if (this.state.logged) return this.redirect();
-
+    console.log(this.props.redirectData);
     return (
-      <Card className="login-panel">
-        {this.state.loading && <LinearProgress className="progress" />}
-        {this.state.errorMessage && (
-          <div className="errors">{this.state.errorMessage}</div>
+      <div>
+        {this.props.redirectData && (
+          <Card className="login-panel-redirect mb-3 p-3 bg-warning">
+            <span>Musisz być zalogowany aby przejść do tej strony</span>
+          </Card>
         )}
-        <CardContent>
-          <h3>Zaloguj się</h3>
-          <hr />
-          <form className="login-form" onSubmit={this.handleLogin}>
-            <TextField
-              className="field"
-              id="emailAddress"
-              label="Adres e-mail"
-              variant="outlined"
-              value={this.state.emailAddress}
-              onChange={this.handleChange}
-            />
-            <TextField
-              className="field"
-              id="password"
-              type="password"
-              label="Hasło"
-              variant="outlined"
-              inputProps={{ maxLength: 50 }}
-              value={this.state.password}
-              onChange={this.handleChange}
-            />
-          </form>
+        <Card className="login-panel">
+          {this.state.loading && <LinearProgress className="progress" />}
+          {this.state.errorMessage && (
+            <div className="errors">{this.state.errorMessage}</div>
+          )}
+          <CardContent>
+            <h3>Zaloguj się</h3>
+            <hr />
+            <form className="login-form" onSubmit={this.handleLogin}>
+              <TextField
+                className="field"
+                id="emailAddress"
+                label="Adres e-mail"
+                variant="outlined"
+                value={this.state.emailAddress}
+                onChange={this.handleChange}
+              />
+              <TextField
+                className="field"
+                id="password"
+                type="password"
+                label="Hasło"
+                variant="outlined"
+                inputProps={{ maxLength: 50 }}
+                value={this.state.password}
+                onChange={this.handleChange}
+              />
+            </form>
 
-          <Button
-            type="submit"
-            className="button login-submit"
-            variant="contained"
-            color="primary"
-            onClick={this.handleLogin}>
-            Zaloguj
-          </Button>
+            <Button
+              type="submit"
+              className="button login-submit"
+              variant="contained"
+              color="primary"
+              onClick={this.handleLogin}>
+              Zaloguj
+            </Button>
 
-          <Button
-            type="submit"
-            className="button login-reset-password"
-            variant="contained"
-            color="primary"
-            disabled>
-            Resetuj hasło
-          </Button>
-          <HrLabel text="LUB" />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={this.handleFacebookLogin}
-            className="button login-facebook">
-            <Icon className="fab fa-facebook" />
-            Zaloguj przez facebooka
-          </Button>
-        </CardContent>
-      </Card>
+            <Button
+              type="submit"
+              className="button login-reset-password"
+              variant="contained"
+              color="primary"
+              disabled>
+              Resetuj hasło
+            </Button>
+            <HrLabel text="LUB" />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.handleFacebookLogin}
+              className="button login-facebook">
+              <Icon className="fab fa-facebook" />
+              Zaloguj przez facebooka
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
     );
   }
 }
