@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import UserService from '../../Services/UserService';
 import NoteService from '../../Services/NoteService';
-import { Card, Grid, Paper, Typography } from '@material-ui/core';
+import { Card, Grid, Typography } from '@material-ui/core';
 import ReactPlaceholder from 'react-placeholder';
 import NotePanelPlaceholder from '../NotePanel/NotePanelPlaceholder';
 import './index.scss';

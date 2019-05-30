@@ -21,6 +21,7 @@ export default class WideSmallNoteCard extends React.Component {
             <img
               src={note.previewUrl || NoPreviewImage}
               className="note-preview my-auto"
+              alt="notePreview"
             />
           </Grid>
           <Grid item lg={8} md={7}>
