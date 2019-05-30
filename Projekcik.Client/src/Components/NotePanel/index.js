@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Grid from '@material-ui/core/Grid';
-import { Card, CardContent, Typography, ListItemText } from '@material-ui/core';
+import {
+  Card,
+  CardContent,
+  Typography,
+  ListItemText,
+  Grid
+} from '@material-ui/core';
 import HrLabel from '../HrLabel/index';
 import NoteService from '../../Services/NoteService';
 import NotePanelPlaceholder from './NotePanelPlaceholder';
@@ -40,29 +45,41 @@ export default class NotePanel extends Component {
                   <li
                     itemType="http://schema.org/ListItem"
                     itemProp="itemListElement">
-                    <a href="/">
+                    <Link
+                      to={{
+                        pathname: '/search',
+                        search: `?voivodeshipId=${note.voivodeship.id}`
+                      }}>
                       <i className="fa fa-globe" />
                       <span itemProp="name">{note.voivodeship.name}</span>
                       <meta content="1" />
-                    </a>
+                    </Link>
                   </li>
                   <li
                     itemType="http://schema.org/ListItem"
                     itemProp="itemListElement">
-                    <a href="/">
+                    <Link
+                      to={{
+                        pathname: '/search',
+                        search: `?universityId=${note.university.id}`
+                      }}>
                       <i className="fa fa-university" />
                       <span itemProp="name">{note.university.name}</span>
                       <meta content="2" />
-                    </a>
+                    </Link>
                   </li>
                   <li
                     itemType="http://schema.org/ListItem"
                     itemProp="itemListElement">
-                    <a href="/">
+                    <Link
+                      to={{
+                        pathname: '/search',
+                        search: `?courseId=${note.course.id}`
+                      }}>
                       <i className="fa fa-book" />
                       <span itemProp="name">{note.course.name}</span>
                       <meta content="2" />
-                    </a>
+                    </Link>
                   </li>
                 </ol>
 
@@ -110,7 +127,11 @@ export default class NotePanel extends Component {
                             {note.author.name}
                           </span>
                           <div className="author-image">
-                            <img className="img-fluid rounded-circle" src="http://placekitten.com/g/100/100" alt="UserPicture" />
+                            <img
+                              className="img-fluid rounded-circle"
+                              src="http://placekitten.com/g/100/100"
+                              alt="UserPicture"
+                            />
                           </div>
                         </Link>
                       </div>
