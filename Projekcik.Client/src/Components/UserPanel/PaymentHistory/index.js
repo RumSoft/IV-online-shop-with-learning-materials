@@ -45,16 +45,14 @@ export default class PaymentHistory extends Component {
             <tbody>
               {loaded &&
                 payments &&
-                payments.map((payment, idx) => (
-                  <tr key={idx}>
-                    <th scope="row">{idx + 1}.</th>
-                    <td>{new Date(payment.createdAt).toLocaleString()}</td>
+                payments.reverse().map((x, i) => (
+                  <tr key={i}>
+                    <th scope="row">{i + 1}.</th>
+                    <td>{new Date(x.createdAt).toLocaleString()}</td>
+                    <td>{x.status > 0 ? 'ZAKOŃCZONE' : 'Błąd Płatności'}</td>
+                    <td>{this.sumNotesPrices(x.notes)}zł</td>
                     <td>
-                      {payment.status > 0 ? 'ZAKOŃCZONE' : 'Błąd Płatności'}
-                    </td>
-                    <td>{this.sumNotesPrices(payment.notes)}zł</td>
-                    <td>
-                      {payment.notes.reverse().map((note, index) => (
+                      {x.notes.map((note, index) => (
                         <div key={index}>
                           <Link to={`/note/${note.id}`}>{note.name}:</Link>
                           {'  '}

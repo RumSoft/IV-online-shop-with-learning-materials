@@ -38,9 +38,13 @@ export default class UserPanel2 extends Component {
               variant="h4"
               color="textPrimary"
               gutterBottom>
-              Notatki użytkownika {user.userName}  <img className='img-fluid rounded-circle' src="http://placekitten.com/50/50" alt="UserPicture" />
+              Notatki użytkownika {user.userName}{' '}
+              <img
+                className="img-fluid rounded-circle"
+                src="http://placekitten.com/50/50"
+                alt="UserPicture"
+              />
             </Typography>
-            
 
             {notes && notes.length && (
               <Grid
@@ -48,9 +52,7 @@ export default class UserPanel2 extends Component {
                 container
                 spacing={8}
                 direction="row"
-                justify="flex-start"
-                alignContent="flex-start"
-                alignItems="baseline">
+                justify="flex-start">
                 {notes.map((note, i) => (
                   <Grid item sm={4} key={i} className="grid-item-note">
                     {note.noteCount <= 0 && <div className="disabled" />}

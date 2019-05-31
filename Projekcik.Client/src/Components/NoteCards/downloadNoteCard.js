@@ -11,7 +11,8 @@ export default class DownloadNoteCard extends React.Component {
     super(props);
     this.state = {
       downloading: false,
-      data: null
+      data: null,
+      error: null
     };
   }
 
@@ -26,8 +27,8 @@ export default class DownloadNoteCard extends React.Component {
         downloading: true,
         data: null
       },
-      async () => {
-        const blob = await Axios.get(
+      () => {
+        Axios.get(
           `${APIService.API_URL}/api/notes/download-request/${note.id}`,
           {
             responseType: 'blob',
@@ -35,40 +36,63 @@ export default class DownloadNoteCard extends React.Component {
               Authorization: `Bearer ${localStorage['auth_token']}`
             }
           }
-        );
-        console.log(note);
-        const url = window.URL.createObjectURL(blob.data);
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `${note.name}.${note.extension}`);
-        document.body.appendChild(link);
-        link.click();
-        this.setState({
-          link: link,
-          downloading: false
-        });
+        )
+          .then(blob => {
+            console.log(note);
+            const url = window.URL.createObjectURL(blob.data);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `${note.name}.${note.fileExtension}`);
+            document.body.appendChild(link);
+            link.click();
+            this.setState({
+              link: link,
+              downloading: false,
+              error: null
+            });
+          })
+          .catch(r => {
+            this.setState({
+              link: null,
+              downloading: false,
+              error: true
+            });
+          });
       }
     );
   }
 
   render() {
     const { note } = this.props;
-    const { downloading, link } = this.state;
+    const { downloading, link, error } = this.state;
 
     return (
       <Paper className="download-note-card note-card p-2 m-1">
         {downloading && (
           <div className="busy-overlay">
             <div className="text-center m-auto">
-              <CircularProgress /> <p>pobieranie</p>
+              <CircularProgress />
+              <p>Pobieranie</p>
+            </div>
+          </div>
+        )}
+        {error && (
+          <div
+            className="busy-overlay"
+            onClick={() => this.setState({ error: null })}>
+            <div className="text-center m-auto">
+              <p>Błąd pobierania</p>
+              <p>
+                <small>kliknij aby zamknąć</small>
+              </p>
             </div>
           </div>
         )}
         <Grid container>
-          <Grid item lg={4} md={5} style={{ display: 'flex' }}>
+          <Grid item lg={4} md={5} style={{ display: 'flex', width: '100%' }}>
             <img
               src={note.previewUrl || NoPreviewImage}
-              className="note-preview my-auto"
+              className="note-preview m-auto"
               alt="notePreview"
             />
           </Grid>
