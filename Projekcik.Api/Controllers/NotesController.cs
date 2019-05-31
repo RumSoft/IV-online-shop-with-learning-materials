@@ -58,7 +58,8 @@ namespace Projekcik.Api.Controllers
                     x.PageCount,
                     x.Price,
                     x.Description,
-                    x.Semester
+                    x.Semester,
+                    x.Extension
                 });
 
             return Ok(result);
