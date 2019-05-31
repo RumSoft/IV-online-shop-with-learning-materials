@@ -81,7 +81,7 @@ export default class UserEarnings extends Component {
                 </tbody>
               </Table>
             </Grid>
-            <Grid sm={4}>
+            <Grid item sm={4}>
               <h5 className="text-center">5 najbardziej dochodowych notatek</h5>
               <PieChart width={400} height={400}>
                 <Pie

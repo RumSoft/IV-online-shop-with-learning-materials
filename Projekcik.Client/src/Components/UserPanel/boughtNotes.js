@@ -36,9 +36,7 @@ export default class BoughtNotes extends Component {
             container
             spacing={8}
             direction="row"
-            justify="flex-start"
-            alignContent="flex-start"
-            alignItems="baseline ">
+            justify="flex-start">
             {notes.map((note, i) => (
               <Grid item sm={4} key={i} className="grid-item-note">
                 {note.noteCount <= 0 && <div className="disabled" />}

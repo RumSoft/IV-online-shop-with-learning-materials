@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
-import { WideSmallNoteCard } from '../NoteCards';
+import { DownloadNoteCard } from '../NoteCards';
 
 const MyNotes = props => (
   <div>
@@ -12,13 +12,11 @@ const MyNotes = props => (
       container
       spacing={8}
       direction="row"
-      justify="flex-start"
-      alignContent="flex-start"
-      alignItems="baseline">
+      justify="flex-start">
       {props.notes.map((note, i) => (
         <Grid item sm={4} key={i} className="grid-item-note">
           {note.noteCount <= 0 && <div className="disabled" />}
-          <WideSmallNoteCard note={note} key={i} />
+          <DownloadNoteCard note={note} key={i} />
         </Grid>
       ))}
     </Grid>
