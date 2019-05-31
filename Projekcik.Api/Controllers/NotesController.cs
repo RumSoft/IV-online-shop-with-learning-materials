@@ -59,7 +59,7 @@ namespace Projekcik.Api.Controllers
                     x.Price,
                     x.Description,
                     x.Semester,
-                    x.FileExtension
+                    FileExtension=x.FileExtension.ToString().ToLower()()
                 });
 
             return Ok(result);
@@ -221,14 +221,14 @@ namespace Projekcik.Api.Controllers
             if (user == null)
                 return BadRequest();
 
-            if (user.BoughtNotes.FirstOrDefault(x => x.NoteId.Equals(noteId)) == null)
-                return Forbid();
-
             var note = _noteService.GetNoteById(noteId);
             if (note == null)
                 return NotFound();
 
-            var filepath = Path.Combine(
+            if (note.AuthorId != user.Id || user.BoughtNotes.All(x => x.NoteId != noteId) )
+                Forbid();
+
+                var filepath = Path.Combine(
                 Directory.GetParent(Directory.GetCurrentDirectory()).FullName,
                 "uploads",
                 note.AuthorId.ToString(),
