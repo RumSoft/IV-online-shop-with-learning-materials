@@ -10,7 +10,11 @@ export default class CartService {
   static getNotes() {
     let noteIDs = this.get();
     if (noteIDs && noteIDs.length)
-      return NoteService.getNotesById(noteIDs).then(x => x);
+      return NoteService.getNotesById(noteIDs).then(x => {
+        this.set(x.map(xd => xd.id));
+        return x;
+      });
+
     return this.emptyPromise([]);
   }
 

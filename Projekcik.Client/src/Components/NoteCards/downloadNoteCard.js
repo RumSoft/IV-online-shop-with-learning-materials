@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Paper, Grid, Button } from '@material-ui/core';
-import { ShowNoteButton } from '../Buttons';
 import './index.scss';
 import NoPreviewImage from '../../images/alt128.png';
 import { NoteService } from '../../Services';
@@ -12,13 +11,16 @@ export default class DownloadNoteCard extends React.Component {
     return text;
   }
 
-  handleDownload(noteId) {
-    NoteService.downloadRequest(noteId).then(response => {
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+  handleDownload(note) {
+    NoteService.downloadRequest(note.id).then(response => {
+      console.log(response.data);
+      const url = window.URL.createObjectURL(
+        new Blob([response.data], { type: 'application/pdf' })
+      );
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', 'file.pdf');
-      document.getElementById('download').appendChild(link);
+      // link.setAttribute('download', `${note.name}.pdf`);
+      document.body.appendChild(link);
       link.click();
     });
   }
@@ -46,7 +48,7 @@ export default class DownloadNoteCard extends React.Component {
               <Button
                 id="download"
                 className="btn btn-info"
-                onClick={() => this.handleDownload(note.id)}>
+                onClick={() => this.handleDownload(note)}>
                 Pobierz
               </Button>
             </div>
