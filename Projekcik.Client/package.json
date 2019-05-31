@@ -63,6 +63,7 @@
     "react-scripts": "^1.1.5",
     "react-slick": "^0.24.0",
     "reactstrap": "^6.3.0",
+    "recharts": "^1.6.2",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "resolve": "1.10.0",
