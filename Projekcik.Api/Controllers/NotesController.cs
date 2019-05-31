@@ -59,7 +59,7 @@ namespace Projekcik.Api.Controllers
                     x.Price,
                     x.Description,
                     x.Semester,
-                    FileExtension=x.FileExtension.ToString().ToLower()()
+                    FileExtension=x.FileExtension.ToString().ToLower()
                 });
 
             return Ok(result);
