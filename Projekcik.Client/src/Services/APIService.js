@@ -6,6 +6,10 @@ const authToken = 'auth_token';
 
 export default class APIService {
   static get(address) {
+    return this.rawGet(address).then(x => x.data);
+  }
+
+  static rawGet(address) {
     let token = window.localStorage.getItem(authToken);
     const authHeader = {
       headers: {
@@ -13,9 +17,7 @@ export default class APIService {
       }
     };
 
-    return axios
-      .get(`${API_URL}/${address}`, authHeader)
-      .then(response => response.data);
+    return axios.get(`${API_URL}/${address}`, authHeader);
   }
 
   static post(address, data) {
