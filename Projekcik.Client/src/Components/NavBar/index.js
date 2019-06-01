@@ -105,7 +105,7 @@ export default class NavBar extends Component {
                     <div className="d-none d-sm-block button btn btn-default">
                       <Tooltip title="Koszyk">
                         <Badge
-                        className="mobile-badge"
+                          className="mobile-badge"
                           badgeContent={CartService.count()}
                           showZero={false}
                           color="secondary">
@@ -117,22 +117,26 @@ export default class NavBar extends Component {
                 </NavItem>
                 <NavItem>
                   <NavLink tag={Link} to="/cart" className="text-dark">
-                    <div className="d-sm-none link">
+                    <div
+                      className="d-sm-none link"
+                      onClick={() => this.toggle()}>
                       <Badge
-                      className="mobile-badge"
+                        className="mobile-badge"
                         badgeContent={CartService.count()}
                         showZero={false}
                         color="secondary">
                         <ShopIcon className="mobile-shopicon" />
                       </Badge>
-                     <span  className="mobile-shop"> Plecak pełen keszu</span>
+                      <span className="mobile-shop"> Plecak pełen keszu</span>
                     </div>
                   </NavLink>
                 </NavItem>
                 {menu.map((x, i) => (
                   <NavItem key={i} hidden={x.hidden}>
                     <NavLink tag={Link} className="text-dark" to={x.to}>
-                      <div className="d-sm-none link">
+                      <div
+                        className="d-sm-none link"
+                        onClick={() => this.toggle()}>
                         {/* mobile */}
                         {x.icon}
                         <span>{x.name}</span>
