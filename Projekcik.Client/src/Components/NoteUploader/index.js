@@ -277,13 +277,13 @@ export default class NoteUploader extends Component {
               <option value={7}>Siódmy</option>
             </Select>
           </FormControl>
-          <p>Preferowan rozszerzenia to .pdf .docx .jpg .zip</p>
-          <input
-            className="file-submit"
-            type="file"
-            onChange={this.fileHandler}
-          />
-          
+
+          <div className="file-input">
+            <input type="file" id="file" onChange={this.fileHandler} />
+            <label for="file" class="btn-3">
+              <span>Wybierz plik</span>
+            </label>
+          </div>
           <Button
             //type="submit"
             className="file-submit button"
