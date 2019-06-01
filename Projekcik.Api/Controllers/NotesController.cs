@@ -358,21 +358,20 @@ namespace Projekcik.Api.Controllers
             {
                 Guid.TryParse(x, out var guid);
                 return guid;
-            }).Where(x => x != null && x != Guid.Empty);
+            }).Where(x => x != Guid.Empty);
 
             var userId = _user.GetCurrentUserId();
             if (userId != Guid.Empty)
             {
                 var user = _userService.GetById(userId);
                 if (user != null)
-                    ids = ids.Where(x => x != null && !user.BoughtNotes.Any(y => y.NoteId == x));
+                    ids = ids.Where(x => user.BoughtNotes.All(y => y.NoteId != x));
             }
 
             var notes = ids.Select(x => _noteService.GetNoteById(x))
-                            .Where(x => x != null)
-                            .Where(x => x.AuthorId != userId)
-                            .ToArray() ??
-                        new Note[0];
+                .Where(x => x != null)
+                .Where(x => x.AuthorId != userId)
+                .ToArray();
             var result = notes.Select(x => new
             {
                 x.Id,
