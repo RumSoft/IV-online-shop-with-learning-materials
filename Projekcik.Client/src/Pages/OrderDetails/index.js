@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PaymentService from '../../Services/PaymentService';
-import { Card, Grid } from '@material-ui/core';
+import { Card, Grid, CircularProgress } from '@material-ui/core';
 import DownloadNoteCard from '../../Components/NoteCards/downloadNoteCard';
 
 export default class OrderDetails extends Component {
@@ -12,20 +12,21 @@ export default class OrderDetails extends Component {
       id: 1
     };
   }
-
   componentWillMount() {
-    PaymentService.getOrderDetails(this.props.match.params.id).then(x => {
-      this.setState({
-        transaction: x,
-        loaded: true
+    setTimeout(() => {
+      PaymentService.getOrderDetails(this.props.match.params.id).then(x => {
+        this.setState({
+          transaction: x,
+          loaded: true
+        });
       });
-    });
+    }, 3000);
   }
 
   render() {
     const { loaded, transaction } = this.state;
 
-    if (!loaded) return <p>loading</p>;
+    if (!loaded) return <CircularProgress />;
 
     if (transaction.status <= 0)
       // 4 is completed payment xd
@@ -42,7 +43,7 @@ export default class OrderDetails extends Component {
           Przejdz do{' '}
           <Link
             to={{
-              pathname: '/protected',
+              pathname: '/protected'
             }}>
             panelu użytkownika
           </Link>
