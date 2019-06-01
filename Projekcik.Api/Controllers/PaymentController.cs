@@ -178,7 +178,13 @@ namespace Projekcik.Api.Controllers
                 notes = notes.Select(x => new
                 {
                     x.Id,
-                    x.Name
+                    x.Name,
+                    x.PreviewUrl,
+                    x.PageCount,
+                    x.Price,
+                    x.Description,
+                    x.Semester,
+                    FileExtension = x.FileExtension.ToString().ToLower()
                 })
             });
         }
