@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import { CircularProgress, Paper, Typography } from '@material-ui/core';
 import { Card, Button } from 'reactstrap';
 import CartService from '../../Services/CartService';
-import ShowNoteButton from '../Buttons/ShowNoteButton';
 
 import './index.scss';
 import ShoppingCartItem from './item';
@@ -14,18 +12,6 @@ export default class ShoppingCart extends Component {
     super(props);
 
     CartService.getNotes().then(x => this.setState({ notes: x, loaded: true }));
-  }
-
-  handleBuy() {
-    this.setState({ redirectToBuy: true });
-  }
-
-  redirectToOrderPage() {
-    return (
-      <Redirect
-        to={{ pathname: '/order-notes', state: { notes: this.state.notes } }}
-      />
-    );
   }
 
   state = {
@@ -76,6 +62,7 @@ export default class ShoppingCart extends Component {
             zł
           </Typography>
           <Button
+            href="/order-notes"
             className="btn dollar btn-md"
             onClick={() => this.handleBuy()}
             disabled={this.state.notes.length === 0}>

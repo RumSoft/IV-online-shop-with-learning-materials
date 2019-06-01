@@ -3,8 +3,21 @@ import NoteService from './NoteService';
 const _cart = 'cart_notes';
 
 export default class CartService {
+  static toUpdateOnCartModify = [];
+
+  static registerForCartUpdate(ref) {
+    this.toUpdateOnCartModify = [...this.toUpdateOnCartModify, ref];
+  }
+
+  static updateComponents() {
+    this.toUpdateOnCartModify.forEach(x => x.forceUpdate());
+  }
+
   static add(noteID) {
-    if (!this.exists(noteID)) this.set([...this.get(), noteID]);
+    if (!this.exists(noteID)) {
+      this.set([...this.get(), noteID]);
+      this.updateComponents();
+    }
   }
 
   static getNotes() {
@@ -32,6 +45,7 @@ export default class CartService {
 
   static clear() {
     window.localStorage.removeItem(_cart);
+    this.updateComponents();
   }
 
   static get() {
@@ -46,6 +60,7 @@ export default class CartService {
 
   static set(newCart) {
     localStorage[_cart] = JSON.stringify(newCart);
+    this.updateComponents();
   }
 
   // this is needed because
