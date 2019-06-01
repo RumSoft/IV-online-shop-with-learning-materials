@@ -32,7 +32,7 @@ export default class OrderDetails extends Component {
       return <p>błąd transakcji:{transaction.status}</p>;
 
     return (
-      <Card>
+      <Card className="p-3">
         <h4>Zakupiono notatki: </h4>
         <p>status: {transaction.status} </p>
         <p> przejdz do panelu użytkownika aby pobrać</p>

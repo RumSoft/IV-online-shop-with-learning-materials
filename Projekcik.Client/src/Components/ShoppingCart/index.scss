@@ -69,13 +69,13 @@ hr {
     flex-grow: 5;
 
     .btn-circle {
-      width: 70px;
+      width: 100px;
       height: 70px;
       padding: 12px 0px;
       font-size: 18px;
       line-height: 1;
-      border-radius: 20px;
-      background: rgba(255, 52, 52, 0.5);
+      border-radius: 10px;
+      background: rgba(255, 0, 0, 0.5);
 
       &:hover {
         background: rgba(255, 0, 0, 0.6);
