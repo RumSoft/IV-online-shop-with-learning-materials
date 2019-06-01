@@ -72,7 +72,7 @@ export default class UserEarnings extends Component {
                     <td>
                       <strong>Razem:</strong>{' '}
                       {earnings.reduce(
-                        (total, earning) => total + earning.price,
+                        (total, earning) => total + (earning.price * earning.purchases),
                         0
                       )}{' '}
                       zł
