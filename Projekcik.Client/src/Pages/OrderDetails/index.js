@@ -14,13 +14,22 @@ export default class OrderDetails extends Component {
   }
   componentWillMount() {
     setTimeout(() => {
-      PaymentService.getOrderDetails(this.props.match.params.id).then(x => {
-        this.setState({
-          transaction: x,
-          loaded: true
-        });
-      });
-    }, 2000);
+      PaymentService.getOrderDetails(this.props.match.params.id)
+        .then(x =>
+          this.setState({
+            transaction: x,
+            loaded: true
+          })
+        )
+        .catch(x =>
+          this.setState({
+            transaction: {
+              status: 0
+            },
+            loaded: true
+          })
+        );
+    }, 1);
   }
 
   render() {
@@ -40,18 +49,18 @@ export default class OrderDetails extends Component {
         </h4>
         <p>Status: płatność zakończona </p>
         <p>
-          Przejdz do{' '}
+          Zakupione notatki można pobrać także w{' '}
           <Link
             to={{
               pathname: '/protected'
             }}>
             panelu użytkownika
           </Link>
-          , aby dowiedzieć się więcej.
+          .
         </p>
 
         {transaction.notes.map((x, i) => (
-          <Grid item key={i} className="grid-item-note">
+          <Grid item md={4} key={i} className="grid-item-note">
             <DownloadNoteCard note={x} key={i} />
           </Grid>
         ))}

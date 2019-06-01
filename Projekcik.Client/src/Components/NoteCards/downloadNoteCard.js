@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Paper, Grid, Button, CircularProgress } from '@material-ui/core';
-import './index.scss';
 import NoPreviewImage from '../../images/alt128.png';
 import { APIService } from '../../Services';
 import Axios from 'axios';
+import './index.scss';
 
 export default class DownloadNoteCard extends React.Component {
   constructor(props) {
@@ -104,23 +104,15 @@ export default class DownloadNoteCard extends React.Component {
               <p>{this.truncate(note.description, 50)}</p>
             </div>
             <div className="btn-group">
-              {link ? (
-                <Button //already downloaded, state.link contains object
-                  ref={r => (this.button = r)}
-                  id="download"
-                  className="btn btn-info"
-                  onClick={() => link.click()}>
-                  Pobierz
-                </Button>
-              ) : (
-                <Button //not downloaded yet
-                  ref={r => (this.button = r)}
-                  id="download"
-                  className="btn btn-info"
-                  onClick={() => this.handleDownload(note)}>
-                  Pobierz
-                </Button>
-              )}
+              <Button //not downloaded yet
+                ref={r => (this.button = r)}
+                id="download"
+                className="download btn"
+                onClick={() =>
+                  link ? link.click() : this.handleDownload(note)
+                }>
+                Pobierz
+              </Button>
             </div>
           </Grid>
         </Grid>
