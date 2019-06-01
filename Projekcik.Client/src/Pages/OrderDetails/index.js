@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PaymentService from '../../Services/PaymentService';
-import { Card } from '@material-ui/core';
+import { Card, Grid } from '@material-ui/core';
+import DownloadNoteCard from '../../Components/NoteCards/downloadNoteCard';
 
 export default class OrderDetails extends Component {
   constructor() {
     super();
-
     this.state = {
       loaded: false,
       id: 1
@@ -27,19 +27,32 @@ export default class OrderDetails extends Component {
 
     if (!loaded) return <p>loading</p>;
 
-    if (transaction.status !== 4)
+    if (transaction.status <= 0)
       // 4 is completed payment xd
-      return <p>błąd transakcji:{transaction.status}</p>;
+      return <p>przetwarzanie lub błąd transakcji:{transaction.status}</p>;
 
     return (
       <Card className="p-3">
-        <h4>Zakupiono notatki: </h4>
-        <p>status: {transaction.status} </p>
-        <p> przejdz do panelu użytkownika aby pobrać</p>
-        {transaction.notes.map((x, i) => (
-          <Link to={`/note/${x.id}`}>
-            <p key={i}>{x.name}</p>
+        <h4>
+          <i className="fa fa-book-reader" />
+          Zakupiono notatki:{' '}
+        </h4>
+        <p>Status: płatność zakończona </p>
+        <p>
+          Przejdz do{' '}
+          <Link
+            to={{
+              pathname: '/protected',
+            }}>
+            panelu użytkownika
           </Link>
+          , aby dowiedzieć się więcej.
+        </p>
+
+        {transaction.notes.map((x, i) => (
+          <Grid item key={i} className="grid-item-note">
+            <DownloadNoteCard note={x} key={i} />
+          </Grid>
         ))}
       </Card>
     );
