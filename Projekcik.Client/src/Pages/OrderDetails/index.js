@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PaymentService from '../../Services/PaymentService';
 import { Card, Grid, CircularProgress } from '@material-ui/core';
 import DownloadNoteCard from '../../Components/NoteCards/downloadNoteCard';
+import { CartService } from '../../Services';
 
 export default class OrderDetails extends Component {
   constructor() {
@@ -15,12 +16,13 @@ export default class OrderDetails extends Component {
   componentWillMount() {
     setTimeout(() => {
       PaymentService.getOrderDetails(this.props.match.params.id)
-        .then(x =>
+        .then(x => {
+          this.removeNotesFromCart(x.notes);
           this.setState({
             transaction: x,
             loaded: true
-          })
-        )
+          });
+        })
         .catch(x =>
           this.setState({
             transaction: {
@@ -30,6 +32,10 @@ export default class OrderDetails extends Component {
           })
         );
     }, 1);
+  }
+
+  removeNotesFromCart(notes) {
+    notes.map(x => CartService.remove(x.id));
   }
 
   render() {

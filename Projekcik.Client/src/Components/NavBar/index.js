@@ -41,6 +41,10 @@ export default class NavBar extends Component {
     });
   }
 
+  componentWillMount() {
+    CartService.registerForCartUpdate(this);
+  }
+
   render() {
     let isLogged = AuthService.isAuthenticated() ? true : false;
     const menu = [
