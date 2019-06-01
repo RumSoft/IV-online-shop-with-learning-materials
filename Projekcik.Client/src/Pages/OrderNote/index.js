@@ -1,20 +1,41 @@
 import React, { Component } from 'react';
 import PaymentService from '../../Services/PaymentService';
+import { CircularProgress, Paper } from '@material-ui/core';
+import { CartService } from '../../Services';
 
 export default class OrderNote extends Component {
+  state = {
+    message: null
+  };
+
   componentDidMount() {
-    const notes = this.props.location.state.notes;
-    let noteIds = notes.map(x => x.id);
-    PaymentService.placeOrder(noteIds).then(r => {
-      window.location.href = r.redirectUrl;
-    });
+    let noteIds = CartService.get();
+    PaymentService.placeOrder(noteIds)
+      .then(r => {
+        window.location.href = r.redirectUrl;
+      })
+      .catch(r => {
+        this.setState({
+          message: 'błąd tworzenia transakcji, spróbuj ponownie'
+        });
+        setTimeout(() => window.history.back(), 1000);
+      });
   }
 
   render() {
     return (
-      <div>
-        <p>zostaniesz przekierowany na stronę obsługi płatności</p>
-      </div>
+      <Paper>
+        <div className="text-center p-5 d-block">
+          {!this.state.message ? (
+            <div>
+              <CircularProgress />
+              <p>zostaniesz przekierowany na stronę obsługi płatności</p>
+            </div>
+          ) : (
+            <p>{this.state.message}</p>
+          )}
+        </div>
+      </Paper>
     );
   }
 }

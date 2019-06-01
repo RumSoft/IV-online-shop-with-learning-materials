@@ -6,20 +6,18 @@ import './index.scss';
 
 export default class ShowNoteButton extends Component {
   state = {
-    redirectToCart: null,
     open: false,
     disabled: false
   };
 
   addToCart = noteID => {
     CartService.add(noteID);
-    this.setState({ open: true, disabled: true, redirectToCart: '/cart'});
+    this.setState({ open: true, disabled: true });
   };
 
   render() {
     const { price, id } = this.props;
-    if (this.state.redirectToCart)
-      return <Redirect to={this.state.redirectToCart} />;
+
     return (
       <div>
         <Button
