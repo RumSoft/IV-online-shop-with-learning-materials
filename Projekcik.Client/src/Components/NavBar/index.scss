@@ -51,6 +51,12 @@ $colHighlight: #ecdbff;
 
 @media (max-width: 575px) {
   .navbar {
+    .mobile-icon {
+      margin-right: 0.8rem;
+    }
+    .mobile-shop {
+      margin-left: 0.4rem;
+    }
     .navbar-container {
       display: flex;
     }
