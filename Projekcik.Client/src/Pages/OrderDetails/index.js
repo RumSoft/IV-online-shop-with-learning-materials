@@ -20,7 +20,7 @@ export default class OrderDetails extends Component {
           loaded: true
         });
       });
-    }, 3000);
+    }, 2000);
   }
 
   render() {
