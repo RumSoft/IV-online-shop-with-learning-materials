@@ -37,7 +37,6 @@
     }
   }
 }
-
 .download-note-card {
   position: relative;
   .busy-overlay {
@@ -51,6 +50,13 @@
     display: flex;
     p {
       text-shadow: 1px 2px 1px rgba(0, 0, 0, 0.2);
+    }
+  }
+  .btn.download {
+    color: white;
+    background: linear-gradient(to top, #1d0ea0, #00a2ff);
+    &:hover {
+      background: linear-gradient(to top, darken(#00a2ff, 10), #1d0ea0);
     }
   }
 }

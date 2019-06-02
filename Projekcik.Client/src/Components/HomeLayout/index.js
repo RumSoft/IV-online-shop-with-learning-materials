@@ -91,7 +91,7 @@ export default class HomeLayout extends Component {
               align="center"
               color="textPrimary"
               gutterBottom>
-              Witaj w sklepie z notatkami leniwystudent.pl !
+              Witaj w sklepie z notatkami !
             </Typography>
             <Typography
               className="subtitle mx-auto"
@@ -100,7 +100,7 @@ export default class HomeLayout extends Component {
               paragraph>
               Wyszukaj najlepsze notatki studenckie dla Ciebie według poniższych
               kryteriów lub użyj wyszukiwarki. Zachęcamy również do założenia
-              własnego konta, aby móc sprzedawać własne notatki. Zajmię Ci to
+              własnego konta, aby móc sprzedawać własne notatki lub kupować je od innych. Zajmie Ci to
               dosłownie 3.14159265359 sekund!
             </Typography>
           </Card>

@@ -26,6 +26,7 @@ export default class PaymentHistory extends Component {
 
   render() {
     const { payments, loaded } = this.state;
+    console.log(payments);
     return (
       <div>
         <h2 className="p-2 m-2">
