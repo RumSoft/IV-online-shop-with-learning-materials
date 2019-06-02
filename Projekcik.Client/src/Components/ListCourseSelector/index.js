@@ -83,7 +83,8 @@ export default class ListCourseSelector extends Component {
   toggle(tab) {
     if (this.state.activeTab !== tab) {
       this.setState({
-        activeTab: tab
+        activeTab: tab,
+        filterText: ''
       });
     }
   }
@@ -96,6 +97,7 @@ export default class ListCourseSelector extends Component {
           voivodeship: itemName,
           university: '',
           course: '',
+          filterText: '',
           activeTab: 2
         },
         () => {
@@ -110,6 +112,7 @@ export default class ListCourseSelector extends Component {
           disabledTabs: 0,
           university: itemName,
           course: '',
+          filterText: '',
           activeTab: 3
         },
         () => {
@@ -129,7 +132,7 @@ export default class ListCourseSelector extends Component {
   filterList = list => {
     return (list = list.filter(
       item =>
-        item.name.toLowerCase().indexOf(this.state.filterText.toLowerCase()) >=
+        item.name.toLocaleLowerCase().indexOf(this.state.filterText.toLocaleLowerCase()) >=
         0
     )).map(item => {
       return (
