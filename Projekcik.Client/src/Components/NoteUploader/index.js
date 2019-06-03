@@ -141,19 +141,6 @@ export default class NoteUploader extends Component {
   };
 
   render() {
-    var badWords = [
-      'fuck',
-      'shit',
-      'asshole',
-      'cunt',
-      'fag',
-      'fuk',
-      'fck',
-      'fcuk',
-      'assfuck',
-      'assfucker',
-      'fucker'
-    ];
 
     return (
       <Card className="upload-page-card mb-2">
