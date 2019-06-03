@@ -25,6 +25,10 @@
   }
 }
 
+.selector {
+  background: gray;
+}
+
 .note-form {
   flex-direction: column;
   display: flex;
@@ -36,6 +40,8 @@
     width: 50%;
     margin-right: auto;
     margin-bottom: 1rem;
+
+
 
     &.description {
       width: 75%;
@@ -57,7 +63,7 @@
       width: 0;
     }
 
-    [type='file'] + label {
+    [type='file']+label {
       background: #f15d22;
       border: none;
       border-radius: 5px;
@@ -75,7 +81,6 @@
       vertical-align: middle;
 
       &.btn-3 {
-        background-color: #ff0000;
         border-radius: 0;
         overflow: hidden;
 
@@ -85,37 +90,12 @@
           transition: all 0.3s;
           width: 100%;
         }
-
-        &::before {
-          color: #fff;
-          content: '.pdf .docx .jpg .zip';
-          font-size: 125%;
-          height: 100%;
-          left: 5%;
-          line-height: 2.6;
-          position: absolute;
-          top: -180%;
-          transition: all 0.3s;
-          width: 100%;
-        }
-
-        &:hover {
-          background-color: darken(#ee6d9e, 30%);
-
-          span {
-            transform: translateY(300%);
-          }
-
-          &::before {
-            top: 0;
-          }
-        }
       }
     }
   }
+
   .button {
     margin-bottom: 2rem;
-    width: 50%;
   }
 
   .semester-list {
