@@ -141,6 +141,20 @@ export default class NoteUploader extends Component {
   };
 
   render() {
+    var badWords = [
+      'fuck',
+      'shit',
+      'asshole',
+      'cunt',
+      'fag',
+      'fuk',
+      'fck',
+      'fcuk',
+      'assfuck',
+      'assfucker',
+      'fucker'
+    ];
+
     return (
       <Card className="upload-page-card mb-2">
         {this.state.success && (
@@ -182,6 +196,10 @@ export default class NoteUploader extends Component {
               {
                 func: val => val,
                 message: 'Nazwa notatki jest wymagana'
+              },
+              {
+                func: val => /^((?!kuu*rw|jee*bb*|huu*jj*|duu*p|pp*ii*ee*rr*d|cii*p|pii*zz*d).)*$/.test(val),
+                message: 'Nie bluźnij !'
               }
             ]}
           />
