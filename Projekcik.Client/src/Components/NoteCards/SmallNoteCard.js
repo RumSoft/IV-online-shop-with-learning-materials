@@ -16,7 +16,7 @@ export default class SmallNoteCard extends React.Component {
           </Link>
         </div>
         <div className="note-small-info">
-        <dl>
+          <dl>
             <Typography>
               <i className="fa fa-globe" />
               {note.voivodeship.name}
@@ -36,11 +36,7 @@ export default class SmallNoteCard extends React.Component {
         </div>
         <div className="btn-small-group">
           <ShowNoteButton id={note.id} />
-          <AddToCartButton
-            className="btn cart btn-md rounded-left rounded-right"
-            price={note.price}
-            id={note.id}
-          />
+          <AddToCartButton price={note.price} id={note.id} />
         </div>
       </Paper>
     );

@@ -26,7 +26,7 @@ export default class ShowNoteButton extends Component {
     return (
       <div>
         <Button
-          className=" btn cart btn-md px-0 rounded-righ"
+          className=" btn home-cart btn-md px-0 rounded"
           disabled={this.state.disabled}
           onClick={() => this.addToCart(id)}>
           <i className="fa fa-shopping-cart" />

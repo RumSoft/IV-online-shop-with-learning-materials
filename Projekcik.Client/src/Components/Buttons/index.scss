@@ -5,8 +5,9 @@
   .btn {
     margin: 3px;
 
-    &.cart {
-      width: 50%;
+    &.home-cart {
+      width: 7rem;
+      height: 90%;
       color: white;
       background: linear-gradient(to top, #1d0ea0, #00a2ff);
       &:hover {
@@ -18,8 +19,9 @@
       }
     }
 
-    &.note {
-      width: 50%;
+    &.home-note {
+      width: 100%;
+     
       color: black;
       background: linear-gradient(to top, #ff6a00, #ffc400);
 
