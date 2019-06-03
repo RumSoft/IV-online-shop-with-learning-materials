@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   Card,
   CardContent,
-  TextField,
   Button,
   LinearProgress
 } from '@material-ui/core';
@@ -12,6 +11,7 @@ import './index.scss';
 import { AuthService } from '../../Services';
 import { Redirect } from 'react-router-dom';
 import HrLabel from '../HrLabel';
+import MyTextField from '../MyTextField';
 
 export default class LoginPanel extends Component {
   state = {
@@ -76,24 +76,45 @@ export default class LoginPanel extends Component {
             <h3>Zaloguj się</h3>
             <hr />
             <form className="login-form" onSubmit={this.handleLogin}>
-              <TextField
-                className="field"
-                id="emailAddress"
-                label="Adres e-mail"
-                variant="outlined"
-                value={this.state.emailAddress}
-                onChange={this.handleChange}
-              />
-              <TextField
-                className="field"
-                id="password"
-                type="password"
-                label="Hasło"
-                variant="outlined"
-                inputProps={{ maxLength: 50 }}
-                value={this.state.password}
-                onChange={this.handleChange}
-              />
+            <MyTextField
+              id="emailAddress"
+              className="field"
+              label="Adres e-mail"
+              inputProps={{ maxLength: 30 }}
+              variant="outlined"
+              value={this.state.emailAddress}
+              onChange={this.handleChange}
+              validationRules={[
+                {
+                  func: val => val,
+                  message: 'E-mail jest wymagany'
+                },
+                {
+                func: val=> /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/.test(val),
+               message: 'Nieprawidłowy format'
+              }
+              ]}
+            />
+            <MyTextField
+              id="password"
+              className="field"
+              label="Hasło"
+              variant="outlined"
+              type='password'
+              inputProps={{ maxLength: 50 }}
+              value={this.state.password}
+              onChange={this.handleChange}
+              validationRules={[
+                {
+                  func: val => val,
+                  message: 'Hasło jest wymagane'
+                },
+                {
+                  func: val => /^(?=.{6,})/.test(val),
+                  message: 'Hasło powinno mieć min. 6 znaków'
+                }
+              ]}
+            />
             </form>
 
             <Button

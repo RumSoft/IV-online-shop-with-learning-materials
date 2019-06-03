@@ -239,7 +239,7 @@ export default class NoteUploader extends Component {
 
           <ListCourseSelector searchData={this.listCourseSelectorHandler} />
 
-          <TextField
+          <MyTextField
             id="description"
             label="Opis notatki"
             multiline
