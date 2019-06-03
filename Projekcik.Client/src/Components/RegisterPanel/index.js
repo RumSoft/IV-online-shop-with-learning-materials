@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
-import {
-  Button,
-  Card,
-  CardContent,
-  LinearProgress
-} from '@material-ui/core';
+import { Button, Card, CardContent, LinearProgress } from '@material-ui/core';
 import AuthService from '../../Services/AuthService';
 import './index.scss';
 import ReCAPTCHA from 'react-google-recaptcha';
 import MyTextField from '../MyTextField';
+import { Link } from 'react-router-dom';
 
 export default class RegisterPage extends Component {
   state = {
@@ -97,7 +93,7 @@ export default class RegisterPage extends Component {
                 <hr />
               </div>
             )}
-             <MyTextField
+            <MyTextField
               id="firstName"
               className="field"
               label="Imię"
@@ -177,8 +173,8 @@ export default class RegisterPage extends Component {
               className="field"
               label="Hasło"
               variant="outlined"
-              type='password'
-              inputProps={{ maxLength: 50 }}
+              type="password"
+              inputProps={{ maxLength: 30 }}
               value={this.state.password}
               onChange={this.handleChange}
               validationRules={[
@@ -197,8 +193,8 @@ export default class RegisterPage extends Component {
               className="field"
               label="Potwierdź hasło"
               variant="outlined"
-              type='password'
-              inputProps={{ maxLength: 50 }}
+              type="password"
+              inputProps={{ maxLength: 30 }}
               value={this.state.confirmPassword}
               onChange={this.handleChange}
               validationRules={[
@@ -229,7 +225,8 @@ export default class RegisterPage extends Component {
             </Button>
           </form>
           <p>
-            Masz już konto? <a href="../login">Zaloguj się</a>
+            Masz już konto?&nbsp;
+            <Link to="/login">Zaloguj się</Link>{' '}
           </p>
         </CardContent>
       </Card>

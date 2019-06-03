@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import NoteService from '../../Services/NoteService';
 import {
   Card,
-  TextField,
   Button,
   Select,
   FormControl,
@@ -175,7 +174,7 @@ export default class NoteUploader extends Component {
             id="name"
             className="field"
             label="Nazwa notatki"
-            inputProps={{ maxLength: 100 }}
+            inputProps={{ maxLength: 40 }}
             variant="outlined"
             value={this.state.name}
             onChange={this.handleChange}
@@ -199,12 +198,12 @@ export default class NoteUploader extends Component {
                 message: 'Cena jest wymagana'
               },
               {
-                func: val => val >= 1.0,
-                message: 'Minimalna cena to 1zł'
+                func: val => val >= 0.1,
+                message: 'Minimalna cena to 10 groszy'
               },
               {
-                func: val => val < 1000,
-                message: 'Notatka musi kosztować mniej niż 1000zł'
+                func: val => val < 100,
+                message: 'Notatka musi kosztować mniej niż 100zł'
               },
               {
                 func: val => /^(\d*\.?\d{1,2})$/.test(val),
@@ -245,7 +244,7 @@ export default class NoteUploader extends Component {
             multiline
             rows="3"
             helperText="Max. 1000 znaków..."
-            inputProps={{ maxLength: 1000 }}
+            inputProps={{ maxLength: 500 }}
             className="field description"
             variant="outlined"
             value={this.state.description}
