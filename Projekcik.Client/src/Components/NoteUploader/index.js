@@ -174,7 +174,7 @@ export default class NoteUploader extends Component {
             id="name"
             className="field"
             label="Nazwa notatki"
-            inputProps={{ maxLength: 40 }}
+            inputProps={{ maxLength: 70 }}
             variant="outlined"
             value={this.state.name}
             onChange={this.handleChange}
@@ -243,7 +243,7 @@ export default class NoteUploader extends Component {
             label="Opis notatki"
             multiline
             rows="3"
-            helperText="Max. 1000 znaków..."
+            helperText="Max. 500 znaków..."
             inputProps={{ maxLength: 500 }}
             className="field description"
             variant="outlined"
