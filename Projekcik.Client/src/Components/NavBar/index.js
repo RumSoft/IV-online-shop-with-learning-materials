@@ -89,7 +89,7 @@ export default class NavBar extends Component {
       <header>
         <CookieNoticeBar />
         <Navbar
-          className="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3"
+          className="navbar navbar-expand-md navbar-toggleable-md border-bottom box-shadow mb-3"
           dark>
           <Container className="navbar-container">
             {/* first element only for equal flex spacing */}
@@ -99,14 +99,15 @@ export default class NavBar extends Component {
             </NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
             <Collapse
-              className="d-sm-inline-flex flex-sm-row-reverse form-inline container"
+              className="d-md-inline-flex flex-md-row-reverse form-inline container"
               isOpen={this.state.isOpen}
               navbar>
               <ul className="navbar-nav flex-grow ">
-                <SearchBar className="nav-search" />
+              <SearchBar className="nav-search" />
                 <NavItem>
+                  
                   <NavLink tag={Link} to="/cart" className="text-dark">
-                    <div className="d-none d-sm-block button btn btn-default">
+                    <div className="d-none d-md-block button btn btn-default">
                       <Tooltip title="Koszyk">
                         <Badge
                           className="mobile-badge"
@@ -120,9 +121,9 @@ export default class NavBar extends Component {
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} to="/cart" className="text-dark">
+                  <NavLink tag={Link} to="/cart" className="text-white">
                     <div
-                      className="d-sm-none link"
+                      className="d-md-none link"
                       onClick={() => this.toggle()}>
                       <Badge
                         className="mobile-badge"
@@ -137,15 +138,15 @@ export default class NavBar extends Component {
                 </NavItem>
                 {menu.map((x, i) => (
                   <NavItem key={i} hidden={x.hidden}>
-                    <NavLink tag={Link} className="text-dark" to={x.to}>
+                    <NavLink tag={Link} className="text-white" to={x.to}>
                       <div
-                        className="d-sm-none link"
+                        className="d-md-none link"
                         onClick={() => this.toggle()}>
                         {/* mobile */}
                         {x.icon}
                         <span>{x.name}</span>
                       </div>
-                      <div className="d-none d-sm-block button btn btn-default">
+                      <div className="d-none d-md-block button btn btn-default">
                         {/* large */}
                         <Tooltip title={x.name}>{x.icon}</Tooltip>
                       </div>

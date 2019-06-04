@@ -36,13 +36,13 @@ export class SearchBar extends Component {
         {this.renderRedirect()}
         <input
           name="query"
-          className="form-control mr-sm-2 item mobile"
+          className="form-control mr-md-2 item mobile"
           type="search"
           placeholder="Wyszukaj notatkę..."
           onChange={this.handleChange}
           value={this.state.query}
         />
-        <button className="btn btn-light ">Szukaj</button>
+        <button className="btn btn-light">Szukaj</button>
       </form>
     );
   }
