@@ -293,6 +293,7 @@ export default class NoteUploader extends Component {
                 </Select>
               </FormControl>
               <div>
+                <p>Preferowane typy plików: .pdf .docx .jpg .zip</p>
                 <input type="file" id="file" onChange={this.fileHandler} />
               </div>
             </Grid>
