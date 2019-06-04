@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { CircularProgress, Paper, Typography } from '@material-ui/core';
-import { Card, Button } from 'reactstrap';
+import { Button } from 'reactstrap';
 import CartService from '../../Services/CartService';
 
 import './index.scss';
