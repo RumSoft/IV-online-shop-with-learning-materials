@@ -105,7 +105,7 @@ export default class HomeLayout extends Component {
               od innych. Zajmie Ci to dosłownie 3.14159265359 sekund!
             </Typography>
             <AdSense.Google
-              client="ca-pub-7292810486004926"
+              client="ca-pub-9213085804753071"
               slot="7806394673"
             />
           </Card>
