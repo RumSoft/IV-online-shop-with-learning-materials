@@ -50,6 +50,7 @@
     "postcss-safe-parser": "4.0.1",
     "query-string": "^6.4.2",
     "react": "^16.0.0",
+    "react-adsense": "0.0.6",
     "react-app-polyfill": "^0.2.2",
     "react-dev-utils": "^8.0.0",
     "react-dom": "^16.0.0",

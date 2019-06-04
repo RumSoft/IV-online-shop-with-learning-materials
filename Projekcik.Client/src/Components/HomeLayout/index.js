@@ -9,6 +9,7 @@ import Slider from 'react-slick';
 import { SmallNoteCard } from '../NoteCards';
 import { Link } from 'react-router-dom';
 import queryString from 'query-string';
+import AdSense from 'react-adsense';
 
 export default class HomeLayout extends Component {
   constructor(props) {
@@ -100,9 +101,13 @@ export default class HomeLayout extends Component {
               paragraph>
               Wyszukaj najlepsze notatki studenckie dla Ciebie według poniższych
               kryteriów lub użyj wyszukiwarki. Zachęcamy również do założenia
-              własnego konta, aby móc sprzedawać własne notatki lub kupować je od innych. Zajmie Ci to
-              dosłownie 3.14159265359 sekund!
+              własnego konta, aby móc sprzedawać własne notatki lub kupować je
+              od innych. Zajmie Ci to dosłownie 3.14159265359 sekund!
             </Typography>
+            <AdSense.Google
+              client="ca-pub-7292810486004926"
+              slot="7806394673"
+            />
           </Card>
 
           <Card className="course-selector-card mb-3">
