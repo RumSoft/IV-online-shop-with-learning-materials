@@ -13,7 +13,6 @@ import {
   Input,
   InputGroupAddon,
   InputGroup,
-  InputGroupText,
   Label,
   FormGroup,
   Pagination,
@@ -163,7 +162,7 @@ export default class NoteTable extends Component {
             />
           </PaginationItem>
         </Pagination>
-        <Label for="size" className="label">
+        <Label for="size" className="page-label">
           Ilość wyników na stronę
         </Label>
         <Input
@@ -199,11 +198,6 @@ export default class NoteTable extends Component {
               <div className="filter-left ">
                 <Label for="voivodeship">Województwo</Label>
                 <InputGroup className="filter-field">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <Input addon type="checkbox" />
-                    </InputGroupText>
-                  </InputGroupAddon>
                   <Input
                     id="voivodeship"
                     placeholder="Województwo"
@@ -213,11 +207,6 @@ export default class NoteTable extends Component {
 
                 <Label for="university">Uczelnia</Label>
                 <InputGroup className="filter-field">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <Input addon type="checkbox" />
-                    </InputGroupText>
-                  </InputGroupAddon>
                   <Input
                     id="university"
                     placeholder="Uczelnia"
@@ -227,11 +216,6 @@ export default class NoteTable extends Component {
 
                 <Label for="course">Kierunek</Label>
                 <InputGroup className="filter-field">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <Input addon type="checkbox" />
-                    </InputGroupText>
-                  </InputGroupAddon>
                   <Input
                     id="course"
                     placeholder="Kierunek"
@@ -243,11 +227,6 @@ export default class NoteTable extends Component {
               <div className="filter-rest">
                 <Label for="price-input">Cena</Label>
                 <InputGroup className="filter-field rest">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <Input addon type="checkbox" />
-                    </InputGroupText>
-                  </InputGroupAddon>
                   <Input
                     id="price-input"
                     placeholder="Od"
@@ -256,11 +235,7 @@ export default class NoteTable extends Component {
                   <InputGroupAddon className="mr-3" addonType="append">
                     PLN
                   </InputGroupAddon>
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <Input addon type="checkbox" />
-                    </InputGroupText>
-                  </InputGroupAddon>
+
                   <Input placeholder="Do" onChange={this.handleChange} />
                   <InputGroupAddon addonType="append">PLN</InputGroupAddon>
                 </InputGroup>
