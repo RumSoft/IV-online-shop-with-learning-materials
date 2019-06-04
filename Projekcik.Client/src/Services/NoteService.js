@@ -20,20 +20,20 @@ export default class NoteService {
   }
 
   static getUserNotes(userId) {
-    return axios.get(`${API_URL}/api/Notes/user/${userId}`).then(r => r.data);
+    return APIService.get(`api/Notes/user/${userId}`);
   }
   static getNote(noteId) {
-    return axios.get(`${API_URL}/api/Notes/${noteId}`).then(r => r.data);
+    return APIService.get(`api/Notes/${noteId}`);
   }
 
   static getNotesById(idArray) {
-    return axios.post(`${API_URL}/api/Notes`, idArray).then(r => r.data);
+    return APIService.post(`api/Notes`, idArray);
   }
 
   static getAllNotes(sorter) {
     return sorter
-      ? axios.get(`${API_URL}/api/Notes/search/${sorter}`).then(r => r.data)
-      : axios.get(`${API_URL}/api/Notes/search`).then(r => r.data);
+      ? APIService.get(`api/Notes/search/${sorter}`)
+      : APIService.get(`api/Notes/search`);
   }
 
   static getBoughtNotes() {
@@ -43,9 +43,7 @@ export default class NoteService {
   static search(data) {
     this.cleanObject(data);
     let dataQueryString = queryString.stringify(data);
-    return axios
-      .get(`${API_URL}/api/Notes/search?${dataQueryString}`)
-      .then(r => r.data);
+    return APIService.get(`api/Notes/search?${dataQueryString}`);
   }
 
   static downloadRequest(noteId) {
