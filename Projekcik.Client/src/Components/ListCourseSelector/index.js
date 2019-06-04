@@ -176,6 +176,7 @@ export default class ListCourseSelector extends Component {
           className="button"
           variant="outlined"
           color="primary"
+          fullWidth
           onClick={this.handleDialogOpen}>
           Wybierz uczelnię i kierunek
         </Button>

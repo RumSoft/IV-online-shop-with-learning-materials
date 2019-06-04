@@ -21,7 +21,7 @@ export default class UserEarnings extends Component {
   render() {
     const { earnings } = this.state;
 
-    const colors = ['#99000d', '#cb181d', '#ef3b2c', '#fb6a4a', '#fc9272'];
+    const colors = ['#009933', '#00e64d','#00cc44', '#1aff66', '#4dff88'];
     const data01 = earnings
       ? earnings
           .sort((x, y) => x.profit < y.profit)

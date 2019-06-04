@@ -25,6 +25,10 @@
   }
 }
 
+.selector {
+  background: gray;
+}
+
 .note-form {
   flex-direction: column;
   display: flex;
@@ -36,6 +40,8 @@
     width: 50%;
     margin-right: auto;
     margin-bottom: 1rem;
+
+
 
     &.description {
       width: 75%;
@@ -57,7 +63,7 @@
       width: 0;
     }
 
-    [type='file'] + label {
+    [type='file']+label {
       background: #f15d22;
       border: none;
       border-radius: 5px;
@@ -75,7 +81,6 @@
       vertical-align: middle;
 
       &.btn-3 {
-        background-color: #ff0000;
         border-radius: 0;
         overflow: hidden;
 
@@ -91,7 +96,6 @@
 
   .button {
     margin-bottom: 2rem;
-    width: 50%;
   }
 
   .semester-list {
