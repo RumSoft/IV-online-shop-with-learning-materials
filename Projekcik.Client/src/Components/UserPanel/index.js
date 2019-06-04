@@ -2,16 +2,34 @@ import React, { Component } from 'react';
 import APIService from '../../Services/APIService';
 import PaymentService from '../../Services/PaymentService';
 import NoteService from '../../Services/NoteService';
-import { Nav, NavItem, NavLink, TabPane, TabContent } from 'reactstrap';
+import {
+  Nav,
+  NavItem,
+  NavLink,
+  TabPane,
+  TabContent,
+  Form,
+  FormGroup,
+  Label,
+  Input
+} from 'reactstrap';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+  Card,
+  Typography
+} from '@material-ui/core';
 import classnames from 'classnames';
-import { Card, Typography } from '@material-ui/core';
 import PaymentHistory from './PaymentHistory';
 import UserEarnings from './UserEarnings';
 import './index.scss';
 import BoughtNotes from './boughtNotes';
 import MyNotes from './myNotes';
 import MyInfo from './myInfo';
-import queryString from 'query-string';
 
 export class UserPanel extends Component {
   constructor(props) {
@@ -20,10 +38,10 @@ export class UserPanel extends Component {
       user: {},
       notes: [],
       loaded: false,
-      activeTab: 0
+      activeTab: 0,
+      open: false
     };
 
-    console.log(this.state);
     APIService.get('api/user/me').then(user => {
       this.setState({ user }, () =>
         NoteService.getUserNotes(this.state.user.id).then(r =>
@@ -41,20 +59,25 @@ export class UserPanel extends Component {
     }
   }
 
-  componentDidMount() {}
+  handleClickOpen = () => {
+    this.setState({ open: true });
+  };
 
-  handlePayout() {
-    PaymentService.payout('12312412412');
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
+  handlePayout(accountNumber) {
+    PaymentService.payout(accountNumber);
   }
 
   render() {
     const user = this.state.user;
     const notes = this.state.notes;
-
     const tabs = [
       {
         name: 'Moje dane',
-        object: <MyInfo user={user} />
+        object: <MyInfo user={user} handleDialog={this.handleClickOpen} />
       },
       {
         name: 'Moje notatki',
@@ -101,7 +124,7 @@ export class UserPanel extends Component {
 
             <Nav tabs>
               {tabs.map((tab, i) => (
-                <NavItem className="nav-tab">
+                <NavItem className="nav-tab" key={i}>
                   <NavLink
                     className={classnames({
                       active: this.state.activeTab === i
@@ -116,13 +139,69 @@ export class UserPanel extends Component {
             </Nav>
             <TabContent activeTab={this.state.activeTab}>
               {tabs.map((tab, i) => (
-                <TabPane tabId={i} className="mb-2">
+                <TabPane tabId={i} key={i} className="mb-2">
                   {tab.object}
                 </TabPane>
               ))}
             </TabContent>
           </Card>
         )}
+        <Dialog
+          open={this.state.open}
+          onClose={this.handleClose}
+          aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">Wypłać pieniądze</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Wypełnij poniższe pola swoimi danymi, aby móc dokonać wypłaty.
+              Upewnij się, że dane nie zawierają błędów, po czym zatwierdź
+              operację.
+            </DialogContentText>
+            <hr />
+            <Form>
+              <FormGroup>
+                <Label for="firstName">Imię</Label>
+                <Input
+                  type="text"
+                  id="firstName"
+                  placeholder={user.firstName}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="lastName">Nazwisko</Label>
+                <Input type="text" id="lastName" placeholder={user.lastName} />
+              </FormGroup>
+              <FormGroup>
+                <Label for="accountNumber">Numer konta</Label>
+                <Input
+                  type="text"
+                  id="accountNumber"
+                  placeholder="np. 0123 4567 8910 1112 1314 1516 17"
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="transferTitle">Tytuł przelewu</Label>
+                <Input
+                  type="text"
+                  id="transferTitle"
+                  placeholder={`Wypłata dla użytkownika ${user.emailAddress}`}
+                />
+              </FormGroup>
+            </Form>
+            <hr />
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() =>
+                this.handlePayout(
+                  document.getElementById('accountNumber').value
+                )
+              }
+              color="primary">
+              Zatwierdź
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     );
   }

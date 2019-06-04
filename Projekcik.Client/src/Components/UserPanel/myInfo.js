@@ -55,7 +55,7 @@ const MyInfo = props => (
             <Button
               style={{ maxWidth: '400px' }}
               className="btn bg-success btn-buy"
-              onClick={() => this.handlePayout()}>
+              onClick={() => props.handleDialog()}>
               <Grid container>
                 <Grid item sm={5} className="text-right">
                   <i className=" fa fa-dollar-sign fa-spin d-none d-sm-inline-block" />
