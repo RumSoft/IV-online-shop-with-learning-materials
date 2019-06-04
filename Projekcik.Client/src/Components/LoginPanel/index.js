@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Card,
-  CardContent,
-  Button,
-  LinearProgress
-} from '@material-ui/core';
+import { Card, CardContent, Button, LinearProgress } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
 
 import './index.scss';
@@ -21,7 +16,7 @@ export default class LoginPanel extends Component {
     loading: false,
     logged: AuthService.isAuthenticated()
   };
-
+  forms = {};
   handleChange = event => {
     this.setState({
       [event.target.id]: event.target.value
@@ -29,6 +24,16 @@ export default class LoginPanel extends Component {
   };
 
   handleLogin = event => {
+    let forms = Object.keys(this.forms).map(key => this.forms[key]);
+    let isValid = forms.every(x => x.isValid());
+    if (!isValid) {
+      this.setState({
+        errorMessage: 'Wypełnij poprawnie wszystkie pola',
+        loading: false
+      });
+      return;
+    }
+
     this.setState({ errorMessage: null, loading: true });
     AuthService.login({
       emailAddress: this.state.emailAddress,
@@ -59,7 +64,6 @@ export default class LoginPanel extends Component {
 
   render() {
     if (this.state.logged) return this.redirect();
-    console.log(this.props.redirectData);
     return (
       <div>
         {this.props.redirectData && (
@@ -72,49 +76,60 @@ export default class LoginPanel extends Component {
           {this.state.errorMessage && (
             <div className="errors">{this.state.errorMessage}</div>
           )}
-          <CardContent>
+          <CardContent style={{ width: '100%' }}>
             <h3>Zaloguj się</h3>
             <hr />
             <form className="login-form" onSubmit={this.handleLogin}>
-            <MyTextField
-              id="emailAddress"
-              className="field"
-              label="Adres e-mail"
-              inputProps={{ maxLength: 30 }}
-              variant="outlined"
-              value={this.state.emailAddress}
-              onChange={this.handleChange}
-              validationRules={[
-                {
-                  func: val => val,
-                  message: 'E-mail jest wymagany'
-                },
-                {
-                func: val=> /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/.test(val),
-               message: 'Nieprawidłowy format'
-              }
-              ]}
-            />
-            <MyTextField
-              id="password"
-              className="field"
-              label="Hasło"
-              variant="outlined"
-              type='password'
-              inputProps={{ maxLength: 50 }}
-              value={this.state.password}
-              onChange={this.handleChange}
-              validationRules={[
-                {
-                  func: val => val,
-                  message: 'Hasło jest wymagane'
-                },
-                {
-                  func: val => /^(?=.{6,})/.test(val),
-                  message: 'Hasło powinno mieć min. 6 znaków'
-                }
-              ]}
-            />
+              <MyTextField
+                ref={r => {
+                  this.forms.emailForm = r;
+                }}
+                id="emailAddress"
+                className="field"
+                label="Adres e-mail"
+                inputProps={{ maxLength: 30 }}
+                variant="outlined"
+                showError={this.state.errorMessage}
+                value={this.state.emailAddress}
+                onChange={this.handleChange}
+                validationRules={[
+                  {
+                    func: val => val,
+                    message: 'E-mail jest wymagany'
+                  },
+                  {
+                    func: val =>
+                      /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/.test(
+                        val
+                      ),
+                    message: 'Nieprawidłowy format'
+                  }
+                ]}
+              />
+              <MyTextField
+                ref={r => {
+                  this.forms.passwordForm = r;
+                }}
+                id="password"
+                className="field"
+                label="Hasło"
+                variant="outlined"
+                type="password"
+                showError={this.state.errorMessage}
+                inputProps={{ maxLength: 50 }}
+                value={this.state.password}
+                onChange={this.handleChange}
+                validationRules={[
+                  {
+                    func: val => val,
+                    message: 'Hasło jest wymagane'
+                  },
+                  {
+                    func: val => /^(?=.{6,})/.test(val),
+                    message: 'Hasło powinno mieć min. 6 znaków'
+                  }
+                ]}
+              />
             </form>
 
             <Button
@@ -126,14 +141,6 @@ export default class LoginPanel extends Component {
               Zaloguj
             </Button>
 
-            <Button
-              type="submit"
-              className="button login-reset-password"
-              variant="contained"
-              color="primary"
-              disabled>
-              Resetuj hasło
-            </Button>
             <HrLabel text="LUB" />
             <Button
               variant="contained"

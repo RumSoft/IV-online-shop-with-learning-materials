@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import NoteService from '../../Services/NoteService';
 import {
+  Grid,
   Card,
   Button,
   Select,
@@ -171,126 +172,134 @@ export default class NoteUploader extends Component {
           <hr />
         </div>
         <form className="note-form" onSubmit={this.handleSubmit}>
-          <MyTextField
-            id="name"
-            className="field"
-            label="Nazwa notatki"
-            inputProps={{ maxLength: 70 }}
-            variant="outlined"
-            value={this.state.name}
-            onChange={this.handleChange}
-            validationRules={[
-              {
-                func: val => val,
-                message: 'Nazwa notatki jest wymagana'
-              },
-              {
-                func: val => /^((?!kuu*rw|jee*bb*|huu*jj*|duu*p|pp*ii*ee*rr*d|cii*p|pii*zz*d).)*$/.test(val),
-                message: 'Nie bluźnij !'
-              }
-            ]}
-          />
-          <MyTextField
-            id="price"
-            className="field"
-            label="Cena"
-            variant="outlined"
-            value={this.state.price}
-            onChange={this.handleChangePrice}
-            validationRules={[
-              {
-                func: val => val,
-                message: 'Cena jest wymagana'
-              },
-              {
-                func: val => val >= 0.1,
-                message: 'Minimalna cena to 10 groszy'
-              },
-              {
-                func: val => val < 100,
-                message: 'Notatka musi kosztować mniej niż 100zł'
-              },
-              {
-                func: val => /^(\d*\.?\d{1,2})$/.test(val),
-                message: 'Nieprawidłowy format'
-              }
-            ]}
-          />
-          <MyTextField
-            id="voivodeship"
-            className="field"
-            label="Województwo"
-            variant="outlined"
-            disabled
-            value={this.state.voivodeship}
-          />
-          <MyTextField
-            id="university"
-            className="field"
-            label="Uczelnia"
-            variant="outlined"
-            disabled
-            value={this.state.university}
-          />
-          <MyTextField
-            id="course"
-            className="field"
-            label="Kierunek"
-            disabled
-            variant="outlined"
-            value={this.state.course}
-          />
+          <Grid container spacing={16}>
+            <Grid item md={6}>
+              <MyTextField
+                id="name"
+                className="field"
+                label="Nazwa notatki"
+                inputProps={{ maxLength: 70 }}
+                variant="outlined"
+                value={this.state.name}
+                onChange={this.handleChange}
+                validationRules={[
+                  {
+                    func: val => val,
+                    message: 'Nazwa notatki jest wymagana'
+                  },
+                  {
+                    func: val =>
+                      /^((?!kuu*rw|jee*bb*|huu*jj*|duu*p|pp*ii*ee*rr*d|cii*p|pii*zz*d).)*$/.test(
+                        val
+                      ),
+                    message: 'Nie bluźnij !'
+                  }
+                ]}
+              />
+              <MyTextField
+                id="price"
+                className="field"
+                label="Cena"
+                variant="outlined"
+                value={this.state.price}
+                onChange={this.handleChangePrice}
+                validationRules={[
+                  {
+                    func: val => val,
+                    message: 'Cena jest wymagana'
+                  },
+                  {
+                    func: val => val >= 0.1,
+                    message: 'Minimalna cena to 10 groszy'
+                  },
+                  {
+                    func: val => val < 100,
+                    message: 'Notatka musi kosztować mniej niż 100zł'
+                  },
+                  {
+                    func: val => /^(\d*\.?\d{1,2})$/.test(val),
+                    message: 'Nieprawidłowy format'
+                  }
+                ]}
+              />
+              <MyTextField
+                id="description"
+                label="Opis notatki"
+                multiline
+                rows="3"
+                helperText="Max. 500 znaków..."
+                inputProps={{ maxLength: 500 }}
+                className="field description"
+                variant="outlined"
+                value={this.state.description}
+                onChange={this.handleChange}
+              />
+            </Grid>
+            <Grid item md={6}>
+              <MyTextField
+                id="voivodeship"
+                className="field selector voivodeship"
+                label="Województwo"
+                variant="outlined"
+                disabled
+                value={this.state.voivodeship}
+              />
+              <MyTextField
+                id="university"
+                className="field selector university"
+                label="Uczelnia"
+                variant="outlined"
+                disabled
+                value={this.state.university}
+              />
+              <MyTextField
+                id="course"
+                className="field selector course"
+                label="Kierunek"
+                disabled
+                variant="outlined"
+                value={this.state.course}
+              />
 
-          <ListCourseSelector searchData={this.listCourseSelectorHandler} />
+              <ListCourseSelector searchData={this.listCourseSelectorHandler} />
+            </Grid>
 
-          <MyTextField
-            id="description"
-            label="Opis notatki"
-            multiline
-            rows="3"
-            helperText="Max. 500 znaków..."
-            inputProps={{ maxLength: 500 }}
-            className="field description"
-            variant="outlined"
-            value={this.state.description}
-            onChange={this.handleChange}
-          />
-          <FormControl variant="outlined" className="semester-list">
-            <InputLabel ref="Semester" htmlFor="outlined-age-native-simple">
-              Semestr
-            </InputLabel>
-            <Select
-              native
-              id="semester"
-              value={this.state.semester}
-              onChange={this.handleChange}
-              input={
-                <OutlinedInput
-                  name="semester"
-                  labelWidth={58}
-                  id="outlined-age-native-simple"
-                />
-              }>
-              <option value="" />
-              <option value={1}>Pierwszy</option>
-              <option value={2}>Drugi</option>
-              <option value={3}>Trzeci</option>
-              <option value={4}>Czwarty</option>
-              <option value={5}>Piąty</option>
-              <option value={6}>Szósty</option>
-              <option value={7}>Siódmy</option>
-            </Select>
-          </FormControl>
-
-          <div className="file-input">
-            <input type="file" id="file" onChange={this.fileHandler} />
-            <label for="file" class="btn-3">
-              <span>Wybierz plik</span>
-            </label>
-          </div>
+            <Grid item md={6}>
+              <FormControl variant="outlined" className="semester-list">
+                <InputLabel ref="Semester" htmlFor="outlined-age-native-simple">
+                  Semestr
+                </InputLabel>
+                <Select
+                  native
+                  id="semester"
+                  fullWidth
+                  value={this.state.semester}
+                  onChange={this.handleChange}
+                  input={
+                    <OutlinedInput
+                      name="semester"
+                      labelWidth={58}
+                      id="outlined-age-native-simple"
+                    />
+                  }>
+                  <option value="" />
+                  <option value={1}>Pierwszy</option>
+                  <option value={2}>Drugi</option>
+                  <option value={3}>Trzeci</option>
+                  <option value={4}>Czwarty</option>
+                  <option value={5}>Piąty</option>
+                  <option value={6}>Szósty</option>
+                  <option value={7}>Siódmy</option>
+                </Select>
+              </FormControl>
+              <div>
+                <input type="file" id="file" onChange={this.fileHandler} />
+              </div>
+            </Grid>
+          </Grid>
           <Button
             //type="submit"
-            className="file-submit button"
+            className="file-submit button mt-3"
             variant="contained"
             color="primary"
             onClick={this.handleSubmit}>
