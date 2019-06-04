@@ -125,7 +125,7 @@ export default class CourseSelector extends Component {
     if (count === 0) return 'brak notatek';
     if (count === 1) return '1 notatka';
     if (count <= 4) return `${count} notatki`;
-    return `Liczba notatek: ${count}`;
+    return `Notatki: ${count}`;
   }
 
   render() {
