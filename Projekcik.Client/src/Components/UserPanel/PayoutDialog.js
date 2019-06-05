@@ -33,7 +33,6 @@ export default class PayoutDialog extends Component {
     event && event.preventDefault();
 
     let forms = Object.keys(this.forms).map(key => this.forms[key]);
-    console.log(forms);
     let isValid = forms.every(x => x.isValid());
     if (!isValid) {
       this.setState(

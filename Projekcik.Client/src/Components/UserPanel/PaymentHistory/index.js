@@ -45,6 +45,7 @@ export default class PaymentHistory extends Component {
             <tbody>
               {loaded &&
                 payments &&
+                payments.length &&
                 payments.reverse().map((x, i) => (
                   <tr key={i}>
                     <th scope="row">{i + 1}.</th>
