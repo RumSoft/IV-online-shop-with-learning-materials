@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { NoteService } from '../../Services';
 import { Grid, CircularProgress } from '@material-ui/core';
-import { WideSmallNoteCard, DownloadNoteCard } from '../NoteCards';
+import { DownloadNoteCard } from '../NoteCards';
 
 export default class BoughtNotes extends Component {
   constructor() {

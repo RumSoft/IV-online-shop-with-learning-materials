@@ -160,7 +160,6 @@ export default class NotePanel extends Component {
                           </Grid>
                           <Grid item xs={4} sm={6} md={12}>
                             <ListItemText
-                              dense
                               className="document-what"
                               primary={[
                                 <i className="fa fa-university" />,

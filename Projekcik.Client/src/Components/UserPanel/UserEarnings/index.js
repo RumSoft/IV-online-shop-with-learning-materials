@@ -4,7 +4,7 @@ import { Typography, Grid } from '@material-ui/core';
 import { Table } from 'reactstrap';
 import { NoteService } from '../../../Services';
 import './index.scss';
-import { PieChart, Pie, Legend, Tooltip } from 'recharts';
+import { PieChart, Pie, Tooltip } from 'recharts';
 export default class UserEarnings extends Component {
   constructor(props) {
     super(props);
