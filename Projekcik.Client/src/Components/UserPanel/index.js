@@ -182,7 +182,7 @@ export class UserPanel extends Component {
                 <Input
                   type="text"
                   id="accountNumber"
-                  placeholder="np. 0123 4567 8910 1112 1314 1516 17"
+                  placeholder="np. 01 2345 6789 1111 1234 5678"
                 />
               </FormGroup>
               <FormGroup>

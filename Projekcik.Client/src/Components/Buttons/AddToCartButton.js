@@ -36,7 +36,7 @@ class AddToCartButton extends Component {
           <span> {price} zł</span>
         ) : this.state.disabled ? (
           owned ? (
-            <span> Już zakupiono</span>
+            <span> Już posiadasz</span>
           ) : (
             <span> Już w koszyku</span>
           )

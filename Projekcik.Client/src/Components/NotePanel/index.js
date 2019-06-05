@@ -116,6 +116,7 @@ export default class NotePanel extends Component {
                           className="add-to-cart"
                           id={note.id}
                           price={note.price}
+                          owned={note.owned}
                         />
                       ) : (
                         <p className="h6 text-center">To twoja notatka</p>
