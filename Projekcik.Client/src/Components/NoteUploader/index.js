@@ -134,13 +134,13 @@ export default class NoteUploader extends Component {
         voivodeship: '',
         university: '',
         course: '',
-        sending: true,
-        sendingProgress: 0
+        sending: true
       });
       NoteService.sendNote(note)
         .then(r => {
           this.setState({
             success: 'Dodano notatkę! Możesz ją wyświetlić ',
+            noteId: r.id,
             sending: false
           });
           window.scrollTo(0, 0);
@@ -161,7 +161,9 @@ export default class NoteUploader extends Component {
         {this.state.success && (
           <div className="eval success">
             {this.state.success}{' '}
-            <a href="../protected" style={{ color: 'lightblue' }}>
+            <a
+              href={`/note/${this.state.noteId}`}
+              style={{ color: 'lightblue' }}>
               tutaj!
             </a>
           </div>
@@ -173,16 +175,21 @@ export default class NoteUploader extends Component {
               <CircularProgress />
               <h1 className="h3">Wysyłanie notatki</h1>
               <Fade in={true} timeout={500} style={{ transitionDelay: '3s' }}>
-                <h1 className="h6">Przetwarzanie notatki</h1>
+                <h1 className="h5">Generowanie podglądu</h1>
               </Fade>
               <Fade in={true} timeout={500} style={{ transitionDelay: '5s' }}>
-                <h1 className="h6">Generowanie podglądu</h1>
+                <h1 className="h5">Koloryzacja guzików</h1>
               </Fade>
               <Fade in={true} timeout={500} style={{ transitionDelay: '7s' }}>
-                <h1 className="h6">Koloryzacja guzików</h1>
+                <h1 className="h5">Sprawdzanie siecią neuronową</h1>
               </Fade>
               <Fade in={true} timeout={500} style={{ transitionDelay: '9s' }}>
-                <h1 className="h6">Wstawianie do wyszukiwarki</h1>
+                <h1 className="h5">Akceptacja przez moderatora z Mumbaju</h1>
+              </Fade>
+              <Fade in={true} timeout={500} style={{ transitionDelay: '11s' }}>
+                <h1 className="h5">
+                  Wyprowadzanie równania sprzedanej notatki
+                </h1>
               </Fade>
             </div>
           </div>
