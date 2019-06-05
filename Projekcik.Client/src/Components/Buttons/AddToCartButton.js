@@ -6,7 +6,7 @@ import { withSnackbar } from 'notistack';
 
 class ShowNoteButton extends Component {
   state = {
-    disabled: CartService.exists(this.props.id),
+    disabled: CartService.exists(this.props.id) || this.props.owned,
     open: false
   };
 
@@ -25,17 +25,26 @@ class ShowNoteButton extends Component {
   };
 
   render() {
-    const { price, id } = this.props;
+    const { price, id, owned } = this.props;
     return (
       <Button
+<<<<<<< Updated upstream
         className=" btn home-cart btn-md px-0 rounded"
         disabled={this.state.disabled}
+=======
+        className="btn cart btn-md p-0 p-lg-1 rounded"
+        disabled={this.state.disabled || owned}
+>>>>>>> Stashed changes
         onClick={() => this.addToCart(id)}>
         <i className="fa fa-shopping-cart" />
         {price ? (
           <span> {price} zł</span>
         ) : this.state.disabled ? (
-          <span> Już w koszyku</span>
+          owned ? (
+            <span> Już zakupiono</span>
+          ) : (
+            <span> Już w koszyku</span>
+          )
         ) : (
           <span> Dodaj do koszyka</span>
         )}

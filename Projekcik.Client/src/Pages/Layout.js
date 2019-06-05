@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container } from 'reactstrap';
 import NavBar from '../Components/NavBar';
-import { SnackbarProvider, withSnackbar } from 'notistack';
+import { SnackbarProvider } from 'notistack';
 
 export default props => (
   <div>
