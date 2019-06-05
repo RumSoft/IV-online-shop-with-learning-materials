@@ -26,7 +26,14 @@
 }
 
 .selector {
-  background: gray;
+  label {
+    color: #aaa !important;
+  }
+
+  input {
+    background-color: #eee;
+
+  }
 }
 
 .note-form {
@@ -37,15 +44,9 @@
   margin-right: 1rem;
 
   .field {
-    width: 50%;
     margin-right: auto;
     margin-bottom: 1rem;
 
-
-
-    &.description {
-      width: 75%;
-    }
   }
 
   .file-submit {
@@ -118,6 +119,7 @@
       }
     }
   }
+
   .button {
     margin-bottom: 2rem;
   }

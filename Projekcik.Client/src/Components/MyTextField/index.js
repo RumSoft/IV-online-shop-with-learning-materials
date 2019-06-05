@@ -21,22 +21,36 @@ export default class MyTextField extends Component {
 
   render() {
     let props = this.props;
-    props = { ...props, className: null };
+    props = {
+      ...props,
+      className: null,
+      validationRules: null,
+      showError: null
+    };
+    Object.keys(props).forEach(key => props[key] == null && delete props[key]);
 
     let messages = this.validateField(
       this.props.validationRules,
       this.props.value
     );
 
-    if (props.showError && messages && messages.length)
+    if (this.props.showError && messages && messages.length)
       props = { ...props, error: true };
 
     return (
-      <div className={`${props.className || ''} mb-3`}>
-        <TextField className="input-field" {...props} fullWidth />
+      <div className={`${this.props.className || ''} mb-3`}>
+        <TextField
+          className="input-field"
+          {...props}
+          fullWidth
+          error={props.error}
+        />
         <p className="input-field-error p-0 m-0">
           <small>
-            {(props.showError && messages && messages.length && messages[0]) ||
+            {(this.props.showError &&
+              messages &&
+              messages.length &&
+              messages[0]) ||
               ''}
           </small>
         </p>

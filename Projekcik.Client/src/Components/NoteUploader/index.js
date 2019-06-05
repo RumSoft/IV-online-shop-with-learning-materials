@@ -8,7 +8,9 @@ import {
   FormControl,
   OutlinedInput,
   InputLabel,
-  CircularProgress
+  CircularProgress,
+  Fade,
+  Grow
 } from '@material-ui/core';
 import './index.scss';
 import ListCourseSelector from '../ListCourseSelector';
@@ -37,6 +39,7 @@ export default class NoteUploader extends Component {
 
     this.listCourseSelectorHandler = this.listCourseSelectorHandler.bind(this);
   }
+  forms = {};
 
   listCourseSelectorHandler(data) {
     this.setState({
@@ -66,6 +69,16 @@ export default class NoteUploader extends Component {
   };
 
   errorHandler = () => {
+    let forms = Object.keys(this.forms).map(key => this.forms[key]);
+    let isValid = forms.every(x => x.isValid());
+    if (!isValid) {
+      this.setState({
+        errorMessage: 'Wypełnij poprawnie wszystkie pola',
+        loading: false
+      });
+      return true;
+    }
+
     const strings = [
       this.state.name,
       this.state.price,
@@ -121,7 +134,8 @@ export default class NoteUploader extends Component {
         voivodeship: '',
         university: '',
         course: '',
-        sending: true
+        sending: true,
+        sendingProgress: 0
       });
       NoteService.sendNote(note)
         .then(r => {
@@ -142,7 +156,6 @@ export default class NoteUploader extends Component {
   };
 
   render() {
-
     return (
       <Card className="upload-page-card mb-2">
         {this.state.success && (
@@ -158,7 +171,19 @@ export default class NoteUploader extends Component {
           <div className="sending-overlay">
             <div className="progress-text">
               <CircularProgress />
-              <h1 className="h3">Wysyłane notatki</h1>
+              <h1 className="h3">Wysyłanie notatki</h1>
+              <Fade in={true} timeout={500} style={{ transitionDelay: '3s' }}>
+                <h1 className="h6">Przetwarzanie notatki</h1>
+              </Fade>
+              <Fade in={true} timeout={500} style={{ transitionDelay: '5s' }}>
+                <h1 className="h6">Generowanie podglądu</h1>
+              </Fade>
+              <Fade in={true} timeout={500} style={{ transitionDelay: '7s' }}>
+                <h1 className="h6">Koloryzacja guzików</h1>
+              </Fade>
+              <Fade in={true} timeout={500} style={{ transitionDelay: '9s' }}>
+                <h1 className="h6">Wstawianie do wyszukiwarki</h1>
+              </Fade>
             </div>
           </div>
         ) : (
@@ -177,7 +202,11 @@ export default class NoteUploader extends Component {
               <MyTextField
                 id="name"
                 className="field"
+                showError={this.state.errorMessage}
                 label="Nazwa notatki"
+                ref={r => {
+                  this.forms.name = r;
+                }}
                 inputProps={{ maxLength: 70 }}
                 variant="outlined"
                 value={this.state.name}
@@ -199,7 +228,11 @@ export default class NoteUploader extends Component {
               <MyTextField
                 id="price"
                 className="field"
+                showError={this.state.errorMessage}
                 label="Cena"
+                ref={r => {
+                  this.forms.price = r;
+                }}
                 variant="outlined"
                 value={this.state.price}
                 onChange={this.handleChangePrice}
@@ -225,6 +258,10 @@ export default class NoteUploader extends Component {
               <MyTextField
                 id="description"
                 label="Opis notatki"
+                showError={this.state.errorMessage}
+                ref={r => {
+                  this.forms.description = r;
+                }}
                 multiline
                 rows="3"
                 helperText="Max. 500 znaków..."
@@ -233,6 +270,12 @@ export default class NoteUploader extends Component {
                 variant="outlined"
                 value={this.state.description}
                 onChange={this.handleChange}
+                validationRules={[
+                  {
+                    func: val => val,
+                    message: 'Dodaj opis notatki'
+                  }
+                ]}
               />
             </Grid>
             <Grid item md={6}>
@@ -240,8 +283,12 @@ export default class NoteUploader extends Component {
                 id="voivodeship"
                 className="field selector voivodeship"
                 label="Województwo"
+                showError={this.state.errorMessage}
                 variant="outlined"
                 disabled
+                ref={r => {
+                  this.forms.voivodeship = r;
+                }}
                 value={this.state.voivodeship}
               />
               <MyTextField
@@ -250,15 +297,29 @@ export default class NoteUploader extends Component {
                 label="Uczelnia"
                 variant="outlined"
                 disabled
+                showError={this.state.errorMessage}
+                ref={r => {
+                  this.forms.university = r;
+                }}
                 value={this.state.university}
               />
               <MyTextField
                 id="course"
                 className="field selector course"
                 label="Kierunek"
+                showError={this.state.errorMessage}
                 disabled
                 variant="outlined"
                 value={this.state.course}
+                ref={r => {
+                  this.forms.course = r;
+                }}
+                validationRules={[
+                  {
+                    func: val => val,
+                    message: 'Wybierz kierunek uczelni'
+                  }
+                ]}
               />
 
               <ListCourseSelector searchData={this.listCourseSelectorHandler} />

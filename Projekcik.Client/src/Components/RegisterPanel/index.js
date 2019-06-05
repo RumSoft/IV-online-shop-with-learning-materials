@@ -18,6 +18,7 @@ export default class RegisterPage extends Component {
     loading: false,
     captchaValue: null
   };
+  forms = {};
 
   handleChange = event => {
     this.setState({
@@ -26,23 +27,36 @@ export default class RegisterPage extends Component {
   };
 
   handleSubmit = event => {
+    event && event.preventDefault();
+
+    let forms = Object.keys(this.forms).map(key => this.forms[key]);
+    console.log(forms);
+    let isValid = forms.every(x => x.isValid());
+    if (!isValid) {
+      this.setState({
+        errorMessage: 'Wypełnij poprawnie wszystkie pola',
+        loading: false
+      });
+      return;
+    }
+
+    if (!this.state.captchaValue) {
+      this.setState({
+        errorMessage: 'Jesteś robotem!',
+        loading: false
+      });
+      return;
+    }
+
     this.setState({
       loading: true
     });
     let getUrl = window.location;
     let baseUrl = getUrl.protocol + '//' + getUrl.host;
-    event.preventDefault();
 
     if (this.state.password !== this.state.confirmPassword) {
       this.setState({
         errorMessage: 'Niezgodne hasła!',
-        loading: false
-      });
-      return;
-    }
-    if (this.state.captchaValue == null) {
-      this.setState({
-        errorMessage: 'Jesteś robotem!',
         loading: false
       });
       return;
@@ -94,10 +108,14 @@ export default class RegisterPage extends Component {
               </div>
             )}
             <MyTextField
+              ref={r => {
+                this.forms.firstName = r;
+              }}
               id="firstName"
               className="field"
               label="Imię"
               variant="outlined"
+              showError={this.state.errorMessage}
               inputProps={{ maxLength: 30 }}
               value={this.state.firstName}
               onChange={this.handleChange}
@@ -107,14 +125,18 @@ export default class RegisterPage extends Component {
                   message: 'Imię jest wymagane'
                 },
                 {
-                  func: val => /^[a-zA-Z]+$/.test(val),
+                  func: val => /^[a-zA-ZęóąśłżźćńĘÓĄŚŁŻŹĆŃ]+$/.test(val),
                   message: 'Nieprawidłowy format'
                 }
               ]}
             />
             <MyTextField
+              ref={r => {
+                this.forms.lastName = r;
+              }}
               id="lastName"
               className="field"
+              showError={this.state.errorMessage}
               label="Nazwisko"
               variant="outlined"
               inputProps={{ maxLength: 30 }}
@@ -132,10 +154,14 @@ export default class RegisterPage extends Component {
               ]}
             />
             <MyTextField
+              ref={r => {
+                this.forms.userName = r;
+              }}
               id="userName"
               className="field"
               label="Nazwa Użytkownika"
               variant="outlined"
+              showError={this.state.errorMessage}
               inputProps={{ maxLength: 30 }}
               value={this.state.userName}
               onChange={this.handleChange}
@@ -147,8 +173,12 @@ export default class RegisterPage extends Component {
               ]}
             />
             <MyTextField
+              ref={r => {
+                this.forms.emailAddress = r;
+              }}
               id="emailAddress"
               className="field"
+              showError={this.state.errorMessage}
               label="Adres e-mail"
               inputProps={{ maxLength: 30 }}
               variant="outlined"
@@ -161,7 +191,7 @@ export default class RegisterPage extends Component {
                 },
                 {
                   func: val =>
-                  /*eslint no-control-regex: "off"*/
+                    /*eslint no-control-regex: "off"*/
                     /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/.test(
                       val
                     ),
@@ -170,9 +200,13 @@ export default class RegisterPage extends Component {
               ]}
             />
             <MyTextField
+              ref={r => {
+                this.forms.password = r;
+              }}
               id="password"
               className="field"
               label="Hasło"
+              showError={this.state.errorMessage}
               variant="outlined"
               type="password"
               inputProps={{ maxLength: 30 }}
@@ -190,8 +224,12 @@ export default class RegisterPage extends Component {
               ]}
             />
             <MyTextField
+              ref={r => {
+                this.forms.confirmPassword = r;
+              }}
               id="confirmPassword"
               className="field"
+              showError={this.state.errorMessage}
               label="Potwierdź hasło"
               variant="outlined"
               type="password"
