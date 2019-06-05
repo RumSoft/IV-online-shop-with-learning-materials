@@ -37,7 +37,6 @@ export default class HomeLayout extends Component {
         this.slider.forceUpdate();
         let elements = [...document.getElementsByClassName('small-note-card')];
         let height = Math.max.apply(Math, elements.map(x => x.offsetHeight));
-        console.log(height);
         elements.forEach(x => (x.style.height = `${height}px`));
       });
     });
