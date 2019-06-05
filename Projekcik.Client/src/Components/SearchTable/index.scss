@@ -1,23 +1,22 @@
 .toolbar-root {
+  display: flex;
+  flex-direction: row;
   padding-top: 0.5rem;
   padding-right: 1rem;
 
   .toolbar-title {
-    padding-top: 5px;
-    flex: 0 0 auto;
+    padding-top: 0.1rem;
+    padding-right: 5rem;
+    margin-right: 5rem;
   }
 
-  .toolbar-spacer {
-    flex: 1 1 100%;
+  .toolbar-sort {
+    flex-grow: 1;
   }
 }
 
 .fa {
   margin-right: 0.5rem;
-}
-
-.note-grid-item {
-  height: 100%;
 }
 
 dl {
@@ -27,7 +26,6 @@ dl {
 hr {
   width: 95%;
 }
-
 
 .root {
   width: 100%;
@@ -91,15 +89,15 @@ hr {
     padding: 0.2rem 2rem;
   }
 
-  .label {
+  .page-label {
     padding-right: 1em;
     padding-top: 10px;
   }
 
-  .pageSize {
+  .page-size-input {
     align-content: flex-end;
     margin-top: 3px;
-    width: 7%;
+    width: 8%;
   }
 }
 
@@ -127,4 +125,65 @@ hr {
   text-decoration: none;
   border-color: #16288d;
   background-color: #3f51b5;
+}
+
+@media only screen and (max-width: 992px) {
+  .toolbar-root {
+    .toolbar-title {
+      padding-right: 1rem;
+      margin-right: 0;
+    }
+
+    .toolbar-input {
+      max-width: 120px;
+    }
+  }
+  .page-manipulator {
+    .page-label {
+      padding-right: 0;
+      padding-top: 0;
+    }
+    .page-size-input {
+      width: 11%;
+    }
+  }
+}
+// ten cholerny zakres, moze to tez kwestia mojego ekranu xd
+//
+// @media only screen and (min-width: 964px) and (max-width: 992px) {
+//   .search-note-card {
+//     .btn-group {
+//       .btn.cart {
+//         width: 100%;
+//       }
+//     }
+//   }
+// }
+
+@media only screen and (max-width: 792px) {
+  .toolbar-root {
+    font-size: small;
+
+    .toolbar-title {
+      font-size: medium;
+      max-width: 10rem;
+      padding-right: 1rem;
+      margin-right: 0;
+    }
+
+    .toolbar-form {
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+      .toolbar-input {
+        max-width: 200px;
+        margin-bottom: 4px;
+      }
+    }
+  }
+  .page-manipulator {
+    .page-size-input {
+      width: 20%;
+    }
+  }
 }

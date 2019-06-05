@@ -10,7 +10,7 @@ export default class SearchNoteCard extends Component {
     const { note } = this.props;
 
     return (
-      <Grid item sm={6}>
+      <Grid item sm={12} md={6}>
         <Paper className="search-note-card note-card p-2 m-2">
           <div className="note-image">
             <img

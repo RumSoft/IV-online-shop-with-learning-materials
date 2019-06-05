@@ -18,8 +18,16 @@
       overflow: hidden;
     }
 
-
-
+    .btn-small-group {
+      .home-note {
+        width: 100%;
+      }
+      .home-cart {
+        color: black;
+        width: 7rem;
+        height: 90%;
+      }
+    }
   }
 }
 

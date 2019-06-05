@@ -9,8 +9,7 @@ import {
   OutlinedInput,
   InputLabel,
   CircularProgress,
-  Fade,
-  Grow
+  Fade
 } from '@material-ui/core';
 import './index.scss';
 import ListCourseSelector from '../ListCourseSelector';
