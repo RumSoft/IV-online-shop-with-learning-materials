@@ -1,5 +1,6 @@
 import React from 'react';
-import { Grid, Button, ListItemText } from '@material-ui/core';
+import { Grid, ListItemText } from '@material-ui/core';
+import PayoutDialog from './PayoutDialog';
 
 const MyInfo = props => (
   <div className="row m-4">
@@ -50,44 +51,7 @@ const MyInfo = props => (
             ]}
           />
         </Grid>
-        <Grid item>
-          <div className="btn-group">
-            {props.user.balance >= 1 ? (
-              <Button
-                style={{ maxWidth: '400px' }}
-                className="btn bg-success btn-buy"
-                onClick={() => props.handleDialog()}>
-                <Grid container>
-                  <Grid item sm={5} className="text-right">
-                    <i className=" fa fa-dollar-sign fa-spin d-none d-sm-inline-block" />
-                  </Grid>
-                  <Grid item xs={12} sm={7} className="text-left">
-                    {' '}
-                    wypłać całą swoją fortunę
-                    <h3>{props.user.balance} zł</h3>
-                  </Grid>
-                </Grid>
-              </Button>
-            ) : (
-              <Button
-                style={{ maxWidth: '400px' }}
-                className="btn bg-warning btn-buy"
-                disabled
-                onClick={() => props.handleDialog()}>
-                <Grid container>
-                  <Grid item sm={5} className="text-right">
-                    <i className=" fa fa-dollar-sign fa-spin d-none d-sm-inline-block" />
-                  </Grid>
-                  <Grid item xs={12} sm={7} className="text-left">
-                    {' '}
-                    Nie stać cię aby wypłacić
-                    <h3>{props.user.balance} zł</h3>
-                  </Grid>
-                </Grid>
-              </Button>
-            )}
-          </div>
-        </Grid>
+        <PayoutDialog user={props.user}/>
       </Grid>
     </Grid>
   </div>
