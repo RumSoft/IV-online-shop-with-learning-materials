@@ -9,6 +9,10 @@
 }
 
 .small-note-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   .note-name {
     h5 {
       $fontSize: 1.25rem;
@@ -18,8 +22,17 @@
       overflow: hidden;
     }
 
+    .btn-small-group {
+      .home-note {
+        width: 100%;
+      }
 
-
+      .home-cart {
+        color: black;
+        width: 7rem;
+        height: 90%;
+      }
+    }
   }
 }
 
@@ -36,9 +49,32 @@
 .search-note-card {
   margin-right: 0 !important;
   margin-left: 0 !important;
+  max-width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   .note-image {
     display: flex;
+  }
+
+  .note-main {
+    .note-title {
+      $fontSize: 1.2rem;
+      $maxLines: 3;
+
+      font-weight: 400;
+      font-size: $fontSize;
+      overflow: hidden;
+      line-height: $fontSize*1.1;
+      max-height: $maxLines * 1.1* $fontSize + 0.1rem;
+
+    }
+
+    .note-price {
+      // font-weight: 600;
+    }
   }
 
   .grid-item-note {
@@ -51,20 +87,44 @@
 
     .btn {
       margin: 3px;
-
-      &.cart {
-        width: 250px;
-      }
-
-      &.note {
-        width: 100%;
-      }
     }
   }
 }
 
 .download-note-card {
   position: relative;
+  width: 100%;
+
+
+
+  .note-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between !important;
+
+    .note-title {
+      $fontSize: 1.2rem;
+      $maxLines: 3;
+
+      font-weight: 400;
+      font-size: $fontSize;
+      overflow: hidden;
+      line-height: $fontSize*1.1;
+      max-height: $maxLines * 1.1* $fontSize + 0.1rem;
+
+    }
+
+    .note-desc {
+      display: block;
+      max-height: 50px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .note-price {
+      // font-weight: 600;
+    }
+  }
 
   .busy-overlay {
     background: rgba(white, 0.7);

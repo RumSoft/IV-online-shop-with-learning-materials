@@ -32,42 +32,44 @@ export default class EnhancedTableToolbar extends Component {
   render() {
     return (
       <Toolbar className="toolbar-root">
-        <div className="toolbar-title pr-5 mr-5">
-          <Typography variant="h6" id="tableTitle">
+        <div>
+          <Typography variant="h6" id="tableTitle" className="toolbar-title">
             Wyniki wyszukiwania
           </Typography>
         </div>
-        <Form inline>
-          <FormGroup>
-            <Label for="sortBy" className="pr-2 pt-1">
-              Sortuj przez
-            </Label>
-            <Input
-              type="select"
-              className="mr-2"
-              name="selectby"
-              id="sortBy"
-              onChange={this.handleSort}>
-              <option value="name">nazwę</option>
-              <option value="created">datę</option>
-              <option value="price">cenę</option>
-              <option value="voivodeship">województwo</option>
-              <option value="university">uczelnię</option>
-              <option value="course">kierunek</option>
-              <option value="semester">semestr</option>
-              <option value="author">autora</option>
-            </Input>
-            <Input
-              type="select"
-              name="selectorder"
-              id="sortOrder"
-              onChange={this.handleSort}>
-              <option value="asc">rosnąco</option>
-              <option value="desc">malejąco</option>
-            </Input>
-          </FormGroup>
-        </Form>
-        <div className="toolbar-spacer" />
+        <div className="toolbar-sort">
+          <Form inline className="toolbar-form">
+            <FormGroup>
+              <Label for="sortBy" className="toolbar-input pb-2 pr-2 pt-2">
+                Sortuj według
+              </Label>
+              <Input
+                type="select"
+                className="toolbar-input mr-2"
+                name="selectby"
+                id="sortBy"
+                onChange={this.handleSort}>
+                <option value="name">nazwy</option>
+                <option value="created">daty</option>
+                <option value="price">ceny</option>
+                <option value="voivodeship">województwa</option>
+                <option value="university">uczelni</option>
+                <option value="course">kierunku</option>
+                <option value="semester">semestru</option>
+                <option value="author">autora</option>
+              </Input>
+              <Input
+                type="select"
+                name="selectorder"
+                id="sortOrder"
+                className="toolbar-input"
+                onChange={this.handleSort}>
+                <option value="asc">rosnąco</option>
+                <option value="desc">malejąco</option>
+              </Input>
+            </FormGroup>
+          </Form>
+        </div>
         <div className="toolbar-actions">
           <Tooltip title="Parametry wyszukiwania">
             <IconButton

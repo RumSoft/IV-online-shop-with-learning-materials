@@ -130,7 +130,6 @@ export default class CourseSelector extends Component {
 
   render() {
     const { activeStep, selection, data } = this.state;
-    console.log(data);
     return (
       <div className="course-selector">
         <Stepper activeStep={activeStep} className="course-selector-stepper">

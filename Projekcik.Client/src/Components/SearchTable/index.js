@@ -153,9 +153,9 @@ export default class NoteTable extends Component {
         </Label>
         <Input
           type="select"
-          className="pageSize"
+          className="page-size-input"
           id="size"
-          defaultValue={10}
+          defaultValue={12}
           onChange={this.handlePageCount}>
           {pageSizes.map((x, i) => (
             <option value={x} key={i}>
@@ -259,7 +259,6 @@ export default class NoteTable extends Component {
 
   render() {
     const { loaded, notes, pager } = this.state;
-    console.log('render', loaded);
 
     return (
       <div>
@@ -276,7 +275,7 @@ export default class NoteTable extends Component {
                 ))}
               </Grid>
             ) : (
-              <p>brak wyników wyszukiwania</p>
+              <p className="text-center">Nie znaleziono żadnych notatek</p>
             )
           ) : (
             <div className="text-center">

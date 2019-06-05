@@ -83,6 +83,8 @@ namespace Projekcik.Api.Controllers
         [HttpGet("user/{userId}")]
         public IActionResult GetUserNotes(Guid userId)
         {
+            var currentUser = _user.GetCurrentUserId();
+
             var notes = _noteService.GetNotesByAuthorId(userId);
             var result = notes.Select(x=>new
             {
@@ -92,7 +94,9 @@ namespace Projekcik.Api.Controllers
                 x.PageCount,
                 x.Price,
                 x.Description,
-                x.Semester
+                x.Semester,
+                owned = x.AuthorId == userId || x.Buyers.Any(xd => xd.UserId == currentUser),
+
             });
             return Ok(result);
         }
@@ -259,6 +263,8 @@ namespace Projekcik.Api.Controllers
             [FromQuery] SortParams sortParams
         )
         {
+            var userId = _user.GetCurrentUserId();
+
             var result = _noteService.Search(searchParams, sortParams);
             var count = result.Count();
             var notes = result.Select(x => new
@@ -270,6 +276,8 @@ namespace Projekcik.Api.Controllers
                 x.Semester,
                 x.PageCount,
                 x.PreviewUrl,
+                owned = x.AuthorId == userId || x.Buyers.Any(xd => xd.UserId == userId),
+
                 Author = new
                 {
                     Id = x.AuthorId,
@@ -315,6 +323,8 @@ namespace Projekcik.Api.Controllers
             if (result == null)
                 return BadRequest();
 
+            var userId = _user.GetCurrentUserId();
+
             return Ok(new
             {
                 result.Id,
@@ -327,6 +337,7 @@ namespace Projekcik.Api.Controllers
                 Type = result.FileExtension.ToString().ToUpper(),
                 result.PageCount,
                 result.PreviewUrl,
+                owned = result.AuthorId == userId || result.Buyers.Any(x => x.UserId == userId),
                 Author = new
                 {
                     Id = result.AuthorId,
