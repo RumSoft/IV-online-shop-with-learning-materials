@@ -41,7 +41,10 @@ export class UserPanel extends Component {
       activeTab: 0,
       open: false
     };
+    this.loadMyInfo();
+  }
 
+  loadMyInfo() {
     APIService.get('api/user/me').then(user => {
       this.setState({ user }, () =>
         NoteService.getUserNotes(this.state.user.id).then(r =>
@@ -68,7 +71,10 @@ export class UserPanel extends Component {
   };
 
   handlePayout(accountNumber) {
-    PaymentService.payout(accountNumber);
+    PaymentService.payout(accountNumber).then(x => {
+      this.loadMyInfo();
+      this.setState({ open: false });
+    });
   }
 
   render() {
