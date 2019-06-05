@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import CartService from '../../Services/CartService';
 import './index.scss';
+import { withSnackbar } from 'notistack';
 
-export default class ShowNoteButton extends Component {
+class BigAddToCartButton extends Component {
   state = {
     open: false,
     disabled: false
@@ -11,7 +12,9 @@ export default class ShowNoteButton extends Component {
 
   addToCart = noteID => {
     CartService.add(noteID);
-    this.setState({ open: true, disabled: true });
+    this.setState({ open: true, disabled: true }, () => {
+      this.props.enqueueSnackbar(`Dodano do koszyka`, { variant: 'success' });
+    });
   };
 
   render() {
@@ -38,3 +41,5 @@ export default class ShowNoteButton extends Component {
     );
   }
 }
+
+export default withSnackbar(BigAddToCartButton);

@@ -4,7 +4,7 @@ import CartService from '../../Services/CartService';
 import './index.scss';
 import { withSnackbar } from 'notistack';
 
-class ShowNoteButton extends Component {
+class AddToCartButton extends Component {
   state = {
     disabled: CartService.exists(this.props.id),
     open: false
@@ -13,7 +13,7 @@ class ShowNoteButton extends Component {
   addToCart = noteID => {
     CartService.add(noteID);
     this.setState({ open: true, disabled: true }, () => {
-      this.props.enqueueSnackbar('Dodano do koszyka', { variant: 'success' });
+      this.props.enqueueSnackbar(`Dodano do koszyka`, { variant: 'success' });
     });
   };
 
@@ -44,4 +44,4 @@ class ShowNoteButton extends Component {
   }
 }
 
-export default withSnackbar(ShowNoteButton);
+export default withSnackbar(AddToCartButton);
