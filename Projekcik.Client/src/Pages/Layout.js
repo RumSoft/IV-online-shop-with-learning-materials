@@ -1,10 +1,13 @@
 import React from 'react';
 import { Container } from 'reactstrap';
 import NavBar from '../Components/NavBar';
+import { SnackbarProvider, withSnackbar } from 'notistack';
 
 export default props => (
   <div>
     <NavBar />
-    <Container>{props.children}</Container>
+    <Container>
+      <SnackbarProvider maxSnack={3}>{props.children}</SnackbarProvider>
+    </Container>
   </div>
 );
