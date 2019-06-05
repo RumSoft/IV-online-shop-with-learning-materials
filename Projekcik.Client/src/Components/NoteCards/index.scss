@@ -69,7 +69,7 @@
       overflow: hidden;
       line-height: $fontSize*1.1;
       max-height: $maxLines * 1.1* $fontSize + 0.1rem;
-      word-break: break-all;
+
     }
 
     .note-price {
@@ -93,6 +93,38 @@
 
 .download-note-card {
   position: relative;
+  width: 100%;
+
+
+
+  .note-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between !important;
+
+    .note-title {
+      $fontSize: 1.2rem;
+      $maxLines: 3;
+
+      font-weight: 400;
+      font-size: $fontSize;
+      overflow: hidden;
+      line-height: $fontSize*1.1;
+      max-height: $maxLines * 1.1* $fontSize + 0.1rem;
+
+    }
+
+    .note-desc {
+      display: block;
+      max-height: 50px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .note-price {
+      // font-weight: 600;
+    }
+  }
 
   .busy-overlay {
     background: rgba(white, 0.7);

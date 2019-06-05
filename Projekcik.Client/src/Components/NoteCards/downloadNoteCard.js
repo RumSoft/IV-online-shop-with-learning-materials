@@ -16,11 +16,6 @@ export default class DownloadNoteCard extends React.Component {
     };
   }
 
-  truncate(text, length) {
-    if (text.length > length) return `${text.substr(0, length - 1)}…`;
-    return text;
-  }
-
   async handleDownload(note) {
     this.setState(
       {
@@ -88,7 +83,7 @@ export default class DownloadNoteCard extends React.Component {
             </div>
           </div>
         )}
-        <Grid container>
+        <Grid container style={{ height: '100%' }}>
           <Grid item lg={4} md={5} style={{ display: 'flex', width: '100%' }}>
             <img
               src={note.previewUrl || NoPreviewImage}
@@ -96,15 +91,15 @@ export default class DownloadNoteCard extends React.Component {
               alt="notePreview"
             />
           </Grid>
-          <Grid item lg={8} md={7}>
+          <Grid className="note-main" lg={8} md={7}>
             <div className="note">
               <Link to={`/note/${note.id}`} style={{ textDecoration: 'none' }}>
-                <h5>{note.name}</h5>
+                <h5 className="note-title">{note.name}</h5>
               </Link>
-              <p>{this.truncate(note.description, 50)}</p>
+              <span className="note-desc">{note.description}</span>
             </div>
             <div className="btn-group">
-              <Button //not downloaded yet
+              <Button
                 ref={r => (this.button = r)}
                 id="download"
                 className="download btn"
