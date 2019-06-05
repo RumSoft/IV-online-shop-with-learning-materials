@@ -18,10 +18,10 @@ export default class SearchNoteCard extends Component {
               className="note-preview my-auto m-2"
               alt="notePreview"
             />
-            <div className="note-other">
+            <div className="note-main">
               <Link to={`/note/${note.id}`} style={{ textDecoration: 'none' }}>
-                <h5>{note.name}</h5>
-                <h6>{note.price} zł</h6>
+                <h5 className="note-title">{note.name}</h5>
+                <h6 className="note-price">{note.price} zł</h6>
               </Link>
 
               <dl>

@@ -25,7 +25,7 @@ class BigAddToCartButton extends Component {
         <Button
           type="submit"
           disabled={CartService.exists(id)}
-          className="button submit p-3 mb-2 text-white add-to-cart"
+          className="button submit p-1 mb-2 text-white add-to-cart"
           onClick={() => this.addToCart(id)}>
           <p className="price">
             <i className="fa fa-shopping-cart" />

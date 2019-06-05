@@ -28,7 +28,7 @@ class AddToCartButton extends Component {
     const { price, id } = this.props;
     return (
       <Button
-        className=" btn cart btn-md px-0 rounded"
+        className="btn cart btn-md p-0 p-lg-1 rounded"
         disabled={this.state.disabled}
         onClick={() => this.addToCart(id)}>
         <i className="fa fa-shopping-cart" />
