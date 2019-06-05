@@ -59,7 +59,7 @@ export default class LoginPanel extends Component {
   };
 
   redirect() {
-    return <Redirect to={this.props.redirectData || '/protected'} />;
+    return <Redirect to={this.props.redirectData || '/userpanel'} />;
   }
 
   render() {
