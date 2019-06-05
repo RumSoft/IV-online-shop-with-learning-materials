@@ -4,7 +4,7 @@ import './index.scss';
 
 export class SearchBar extends Component {
   state = {
-    query: '',
+    noteName: '',
     redirect: false
   };
 
@@ -35,12 +35,12 @@ export class SearchBar extends Component {
         onSubmit={this.setRedirect}>
         {this.renderRedirect()}
         <input
-          name="query"
+          name="noteName"
           className="form-control mr-md-2 item mobile"
           type="search"
           placeholder="Wyszukaj notatkę..."
           onChange={this.handleChange}
-          value={this.state.query}
+          value={this.state.noteName}
         />
         <button className="btn btn-light">Szukaj</button>
       </form>

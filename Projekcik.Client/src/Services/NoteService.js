@@ -30,12 +30,6 @@ export default class NoteService {
     return APIService.post(`api/Notes`, idArray);
   }
 
-  static getAllNotes(sorter) {
-    return sorter
-      ? APIService.get(`api/Notes/search/${sorter}`)
-      : APIService.get(`api/Notes/search`);
-  }
-
   static getBoughtNotes() {
     return APIService.get('/api/notes/bought');
   }

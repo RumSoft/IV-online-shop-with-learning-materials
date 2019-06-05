@@ -103,9 +103,8 @@ export default class NavBar extends Component {
               isOpen={this.state.isOpen}
               navbar>
               <ul className="navbar-nav flex-grow ">
-              <SearchBar className="nav-search" />
+                <SearchBar className="nav-search" />
                 <NavItem>
-                  
                   <NavLink tag={Link} to="/cart" className="text-dark">
                     <div className="d-none d-md-block button btn btn-default">
                       <Tooltip title="Koszyk">

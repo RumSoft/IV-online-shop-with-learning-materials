@@ -7,8 +7,8 @@ export default class EnhancedTableToolbar extends Component {
   state = {
     clicked: false,
     search: '',
-    sortBy: 'created',
-    sortOrder: 'desc'
+    sortBy: 'name',
+    sortOrder: 'asc'
   };
 
   handleChange = () => {
@@ -48,8 +48,8 @@ export default class EnhancedTableToolbar extends Component {
               name="selectby"
               id="sortBy"
               onChange={this.handleSort}>
-              <option value="created">datę</option>
               <option value="name">nazwę</option>
+              <option value="created">datę</option>
               <option value="price">cenę</option>
               <option value="voivodeship">województwo</option>
               <option value="university">uczelnię</option>

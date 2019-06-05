@@ -29,32 +29,13 @@ import { SearchNoteCard } from '../NoteCards';
 export default class NoteTable extends Component {
   constructor(props) {
     super(props);
-    const urlParam = new URLSearchParams(window.location.search);
-    const query = urlParam.get('query');
-    if (query !== null) {
-      urlParam.set('noteName', `${query}`);
-      NoteService.getAllNotes(`?${urlParam.toString()}`).then(r => {
-        urlParam.delete('noteName');
-        this.setState({
-          ...r,
-          loaded: true,
-          q: urlParam.toString()
-        });
-      });
-    } else {
-      NoteService.getAllNotes(window.location.search).then(r =>
-        this.setState({ ...r, loaded: true })
-      );
-    }
     this.toolbarHandler = this.toolbarHandler.bind(this);
-
-    this.handleQuery();
   }
   state = {
     q: '',
     loaded: false,
     open: false,
-    page: null,
+    page: 1,
     size: null,
     notes: [],
 
@@ -63,7 +44,7 @@ export default class NoteTable extends Component {
       voivodeship: '',
       university: '',
       course: '',
-      SortOrder: 'created',
+      SortOrder: 'name',
       SortBy: 'asc'
     }
   };
@@ -83,6 +64,10 @@ export default class NoteTable extends Component {
       : this.setState({ open: data.clicked });
   };
 
+  componentWillMount() {
+    this.handleQuery();
+  }
+
   handleQuery = () => {
     var queryObject = queryString.parse(this.props.query);
     if (this.state.page) queryObject.page = this.state.page;
@@ -93,10 +78,11 @@ export default class NoteTable extends Component {
       queryObject.SortBy = this.state.noteData.SortBy;
 
     let query = queryString.stringify(queryObject);
+    // window.history.replaceState(null, null, `/search?${query}`);
     window.history.pushState(null, null, `/search?${query}`);
 
     this.setState({ loaded: false }, () =>
-      NoteService.getAllNotes(window.location.search).then(r =>
+      NoteService.search(queryObject).then(r =>
         this.setState({ ...r, loaded: true })
       )
     );
@@ -273,6 +259,8 @@ export default class NoteTable extends Component {
 
   render() {
     const { loaded, notes, pager } = this.state;
+    console.log('render', loaded);
+
     return (
       <div>
         <Paper className="root p-3">
