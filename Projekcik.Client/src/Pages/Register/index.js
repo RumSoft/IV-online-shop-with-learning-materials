@@ -9,7 +9,7 @@ export const RegisterPage = () => {
     title: 'Zarejestruj się'
   };
   return AuthService.isAuthenticated() ? (
-    <Redirect to="/protected" />
+    <Redirect to="/userpanel" />
   ) : (
     <div className="register-page">
       <RegisterPanel {...data} />

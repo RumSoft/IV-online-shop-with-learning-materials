@@ -6,7 +6,7 @@ import { withSnackbar } from 'notistack';
 
 class AddToCartButton extends Component {
   state = {
-    disabled: CartService.exists(this.props.id),
+    disabled: CartService.exists(this.props.id) || this.props.owned,
     open: false
   };
 
@@ -25,17 +25,21 @@ class AddToCartButton extends Component {
   };
 
   render() {
-    const { price, id } = this.props;
+    const { price, id, owned } = this.props;
     return (
       <Button
         className="btn cart btn-md p-0 p-lg-1 rounded"
-        disabled={this.state.disabled}
+        disabled={this.state.disabled || owned}
         onClick={() => this.addToCart(id)}>
         <i className="fa fa-shopping-cart" />
         {price ? (
           <span> {price} zł</span>
         ) : this.state.disabled ? (
-          <span> Już w koszyku</span>
+          owned ? (
+            <span> Już posiadasz</span>
+          ) : (
+            <span> Już w koszyku</span>
+          )
         ) : (
           <span> Dodaj do koszyka</span>
         )}

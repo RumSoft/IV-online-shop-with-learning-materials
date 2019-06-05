@@ -46,7 +46,7 @@ export default class SearchNoteCard extends Component {
           </div>
           <div className="btn-group">
             <ShowNoteButton text="Zobacz notatkę" id={note.id} />
-            <AddToCartButton id={note.id} />
+            <AddToCartButton id={note.id} owned={note.owned} />
           </div>
         </Paper>
       </Grid>

@@ -58,7 +58,7 @@ export default class OrderDetails extends Component {
           Zakupione notatki można pobrać także w{' '}
           <Link
             to={{
-              pathname: '/protected'
+              pathname: '/userpanel'
             }}>
             panelu użytkownika
           </Link>

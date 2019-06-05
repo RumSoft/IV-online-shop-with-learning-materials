@@ -54,7 +54,7 @@ const protectedRoutes = [
     component: LogoutPage
   },
   {
-    path: '/protected',
+    path: '/userpanel',
     component: UserPage,
     exact: true
   },

@@ -80,7 +80,7 @@ export default class NavBar extends Component {
       },
       {
         name: 'Panel użytkownika',
-        to: '/protected',
+        to: '/userpanel',
         icon: <AccountIcon className="mobile-icon" />,
         hidden: !isLogged
       }

@@ -18,13 +18,13 @@ class BigAddToCartButton extends Component {
   };
 
   render() {
-    const { price, id } = this.props;
+    const { price, id, owned } = this.props;
 
     return (
       <div>
         <Button
           type="submit"
-          disabled={CartService.exists(id)}
+          disabled={CartService.exists(id) || owned}
           className="button submit p-1 mb-2 text-white add-to-cart"
           onClick={() => this.addToCart(id)}>
           <p className="price">
@@ -33,6 +33,8 @@ class BigAddToCartButton extends Component {
           </p>
           {this.state.disabled ? (
             <p className="label">Już w koszyku</p>
+          ) : owned ? (
+            <p className="label">Już posiadasz tę notatkę</p>
           ) : (
             <p className="label">Dodaj do koszyka</p>
           )}

@@ -33,7 +33,7 @@ export default class SmallNoteCard extends React.Component {
         </div>
         <div className="btn-small-group">
           <ShowNoteButton id={note.id} />
-          <AddToCartButton price={note.price} id={note.id} />
+          <AddToCartButton price={note.price} id={note.id} owned={note.owned} />
         </div>
       </Paper>
     );
