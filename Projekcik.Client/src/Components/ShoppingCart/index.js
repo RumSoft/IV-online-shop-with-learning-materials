@@ -67,7 +67,7 @@ export default class ShoppingCart extends Component {
             onClick={() => this.handleBuy()}
             disabled={this.state.notes.length === 0}>
             <i className="fa fa-dollar-sign" />
-            <span> Złóż zamówienie</span>
+            <span> Złóż zamówienie (min. 1zł)</span>
           </Button>
         </div>
       </Paper>

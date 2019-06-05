@@ -163,7 +163,7 @@ export default class NotePanel extends Component {
                               className="document-what"
                               primary={[
                                 <i className="fa fa-university" />,
-                                'Uniwersytet'
+                                'Uczelnia'
                               ]}
                               secondary={note.university.name}
                             />

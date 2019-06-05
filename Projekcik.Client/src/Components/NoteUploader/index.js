@@ -142,6 +142,7 @@ export default class NoteUploader extends Component {
   };
 
   render() {
+
     return (
       <Card className="upload-page-card mb-2">
         {this.state.success && (
@@ -292,6 +293,7 @@ export default class NoteUploader extends Component {
                 </Select>
               </FormControl>
               <div>
+                <p>Preferowane typy plików: .pdf .docx .jpg .zip</p>
                 <input type="file" id="file" onChange={this.fileHandler} />
               </div>
             </Grid>
