@@ -6,17 +6,12 @@ import './index.scss';
 import NoPreviewImage from '../../images/alt128.png';
 
 export default class WideSmallNoteCard extends React.Component {
-  truncate(text, length) {
-    if (text.length > length) return `${text.substr(0, length - 1)}…`;
-    return text;
-  }
-
   render() {
     const { note } = this.props;
 
     return (
       <Paper className="wide-small-note-card note-card p-2 m-1">
-        <Grid container>
+        <Grid container style={{ height: '100%' }}>
           <Grid item lg={4} md={5} style={{ display: 'flex' }}>
             <img
               src={note.previewUrl || NoPreviewImage}
@@ -24,12 +19,12 @@ export default class WideSmallNoteCard extends React.Component {
               alt="notePreview"
             />
           </Grid>
-          <Grid item lg={8} md={7}>
+          <Grid className="note-main" lg={8} md={7}>
             <div className="note">
               <Link to={`/note/${note.id}`} style={{ textDecoration: 'none' }}>
-                <h5>{note.name}</h5>
+                <h5 className="note-title">{note.name}</h5>
               </Link>
-              <p>{this.truncate(note.description, 50)}</p>
+              <span className="note-desc">{note.description}</span>
             </div>
             <div className="btn-group">
               <ShowNoteButton id={note.id} />
