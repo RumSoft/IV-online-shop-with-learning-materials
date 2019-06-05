@@ -28,7 +28,7 @@ export default class BoughtNotes extends Component {
       <div>
         {' '}
         <h2 className="p-3">
-          <i className="fa fa-book-reader" /> Moje notatki
+          <i className="fa fa-book-reader" /> Kupione notatki
         </h2>
         {loaded ? (
           <Grid

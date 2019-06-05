@@ -52,21 +52,40 @@ const MyInfo = props => (
         </Grid>
         <Grid item>
           <div className="btn-group">
-            <Button
-              style={{ maxWidth: '400px' }}
-              className="btn bg-success btn-buy"
-              onClick={() => this.handlePayout()}>
-              <Grid container>
-                <Grid item sm={5} className="text-right">
-                  <i className=" fa fa-dollar-sign fa-spin d-none d-sm-inline-block" />
+            {props.user.balance >= 1 ? (
+              <Button
+                style={{ maxWidth: '400px' }}
+                className="btn bg-success btn-buy"
+                onClick={() => props.handleDialog()}>
+                <Grid container>
+                  <Grid item sm={5} className="text-right">
+                    <i className=" fa fa-dollar-sign fa-spin d-none d-sm-inline-block" />
+                  </Grid>
+                  <Grid item xs={12} sm={7} className="text-left">
+                    {' '}
+                    wypłać całą swoją fortunę
+                    <h3>{props.user.balance} zł</h3>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} sm={7} className="text-left">
-                  {' '}
-                  wypłać całą swoją fortunę
-                  <h3>{props.user.balance} zł</h3>
+              </Button>
+            ) : (
+              <Button
+                style={{ maxWidth: '400px' }}
+                className="btn bg-warning btn-buy"
+                disabled
+                onClick={() => props.handleDialog()}>
+                <Grid container>
+                  <Grid item sm={5} className="text-right">
+                    <i className=" fa fa-dollar-sign fa-spin d-none d-sm-inline-block" />
+                  </Grid>
+                  <Grid item xs={12} sm={7} className="text-left">
+                    {' '}
+                    Nie stać cię aby wypłacić
+                    <h3>{props.user.balance} zł</h3>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </Button>
+              </Button>
+            )}
           </div>
         </Grid>
       </Grid>
