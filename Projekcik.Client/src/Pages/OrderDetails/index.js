@@ -31,7 +31,7 @@ export default class OrderDetails extends Component {
             loaded: true
           })
         );
-    }, 1);
+    }, 3000);
   }
 
   removeNotesFromCart(notes) {

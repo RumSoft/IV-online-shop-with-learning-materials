@@ -35,6 +35,9 @@ export default class HomeLayout extends Component {
     }).then(x => {
       this.setState({ notes: x.notes }, () => {
         this.slider.forceUpdate();
+        let elements = [...document.getElementsByClassName('small-note-card')];
+        let height = Math.max.apply(Math, elements.map(x => x.offsetHeight));
+        elements.forEach(x => (x.style.height = `${height}px`));
       });
     });
   }
