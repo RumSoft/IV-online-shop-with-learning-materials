@@ -10,39 +10,38 @@ export default class SearchNoteCard extends Component {
     const { note } = this.props;
 
     return (
-      <Grid item sm={6}>
+      <Grid item sm={12} md={6}>
         <Paper className="search-note-card note-card p-2 m-2">
           <div className="note-image">
             <img
               src={note.previewUrl || NoPreviewImage}
-              className="note-preview my-auto m-2"
+              className="note-preview my-auto mr-2"
               alt="notePreview"
             />
-            <div className="note-other">
+            <div className="note-main">
               <Link to={`/note/${note.id}`} style={{ textDecoration: 'none' }}>
-                <h5>{note.name}</h5>
-                <h6>{note.price} zł</h6>
+                <h5 className="note-title">{note.name}</h5>
+                <h6 className="note-price">{note.price} zł</h6>
               </Link>
 
-              <dl>
+              <span>
                 <Typography>
                   {' '}
                   <i className="fa fa-globe" />
                   {note.voivodeship.name}
                 </Typography>
-                <Typography />
+
                 <Typography>
                   {' '}
                   <i className="fa fa-university" />
                   {note.university.name}
                 </Typography>
-                <Typography />
+
                 <Typography>
                   <i className="fa fa-book" />
                   {note.course.name}, sem. {note.semester}
                 </Typography>
-                <Typography />
-              </dl>
+              </span>
             </div>
           </div>
           <div className="btn-group">
