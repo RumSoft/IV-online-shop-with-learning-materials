@@ -15,7 +15,7 @@ export default class SearchNoteCard extends Component {
           <div className="note-image">
             <img
               src={note.previewUrl || NoPreviewImage}
-              className="note-preview my-auto m-2"
+              className="note-preview my-auto mr-2"
               alt="notePreview"
             />
             <div className="note-main">
@@ -24,25 +24,24 @@ export default class SearchNoteCard extends Component {
                 <h6 className="note-price">{note.price} zł</h6>
               </Link>
 
-              <dl>
+              <span>
                 <Typography>
                   {' '}
                   <i className="fa fa-globe" />
                   {note.voivodeship.name}
                 </Typography>
-                <Typography />
+
                 <Typography>
                   {' '}
                   <i className="fa fa-university" />
                   {note.university.name}
                 </Typography>
-                <Typography />
+
                 <Typography>
                   <i className="fa fa-book" />
                   {note.course.name}, sem. {note.semester}
                 </Typography>
-                <Typography />
-              </dl>
+              </span>
             </div>
           </div>
           <div className="btn-group">
