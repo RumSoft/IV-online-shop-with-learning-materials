@@ -279,20 +279,24 @@ export default class NoteTable extends Component {
           <EnhancedTableToolbar filterData={this.toolbarHandler} />
           {this.renderFilters()}
           <hr />
-          {pager && pager.pages && this.renderPagination()}
+          {pager && pager.pages ? this.renderPagination() : ''}
           {loaded ? (
-            <Grid container spacing={16}>
-              {notes.map((note, i) => (
-                <SearchNoteCard note={note} key={i} />
-              ))}
-            </Grid>
+            notes && notes.length ? (
+              <Grid container spacing={16}>
+                {notes.map((note, i) => (
+                  <SearchNoteCard note={note} key={i} />
+                ))}
+              </Grid>
+            ) : (
+              <p>brak wyników wyszukiwania</p>
+            )
           ) : (
             <div className="text-center">
               <CircularProgress />
             </div>
           )}
           <hr />
-          {pager && pager.pages && this.renderPagination()}
+          {pager && pager.pages ? this.renderPagination() : ''}
         </Paper>
       </div>
     );
