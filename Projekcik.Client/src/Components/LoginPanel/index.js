@@ -63,7 +63,9 @@ export default class LoginPanel extends Component {
   }
 
   render() {
-    if (this.state.logged) return this.redirect();
+    if (this.state.logged || AuthService.isAuthenticated())
+      return this.redirect();
+
     return (
       <div>
         {this.props.redirectData && (
