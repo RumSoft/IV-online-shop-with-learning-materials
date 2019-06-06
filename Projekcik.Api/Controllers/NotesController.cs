@@ -96,6 +96,7 @@ namespace Projekcik.Api.Controllers
                 x.Description,
                 x.Semester,
                 owned = x.AuthorId == userId || x.Buyers.Any(xd => xd.UserId == currentUser),
+                FileExtension=x.FileExtension.ToString().ToLower()
 
             });
             return Ok(result);
