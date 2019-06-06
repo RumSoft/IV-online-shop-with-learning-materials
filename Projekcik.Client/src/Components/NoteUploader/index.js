@@ -87,10 +87,7 @@ export default class NoteUploader extends Component {
       this.state.course
     ];
 
-    if (this.state.price < 1 || this.state.price > 1000) {
-      this.setState({ error: 'Nieprawidłowa cena!' });
-      return true;
-    }
+
 
     if (this.state.file === null) {
       this.setState({ error: 'Dodaj plik notatki!' });
