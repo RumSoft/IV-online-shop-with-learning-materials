@@ -143,7 +143,6 @@ export default class NoteUploader extends Component {
             sending: false
           });
           window.scrollTo(0, 0);
-          console.log(r);
         })
         .catch(e =>
           this.setState(

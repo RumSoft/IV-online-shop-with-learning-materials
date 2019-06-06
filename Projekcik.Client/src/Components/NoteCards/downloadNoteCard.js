@@ -33,7 +33,6 @@ export default class DownloadNoteCard extends React.Component {
           }
         )
           .then(blob => {
-            console.log(note);
             const url = window.URL.createObjectURL(blob.data);
             const link = document.createElement('a');
             link.href = url;
@@ -91,7 +90,7 @@ export default class DownloadNoteCard extends React.Component {
               alt="notePreview"
             />
           </Grid>
-          <Grid className="note-main" lg={8} md={7}>
+          <Grid item className="note-main" lg={8} md={7}>
             <div className="note">
               <Link to={`/note/${note.id}`} style={{ textDecoration: 'none' }}>
                 <h5 className="note-title">{note.name}</h5>

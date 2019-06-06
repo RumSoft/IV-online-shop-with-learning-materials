@@ -1,28 +1,8 @@
 import React, { Component } from 'react';
 import APIService from '../../Services/APIService';
-import PaymentService from '../../Services/PaymentService';
 import NoteService from '../../Services/NoteService';
-import {
-  Nav,
-  NavItem,
-  NavLink,
-  TabPane,
-  TabContent,
-  Form,
-  FormGroup,
-  Label,
-  Input
-} from 'reactstrap';
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Button,
-  Card,
-  Typography
-} from '@material-ui/core';
+import { Nav, NavItem, NavLink, TabPane, TabContent } from 'reactstrap';
+import { Card, Typography } from '@material-ui/core';
 import classnames from 'classnames';
 import PaymentHistory from './PaymentHistory';
 import UserEarnings from './UserEarnings';
@@ -38,15 +18,14 @@ export class UserPanel extends Component {
       user: {},
       notes: [],
       loaded: false,
-      activeTab: 0,
-      open: false
+      activeTab: 0
     };
     this.loadMyInfo();
   }
 
   loadMyInfo() {
     APIService.get('api/user/me').then(user => {
-      this.setState({ user }, () =>
+      this.setState({ user: user }, () =>
         NoteService.getUserNotes(this.state.user.id).then(r =>
           this.setState({ notes: r, loaded: true })
         )
@@ -62,28 +41,13 @@ export class UserPanel extends Component {
     }
   }
 
-  handleClickOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
-  handlePayout(accountNumber) {
-    PaymentService.payout(accountNumber).then(x => {
-      this.loadMyInfo();
-      this.setState({ open: false });
-    });
-  }
-
   render() {
     const user = this.state.user;
     const notes = this.state.notes;
     const tabs = [
       {
         name: 'Moje dane',
-        object: <MyInfo user={user} handleDialog={this.handleClickOpen} />
+        object: <MyInfo user={user} refreshMyInfo={() => this.loadMyInfo()} />
       },
       {
         name: 'Moje notatki',
@@ -152,62 +116,6 @@ export class UserPanel extends Component {
             </TabContent>
           </Card>
         )}
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Wypłać pieniądze</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Wypełnij poniższe pola swoimi danymi, aby móc dokonać wypłaty.
-              Upewnij się, że dane nie zawierają błędów, po czym zatwierdź
-              operację.
-            </DialogContentText>
-            <hr />
-            <Form>
-              <FormGroup>
-                <Label for="firstName">Imię</Label>
-                <Input
-                  type="text"
-                  id="firstName"
-                  placeholder={user.firstName}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label for="lastName">Nazwisko</Label>
-                <Input type="text" id="lastName" placeholder={user.lastName} />
-              </FormGroup>
-              <FormGroup>
-                <Label for="accountNumber">Numer konta</Label>
-                <Input
-                  type="text"
-                  id="accountNumber"
-                  placeholder="np. 01 2345 6789 1111 1234 5678"
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label for="transferTitle">Tytuł przelewu</Label>
-                <Input
-                  type="text"
-                  id="transferTitle"
-                  placeholder={`Wypłata dla użytkownika ${user.emailAddress}`}
-                />
-              </FormGroup>
-            </Form>
-            <hr />
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() =>
-                this.handlePayout(
-                  document.getElementById('accountNumber').value
-                )
-              }
-              color="primary">
-              Zatwierdź
-            </Button>
-          </DialogActions>
-        </Dialog>
       </div>
     );
   }

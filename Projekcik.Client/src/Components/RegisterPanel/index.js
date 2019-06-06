@@ -30,7 +30,6 @@ export default class RegisterPage extends Component {
     event && event.preventDefault();
 
     let forms = Object.keys(this.forms).map(key => this.forms[key]);
-    console.log(forms);
     let isValid = forms.every(x => x.isValid());
     if (!isValid) {
       this.setState({
@@ -148,7 +147,7 @@ export default class RegisterPage extends Component {
                   message: 'Nazwisko jest wymagane'
                 },
                 {
-                  func: val => /^[a-zA-Z]+$/.test(val),
+                  func: val => /^[a-zA-ZęóąśłżźćńĘÓĄŚŁŻŹĆŃ-]+$/.test(val),
                   message: 'Nieprawidłowy format'
                 }
               ]}
