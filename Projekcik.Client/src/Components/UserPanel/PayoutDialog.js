@@ -11,14 +11,17 @@ import {
 import { Form, FormGroup } from 'reactstrap';
 import PaymentService from '../../Services/PaymentService';
 import MyTextField from '../MyTextField';
+import { withSnackbar } from 'notistack';
 
-export default class PayoutDialog extends Component {
+class PayoutDialog extends Component {
   state = {
     open: false,
-    firstName: '',
-    lastName: '',
+    firstName: this.props.user.firstName,
+    lastName: this.props.user.lastName,
     accountNumber: '',
-    transferTitle: '',
+    transferTitle: `Wypłata ${this.props.user.balance}zł dla ${
+      this.props.user.emailAddress
+    }`,
     errorMessage: null
   };
   forms = {};
@@ -35,14 +38,11 @@ export default class PayoutDialog extends Component {
     let forms = Object.keys(this.forms).map(key => this.forms[key]);
     let isValid = forms.every(x => x.isValid());
     if (!isValid) {
-      this.setState(
-        {
-          errorMessage: 'Wypełnij poprawnie wszystkie pola',
-          loading: false
-        },
-        () => this.handlePayout(document.getElementById('accountNumber').value)
-      );
-    }
+      this.setState({
+        errorMessage: 'Wypełnij poprawnie wszystkie pola',
+        loading: false
+      });
+    } else this.handlePayout(this.state.accountNumber);
   };
 
   handleClickOpen = () => {
@@ -54,13 +54,23 @@ export default class PayoutDialog extends Component {
   };
 
   handlePayout(accountNumber) {
-    PaymentService.payout(accountNumber).then(x => {
-      this.loadMyInfo();
-      this.setState({ open: false });
-    });
+    PaymentService.payout(accountNumber)
+      .then(x => {
+        this.props.enqueueSnackbar(`Poprawnie wypłacono swoje dolary `, {
+          variant: 'success'
+        });
+        this.props.refreshMyInfo();
+        this.setState({ open: false });
+      })
+      .catch(x =>
+        this.props.enqueueSnackbar(`Nie udało się dokonać wypłaty `, {
+          variant: 'error'
+        })
+      );
   }
 
   render() {
+    console.log(this.props);
     const { user } = this.props;
     return (
       <div>
@@ -161,7 +171,7 @@ export default class PayoutDialog extends Component {
                       message: 'Nazwisko jest wymagane'
                     },
                     {
-                      func: val => /^[a-zA-Z]+$/.test(val),
+                      func: val => /^[a-zA-ZęóąśłżźćńĘÓĄŚŁŻŹĆŃ-]+$/.test(val),
                       message: 'Nieprawidłowy format'
                     }
                   ]}
@@ -169,6 +179,9 @@ export default class PayoutDialog extends Component {
               </FormGroup>
               <FormGroup>
                 <MyTextField
+                  ref={r => {
+                    this.forms.accountNumber = r;
+                  }}
                   id="accountNumber"
                   className="field"
                   showError={this.state.errorMessage}
@@ -177,10 +190,19 @@ export default class PayoutDialog extends Component {
                   inputProps={{ maxLength: 100 }}
                   value={this.state.accountNumber}
                   onChange={this.handleChange}
+                  validationRules={[
+                    {
+                      func: val => val,
+                      message: 'Numer konta jest wymagany'
+                    }
+                  ]}
                 />
               </FormGroup>
               <FormGroup>
                 <MyTextField
+                  ref={r => {
+                    this.forms.transferTitle = r;
+                  }}
                   id="transferTitle"
                   className="field"
                   showError={this.state.errorMessage}
@@ -189,6 +211,12 @@ export default class PayoutDialog extends Component {
                   inputProps={{ maxLength: 100 }}
                   value={this.state.transferTitle}
                   onChange={this.handleChange}
+                  validationRules={[
+                    {
+                      func: val => val,
+                      message: 'Tytuł przelewu jest wymagany'
+                    }
+                  ]}
                 />
               </FormGroup>
             </Form>
@@ -204,3 +232,5 @@ export default class PayoutDialog extends Component {
     );
   }
 }
+
+export default withSnackbar(PayoutDialog);

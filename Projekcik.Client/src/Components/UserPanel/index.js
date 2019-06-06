@@ -25,7 +25,7 @@ export class UserPanel extends Component {
 
   loadMyInfo() {
     APIService.get('api/user/me').then(user => {
-      this.setState({ user }, () =>
+      this.setState({ user: user }, () =>
         NoteService.getUserNotes(this.state.user.id).then(r =>
           this.setState({ notes: r, loaded: true })
         )
@@ -47,7 +47,7 @@ export class UserPanel extends Component {
     const tabs = [
       {
         name: 'Moje dane',
-        object: <MyInfo user={user} handleDialog={this.handleClickOpen} />
+        object: <MyInfo user={user} refreshMyInfo={() => this.loadMyInfo()} />
       },
       {
         name: 'Moje notatki',

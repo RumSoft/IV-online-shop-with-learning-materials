@@ -51,7 +51,7 @@ const MyInfo = props => (
             ]}
           />
         </Grid>
-        <PayoutDialog user={props.user}/>
+        <PayoutDialog user={props.user} refreshMyInfo={props.refreshMyInfo} />
       </Grid>
     </Grid>
   </div>

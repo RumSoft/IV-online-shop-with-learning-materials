@@ -147,7 +147,7 @@ export default class RegisterPage extends Component {
                   message: 'Nazwisko jest wymagane'
                 },
                 {
-                  func: val => /^[a-zA-Z]+$/.test(val),
+                  func: val => /^[a-zA-ZęóąśłżźćńĘÓĄŚŁŻŹĆŃ-]+$/.test(val),
                   message: 'Nieprawidłowy format'
                 }
               ]}
