@@ -1,7 +1,6 @@
 ﻿using System;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Projekcik.Api.Models;
 using Projekcik.Api.Models.DTO;
@@ -15,18 +14,14 @@ namespace Projekcik.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly ITokenIssuer _tokenIssuer;
-        private readonly IHttpContextAccessor _user;
         private readonly IUserService _userService;
 
 
         public AuthController(IUserService userService,
-            ITokenIssuer tokenIssuer,
-            IHttpContextAccessor httpContextAccessor,
-            INoteService noteService)
+            ITokenIssuer tokenIssuer)
         {
             _userService = userService;
             _tokenIssuer = tokenIssuer;
-            _user = httpContextAccessor;
         }
 
         [AllowAnonymous]
