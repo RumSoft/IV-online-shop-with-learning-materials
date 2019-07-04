@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using Projekcik.Api.Models;
 
 namespace Projekcik.Api.Helpers
 {

@@ -33,7 +33,6 @@ namespace Projekcik.Api.Models
             modelBuilder.Query<VoivodeshipNoteCount>().ToView("Voivodeship_Note_Count");
             modelBuilder.Query<UniversityNoteCount>().ToView("University_Note_Count");
             modelBuilder.Query<CourseNoteCount>().ToView("Course_Note_Count");
-
         }
     }
 }

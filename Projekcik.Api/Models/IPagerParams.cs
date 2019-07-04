@@ -22,9 +22,9 @@
         public int Page { get; set; } = 1;
     }
 
-    class PagerResult : IPagerResult, IPagerParams
+    internal class PagerResult : IPagerResult, IPagerParams
     {
-        public int Size { get; set;  }
+        public int Size { get; set; }
         public int Page { get; set; }
         public int Count { get; set; }
         public int Pages { get; set; }

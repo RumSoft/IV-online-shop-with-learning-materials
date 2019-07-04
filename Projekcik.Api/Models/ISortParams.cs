@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Projekcik.Api.Models
+﻿namespace Projekcik.Api.Models
 {
     public interface ISortParams
     {
@@ -11,7 +6,7 @@ namespace Projekcik.Api.Models
         string SortOrder { get; set; }
     }
 
-    public class SortParams:ISortParams
+    public class SortParams : ISortParams
     {
         public string SortBy { get; set; }
         public string SortOrder { get; set; }

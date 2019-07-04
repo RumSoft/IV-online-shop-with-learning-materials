@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
@@ -56,11 +54,6 @@ namespace Projekcik.Api
 
             services.AddCors();
 
-            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            _logger.LogInformation($"trying to open xml documentation file: {xmlPath}");
-            if (!File.Exists(xmlFile))
-                _logger.LogInformation("file does not exist");
 
             services.AddSwaggerGen(c =>
             {
@@ -76,7 +69,6 @@ namespace Projekcik.Api
                 {
                     {"Bearer", new string[] { }}
                 });
-                c.IncludeXmlComments(xmlPath);
             });
 
             services.AddScoped<IUserService, UserService>();
@@ -119,7 +111,7 @@ namespace Projekcik.Api
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
-            app.UseMvc();        
+            app.UseMvc();
 
             if (env.IsDevelopment())
                 app.UseSpa(spa =>
@@ -129,8 +121,6 @@ namespace Projekcik.Api
                 });
 
             Mapper.Initialize(x => x.AddProfile(new AutoMapperProfile()));
-
-          
         }
     }
 }

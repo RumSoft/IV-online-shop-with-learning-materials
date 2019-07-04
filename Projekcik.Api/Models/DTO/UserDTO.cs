@@ -12,7 +12,7 @@ namespace Projekcik.Api.Models.DTO
         public string EmailAddress { get; set; }
         public string Password { get; set; }
         public long? FacebookId { get; set; }
-        public string PictureUrl { get; set; } 
+        public string PictureUrl { get; set; }
 
         public static void ConfigureMapper(Profile mapper)
         {

@@ -17,13 +17,13 @@ namespace Projekcik.Api.Models
         public virtual User Author { get; set; }
         public Guid AuthorId { get; set; }
         public virtual IList<UserNote> Buyers { get; set; }
-
-        public DateTime CreatedAt { get; set; }
-        public DateTime ModifiedAt { get; set; }
         public Extension FileExtension { get; set; }
 
         public string PreviewUrl { get; set; }
         public int? PageCount { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+        public DateTime ModifiedAt { get; set; }
 
         public static void OnModelCreating(EntityTypeBuilder<Note> entity)
         {

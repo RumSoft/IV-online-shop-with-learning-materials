@@ -12,7 +12,6 @@ using Projekcik.Api.Helpers;
 using Projekcik.Api.Models;
 using Projekcik.Api.Models.DTO;
 using Projekcik.Api.Services;
-using Projekcik.Api.Services.Impl;
 
 namespace Projekcik.Api.Controllers
 {
@@ -88,7 +87,6 @@ namespace Projekcik.Api.Controllers
                     _log.Warn($"Updating transaction {status.Order.ExtOrderId}, status: {status.Order.Status}");
                     _paymentService.UpdateTransaction(status);
                     _log.Warn($"sucessfully updated, status: {status.Order.Status}");
-
                 }
                 catch (Exception e)
                 {
@@ -122,7 +120,6 @@ namespace Projekcik.Api.Controllers
             {
                 _log.Error($"wrong notify ip address: {clientIp}");
                 return StatusCode(418);
-
             }
 
             UpdatePaymentStatusAsync(status);
@@ -200,16 +197,16 @@ namespace Projekcik.Api.Controllers
 
             var query = _paymentService.GetTransactionsByBuyerId(user.Id);
             var result = query.Select(x => new
-            {
-                x.CreatedAt,
-                notes = x.OrderedNotesIds.Select(xd => _noteService.GetNoteById(xd)).Select(xd => new
                 {
-                    xd.Id,
-                    xd.Name,
-                    xd.Price
-                }),
-                x.Status,
-            }).OrderBy(x => x.CreatedAt)
+                    x.CreatedAt,
+                    notes = x.OrderedNotesIds.Select(xd => _noteService.GetNoteById(xd)).Select(xd => new
+                    {
+                        xd.Id,
+                        xd.Name,
+                        xd.Price
+                    }),
+                    x.Status
+                }).OrderBy(x => x.CreatedAt)
                 .Take(30);
 
             return Ok(result);

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using AutoMapper;
 using ConvertApiDotNet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -22,12 +20,12 @@ namespace Projekcik.Api.Controllers
     [Route("api/[controller]")]
     public class NotesController : ControllerBase
     {
+        private const int maxFileSize = 10 * 1024 * 1024;
+        private readonly IConfiguration _configuration;
         private readonly INoteService _noteService;
         private readonly IHttpContextAccessor _user;
         private readonly IUserService _userService;
-        private readonly IConfiguration _configuration;
 
-        private const int maxFileSize = 10 * 1024 * 1024;
         public NotesController(INoteService noteService,
             IHttpContextAccessor user,
             IUserService userService, IConfiguration configuration)
@@ -59,7 +57,7 @@ namespace Projekcik.Api.Controllers
                     x.Price,
                     x.Description,
                     x.Semester,
-                    FileExtension=x.FileExtension.ToString().ToLower()
+                    FileExtension = x.FileExtension.ToString().ToLower()
                 });
 
             return Ok(result);
@@ -86,7 +84,7 @@ namespace Projekcik.Api.Controllers
             var currentUser = _user.GetCurrentUserId();
 
             var notes = _noteService.GetNotesByAuthorId(userId);
-            var result = notes.Select(x=>new
+            var result = notes.Select(x => new
             {
                 x.Id,
                 x.Name,
@@ -96,8 +94,7 @@ namespace Projekcik.Api.Controllers
                 x.Description,
                 x.Semester,
                 owned = x.AuthorId == userId || x.Buyers.Any(xd => xd.UserId == currentUser),
-                FileExtension=x.FileExtension.ToString().ToLower()
-
+                FileExtension = x.FileExtension.ToString().ToLower()
             });
             return Ok(result);
         }
@@ -132,11 +129,8 @@ namespace Projekcik.Api.Controllers
             if (extension == null)
                 throw new UnsupportedMediaTypeException("unsupported", null);
 
-            long fileSize = file.Length;
-            if (fileSize > maxFileSize)
-            {
-                return BadRequest("Maximum file size (10Mb) exceeded");
-            }
+            var fileSize = file.Length;
+            if (fileSize > maxFileSize) return BadRequest("Maximum file size (10Mb) exceeded");
 
             var userId = _user.GetCurrentUserId();
             var user = _userService.GetById(userId);
@@ -170,12 +164,10 @@ namespace Projekcik.Api.Controllers
                 file.CopyTo(fileStream);
                 fileStream.Seek(0, SeekOrigin.Begin);
 
-                //secret: oprRGzQiNqQ1g4Kn
-                //apikey: 136525084
 
-                if (!new[] { Extension.ZIP, Extension.RAR, }.Contains(extension.Value))
+                if (!new[] {Extension.ZIP, Extension.RAR}.Contains(extension.Value))
                 {
-                    var convertApi = new ConvertApi("oprRGzQiNqQ1g4Kn");
+                    var convertApi = new ConvertApi(_configuration["ConvertApi:Secret"]);
 
                     var thumbnail = convertApi.ConvertAsync(extension.ToString(), "jpg",
                         new ConvertApiFileParam(fileStream, $"{noteId.ToString()}.{extension.ToString()}"),
@@ -230,10 +222,10 @@ namespace Projekcik.Api.Controllers
             if (note == null)
                 return NotFound();
 
-            if (note.AuthorId != user.Id || user.BoughtNotes.All(x => x.NoteId != noteId) )
+            if (note.AuthorId != user.Id || user.BoughtNotes.All(x => x.NoteId != noteId))
                 Forbid();
 
-                var filepath = Path.Combine(
+            var filepath = Path.Combine(
                 Directory.GetParent(Directory.GetCurrentDirectory()).FullName,
                 "uploads",
                 note.AuthorId.ToString(),
@@ -250,10 +242,10 @@ namespace Projekcik.Api.Controllers
 
         private CloudBlobContainer GetCloudBlobContainer()
         {
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+            var storageAccount = CloudStorageAccount.Parse(
                 _configuration.GetConnectionString("AzureStorage"));
-            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-            CloudBlobContainer container = blobClient.GetContainerReference("mag1");
+            var blobClient = storageAccount.CreateCloudBlobClient();
+            var container = blobClient.GetContainerReference("mag1");
             return container;
         }
 
@@ -282,22 +274,19 @@ namespace Projekcik.Api.Controllers
                 Author = new
                 {
                     Id = x.AuthorId,
-                    Name = x.Author.UserName,
+                    Name = x.Author.UserName
                 },
                 Course = new
                 {
-                    Id = x.CourseId,
-                    Name = x.Course.Name,
+                    Id = x.CourseId, x.Course.Name
                 },
                 University = new
                 {
-                    Id = x.Course.UniversityId,
-                    Name = x.Course.University.Name,
+                    Id = x.Course.UniversityId, x.Course.University.Name
                 },
                 Voivodeship = new
                 {
-                    Id = x.Course.University.VoivodeshipId,
-                    Name = x.Course.University.Voivodeship.Name,
+                    Id = x.Course.University.VoivodeshipId, x.Course.University.Voivodeship.Name
                 }
             });
 
@@ -308,7 +297,7 @@ namespace Projekcik.Api.Controllers
                     Size = pagerParams.Size,
                     Page = pagerParams.Page,
                     Count = count,
-                    Pages = (int)Math.Ceiling(count / (float)pagerParams.Size)
+                    Pages = (int) Math.Ceiling(count / (float) pagerParams.Size)
                 },
                 Notes = notes
                     .Skip((pagerParams.Page - 1) * pagerParams.Size)
@@ -342,22 +331,19 @@ namespace Projekcik.Api.Controllers
                 Author = new
                 {
                     Id = result.AuthorId,
-                    Name = result.Author.UserName,
+                    Name = result.Author.UserName
                 },
                 Course = new
                 {
-                    Id = result.CourseId,
-                    Name = result.Course.Name,
+                    Id = result.CourseId, result.Course.Name
                 },
                 University = new
                 {
-                    Id = result.Course.UniversityId,
-                    Name = result.Course.University.Name,
+                    Id = result.Course.UniversityId, result.Course.University.Name
                 },
                 Voivodeship = new
                 {
-                    Id = result.Course.University.VoivodeshipId,
-                    Name = result.Course.University.Voivodeship.Name,
+                    Id = result.Course.University.VoivodeshipId, result.Course.University.Voivodeship.Name
                 }
             });
         }
@@ -395,22 +381,19 @@ namespace Projekcik.Api.Controllers
                 Author = new
                 {
                     Id = x.AuthorId,
-                    Name = x.Author.UserName,
+                    Name = x.Author.UserName
                 },
                 Course = new
                 {
-                    Id = x.CourseId,
-                    Name = x.Course.Name,
+                    Id = x.CourseId, x.Course.Name
                 },
                 University = new
                 {
-                    Id = x.Course.UniversityId,
-                    Name = x.Course.University.Name,
+                    Id = x.Course.UniversityId, x.Course.University.Name
                 },
                 Voivodeship = new
                 {
-                    Id = x.Course.University.VoivodeshipId,
-                    Name = x.Course.University.Voivodeship.Name,
+                    Id = x.Course.University.VoivodeshipId, x.Course.University.Voivodeship.Name
                 }
             });
 
@@ -433,9 +416,9 @@ namespace Projekcik.Api.Controllers
                 x.Name,
                 x.Price,
                 Purchases = x.Buyers.Count,
-                Profit = x.Price * x.Buyers.Count,
+                Profit = x.Price * x.Buyers.Count
             });
-            result = result.Where(x=>x.Purchases > 0);
+            result = result.Where(x => x.Purchases > 0);
             return Ok(result);
         }
     }

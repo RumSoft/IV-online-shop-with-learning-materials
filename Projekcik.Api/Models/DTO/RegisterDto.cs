@@ -62,5 +62,4 @@ namespace Projekcik.Api.Models.DTO
                 .MaximumLength(50);
         }
     }
-
 }

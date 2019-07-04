@@ -10,8 +10,8 @@ namespace Projekcik.Api.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userService;
         private readonly IHttpContextAccessor _user;
+        private readonly IUserService _userService;
 
         public UserController(IUserService userService, IHttpContextAccessor user)
         {
@@ -20,12 +20,12 @@ namespace Projekcik.Api.Controllers
         }
 
         /// <summary>
-        /// returns limited data (that should be visible for everyone)
+        ///     returns limited data (that should be visible for everyone)
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
         [AllowAnonymous]
-        [HttpGet("{userId}")]    
+        [HttpGet("{userId}")]
         public IActionResult GetUserInfo(Guid userId)
         {
             var user = _userService.GetById(userId);
@@ -38,7 +38,7 @@ namespace Projekcik.Api.Controllers
         }
 
         /// <summary>
-        /// returns full user data
+        ///     returns full user data
         /// </summary>
         /// <returns></returns>
         [Authorize]

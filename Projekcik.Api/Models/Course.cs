@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -30,7 +29,6 @@ namespace Projekcik.Api.Models
                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired();
         }
-
     }
 
     public class University
@@ -90,10 +88,11 @@ namespace Projekcik.Api.Models
     // for note count queries
     public interface INoteCount
     {
-         int NoteCount { get; set; }
+        int NoteCount { get; set; }
     }
 
-    public class VoivodeshipNoteCount : INoteCount {
+    public class VoivodeshipNoteCount : INoteCount
+    {
         public int Id { get; set; }
         public string Name { get; set; }
         public string ImageUrl { get; set; }

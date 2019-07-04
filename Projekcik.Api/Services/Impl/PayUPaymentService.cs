@@ -122,7 +122,7 @@ namespace Projekcik.Api.Services.Impl
 
         private string GetAuthToken()
         {
-            using (var httpClient = new HttpClient { BaseAddress = new Uri(baseUrl) })
+            using (var httpClient = new HttpClient {BaseAddress = new Uri(baseUrl)})
             using (var content = new StringContent(
                 $"grant_type=client_credentials&client_id={clientId}&client_secret={clientSecret}",
                 Encoding.Default, "application/x-www-form-urlencoded"))
@@ -136,7 +136,7 @@ namespace Projekcik.Api.Services.Impl
 
         private int ConvertPrice(decimal x)
         {
-            return (int)(x * 100);
+            return (int) (x * 100);
         }
 
         #region order
@@ -178,13 +178,13 @@ namespace Projekcik.Api.Services.Impl
 
         private OrderResponse PlaceOrder(string authToken, Order order)
         {
-            var handler = new HttpClientHandler { AllowAutoRedirect = false };
-            using (var httpClient = new HttpClient(handler) { BaseAddress = new Uri(baseUrl) })
+            var handler = new HttpClientHandler {AllowAutoRedirect = false};
+            using (var httpClient = new HttpClient(handler) {BaseAddress = new Uri(baseUrl)})
             {
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", $"Bearer {authToken}");
 
                 var camelCaseSettings = new JsonSerializerSettings
-                { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+                    {ContractResolver = new CamelCasePropertyNamesContractResolver()};
                 var orderSerialized = JsonConvert.SerializeObject(order, Formatting.None, camelCaseSettings);
 
                 using (var content = new StringContent(orderSerialized, Encoding.UTF8, "application/json"))
@@ -204,22 +204,22 @@ namespace Projekcik.Api.Services.Impl
         {
             return new PayoutRequest
             {
-                Account = new Account { AccountNumber = payoutParameters.AccountNumber },
-                CustomerAddress = new CustomerAddress { Name = $"{user.FirstName} {user.LastName}" },
-                Payout = new Payout { Amount = ConvertPrice(user.Balance), Description = "Wypłata ze sklepu" },
+                Account = new Account {AccountNumber = payoutParameters.AccountNumber},
+                CustomerAddress = new CustomerAddress {Name = $"{user.FirstName} {user.LastName}"},
+                Payout = new Payout {Amount = ConvertPrice(user.Balance), Description = "Wypłata ze sklepu"},
                 ShopId = shopId
             };
         }
 
         private PayoutResponse ProceedPayout(string authToken, PayoutRequest request)
         {
-            var handler = new HttpClientHandler { AllowAutoRedirect = false };
-            using (var httpClient = new HttpClient(handler) { BaseAddress = new Uri(baseUrl) })
+            var handler = new HttpClientHandler {AllowAutoRedirect = false};
+            using (var httpClient = new HttpClient(handler) {BaseAddress = new Uri(baseUrl)})
             {
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", $"Bearer {authToken}");
 
                 var camelCaseSettings = new JsonSerializerSettings
-                { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+                    {ContractResolver = new CamelCasePropertyNamesContractResolver()};
                 var orderSerialized = JsonConvert.SerializeObject(request, Formatting.None, camelCaseSettings);
 
                 using (var content = new StringContent(orderSerialized, Encoding.UTF8, "application/json"))
@@ -233,5 +233,4 @@ namespace Projekcik.Api.Services.Impl
 
         #endregion
     }
-
 }

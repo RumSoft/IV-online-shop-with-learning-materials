@@ -19,8 +19,6 @@ namespace Projekcik.Api.Models
     public class Transaction : Entity<Guid>, ITimeStampedEntity
     {
         public Guid BuyerId { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime ModifiedAt { get; set; }
         public TransactionStatus Status { get; set; }
         public string Order { get; set; }
 
@@ -30,6 +28,9 @@ namespace Projekcik.Api.Models
             get => Order.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(Guid.Parse);
             set => Order = string.Join(',', value);
         }
+
+        public DateTime CreatedAt { get; set; }
+        public DateTime ModifiedAt { get; set; }
 
         public static void OnModelCreating(EntityTypeBuilder<Transaction> entity)
         {
