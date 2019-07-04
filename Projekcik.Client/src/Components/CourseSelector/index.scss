@@ -1,0 +1,147 @@
+@import '../../variables.scss';
+
+.course-selector {
+
+  .step-label {
+    &.enabled:hover {
+      background-color: rgba($primary, 0.1);
+    }
+  }
+
+  .undo-button {
+    width: 100%;
+  }
+
+  .grid-item {
+
+    .paper {
+      min-height: 3rem;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      position: relative;
+      align-items: center;
+      padding-bottom: 1rem !important;
+
+      .hover {
+        width: 100%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        height: 100%;
+        z-index: 16;
+
+        &:hover {
+          background-color: rgba($primary, 0.1);
+          transition: 0.1s all ease;
+        }
+      }
+
+      .disabled {
+        z-index: 15;
+        background: #ddd;
+        opacity: 0.5;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+      }
+
+      .uniImage {
+        display: none;
+      }
+
+      div {
+        display: inline-block;
+        vertical-align: middle;
+        line-height: normal;
+        z-index: 10;
+        max-width: 100%;
+        // text-shadow: 1px 1px 1px rgba(0, 0, 0, .125);
+        font-weight: 600;
+        line-height: 1rem;
+
+      }
+
+      small {
+        z-index: 10;
+        color: #555;
+        position: absolute;
+        right: 5px;
+        bottom: 0px;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, .125);
+      }
+    }
+  }
+}
+
+//breakpoints:
+//max 575
+//max 767
+
+@media only screen and (max-width: 575px) {
+  .course-selector {
+    .course-selector-stepper {
+      padding: 0.5rem;
+
+      .step-label {
+        &-title {
+          font-size: .8rem
+        }
+
+        &-caption {
+          font-size: 0.7rem;
+        }
+      }
+    }
+
+    .grid-item {
+      .paper {
+        font-size: 0.8rem;
+      }
+    }
+  }
+}
+
+
+@media only screen and (min-width: 1200px) {
+  .course-selector {
+    .grid-item {
+
+      .paper {
+        .uniImage {
+          display: block;
+          max-width: 25%;
+          max-height: 100%;
+          bottom: auto;
+          top: auto;
+          position: absolute;
+          opacity: 1;
+          z-index: 5;
+          right: 0%;
+          transform: rotate(0deg);
+        }
+
+        div.uni {
+          max-width: 75%;
+
+          padding-right: 5px;
+        }
+
+        div.uni:after {
+          border-right: 2px solid #eee;
+          content: '';
+          position: absolute;
+          top: 1rem;
+          bottom: 1rem;
+          left: 72%;
+        }
+      }
+    }
+  }
+}

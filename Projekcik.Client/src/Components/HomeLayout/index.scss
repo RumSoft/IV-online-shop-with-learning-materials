@@ -1,0 +1,44 @@
+.home-layout {
+  .main {
+    p {
+      max-width: 600px;
+    }
+  }
+
+  .course-selector-card {
+    padding: 1rem;
+  }
+
+  .note-small-info {
+    display: inline-block;
+  }
+
+  .btn-small-group {
+    display: flex;
+
+    .btn {
+      margin: 3px;
+
+      &.cart {
+        width: 7rem;
+        height: 90%;
+      }
+
+
+    }
+  }
+
+  .fa {
+    margin-right: 0.5rem;
+  }
+
+  .footer {
+    background-color: #3f51b5;
+    padding: 2rem;
+  }
+
+  .footer-item {
+    text-align: center;
+    color: white;
+  }
+}

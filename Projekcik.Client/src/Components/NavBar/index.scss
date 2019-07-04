@@ -1,0 +1,74 @@
+@import '../../variables.scss';
+
+$bgDefault: #3f51b5;
+$bgHighlight: #16288d;
+$colDefault: #ecf0f1;
+$colHighlight: #ecdbff;
+
+// ale ma pan tu nasrane w tym css'ie
+//
+// trzeba to robic mobile-first bo wychodzi szit
+//
+// todo:
+// okienko wyszukiwania ma sie skalować (rozmiar: sm)
+//
+
+.navbar {
+  .navbar-logo {
+    max-height: 3rem;
+  }
+
+  background-color: $bgDefault;
+  box-shadow: 0px 2px 3px rgba(black, 0.5);
+  .navbar-brand {
+    color: $colDefault;
+    &:hover,
+    &:focus {
+      color: $colHighlight;
+    }
+  }
+}
+
+@media (min-width: 767px) {
+  .navbar {
+    .nav-search {
+      height: 100%;
+    }
+    .nav-link {
+      .button {
+        padding: 0.4rem 0.5rem;
+        border-radius: 5px;
+        color: #222;
+        background: $colDefault;
+        height: 100%;
+        &:hover {
+          background: $colHighlight;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 766px) {
+  .navbar {
+    .mobile-icon {
+      margin-right: 0.8rem;
+    }
+    .mobile-shop {
+      margin-left: 0.4rem;
+    }
+    .navbar-container {
+      display: flex;
+    }
+
+    .nav-link {
+      .link {
+        color: white;
+      }
+    }
+  }
+}
+
+.hidden-toggler {
+  opacity: 0;
+}

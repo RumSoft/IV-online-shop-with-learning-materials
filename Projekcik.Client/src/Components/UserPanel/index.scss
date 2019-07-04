@@ -1,0 +1,27 @@
+.user-panel {
+  .user-data {
+    .fa {
+      margin-right: 0.5rem;
+
+      &.fa-dollar-sign.fa-spin {
+        font-size: 3.5rem;
+        margin-right: 2rem;
+        margin-top: 0.3rem;
+      }
+    }
+  }
+  .nav-tab:hover {
+    cursor: pointer;
+  }
+
+  .btn-buy {
+    width: 100%;
+    border-radius: 0.5em;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(to top, #077c1160, #67df06, );
+
+  }
+
+
+}

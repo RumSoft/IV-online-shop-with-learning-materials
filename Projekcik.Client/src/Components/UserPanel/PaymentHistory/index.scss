@@ -1,0 +1,28 @@
+th,
+td {
+  vertical-align: middle !important;
+}
+
+.d-title {
+  padding-bottom: 0 !important;
+}
+
+.info {
+  display: flex;
+}
+
+.btn-details {
+  width: 100%;
+  &.closing {
+    width: 20%;
+  }
+  background-color: #3f51b5;
+  border-color: black;
+  &:hover {
+    border-color: black;
+    background-color: #4522e0;
+  }
+  &:focus {
+    background-color: #220391 !important;
+  }
+}

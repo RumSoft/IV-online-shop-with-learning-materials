@@ -1,0 +1,42 @@
+.login-panel {
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  min-width: 500px;
+
+  .progress {
+    height: 5px;
+    width: 100%;
+  }
+
+  .field {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .button {
+    margin-right: 1rem;
+
+    .fa,
+    .fab {
+      margin-right: 0.3rem;
+    }
+
+    &.login-reset-password {
+      position: relative;
+      right: 0;
+    }
+
+
+    width: 100%;
+
+  }
+
+  .errors {
+    background-color: red;
+    color: white;
+    width: 100%;
+    padding: 1rem
+  }
+
+}

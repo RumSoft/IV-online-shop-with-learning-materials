@@ -1,0 +1,189 @@
+.toolbar-root {
+  display: flex;
+  flex-direction: row;
+  padding-top: 0.5rem;
+  padding-right: 1rem;
+
+  .toolbar-title {
+    padding-top: 0.1rem;
+    padding-right: 5rem;
+    margin-right: 5rem;
+  }
+
+  .toolbar-sort {
+    flex-grow: 1;
+  }
+}
+
+.fa {
+  margin-right: 0.5rem;
+}
+
+dl {
+  height: 5rem;
+}
+
+hr {
+  width: 95%;
+}
+
+.root {
+  width: 100%;
+  margin-top: 2rem;
+
+  .table {
+    min-width: 1020;
+  }
+
+  .tableWrapper {
+    overflow-x: auto;
+  }
+}
+
+.filter-list {
+  margin: 0.5rem 1rem;
+  background-color: #eeeeee;
+
+  .filter-header {
+    padding-left: 5px;
+    padding-bottom: 10px;
+  }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas:
+      'filter-left filter-rest'
+      'filter-left filter-rest'
+      'filter-left filter-rest';
+
+    .filter-left {
+      grid-area: filter-left;
+    }
+
+    .filter-rest {
+      grid-area: filter-rest;
+    }
+
+    .filter-field {
+      width: 70%;
+      padding-bottom: 1rem;
+
+      &.rest {
+        margin-bottom: 0px;
+      }
+    }
+  }
+}
+
+.btn-group {
+  display: flex;
+}
+
+.page-manipulator {
+  display: flex;
+
+  .page-number {
+    flex-basis: 70%;
+    padding: 0.2rem 2rem;
+  }
+
+  .page-label {
+    padding-right: 1em;
+    padding-top: 10px;
+  }
+
+  .page-size-input {
+    align-content: flex-end;
+    margin-top: 3px;
+    width: 8%;
+  }
+}
+
+.page-link {
+  color: #3f51b5;
+  background-color: #eeeeee;
+  border-color: #8b97a1;
+}
+
+.page-item.active .page-link {
+  color: #fff;
+  border-color: #16288d;
+  background-color: #3f51b5;
+}
+
+.page-item.disabled .page-link {
+  color: #5c6268;
+  pointer-events: none;
+  cursor: auto;
+  border-color: #d5d7d8;
+}
+
+.page-link:hover {
+  color: #fff;
+  text-decoration: none;
+  border-color: #16288d;
+  background-color: #3f51b5;
+}
+
+@media only screen and (max-width: 992px) {
+  .toolbar-root {
+    .toolbar-title {
+      padding-right: 1rem;
+      margin-right: 0;
+    }
+
+    .toolbar-input {
+      max-width: 120px;
+    }
+  }
+  .page-manipulator {
+    .page-label {
+      padding-right: 0;
+      padding-top: 0;
+    }
+    .page-size-input {
+      width: 11%;
+    }
+  }
+}
+// ten cholerny zakres, moze to tez kwestia mojego ekranu xd
+//
+// @media only screen and (min-width: 964px) and (max-width: 992px) {
+//   .search-note-card {
+//     .btn-group {
+//       .btn.cart {
+//         width: 100%;
+//       }
+//     }
+//   }
+// }
+
+@media only screen and (max-width: 792px) {
+  .toolbar-root {
+    font-size: small;
+
+    .toolbar-title {
+      font-size: medium;
+      max-width: 10rem;
+      padding-right: 1rem;
+      margin-right: 0;
+    }
+
+    .toolbar-form {
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+      .toolbar-input {
+        max-width: 200px;
+        margin-bottom: 4px;
+      }
+    }
+  }
+  .page-manipulator {
+    .page-size-input {
+      width: 20%;
+    }
+  }
+}
