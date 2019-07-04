@@ -6,7 +6,6 @@ using log4net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Projekcik.Api.Helpers;
 using Projekcik.Api.Models;
@@ -26,9 +25,7 @@ namespace Projekcik.Api.Controllers
         private readonly IHttpContextAccessor _user;
         private readonly IUserService _userService;
 
-        public PaymentController(
-            IConfiguration configuration,
-            INoteService noteService,
+        public PaymentController(INoteService noteService,
             IUserService userService,
             IHttpContextAccessor user,
             IPaymentService paymentService, DataContext context)
